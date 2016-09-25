@@ -1,7 +1,7 @@
 yout: post
-title: Gabor^2
+title: SVM Classification
 ---
-Approximating an image with Gabor functions.
+First introduction to Support Vector Machines. Classification of digits.
 
 Overview
 ========
