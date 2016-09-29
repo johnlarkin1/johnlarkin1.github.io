@@ -17,14 +17,13 @@
 title: Exploration
 email: john@johnjlarkin.com
 description: > # this means to ignore newlines until "baseurl:"
-  
+  Exploring the world in the liberal arts BFS manner. Check out some cool things that I am 
+  working on or trying to learn more about. I am just getting started so be patient with
+  the website design and layout. Thanks!  
 
-  Write an awesome description for your new site here. You can edit this
-  line in _config.yml. It will appear in your document head meta (for
-  Google search results) and in your feed.xml site description.
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "http://johnlarkin1.github.io" # the base hostname & protocol for your site, e.g. http://example.com
-twitter_username: jekyllrb
+# twitter_username: jekyllrb
 github_username: johnlarkin1
 
 
