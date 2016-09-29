@@ -2,13 +2,6 @@
 layout: default
 ---
 
-div.page-heading {
-	background-color: black;
-	color: red;
-	margin: 20px 0 20px 0;
-	padding: 20px;
-	text-align: center;
-}
 
 <div class="home">
 
@@ -17,10 +10,9 @@ div.page-heading {
   <ul class="post-list">
     {% for post in site.posts %}
       <li>
-        <span class="post-meta">{{ post.date | date: "%b %-d, %Y" }}</span>
-        <h3><a class="post-link" href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a></h3>
-        {{ post.excerpt }}
-      </li>
+	    <a href="{{ post.url }}">{{ post.title}} </a>
+		{{ post.excerpt }}
+	  </li>
     {% endfor %}
   </ul>
 
