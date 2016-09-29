@@ -35,7 +35,7 @@ markdown: kramdown
 google_analytics: UA-84926560-1
 
 # Get the jekyll theme
-theme: minima
+#theme: project-pages
 
 
 gems:
