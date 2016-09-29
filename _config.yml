@@ -43,5 +43,5 @@ exclude:
   - Gemfile
   - Gemfile.lock
 
-# Not totally sure what this is doing, but zucker has it
+# Not totally sure what this is doing, but seen it
 future: true
