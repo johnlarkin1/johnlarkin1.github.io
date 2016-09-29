@@ -1,6 +1,0 @@
-# johnlarkin1.github.io
-
-Please see my website at:
-https://johnlarkin1.github.io
-
-Thanks! Have a great day.
