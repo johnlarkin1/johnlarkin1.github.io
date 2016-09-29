@@ -3,7 +3,6 @@
 *~
 .DS_Store
 .analysis
-.bundle/
 .byebug_history
 .jekyll-metadata
 .ruby-gemset
