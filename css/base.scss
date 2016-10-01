@@ -10,3 +10,10 @@ body {
 	font: 100% $default-font;
 	color: $primary-color;
 }
+
+// pretty sure i need this to import the partials
+// this would connect all of the fonts
+
+@import "_sass"
+	"default"
+;
