@@ -3,5 +3,10 @@
 ---
 @charset "UTF-8"
 
+$default-variable: Calibri, sans-serif;
+$primary-color: #333;
+
 body {
+	font: 100% $default-variable;
+	color: $primary-color;
 }
