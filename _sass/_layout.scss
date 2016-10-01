@@ -1,0 +1,15 @@
+/** 
+ * Ok so this is going to be where we declare a bunch of HTML classes
+ * That way we can just say like class = so and so 
+ * And then we'll link everything together.
+ * Let's try some things out. 
+ */
+
+.page-heading {
+	font-size: 20px;
+}
+
+.post-list {
+	font-color: $primary-color;
+	margin-left: 0;
+}
