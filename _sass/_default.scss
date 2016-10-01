@@ -1,0 +1,27 @@
+/**
+ * This is just going to hold a bunch of default values
+ * Note: sass = syntatically awesome style sheets
+ * it's pretty much like light css
+ * again, just trying to get where my head is at and record what i've learned so far
+ */
+
+/**
+ * Partials - contain little snippets of CSS that you can include in OTHER sass files!!
+ * This way you can just modularize everything
+ * Note: Please name the partials with underscores. 
+ * That way the file is not a full css file and should not be generated as one. 
+ * Imported with the @import directive
+ */
+
+// please let me change my blog's font
+body {
+	font-family: $default-font;
+	color: $primary-color;
+}
+
+
+// Can we do this for code?
+code { 
+	font-family: Consolas, monospace;
+	color: green;
+}
