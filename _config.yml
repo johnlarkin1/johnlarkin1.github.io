@@ -26,6 +26,9 @@ url: "http://johnlarkin1.github.io" # the base hostname & protocol for your site
 # twitter_username: jekyllrb
 github_username: johnlarkin1
 
+# make sure we know where to get our sass
+sass:
+    sass_dir: _sass
 
 # Build settings
 markdown: kramdown
