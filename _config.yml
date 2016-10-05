@@ -37,11 +37,7 @@ google_analytics: UA-84926560-1
 # theme: project-pages
 theme: minima
 
-gems:
-  - jekyll-feed
-exclude:
-  - Gemfile
-  - Gemfile.lock
-
 # Not totally sure what this is doing, but seen it
+# ok so apparently this is relating the server time to the local time
+# if we're ahead of the server time, it's not going to be built
 future: true
