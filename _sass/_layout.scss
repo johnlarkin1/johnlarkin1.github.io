@@ -9,6 +9,11 @@
 /******** Page Information ************/
 /**************************************/
 
+.page-title { 
+	font-size: 50px;
+	color: green;
+}
+
 .page-heading {
 	font-size: 50px;
 	color: green;
@@ -24,7 +29,7 @@
 }
 
 .post-list {
-	//font-color: $primary-color;
+	//color: $primary-color;
 	color: green;
 	margin-left: 0;
 }
