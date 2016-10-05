@@ -1,6 +1,6 @@
 ---
-title: First Blog Post
 layout: post
+title: First Blog Post
 ---
 
 Here is my page. 
