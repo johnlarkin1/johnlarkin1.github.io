@@ -5,21 +5,78 @@
  * Let's try some things out. 
  */
 
+
+/**************************************/
+/******* Header Information ***********/
+/**************************************/
+.global-header {
+	background: $color-light-blue; // need this in case the next line doesn't work
+	background: linear-gradient($color-light-blue, $color-dark-blue);
+    font-size: 18px;
+	color: white;	
+	// border-radius: 5px; - don't apply a radius border... seems cheap
+	min-width: 100%;
+	margin: 0;
+	padding: 0;
+	height: 70px;
+
+	&body {
+		margin: 0;
+		padding: 0;
+	}
+}
+
+
+.global-header-wrapper {
+	margin-left: auto;
+	margin-right: auto;
+	padding-right: 40px;
+	padding-left: 40px;
+	padding-bottom: 0;
+	padding-top: 0;
+}
+
+.global-header-description {
+	text-align: center;
+	clear: left;
+	font-size: 12px;
+	color: white;
+}
+
+.mountain-outline {
+	position: absolute;
+    float: below;
+    line-height: 0;
+    padding-top: 0px;
+	padding-bottom: 5px;
+    text-align: center;
+	width: 175px;
+	height: auto;
+}
+
 /**************************************/
 /******** Page Information ************/
 /**************************************/
 
 .page-title { 
 	font-size: 36px;
-	color: #000066;
+	color: black;
 }
 
 .page-heading {
 	font-size: 50px;
-	color: black;
+	color: $color-bright-red;
+	text-align: center;
 }
 
-/**************************************/
+/* let's have a photo on our main page */
+.page-main-photo {
+	height: 400px;
+	background-position: 0px -30px;
+	background-size: cover;
+}
+
+/***************************i***********/
 /******** Post Information ************/
 /**************************************/
 
@@ -34,3 +91,9 @@
 	color: $primary-color;
 	margin-left: 10px;
 }
+
+
+
+/**************************************/
+/******* Footer Information ***********/
+/**************************************/

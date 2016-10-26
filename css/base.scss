@@ -3,8 +3,18 @@
 ---
 @charset "utf-8";
 
+/* let's define some of our global variables for css essentially */
+
 $default-font: Calibri, sans-serif;
 $primary-color: #333;
+$color-dark-grey: #666666;
+$color-light-grey: #b3b3b3;
+$color-bright-red: #ff2200; 
+$color-light-blue: #4dd2ff; //almost like a teal
+$color-dark-blue: #0000b3; //deep blue
+$default-link-color: #0b67e0;
+$brand-color: black;
+$text-color: black;
 
 body {
 	font: 100% $default-font;
@@ -13,6 +23,7 @@ body {
 
 // pretty sure i need this to import the partials
 // this would connect all of the fonts
+
 
 @import	"default";
 @import "layout";

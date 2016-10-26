@@ -13,10 +13,22 @@
  * Imported with the @import directive
  */
 
+/*
+// lets have everything be tight
+body, h1, h2, h3, h4, h5, h6,
+p, blockquote, pre, hr,
+dl, dd, ol, ul, figure {
+    margin: 0;
+    padding: 0;
+}
+*/
+
 // please let me change my blog's font
 body {
 	font-family: $default-font;
 	color: $primary-color;
+	margin: 0;
+	padding: 0;
 }
 
 
@@ -25,3 +37,25 @@ code {
 	font-family: Consolas, monospace;
 	color: green;
 }
+
+// Images
+img {
+	max-width: 100%; 
+	vertical-align: middle;
+}
+
+// Links
+a {
+    color: $default-link-color;
+    text-decoration: none;
+
+    &:visited {
+        color: darken($brand-color, 15%);
+    }
+
+    &:hover {
+        color: $text-color;
+        text-decoration: underline;
+    }
+}
+
