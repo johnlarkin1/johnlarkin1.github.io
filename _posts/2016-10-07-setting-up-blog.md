@@ -3,7 +3,7 @@ title: Creating what you're looking at
 layout: post
 ---
 
-How did are you seeing this?
+How are you seeing this?
 
 There's a lot of different ways that you can go around building something. I actually struggled to generate this page... and this blog. It was small things, but the progress was relatively slow. I figured that it might be best if I create a page (largely for myself)) where I can store what I learned and also give attributions. 
 
