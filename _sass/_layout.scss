@@ -30,8 +30,8 @@
 .global-header-wrapper {
 	margin-left: auto;
 	margin-right: auto;
-	padding-right: 40px;
-	padding-left: 40px;
+	padding-right: 90px;
+	padding-left: 90px;
 	padding-bottom: 0;
 	padding-top: 0;
 }
@@ -65,7 +65,8 @@
 
 .page-heading {
 	font-size: 50px;
-	color: $color-bright-red;
+	//color: $color-bright-red;
+	color: $color-dark-blue;
 	text-align: center;
 }
 
@@ -84,16 +85,81 @@
 	font-size: 30px;
 	color: black;
 	text-align: center;
+	margin-bottom:0px;
+}
 
+.post-meta {
+	font-size: 16px;
+	//text-align: center;
+	color: $color-dark-grey;
+	line-height: 0px;
+	margin-bottom:30px;
+}
+
+.post-title-on-main {
+	font-size: 22px;
+	text-align: center;
+	line-height: 0px;
+	padding: 0;
+	margin: 0;
 }
 
 .post-list {
 	color: $primary-color;
 	margin-left: 10px;
+	//text-align:center;
+	list-style: none;
+	
+	> li {
+		margin-bottom: 2.6*$spacing-unit;
+	}
 }
 
+.post-info {
+	color: $primary-color;
+	font-size:15px;
 
-
+}
 /**************************************/
 /******* Footer Information ***********/
 /**************************************/
+
+.site-footer {
+	//position: absolute;
+	bottom: 0;
+	
+	background-color: #292c2f;
+    box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.12);
+    box-sizing: border-box;
+    width: 100%;
+    text-align: center;
+    font: normal 18px sans-serif;
+    padding: 20px;
+    padding-top: 20px;
+    padding-right: 20px;
+    padding-bottom: 20px;
+    padding-left: 20px;
+    margin-top: 20px;
+	
+}
+
+.footer-text {
+	color: $color-light-grey;
+    font-size: 12px;
+    margin: 0;
+    margin-top: 0px;
+    margin-right: 0px;
+    margin-bottom: 0px;
+    margin-left: 0px;
+}
+
+.footer-text-left{
+
+}
+
+/**************************************/
+/******* Code Formatting *************/
+/**************************************/
+
+
+

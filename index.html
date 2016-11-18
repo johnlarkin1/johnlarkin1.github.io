@@ -12,8 +12,11 @@ layout: default
   <ul class="post-list">
     {% for post in site.posts %}
       <li>
-	    <a href="{{ post.url }}">{{ post.title}} </a>
-		{{ post.excerpt }}
+	    <h3> <a class="post-title-on-main" href="{{ post.url }}">{{ post.title}} </a> </h3>
+		
+		<!-- MIGHT WANT TO CHANGE THE LINE BELOW TO MAKE A BIT CLEANER -->
+		<span class="post-meta"> {{ post.date | date: '%B %d, %Y'  }} </span>
+		<body class="post-info"> {{ post.excerpt }} </body>
 	  </li>
     {% endfor %}
   </ul>
