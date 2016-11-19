@@ -14,7 +14,7 @@
 # You can create any custom variable you would like, and they will be accessible
 # in the templates via {{ site.myvariable }}.
 
-title: Exploration
+title: Where will you go next?
 email: john@johnjlarkin.com
 description: > # this means to ignore newlines until "baseurl:"
   Exploring the world in the liberal arts BFS manner. Check out some cool things that I am 
