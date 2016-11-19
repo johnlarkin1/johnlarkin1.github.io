@@ -7,15 +7,18 @@ How are you seeing this?
 
 There's a lot of different ways that you can go around building something. I actually struggled to generate this page... and this blog. Overall, they were relatively small things, but regardless, the progress was relatively slow. I figured that it might be best if I create a page (largely for myself)) where I can store what I learned and also give attributions. 
 
-First of all, a lot of what I learned in how to model and create the design of the blog was based off of one of my Swarthmore professor's blogs. Specifically, [Matt Zucker's blog](https://mzucker.github.io/) was *really* helpful. 
+Resources 
+=========
 
-Second of all (which in hindsite, probably should have been my first resource), the [Jekyll](https://jekyllrb.com/docs/home/) homepage was helpful.
+1. First of all, a lot of what I learned in how to model and create the design of the blog was based off of one of my Swarthmore professor's blogs. Specifically, [Matt Zucker's blog](https://mzucker.github.io/) was *really* helpful. 
 
-Third, I became desperate and needed some help. I turned to the [Jekyll talk page](https://talk.jekyllrb.com/). While the page is primarily meant for asking Jekyll based questions, I also asked some questions about the construction of the sass file and the way to use Jekyll and html. 
+2. Second of all (which in hindsite, probably should have been my first resource), the [Jekyll](https://jekyllrb.com/docs/home/) homepage was helpful.
+
+3. Third, I became desperate and needed some help. I turned to the [Jekyll talk page](https://talk.jekyllrb.com/). While the page is primarily meant for asking Jekyll based questions, I also asked some questions about the construction of the sass file and the way to use Jekyll and html. 
  
-Fourth, a great and pretty famous resource is [http://www.w3schools.com/](http://www.w3schools.com/). While I haven't been lucky enough to walk through **all** of the tutorials, I have been to various element pages and checked out the documentation. 
+4. A great and pretty famous resource is [http://www.w3schools.com/](http://www.w3schools.com/). While I haven't been lucky enough to walk through **all** of the tutorials, I have been to various element pages and checked out the documentation. 
 
-Finally, just a lot of testing around with the site. These were the core of the resources used to construct the blog. I'm still learning a bunch, so any advice and emails and comments would be greatly appreciated. Obviously, you can see the code on my actual [personal github page](https://github.com/johnlarkin1).
+5. Finally, just a lot of testing around with the site. These were the core of the resources used to construct the blog. I'm still learning a bunch, so any advice and emails and comments would be greatly appreciated. Obviously, you can see the code on my actual [personal github page](https://github.com/johnlarkin1).
 
 This is going to be more of a running list for myself.
 
@@ -28,7 +31,7 @@ HTML Notes
 - `pre`:
 	- This guy is super important for defining characteristics over multiple lines... i.e. it's great for code formatting.
 	- As this [link](https://perishablepress.com/perfect-pre-tags/) puts, they are ideal for lines that 'need to retain character spacing, display unformatted characters, keep inherent line breaks, and so on.' 
-- test
+-
 
 
 SCSS Notes

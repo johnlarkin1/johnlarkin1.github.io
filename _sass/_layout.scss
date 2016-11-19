@@ -28,8 +28,8 @@
 
 
 .global-header-wrapper {
-	margin-left: auto;
-	margin-right: auto;
+	//margin-left: auto;
+	//margin-right: auto;
 	padding-right: 90px;
 	padding-left: 90px;
 	padding-bottom: 0;
@@ -45,7 +45,7 @@
 
 .mountain-outline {
 	position: absolute;
-    float: below;
+    float: left;
     line-height: 0;
     padding-top: 0px;
 	padding-bottom: 5px;
@@ -54,6 +54,19 @@
 	height: auto;
 }
 
+.site-navigation {
+	display: inline-block;
+	float: right;
+    line-height: 70px; 	
+	.page-link {
+		color: white;
+		font-size: 14px;
+		// Gaps between nav items, but not on the last one
+        &:not(:last-child) {
+            margin-right: 20px;
+        } 
+	}
+}
 /**************************************/
 /******** Page Information ************/
 /**************************************/
@@ -90,7 +103,7 @@
 
 .post-meta {
 	font-size: 16px;
-	//text-align: center;
+	text-align: center;
 	color: $color-dark-grey;
 	line-height: 0px;
 	margin-bottom:30px;
@@ -118,6 +131,8 @@
 .post-info {
 	color: $primary-color;
 	font-size:15px;
+	padding:0;
+	margin-top:10px; // NOTE: this is being used for the main page! we overrode the fact that jekyll strips it as a paragraph
 
 }
 /**************************************/
