@@ -15,6 +15,7 @@ General Vim Use:
 ---------------
 
 **Not in insert mode:**
+
 * `y` - yank or copy 
 * `x` - cut
 * `p` - paste
@@ -34,6 +35,7 @@ General Vim Use:
 * `dd` - delete entire line
 
 **In insert mode**:
+
 * `shift + left || right keys` - move by full words (similar to w and b outside of insert mode) (also \|\| indicates or)
 * `i` - enter insert mode at cursor
 * `A` - enter insert mode at end of line
@@ -41,11 +43,13 @@ General Vim Use:
 * `O` - enter insert mode on new blank line above cursor
 
 **Searching:**
+
 * `/pattern` - searches for said pattern
 	* `n` - find next of said pattern
 	* `N` - find previous of said pattern 
 
 **Random Cool Tricks:**
+
 * `~` - switch case of highlighted character
 * `d*w` - where * is an integer, this will delete * many words
 
