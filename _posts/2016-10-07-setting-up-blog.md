@@ -7,7 +7,7 @@ How are you seeing this?
 
 There's a lot of different ways that you can go around building something. I actually struggled to generate this page... and this blog. Overall, they were relatively small things, but regardless, the progress was relatively slow. I figured that it might be best if I create a page (largely for myself)) where I can store what I learned and also give attributions. 
 
-Resources 
+Resources:
 =========
 
 1. First of all, a lot of what I learned in how to model and create the design of the blog was based off of one of my Swarthmore professor's blogs. Specifically, [Matt Zucker's blog](https://mzucker.github.io/) was *really* helpful. 
@@ -22,7 +22,7 @@ Resources
 
 This is going to be more of a running list for myself.
 
-HTML Notes
+HTML Notes:
 ==========
 
 - `div`: this is going to be the basic building block
@@ -30,16 +30,16 @@ HTML Notes
 	- block - this means display it as a block like it spans across the page; similar to <p>
 - `pre`:
 	- This guy is super important for defining characteristics over multiple lines... i.e. it's great for code formatting.
-	- As this [link](https://perishablepress.com/perfect-pre-tags/) puts, they are ideal for lines that 'need to retain character spacing, display unformatted characters, keep inherent line breaks, and so on.' 
--
+	- As this [link](https://perishablepress.com/perfect-pre-tags/) puts, they are ideal for lines that "need to retain character spacing, display unformatted characters, keep inherent line breaks, and so on."
 
 
-SCSS Notes
+SCSS Notes:
 ==========
 General note:
 SCSS: this stands for syntatically awesome style sheets. This is actually a scripting language that is interpreted into CSS (cascading style sheets!!). First note, that variables can be set with the `$` sign symbol. These are essentially like global variables that you can use throughout the entire program. 
 
 Another great thing, SCSS lets you nest your CSS selectors in a nice clean heirarchy!! This means that:
+
 ```
 nav {
   ul {
@@ -50,6 +50,7 @@ nav {
 ```
 
 will actually be interpreted as the slightly more cluttered CSS version shown below:
+
 ```
 nav ul {
   margin: 0;
@@ -59,11 +60,10 @@ nav ul {
 ``` 
 with the given heirarchy being relatively more clear.
 
+- Tables are also pretty weird
+	- You're going to want to read up on `td`, `th`, `tr`, and `thead`. There are some slight nuances. You can read about some of them [here](http://stackoverflow.com/questions/5395228/html-tables-thead-vs-th).
 
-
-
-
-CSS Notes
+CSS Notes:
 ==========
 
 - `>` selector operator:
@@ -72,19 +72,28 @@ CSS Notes
 	- The selector operator is a bit more picky than that.
 - partials
 	- There's a careful distinction between partials with css files. 
-	- Partials are ___fill this in___
+	- Partials are really just little snippets of css code that you can include in scss files
+	- You **need** to label it with an underscore so like `_partial.scss` in order for it to be recognized as a partial and not a full css file. 
+	- These guys are used with the `@import` command
 - calculations:
-	- you can use `calc` to perform a quick calculation on how to set the web page up
-	- for example, that's how the margin of the actual content are calculated for my blog contents:
+	- You can use `calc` to perform a quick calculation on how to set the web page up
+	- For example, that's how the margin of the actual content are calculated for my blog contents:
 		- `max-width: -webkit-calc(#{$content-width} - (#{$spacing-unit}));`
 		- `max-width: calc(#{$content-width} - (#{$spacing-unit}));`
 	 
 		You can see here that it is taking the content width and subtracting off the spacing unit. Also note, that the -webkit-calc is for other types of browsers that might not be compatible. 		
-- who likes to have bullet points with lists? I don't always. Make sure to include that under the class type of where you're making the list!
+- Who likes to have bullet points with lists? I don't always. Make sure to include that under the class type of where you're making the list!
 	- for example, you want to say: `list-style: none;` under the appropriate css class
 
-Markdown Notes
+Markdown Notes:
 ==============
+Markdown makes life sooo much easier. It's essentially just making HTML way more easy to right. Pretty much everything I know about it has come from either peers or professors or [this super helpful link](https://en.support.wordpress.com/markdown-quick-reference/).
+
+Here's a brief summary:
+- `*text*` or `_text_` - _italics_ 
+- `**text**` or `__text__` - __bold__
+- links can be done in multiple ways. you can have a bunch of links at the end of a post so that it's kind of like a bibliography! Otherwise, the syntax is just `[this is going to be hyperlinked](some-url-for-hyperlinking)`
+- images are similar just preface the hard brackets with an exclamation point
 
 Installing Latex
 ================
@@ -108,3 +117,35 @@ x = \frac{3}{2}
 $$
 ```
 
+Installing Comments with Disqus:
+===============================
+
+This was simply a bit of googling and then comparing with Matt's code. It's pretty straight forward though because Disqus has a bunch of really helpful pages. 
+
+~~~javascript
+<div id="disqus_thread"></div>
+<script>
+
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+
+var disqus_config = function () {
+    this.page.url = '{{ page.url | prepend: site.url }}';  // Replace PAGE_URL with your page's canonical URL variable
+    this.page.identifier = '{{ page.id }}'; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+
+(function() { // DON'T EDIT BELOW THIS LINE
+    var d = document, s = d.createElement('script');
+    s.src = '//johnlarkin1-github-io.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+})();
+</script>
+~~~
+
+I literally pulled that code straight after registering my site on Disqus. Overall, there are like two main links:
+1. https://johnlarkin1-github-io.disqus.com/admin/install/
+2. http://www.perfectlyrandom.org/2014/06/29/adding-disqus-to-your-jekyll-powered-github-pages/
+
+Ok! I think that's all I have for now. Let me know if you guys have any comments and / or there are other things you think I should add. This is the first post, so I'm still kind of new to what's going on so far.

@@ -64,6 +64,25 @@ a {
     }
 }
 
+a.nounderline {
+	
+    &:link {
+    	text-decoration: none;
+	}
+
+	&:visited {
+    	text-decoration: none;
+	}
+
+	&:hover {
+    	text-decoration: none;
+	}
+
+	&:active {
+    	text-decoration: none;
+	}
+}
+
 // Code
 pre,
 code {
@@ -86,6 +105,25 @@ pre {
         padding-right: 0;
         padding-left: 0;
     }
+}
+
+table {
+    margin: 16px auto;
+    border-spacing: 0px;
+    border-collapse: collapse;
+}
+
+table td, table th {
+	padding: 4px 12px;
+}
+
+thead tr {
+	background-color: #1464F4; // this is a little bit of a darker blue #000080;
+	color: white;
+}
+
+tr:nth-child(even) {
+	background-color: #E8E8E6; 
 }
 
 .wrapper {

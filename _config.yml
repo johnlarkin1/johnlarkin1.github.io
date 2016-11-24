@@ -36,6 +36,9 @@ markdown: kramdown
 # Google services
 google_analytics: UA-84926560-1
 
+# This will show up on the tab! sooooper cool
+logo: /images/mountain.png
+
 # Get the jekyll theme
 # theme: project-pages
 theme: minima

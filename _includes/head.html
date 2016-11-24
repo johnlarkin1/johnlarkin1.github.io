@@ -3,6 +3,10 @@
   	<meta http-equiv="X-UA-Compatible" content="IE=edge">
   	<meta name="viewport" content="width=device-width, initial-scale=1">
 
+	<!-- this is going to be another meta comment
+		 this is how google search will pick it up! we need to provide an accurate amount of meta data about the website -->
+	<meta name="description" content="{% if page.excerpt %}{{ page.excerpt | strip_html | strip_newlines | truncate: 160 }}{% else %}{{ site.description }}{% endif %}">
+
 	<title>{% if page.title %}{{ page.title | escape }}{% else %}{{ site.title | escape }}{% endif %}</title>
 	<!-- i wanted to be a little different and link a more general css file
 		 note, i called it the base.scss so this is going to be slightly diff than main.scss --> 
