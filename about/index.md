@@ -15,6 +15,7 @@ I have to give a **massive** amount of credit to the following people:
 * Matt Zucker and [his blog](https://mzucker.github.io/)  (essentially teaching me how to code and helping me tremendously with this blog)
 * [This guy?](https://zachholman.com/about) Apparently his name is Zach Holman... I really like the way his blog is set up. He also seems like a pretty funny guy.
 * This is a really cool blog by [Jamie Wong](http://jamie-wong.com/)! He does a bunch of graphics stuff that will be touched on later.
+* Another really awesome blog I found when trying to figure out how to set the favicon.ico for this site. [Check it out here](http://drorata.github.io/)
 
 Again, feel free to reach out to me if you have any questions or comments!! I would **love** to have some critiques on the website, as it's still in its infancy. Still trying to figure out if it looks like a child picked the color scheme...
 
