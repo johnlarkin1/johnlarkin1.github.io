@@ -148,4 +148,13 @@ I literally pulled that code straight after registering my site on Disqus. Overa
 1. https://johnlarkin1-github-io.disqus.com/admin/install/
 2. http://www.perfectlyrandom.org/2014/06/29/adding-disqus-to-your-jekyll-powered-github-pages/
 
+Getting a `favicon.ico` to Show:
+================================
+
+This was kind of tricky. I'm still not actually totally sure how to have an animated `favicon.ico` as your little page icon. Essentially, these are the things that in chrome and other browsers show up next to your tab if you're not on the page. They're little like logos. At first, I was like ohhh those are cute, maybe I'll add one... and then I spent like 4 hours researching them. Note, they should be relatively square. Otherwise, they're not really going to work out. I tried to make the mountain in the upper left corner, but it was too elongated.  
+
+I got stuck and had to ask about it on talk jekyll. The answer wasn't totally correct, but I did a bit more googling. Adding a "?" apparently works as a hacky trick, but generally, people aren't sure why. [Check it out](https://talk.jekyllrb.com/t/trouble-creating-visible-icon-in-pages/3315/).
+
+---------
+
 Ok! I think that's all I have for now. Let me know if you guys have any comments and / or there are other things you think I should add. This is the first post, so I'm still kind of new to what's going on so far.

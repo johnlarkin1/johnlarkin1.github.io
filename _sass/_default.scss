@@ -126,6 +126,17 @@ tr:nth-child(even) {
 	background-color: #E8E8E6; 
 }
 
+
+blockquote {
+    color: $color-dark-grey;
+	//background-color: $color-dark-grey;
+    border-left: 4px solid $color-light-blue;
+    padding-left: 15px;
+    font-size: 16px;
+    font-style: italic;
+
+}
+
 .wrapper {
     max-width: -webkit-calc(#{$content-width} - (#{$spacing-unit}));
     max-width:         calc(#{$content-width} - (#{$spacing-unit}));
