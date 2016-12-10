@@ -15,12 +15,12 @@ then develop a remedy that addresses at least some of those causes. Sample probl
 limited to subjects discussed in class, in the readings, as well as other current events related to
 international relations. Be realistic and judicious in selecting your specific problem—imagine that
 policymakers will be given a copy of your essay. The essay must do the following:
-1. Provide an assessment of the technical/factual nature of the problem (What is the problem? How
+> 1. Provide an assessment of the technical/factual nature of the problem (What is the problem? How
 dangerous/significant is the problem and for whom/what? What are the causes of the problem?),
-2. Consider the relevant historical factors (What are the origins of the problem and for how long has
+> 2. Consider the relevant historical factors (What are the origins of the problem and for how long has
 it been developing? What solutions have been attempted? Has your proposed solution been tried?
 If so, what is different now than when the proposed solution was first attempted?),
-3. Assess the political nature of the problem (What are the interests and policies of the most
+> 3. Assess the political nature of the problem (What are the interests and policies of the most
 influential actors that are or might be concerned with the problem and your solution?),
 > 4. Propose a realistic and concrete solution to the problem or at least some part of the problem.
 >
@@ -37,9 +37,10 @@ theoretical.
 
 I thought I did an alright job of the final paper, and I wrote a bit of an R script to do some of the graphics. I downloaded data from the [Global Terrorism Database][GTD]. The dataset is rather exhaustive, so feel free to download the dataset and get started. I didn't do as much actual quantitative analysis and hypothesis testing as I wish I would have gotten around to, but the graphs were nice and I thought I wrote decently. 
 
-You can find the [paper here][ppr]. Feel free to give it a read and let me know what you think.
+You can find the [paper here][ppr]. If you don't like reading (...), then you can just snag the code [here][code]. Feel free to give it a read and let me know what you think in the comments below!
 
 [comment]: <> (Bibliography)
 [EPR]: http://www.bsg.ox.ac.uk/people/emily-paddon
 [GTD]: https://www.start.umd.edu/gtd/
 [ppr]: {{ site.baseurl }}/pdfs/Final_Research_Essay.pdf
+[code]: https://github.com/johnlarkin1/terrorism-analysis

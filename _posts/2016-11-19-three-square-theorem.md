@@ -12,7 +12,7 @@ $$
 x = a^2 + b^2 + c^2 
 $$ 
 
-First, let's explore where this problem even came from. 
+First, let's explore where this problem even came from. If you don't want to read the post, check out the code [here][code].
 
 History of Sum of Three Squares Problem
 =======================================
@@ -119,7 +119,7 @@ The answer is conveniently all of them. Check it out [here][foursq]. The best pa
 Conclusion
 ==========
 
-This obviously wasn't really a code heavy project. But it's got some pretty interesting math. I also am still relatively new at this so I figured this would be a good chance to get my feet wet on a project where I wasn't really looking at pseudocode and there wasn't really a clean path. That being said... the solution I implemented was still brute-force just with a slight twist. As always, if people have more clever solutions, then *please* let me know! I'd love to hone my skills. 
+This obviously wasn't really a code heavy project. You can [check out the code here][code]. But it's got some pretty interesting math. I also am still relatively new at this so I figured this would be a good chance to get my feet wet on a project where I wasn't really looking at pseudocode and there wasn't really a clean path. That being said... the solution I implemented was still brute-force just with a slight twist. As always, if people have more clever solutions, then *please* let me know! I'd love to hone my skills. 
 
 
 [comment]: <> (Bibliography)
@@ -131,3 +131,4 @@ This obviously wasn't really a code heavy project. But it's got some pretty inte
 [threesqproof]: http://www.ams.org/journals/proc/1957-008-02/S0002-9939-1957-0085275-8/S0002-9939-1957-0085275-8.pdf
 [threesqproof2]: http://www.math.uchicago.edu/~may/VIGRE/VIGRE2009/REUPapers/Wong.pdf
 [foursq]: https://en.wikipedia.org/wiki/Lagrange%27s_four-square_theorem
+[code]: https://github.com/johnlarkin1/three-square-problem
