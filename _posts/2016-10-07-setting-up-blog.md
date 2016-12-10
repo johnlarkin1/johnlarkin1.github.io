@@ -155,6 +155,17 @@ This was kind of tricky. I'm still not actually totally sure how to have an anim
 
 I got stuck and had to ask about it on talk jekyll. The answer wasn't totally correct, but I did a bit more googling. Adding a "?" apparently works as a hacky trick, but generally, people aren't sure why. [Check it out](https://talk.jekyllrb.com/t/trouble-creating-visible-icon-in-pages/3315/).
 
+Linking PDFs:
+=============
+
+There are several projects that I've worked on where I didn't want to do a full write up, but I've already written up a paper or some report for class. I thought it would be easier to just link the actual pdfs that I've already created. Because Github is the shit and relatively easy to work with other file types, I just had to load the files into a certain public spot (which I was fine with) and then just pass it a command. 
+It's also nice to utilize jekyll here, because we can easily specify our baseurl. So for example, if I wanted to link my final E91 (biomedical signals) presentation, I could just write the following code:
+~~~html
+<a href="{{ site.baseurl }}/pdfs/E91FinalProjectFlowCytometry.pdf"> link </a>
+~~~
+And that beautiful piece of code, will take you right to here:
+<a href="{{ site.baseurl }}/pdfs/E91FinalProjectFlowCytometry.pdf"> link </a>
+
 ---------
 
 Ok! I think that's all I have for now. Let me know if you guys have any comments and / or there are other things you think I should add. This is the first post, so I'm still kind of new to what's going on so far.
