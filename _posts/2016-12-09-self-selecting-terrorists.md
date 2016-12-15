@@ -15,6 +15,7 @@ then develop a remedy that addresses at least some of those causes. Sample probl
 limited to subjects discussed in class, in the readings, as well as other current events related to
 international relations. Be realistic and judicious in selecting your specific problem—imagine that
 policymakers will be given a copy of your essay. The essay must do the following:
+>
 > 1. Provide an assessment of the technical/factual nature of the problem (What is the problem? How
 dangerous/significant is the problem and for whom/what? What are the causes of the problem?),
 > 2. Consider the relevant historical factors (What are the origins of the problem and for how long has
