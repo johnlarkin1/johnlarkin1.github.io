@@ -11,9 +11,11 @@ Above, is a visualization from Wikipedia, about the sudoku backtracking algorith
 
 Concept
 =======
+If you don't care about any of this, and just want to crank out some computationally solved sudokus, [get the code here][here].
+
 After waiting on the airplane and solving another soduko from the back of a Skymiles magazine, I thought it might be fun to build a sudoku solver. At first, I was planning on implementing essentially a brute force approach, where I would try a possible combination for a cell, and then with that possible cell filled, try to fill out the cell from there. I figured this would be considered brute force.
 
-As it turns out, that approach is a little bit more sophisticated then just basic brute force, and is actually commonly called [backtracking][backtrack]. You can read more about it [below](#theory). The algorithm makes pretty intuitive sense. You find the possible options for a given cell, and then recurse on the given sudoku from there. When you find one that is fully filled and satisfied, you just short out, and keep returning true and then you've got yourself the golden sudoku. The solution! If you're just interested in grabbing the actual program, [you can find it here][code].
+As it turns out, that approach is a little bit more sophisticated then just basic brute force, and is actually commonly called [backtracking][backtrack]. You can read more about it [below](#theory). The algorithm makes pretty intuitive sense. You find the possible options for a given cell, and then recurse on the given sudoku from there. When you find one that is fully filled and satisfied, you just short out, and keep returning true and then you've got yourself the golden sudoku. The solution! Once again, if you're just interested in grabbing the actual program, [you can find it here][code].
 
 The actual textbook definition of brute-force means to iterate over the entire search space, and check whether that solution is valid. So you can imagine that this would be **literally** generating all possible values for all open cells. This is also going to be discussed further [below](#runtime). 
 
@@ -121,7 +123,10 @@ You can see that most of them were solved with ease, but `sudoku_257.txt` the pr
 
 Conclusion
 ==========
-I actually struggled a bit with writing the code. It took me awhile to figure out how to cover all my base cases. I realized that this is on Geeks for Geeks, or at least I'm pretty sure, but I wasn't really about looking at their solution, and I coded mine up from scratch. It's not the most elequent, but I'm pretty proud of it. I know it could be much prettier, but at the moment, I'm content. Anyway, [check out the program here!][code]. It's got some nice features, such as being able to read in a matrix from stdin, from a file, default, and cycle through a directory and check the inputs. Let me know if anyone has any improvements! The code isn't fully optimized yet, just a solution, that works and that I'm happy and proud with. 
+I actually struggled a bit with writing the code. It took me awhile to figure out how to cover all my base cases. I realized that this is on Geeks for Geeks, or at least I'm pretty sure, but I wasn't really about looking at their solution, and I coded mine up from scratch. It's not the most elequent, but I'm pretty proud of it. I know it could be much prettier, but at the moment, I'm content. I'm sure there are some really nice solutions out there on the web. 
+
+Anyway, [check out the program here!][code]. It's got some nice features, such as being able to read in a matrix from stdin, from a file, default, and cycle through a directory and check the inputs. Let me know if anyone has any improvements! The code isn't fully optimized yet, just a solution, that works and that I'm happy and proud with. 
+
 Overall, it was a solid project to work on. Definitely awesome to pick up a new concept like backtracking, as this was my first taste of it in both academics and actual programming. I'm looking forward to learning more about it. As always, definitely feel free to comment or shoot me an email if there are any questions, or anything that I can do a lot better. Always looking to improve. 
 
 [comment]: <> (Bibliography)

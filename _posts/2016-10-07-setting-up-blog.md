@@ -3,7 +3,7 @@ title: Creating what you're looking at
 layout: post
 ---
 
-How are you seeing this?
+I talk about how I actually set this blog up and some more helpful resources.
 
 There's a lot of different ways that you can go around building something. I actually struggled to generate this page... and this blog. Overall, they were relatively small things, but regardless, the progress was relatively slow. I figured that it might be best if I create a page (largely for myself)) where I can store what I learned and also give attributions. 
 
@@ -94,6 +94,15 @@ Here's a brief summary:
 - `**text**` or `__text__` - __bold__
 - links can be done in multiple ways. you can have a bunch of links at the end of a post so that it's kind of like a bibliography! Otherwise, the syntax is just `[this is going to be hyperlinked](some-url-for-hyperlinking)`
 - images are similar just preface the hard brackets with an exclamation point
+- You can STILL cover markdown with HTML. For example, if I want to change the font of certain text, I could do: 
+
+`<span style="color: #111111; font-family: Consolas; font-size: 2em;">woo!</span>`
+
+which would give:
+
+<span style="color: #FF69B4; font-family: Consolas;">woo!</span>
+
+So that's a pretty nice thing to keep in the back of your mind for blog posts. 
 
 Installing Latex
 ================
