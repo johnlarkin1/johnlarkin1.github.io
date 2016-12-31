@@ -11,7 +11,7 @@ Above, is a visualization from Wikipedia, about the sudoku backtracking algorith
 
 Concept
 =======
-If you don't care about any of this, and just want to crank out some computationally solved sudokus, [get the code here][here].
+If you don't care about any of this, and just want to crank out some computationally solved sudokus, [get the code here][code].
 
 After waiting on the airplane and solving another soduko from the back of a Skymiles magazine, I thought it might be fun to build a sudoku solver. At first, I was planning on implementing essentially a brute force approach, where I would try a possible combination for a cell, and then with that possible cell filled, try to fill out the cell from there. I figured this would be considered brute force.
 
