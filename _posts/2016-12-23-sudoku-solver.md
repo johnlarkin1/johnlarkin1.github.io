@@ -39,6 +39,7 @@ The crux of backtracking is also that when you recurse, you only consider the so
 You can also think about this as a graph search problem. Wikipedia provides an interesting way of generalizing the backtracking algorithm.
 
 Note, in the following, *P* is essentially data that is being taken in and is related to the problem. 
+
 1. *root*(*P*): return the partial candidate at the root of the search tree. 
 2. *reject*(*P*,*c*): return *true* only if the partial candidate *c* is not worth completing.
 3. *accept*(*P*,*c*): return true if *c* is a solution of *P*, and false otherwise.
