@@ -124,7 +124,7 @@
 	list-style: none;
 	
 	> li {
-		margin-bottom: 1.5*$spacing-unit;
+		margin-bottom: 35px;
 	}
 }
 
@@ -178,4 +178,22 @@
 /**************************************/
 
 
+/**************************************/
+/******* Photo Formatting *************/
+/**************************************/
+.center-image {
+    margin: 0 auto;
+    display: block;
+}
 
+.center-shrink {
+    margin: 0 auto;
+    display: block;
+    width: 60%;
+}
+
+.center-super-shrink {
+    margin: 0 auto;
+    display: block;
+    width: 40%;
+}
