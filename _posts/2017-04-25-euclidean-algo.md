@@ -1,5 +1,5 @@
 ---
-title: Euclidean Algorithm - GCD
+title: Euclidean Algorithm - Greatest Common Divisor
 layout: post
 ---
 
