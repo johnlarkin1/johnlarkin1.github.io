@@ -26,6 +26,10 @@ url: "https://johnlarkin1.github.io" # the base hostname & protocol for your sit
 # twitter_username: jekyllrb
 github_username: johnlarkin1
 
+# i spent SO long trying to get stupid emojis to work
+gems:
+  - jemoji
+
 # make sure we know where to get our sass
 sass:
     sass_dir: _sass
