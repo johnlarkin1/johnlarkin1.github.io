@@ -40,7 +40,7 @@ And sure enough, when harvest time came, it was a massive harvest. Thales then r
 
 This is really just a call option as we will soon see!
 
-You can check out more about the history of options [here][history2]
+You can check out more about the history of options [here][history2].
 
 Definition of an Option {#def}
 ==============================
@@ -156,6 +156,7 @@ And that's going to wrap up this blog post. As always, feel free to message me o
 [index-cash]: https://www.investopedia.com/study-guide/series-4/index-interest-rate-and-currency-options/index-option-settlement/
 [fire-blight]: https://www.starkbros.com/growing-guide/article/got-fire-blight
 [history]: https://www.investopedia.com/articles/optioninvestor/10/history-options-futures.asp
+[history2]: http://www.optionstrading.org/history/
 [fut]: https://www.investopedia.com/terms/f/futurescontract.asp
 [thales]: https://en.wikipedia.org/wiki/Thales_of_Milet
 [rh]: https://robinhood.com/
