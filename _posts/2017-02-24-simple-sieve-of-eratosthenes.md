@@ -60,7 +60,7 @@ Conclusion
 ==========
 That's all I'm really going to say about this. I know it wasn't a particularly long algorithm write up, but it is a different type of algorithm more of a construction algorithm. This idea of a sieve is really nice for coming up with interesting math problems. I've had to use it for another question, which hopefully I'll have time to write about at a later point. 
 
-As always, thanks for your time and for reading. Let me know if my [code] has nay improvements to be made.
+As always, thanks for your time and for reading. Let me know if my [code] has any improvements to be made.
  
 [comment]: <> (Bibliography)
 [Swarthmore]: http://www.swarthmore.edu/
