@@ -135,6 +135,7 @@
 	margin-top:10px; // NOTE: this is being used for the main page! we overrode the fact that jekyll strips it as a paragraph
 
 }
+
 /**************************************/
 /******* Footer Information ***********/
 /**************************************/
@@ -177,10 +178,20 @@
 /******* Code Formatting *************/
 /**************************************/
 
+/**************************************/
+/******* Text Formatting *************/
+/**************************************/
 
 /**************************************/
 /******* Photo Formatting *************/
 /**************************************/
+
+.basic-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .center-image {
     margin: 0 auto;
     display: block;
@@ -202,4 +213,10 @@
     margin: 0 auto;
     display: block;
     width: 15%;
+}
+
+.center-super-super-shrink-sbs {
+    padding: 10px;
+    float: left;
+    width: 20%;
 }
