@@ -45,7 +45,7 @@ In addition, I didn't push enough to this blog. I like blogging and I like doing
 
 Take Away
 =========
-I think that 2018 was a strong year for me. I struggled with adjusting fully to Chicago and the cadence of a working life. However, I do think I started to adapt well - from teaching tennis after work to volunteering the extracurriculars really started to make me feel better about how I was living my life on a day to day basis.
+I think that 2018 was a strong year for me. I struggled with adjusting fully to Chicago and the cadence of a working life. However, I do think I started to adapt well - from teaching tennis after work to volunteering the extracurriculars really started to make me feel better about how I was living my life on a day to day basis. **Also the time that I spent with my friends in Chicago and exploring the city is time that I wouldn't give up for anything**.
 
 I also have decided that for 2019, I'm going to break my goals up more into quarters and when each quarter of the year ends, I'll have a day over the weekend where I review the past quarter and can kind of analyze my status. That way I'll have a better grip over how I'm doing and making sure that I'm still growing and learning at a good pace.
 
