@@ -10,7 +10,7 @@ Introduction
 
 I think December of 2017 I came up with a spreadsheet for New Years Resolutions. I'm not going to put all of my resolutions on display because some are decently personal, but I've linked the template [here][template]. Below, you can see a screenshot of some of my resolutions for 2018.
 
-![nyrez](/images/ny-resolutions/example-resolutions.png)
+![nyrez](/images/ny-resolutions-2018/example-resolutions.png)
 
 The template provides some various nice features - like color coding and then automatically generating some basic visualizations.
 
@@ -37,7 +37,7 @@ A basic summary of how I did is here.
 
 Which really ends up generating the following graph in terms of percentages:
 
-![nyrez2](/images/ny-resolutions/summary-stats.png){: .center-shrink }
+![nyrez2](/images/ny-resolutions-2018/summary-stats.png){: .center-shrink }
 
 Which to be honest is pretty embarassing. Lot of red there... I **need** to start reading way more. I think I've done a better job towards the end of 2018 but yeah that's pretty abysmal. Relationships I also tanked. Granted there were only two goals I set in that department and one was kind of a stretch, but pretty disappointed with that. Work I did ok with but it was hard to keep the motivation up. Physical I did well. I was happy with where I ended up. One of them that I missed was run another marathon, but I did a triathlon instead and in my opinion that was a much better decision.
 
