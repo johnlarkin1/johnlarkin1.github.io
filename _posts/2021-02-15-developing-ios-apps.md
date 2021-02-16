@@ -1,5 +1,5 @@
 ---
-title: Stanford's 
+title: Stanford's CS193 - Developing Apps for iOS
 layout: post
 ---
 

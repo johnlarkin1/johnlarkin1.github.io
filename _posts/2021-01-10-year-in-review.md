@@ -1,5 +1,5 @@
 ---
-title: 2020 - A *Year* in Review
+title: 2020 - An Unforgettable Year in Review
 layout: post
 ---
 
