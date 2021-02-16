@@ -46,21 +46,21 @@ Note, I didn't show gif demo for the Enroute application (number 4 above) becaus
 
 ### Memorize Game
 
-![memorizegame](/videos/developing-ios-apps/MemorizeGameRecording.gif)
+![memorizegame](/videos/developing-ios-apps/MemorizeGameRecording.gif){: .center-image }
 
 ### Set Game
 
-![setgame](/videos/developing-ios-apps/SetGameRecording.gif)
+![setgame](/videos/developing-ios-apps/SetGameRecording.gif){: .center-image }
 
 ### Emoji Art
 
 #### iPad Version
 
-![emojiartipad](/videos/developing-ios-apps/EmojiArtiPadRecording.gif)
+![emojiartipad](/videos/developing-ios-apps/EmojiArtiPadRecording.gif){: .center-image }
 
 #### iPhone Version
 
-![emojiartiphone](/videos/developing-ios-apps/EmojiArtiPhoneRecording.gif)
+![emojiartiphone](/videos/developing-ios-apps/EmojiArtiPhoneRecording.gif){: .center-image }
 
 Comments
 ========
@@ -73,8 +73,8 @@ I would highly recommend this class to anyone interested in learning more about 
 Other Helpful Links
 ===================
 * [Swift UI Cheat Sheet][swift-cheatsheet]
-* [Impossible Grids][https://swiftui-lab.com/impossible-grids/]
-* [Grid Trainer][https://github.com/swiftui-lab/GridTrainer]
+* [Impossible Grids][impossible-grids]
+* [Grid Trainer][grid-trainer]
 
 Again, I'll same the same disclaimer as when I took Coursera's Computational Neuroscience class. While I've included all of the code that I used to answer the homework assignments, please do not abuse this. You're only doing yourself a disservice in terms of what you learn. I included some of the stanford code lectures (also found on the class website) because I commented the code and took notes within the code itself. 
 
@@ -86,7 +86,9 @@ In addition, there was one aspect I could not get... I posted on Stack Overflow 
 
 [comment]: <> (Bibliography)
 [stanford-class]: https://cs193p.sites.stanford.edu/
-[swiftui-cheatsheet]: https://jaredsinclair.com/2020/05/07/swiftui-cheat-sheet.html#:~:text=Use%20%40State%20when%20your%20view,ancestor%20has%20a%20reference%20to.&text=If%20your%20view%20needs%20more,you%20are%20out%20of%20luck.
+[swift-cheatsheet]: https://jaredsinclair.com/2020/05/07/swiftui-cheat-sheet.html#:~:text=Use%20%40State%20when%20your%20view,ancestor%20has%20a%20reference%20to.&text=If%20your%20view%20needs%20more,you%20are%20out%20of%20luck.
+[impossible-grids]: https://swiftui-lab.com/impossible-grids/
+[grid-trainer]: https://github.com/swiftui-lab/GridTrainer
 [memorize-wiki]: https://en.wikipedia.org/wiki/Concentration_(card_game)
 [set-wiki]: https://en.wikipedia.org/wiki/Set_(card_game)
 [code]: https://github.com/johnlarkin1/developing-ios-swiftui-stanford
