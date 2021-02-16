@@ -30,8 +30,7 @@ You can explore the class page for yourself but basically I'll outline the 14 le
 13. Persistence 
 14. UIKit Integration
 
-In addition, you can find all 27 pages of my class notes in a nice PDF below.
-<a href="{{ site.baseurl }}/pdfs/DevelopingiOSApps2020.pdf"> link </a>
+In addition, you can find all 27 pages of my class notes in a nice [PDF][notes].
 
 Projects
 ========
@@ -75,7 +74,7 @@ Other Helpful Links
 ===================
 * [Swift UI Cheat Sheet][swift-cheatsheet]
 * [Impossible Grids][https://swiftui-lab.com/impossible-grids/]
-* [Grid Trainer][* https://github.com/swiftui-lab/GridTrainer]
+* [Grid Trainer][https://github.com/swiftui-lab/GridTrainer]
 
 Again, I'll same the same disclaimer as when I took Coursera's Computational Neuroscience class. While I've included all of the code that I used to answer the homework assignments, please do not abuse this. You're only doing yourself a disservice in terms of what you learn. I included some of the stanford code lectures (also found on the class website) because I commented the code and took notes within the code itself. 
 
@@ -83,12 +82,12 @@ As always feel free to email me with questions - although, I'm far from an exper
 
 **Once again, you can get the notes [here][notes].** 
 
-In addition, there was one aspect I could not get... I posted on Stack Overflow about it after I kept getting it wrong and couldn't code up a solution. If you think you can help, I'd love for you to answer my question on Stack! Check it out [here][question]. 
+In addition, there was one aspect I could not get... I posted on Stack Overflow about it after I kept getting it wrong and couldn't code up a solution. If you think you can help, I'd love for you to answer my question on Stack! Check it out [here][question].
 
 [comment]: <> (Bibliography)
-[stanford-class] : https://cs193p.sites.stanford.edu/
-[notes]: {{ site.baseurl }}/pdfs/DevelopingiOSApps2020.pdf
+[stanford-class]: https://cs193p.sites.stanford.edu/
 [swiftui-cheatsheet]: https://jaredsinclair.com/2020/05/07/swiftui-cheat-sheet.html#:~:text=Use%20%40State%20when%20your%20view,ancestor%20has%20a%20reference%20to.&text=If%20your%20view%20needs%20more,you%20are%20out%20of%20luck.
 [memorize-wiki]: https://en.wikipedia.org/wiki/Concentration_(card_game)
 [set-wiki]: https://en.wikipedia.org/wiki/Set_(card_game)
 [code]: https://github.com/johnlarkin1/developing-ios-swiftui-stanford
+[notes]: {{ site.baseurl }}/pdfs/DevelopingiOSApps2020.pdf
