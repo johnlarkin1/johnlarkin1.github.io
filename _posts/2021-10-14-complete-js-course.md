@@ -14,8 +14,7 @@ Certificate
 ===========
 Ya gotta right?
 
-![certificate](/images/javascript-class/JavaScript2021CourseCertificate.png){: .center-super-shrink }
-
+![certificate](/images/javascript-class/JavaScript2021CourseCertificate.png){: .center-shrink }
 
 Overview
 ========
