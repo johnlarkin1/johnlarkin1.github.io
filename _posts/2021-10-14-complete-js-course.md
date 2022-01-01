@@ -16,7 +16,6 @@ Ya gotta right?
 
 ![certificate](/images/javascript-class/JavaScript2021CourseCertificate.png){: .center-super-shrink }
 
-
 Overview
 ========
 My notes are really lengthy... I took them as Markdown and then compiled them into html. 
