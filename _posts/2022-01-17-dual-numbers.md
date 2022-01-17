@@ -16,7 +16,7 @@ I distinctively remember this topic first getting introduced in the spring of 20
 
 Code
 ====
-<span style="color:blue">Note, as a note, if you're just interested in code, you can skip all this and check out <a href="https://github.com/johnlarkin1/duals/blob/main/duals.py">this repo</a>.</span>
+<span style="color:blue">Note, if you're just interested in code, you can skip all this and check out <a href="https://github.com/johnlarkin1/duals/blob/main/duals.py">this repo</a>.</span>
 
 Mathematical Introduction
 =========================
@@ -29,7 +29,7 @@ This epsilon is going to have one (maybe two) overarching principles to allow us
 1. $${\varepsilon}^2 = 0$$ 
 2. $$\frac{\varepsilon}{\varepsilon} = 1$$
 
-The premise that we're going to assert is that this $$\varepsilon$$ is going to be a number that is extremely small, and so that when it's squared, it's equal to zero. This is going to be a number system that
+The premise that we're going to assert is that this $$\varepsilon$$ is going to be a number that is extremely small, and so that when it's squared, it's equal to zero. This is going to be a number system that pins itself on that assumption.
 
 Now there's a whole lot more to this in terms of number theory and abstract algebra that I'm not going to get into here. Wikipedia has a quote saying:
 
@@ -42,8 +42,6 @@ You'll also note that this is **really** similar to the imaginary number system.
 ### Benefits
 
 What's the benefit? Well we're going to show it down below, but the real benefit is that we can evaluate a derivative at a point instantaneously and without any algebra. This is an incredibly powerful tool.
-
-
 
 
 Operations
