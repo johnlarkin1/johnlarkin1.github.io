@@ -54,7 +54,7 @@ $$
 \begin{align*}
 d_1 &= a_1 + b_1 \varepsilon \\
 d_2 &= a_2 + b_2 \varepsilon \\
-d_1 + d2 &= (a_1 + a_2) + (b_1 + b_2) \varepsilon
+d_1 + d_2 &= (a_1 + a_2) + (b_1 + b_2) \varepsilon
 \end{align*}
 $$
 
@@ -67,7 +67,7 @@ $$
 d_1 &= a_1 + b_1 \varepsilon \\
 d_2 &= a_2 + b_2 \varepsilon \\
 d_1 \cdot d_2 &= (a_1 \cdot a_2) + (a_1 \cdot b_2 + a_2 \cdot b_1)\varepsilon + (b_1 \cdot b_2) \varepsilon^2 \\
-d_1 \cdot d_2 &= (a_1 \cdot a_2) + (a_1 \cdot b_2 + a_2 \cdot b_1)\varepsilon  && \text{ because of } \varepsilon^2 == 0
+d_1 \cdot d_2 &= (a_1 \cdot a_2) + (a_1 \cdot b_2 + a_2 \cdot b_1)\varepsilon  && \text{ because of } \varepsilon^2 = 0
 \end{align*}
 $$
 
@@ -78,7 +78,7 @@ $$
 \begin{align*}
 d_1 &= a_1 + b_1 \varepsilon \\
 d_2 &= a_2 + b_2 \varepsilon \\
-d_1 - d2 &= (a_1 - a_2) + (b_1 - b_2) \varepsilon
+d_1 - d_2 &= (a_1 - a_2) + (b_1 - b_2) \varepsilon
 \end{align*}
 $$
 
@@ -108,7 +108,7 @@ So how do we handle raising a dual number to a set power? Well... we really only
 
 $$
 \begin{align*}
-d^2 &= (a + b \varepsilon)^n \\
+d^n &= (a + b \varepsilon)^n \\
 &= \binom{n}{0} a^n (b\varepsilon)^0 + \binom{n}{1}a^{n-1}b\varepsilon + \binom{n}{2}a^{n-2}(b\varepsilon)^2 + \binom{n}{3}a^{n-3}(b\varepsilon)^3 + \ldots \\
 &= \binom{n}{0}a^n (b\varepsilon)^0 + \binom{n}{1}a^{n-1}b\varepsilon + \color{red}{\binom{n}{2}a^{n-2}(b\varepsilon)^2} + \color{red}{\binom{n}{3}a^{n-3}(b\varepsilon)^3} + \color{red}{\ldots} \\
 &= \binom{n}{0}a^n (b\varepsilon)^0 + \binom{n}{1}a^{n-1}b\varepsilon \\
@@ -145,7 +145,7 @@ $$ f(x) = x^2 $$
 Then our derivative becomes 
 
 $$
-f'(x) = \frac{(x+\varepsilon)**2 - x^2}{\varepsilon} = \frac{2x\varepsilon}{\varepsilon} = 2x
+f'(x) = \frac{(x+\varepsilon)^2 - x^2}{\varepsilon} = \frac{2x\varepsilon}{\varepsilon} = 2x
 $$
 
 Which is perfect because that's right! That's the right derivative. 
@@ -195,7 +195,7 @@ f'(g(x))g'(x) &= \frac{ 4x^3\varepsilon^2}{\varepsilon^2}
 \end{align*}
 $$
 
-<span style="color:red"><b>UH OH</b></span>. Here's where we run into our error... Because we can't divide by zero! So this is a slight break. This implicitly requires a specific order in terms of clearing out the $$\varepsilon$$. You don't know that they were actually the same $$\varepsilon$$, so this clearing rule is a bit tricky to actually apply. **So** this part of the caveat of working with duals. 
+<span style="color:red"><b>UH OH</b></span>. Here's where we run into our error... Because we can't divide by zero! So this is a slight break. This implicitly requires a specific order in terms of clearing out the $$\varepsilon$$. You don't know that they were actually the same $$\varepsilon$$, so this clearing rule is a bit tricky to actually apply. **So** this is part of the caveat when working with duals.
 
 Real World Example
 ==================
@@ -213,7 +213,7 @@ f(7 + \varepsilon) &= (7 + \varepsilon)^2 + 7\cdot(7 + \varepsilon) - 18 && \tex
 \end{align*}
 $$.
 
-Beautiful! Instantaneous value and derivative (in this case slope). And grab a calculator or go to [Wolfram Alpha][wolfram]. You can also get the value [here][wolfram-value] and slope [here][[wolfram-slope]. Also to prove I'm not lying! 
+Beautiful! Instantaneous value and derivative (in this case slope). And grab a calculator or go to [Wolfram Alpha][wolfram]. You can also get the value [here][wolfram-value] and slope [here][wolfram-slope]. Also to prove I'm not lying! 
 
 ![value](/images/duals/value.png){: .center-shrink }
 ![slope](/images/duals/slope.png){: .center-shrink }
