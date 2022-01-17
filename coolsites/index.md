@@ -8,6 +8,13 @@ The internet is a beautiful thing and sometimes I get lost with all the websites
 
 I've **bolded** the ones I really think are :fire:. P.s. I just had ~~an hour~~ ~~1.5 hour~~ two hour long excursion into installing RVM to update Ruby, in order to update my gems so that I had [jemoji][emojis]. I don't really know what nokogiri is but I hate it with a burning passion. 
 
+Learning Platforms
+==================
+- [Udemy][udemy]
+  - I have been starting to take more and more classes on there and really appreciate the content and the creators
+- [FutureLearn][futurelearn]
+  - It’s a mix of “get your feet wet” and “dive-in” courses
+
 Visualizations
 ===============
 - [Neural Network Zoo][zoo]
@@ -38,3 +45,5 @@ Blogs
 [gundeaths]: http://guns.periscopic.com/?year=2013
 [mar]: https://www.cs.swarthmore.edu/wics/HTML/martina.html
 [sam]: https://greydanus.github.io/
+[udemy]: https://udemy.com/
+[futurelearn]: https://www.futurelearn.com/
