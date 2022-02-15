@@ -5,5 +5,5 @@
 # See: https://jekyllrb.com/docs/themes/#overriding-theme-defaults
 #
 layout: default
-title: John Larkin's Page
+title: Larkin's Coding Blog
 ---

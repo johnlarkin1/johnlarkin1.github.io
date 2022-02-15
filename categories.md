@@ -5,7 +5,8 @@ permalink: /categories/
 ---
 
 <div>
-{% for category in site.categories %}
+{% assign categories = site.categories | sort %}
+{% for category in categories %}
   <div class="archive-group">
     {% capture category_name %}{{ category | first }}{% endcapture %}
     <div id="#{{ category_name | slugize }}"></div>

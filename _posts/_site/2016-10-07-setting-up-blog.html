@@ -1,0 +1,205 @@
+<p>I talk about how I actually set this blog up and some more helpful resources.</p>
+
+<p>There’s a lot of different ways that you can go around building something. I actually struggled to generate this page… and this blog. Overall, they were relatively small things, but regardless, the progress was relatively slow. I figured that it might be best if I create a page (largely for myself)) where I can store what I learned and also give attributions.</p>
+
+<h1 id="resources">Resources:</h1>
+
+<ol>
+  <li>
+    <p>First of all, a lot of what I learned in how to model and create the design of the blog was based off of one of my Swarthmore professor’s blogs. Specifically, <a href="https://mzucker.github.io/">Matt Zucker’s blog</a> was <em>really</em> helpful.</p>
+  </li>
+  <li>
+    <p>Second of all (which in hindsite, probably should have been my first resource), the <a href="https://jekyllrb.com/docs/home/">Jekyll</a> homepage was helpful.</p>
+  </li>
+  <li>
+    <p>Third, I became desperate and needed some help. I turned to the <a href="https://talk.jekyllrb.com/">Jekyll talk page</a>. While the page is primarily meant for asking Jekyll based questions, I also asked some questions about the construction of the sass file and the way to use Jekyll and html.</p>
+  </li>
+  <li>
+    <p>A great and pretty famous resource is <a href="http://www.w3schools.com/">http://www.w3schools.com/</a>. While I haven’t been lucky enough to walk through <strong>all</strong> of the tutorials, I have been to various element pages and checked out the documentation.</p>
+  </li>
+  <li>
+    <p>Finally, just a lot of testing around with the site. These were the core of the resources used to construct the blog. I’m still learning a bunch, so any advice and emails and comments would be greatly appreciated. Obviously, you can see the code on my actual <a href="https://github.com/johnlarkin1">personal github page</a>.</p>
+  </li>
+</ol>
+
+<p>This is going to be more of a running list for myself.</p>
+
+<h1 id="html-notes">HTML Notes:</h1>
+
+<ul>
+  <li><code class="highlighter-rouge">div</code>: this is going to be the basic building block</li>
+  <li><code class="highlighter-rouge">display</code>:
+    <ul>
+      <li>block - this means display it as a block like it spans across the page; similar to &lt;p&gt;</li>
+    </ul>
+  </li>
+  <li><code class="highlighter-rouge">pre</code>:
+    <ul>
+      <li>This guy is super important for defining characteristics over multiple lines… i.e. it’s great for code formatting.</li>
+      <li>As this <a href="https://perishablepress.com/perfect-pre-tags/">link</a> puts, they are ideal for lines that “need to retain character spacing, display unformatted characters, keep inherent line breaks, and so on.”</li>
+    </ul>
+  </li>
+</ul>
+
+<h1 id="scss-notes">SCSS Notes:</h1>
+<p>General note:
+SCSS: this stands for syntatically awesome style sheets. This is actually a scripting language that is interpreted into CSS (cascading style sheets!!). First note, that variables can be set with the <code class="highlighter-rouge">$</code> sign symbol. These are essentially like global variables that you can use throughout the entire program.</p>
+
+<p>Another great thing, SCSS lets you nest your CSS selectors in a nice clean heirarchy!! This means that:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>nav {
+  ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+</code></pre>
+</div>
+
+<p>will actually be interpreted as the slightly more cluttered CSS version shown below:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>nav ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+</code></pre>
+</div>
+<p>with the given heirarchy being relatively more clear.</p>
+
+<ul>
+  <li>Tables are also pretty weird
+    <ul>
+      <li>You’re going to want to read up on <code class="highlighter-rouge">td</code>, <code class="highlighter-rouge">th</code>, <code class="highlighter-rouge">tr</code>, and <code class="highlighter-rouge">thead</code>. There are some slight nuances. You can read about some of them <a href="http://stackoverflow.com/questions/5395228/html-tables-thead-vs-th">here</a>.</li>
+    </ul>
+  </li>
+</ul>
+
+<h1 id="css-notes">CSS Notes:</h1>
+
+<ul>
+  <li><code class="highlighter-rouge">&gt;</code> selector operator:
+    <ul>
+      <li>It means immediate children. For example, as seen on stack overflow <a href="http://stackoverflow.com/questions/4459821/css-selector-what-is-it">here</a>, it defines what tier the operator is affecting.</li>
+      <li>This is like a specific selector, instead of a ‘descendant selector’, which just means any matching element in that first class.</li>
+      <li>The selector operator is a bit more picky than that.</li>
+    </ul>
+  </li>
+  <li>partials
+    <ul>
+      <li>There’s a careful distinction between partials with css files.</li>
+      <li>Partials are really just little snippets of css code that you can include in scss files</li>
+      <li>You <strong>need</strong> to label it with an underscore so like <code class="highlighter-rouge">_partial.scss</code> in order for it to be recognized as a partial and not a full css file.</li>
+      <li>These guys are used with the <code class="highlighter-rouge">@import</code> command</li>
+    </ul>
+  </li>
+  <li>calculations:
+    <ul>
+      <li>You can use <code class="highlighter-rouge">calc</code> to perform a quick calculation on how to set the web page up</li>
+      <li>For example, that’s how the margin of the actual content are calculated for my blog contents:
+        <ul>
+          <li><code class="highlighter-rouge">max-width: -webkit-calc(#{$content-width} - (#{$spacing-unit}));</code></li>
+          <li><code class="highlighter-rouge">max-width: calc(#{$content-width} - (#{$spacing-unit}));</code></li>
+        </ul>
+
+        <p>You can see here that it is taking the content width and subtracting off the spacing unit. Also note, that the -webkit-calc is for other types of browsers that might not be compatible.</p>
+      </li>
+    </ul>
+  </li>
+  <li>Who likes to have bullet points with lists? I don’t always. Make sure to include that under the class type of where you’re making the list!
+    <ul>
+      <li>for example, you want to say: <code class="highlighter-rouge">list-style: none;</code> under the appropriate css class</li>
+    </ul>
+  </li>
+</ul>
+
+<h1 id="markdown-notes">Markdown Notes:</h1>
+<p>Markdown makes life sooo much easier. It’s essentially just making HTML way more easy to right. Pretty much everything I know about it has come from either peers or professors or <a href="https://en.support.wordpress.com/markdown-quick-reference/">this super helpful link</a>.</p>
+
+<p>Here’s a brief summary:</p>
+<ul>
+  <li><code class="highlighter-rouge">*text*</code> or <code class="highlighter-rouge">_text_</code> - <em>italics</em></li>
+  <li><code class="highlighter-rouge">**text**</code> or <code class="highlighter-rouge">__text__</code> - <strong>bold</strong></li>
+  <li>links can be done in multiple ways. you can have a bunch of links at the end of a post so that it’s kind of like a bibliography! Otherwise, the syntax is just <code class="highlighter-rouge">[this is going to be hyperlinked](some-url-for-hyperlinking)</code></li>
+  <li>images are similar just preface the hard brackets with an exclamation point</li>
+  <li>You can STILL cover markdown with HTML. For example, if I want to change the font of certain text, I could do:</li>
+</ul>
+
+<p><code class="highlighter-rouge">&lt;span style="color: #111111; font-family: Consolas; font-size: 2em;"&gt;woo!&lt;/span&gt;</code></p>
+
+<p>which would give:</p>
+
+<p><span style="color: #FF69B4; font-family: Consolas;">woo!</span></p>
+
+<p>So that’s a pretty nice thing to keep in the back of your mind for blog posts.</p>
+
+<h1 id="installing-latex">Installing Latex</h1>
+<p>I’m a big fan of Latex. I was eager to be able to do things like this:</p>
+
+<script type="math/tex; mode=display">x = \frac{3}{2}</script>
+
+<p>This was simply enabled by including the following bit of code, which loads in the appropriate MathJax javascript.</p>
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="o">&lt;</span><span class="nx">script</span> <span class="nx">type</span><span class="o">=</span><span class="s2">"text/javascript"</span>
+    <span class="nx">src</span><span class="o">=</span><span class="s2">"http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"</span><span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="sr">/script</span><span class="err">&gt;
+</span></code></pre>
+</div>
+
+<p>The syntax isn’t too tricky… you can essentially use it like Latex. For inline, you can still just use <code class="highlighter-rouge">$$ ... $$</code>. You don’t have to worry about it automatically creating the block math. The above fraction can be shown as:</p>
+<div class="highlighter-rouge"><pre class="highlight"><code>$$
+x = \frac{3}{2}
+$$
+</code></pre>
+</div>
+
+<h1 id="installing-comments-with-disqus">Installing Comments with Disqus:</h1>
+
+<p>This was simply a bit of googling and then comparing with Matt’s code. It’s pretty straight forward though because Disqus has a bunch of really helpful pages.</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="o">&lt;</span><span class="nx">div</span> <span class="nx">id</span><span class="o">=</span><span class="s2">"disqus_thread"</span><span class="o">&gt;&lt;</span><span class="sr">/div</span><span class="err">&gt;
+</span><span class="o">&lt;</span><span class="nx">script</span><span class="o">&gt;</span>
+
+<span class="cm">/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/</span>
+
+<span class="kd">var</span> <span class="nx">disqus_config</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">page</span><span class="p">.</span><span class="nx">url</span> <span class="o">=</span> <span class="s1">'http://localhost:4000/2016-10-07-setting-up-blog.html'</span><span class="p">;</span>  <span class="c1">// Replace PAGE_URL with your page's canonical URL variable</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">page</span><span class="p">.</span><span class="nx">identifier</span> <span class="o">=</span> <span class="s1">''</span><span class="p">;</span> <span class="c1">// Replace PAGE_IDENTIFIER with your page's unique identifier variable</span>
+<span class="p">};</span>
+
+<span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span> <span class="c1">// DON'T EDIT BELOW THIS LINE</span>
+    <span class="kd">var</span> <span class="nx">d</span> <span class="o">=</span> <span class="nb">document</span><span class="p">,</span> <span class="nx">s</span> <span class="o">=</span> <span class="nx">d</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="s1">'script'</span><span class="p">);</span>
+    <span class="nx">s</span><span class="p">.</span><span class="nx">src</span> <span class="o">=</span> <span class="s1">'//johnlarkin1-github-io.disqus.com/embed.js'</span><span class="p">;</span>
+    <span class="nx">s</span><span class="p">.</span><span class="nx">setAttribute</span><span class="p">(</span><span class="s1">'data-timestamp'</span><span class="p">,</span> <span class="o">+</span><span class="k">new</span> <span class="nb">Date</span><span class="p">());</span>
+    <span class="p">(</span><span class="nx">d</span><span class="p">.</span><span class="nx">head</span> <span class="o">||</span> <span class="nx">d</span><span class="p">.</span><span class="nx">body</span><span class="p">).</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">s</span><span class="p">);</span>
+<span class="p">})();</span>
+<span class="o">&lt;</span><span class="sr">/script</span><span class="err">&gt;
+</span></code></pre>
+</div>
+
+<p>I literally pulled that code straight after registering my site on Disqus. Overall, there are like two main links:</p>
+<ol>
+  <li>https://johnlarkin1-github-io.disqus.com/admin/install/</li>
+  <li>http://www.perfectlyrandom.org/2014/06/29/adding-disqus-to-your-jekyll-powered-github-pages/</li>
+</ol>
+
+<h1 id="getting-a-faviconico-to-show">Getting a <code class="highlighter-rouge">favicon.ico</code> to Show:</h1>
+
+<p>This was kind of tricky. I’m still not actually totally sure how to have an animated <code class="highlighter-rouge">favicon.ico</code> as your little page icon. Essentially, these are the things that in chrome and other browsers show up next to your tab if you’re not on the page. They’re little like logos. At first, I was like ohhh those are cute, maybe I’ll add one… and then I spent like 4 hours researching them. Note, they should be relatively square. Otherwise, they’re not really going to work out. I tried to make the mountain in the upper left corner, but it was too elongated.</p>
+
+<p>I got stuck and had to ask about it on talk jekyll. The answer wasn’t totally correct, but I did a bit more googling. Adding a “?” apparently works as a hacky trick, but generally, people aren’t sure why. <a href="https://talk.jekyllrb.com/t/trouble-creating-visible-icon-in-pages/3315/">Check it out</a>.</p>
+
+<h1 id="linking-pdfs">Linking PDFs:</h1>
+
+<p>There are several projects that I’ve worked on where I didn’t want to do a full write up, but I’ve already written up a paper or some report for class. I thought it would be easier to just link the actual pdfs that I’ve already created. Because Github is the shit and relatively easy to work with other file types, I just had to load the files into a certain public spot (which I was fine with) and then just pass it a command. 
+It’s also nice to utilize jekyll here, because we can easily specify our baseurl. So for example, if I wanted to link my final E91 (biomedical signals) presentation, I could just write the following code:</p>
+<div class="language-html highlighter-rouge"><pre class="highlight"><code><span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">"/pdfs/E91FinalProjectFlowCytometry.pdf"</span><span class="nt">&gt;</span> link <span class="nt">&lt;/a&gt;</span>
+</code></pre>
+</div>
+<p>And that beautiful piece of code, will take you right to here:
+<a href="/pdfs/E91FinalProjectFlowCytometry.pdf"> link </a></p>
+
+<hr />
+
+<p>Ok! I think that’s all I have for now. Let me know if you guys have any comments and / or there are other things you think I should add. This is the first post, so I’m still kind of new to what’s going on so far.</p>

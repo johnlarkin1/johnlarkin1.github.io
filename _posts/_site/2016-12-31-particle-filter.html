@@ -1,0 +1,270 @@
+<p>A visualization of how a particle filter can help you locate your robot in a maze… Or just what a particle filter is.</p>
+
+<p>How do we find a lost robot? Well, one method is to use a particle filter to localize the position in a given world.</p>
+
+<h1 id="background">Background</h1>
+<p>This was a project that myself, and <a href="https://www.linkedin.com/in/tom-wilmots-030781a6">Tom Wilmots</a> (who is/was also a great basketball player, see <a href="http://swarthmoreathletics.com/roster.aspx?rp_id=2811">here</a>) and <a href="https://www.linkedin.com/in/ursula-monaghan-57086489">Ursula Monaghan</a> (who is also a great field hockey player, see <a href="http://www.swarthmoreathletics.com/roster.aspx?rp_id=3418&amp;path=fhockey">here</a>), worked on for our <a href="http://www.swarthmore.edu/NatSci/mzucker1/e28_f2016/index.html">E28 Mobile Robotics</a> final project. The class was taught by <a href="http://www.swarthmore.edu/NatSci/mzucker1/index.html">Matt Zucker</a>. You can see some of his work on his <a href="https://mzucker.github.io/">blog</a>. Again, if you’re not interested in reading any of this, you can just grab the <a href="https://github.com/johnlarkin1/particle-filter">code here</a>. However, particle filters are a little more complex than like a <a href="https://github.com/johnlarkin1/sudoku-solver">sudoku solver</a>, so it might be helpful to read some of this!</p>
+
+<p>Matt phrased the final project as such:</p>
+
+<blockquote>
+  <p>In lieu of a final exam, we will have a final project. The final project topic is open-ended,
+but it must strongly relate to robotics, and it must involve a substantial programming effort.</p>
+
+  <p>Each group will give a brief presentation of their project during our scheduled final exam
+slot on 12/15 from 9AM-12PM.</p>
+</blockquote>
+
+<p>He also made a few project suggestions, one of which was constructing a particle filter to localize our robot, Leela.</p>
+
+<p>All semester we had been working with <a href="http://www.turtlebot.com/">TurtleBots</a>, which are essentially glorified Roombas. Totally kidding - Leela was great most of the time. Here’s a video of Leela nudging backwards from a wall. She was still a little jerky then.</p>
+
+<center> <iframe title="YouTube video player" width="480" height="390" src="/videos/particle-filter/leela.m4v" frameborder="0" allowfullscreen=""></iframe> </center>
+
+<p>Essentially, she’s a humanoid robot.</p>
+
+<h1 id="theory-behind-particle-filter">Theory Behind Particle Filter</h1>
+
+<h3 id="generally">Generally</h3>
+<p>Much of this blog post is going to focus on particle filters with respects to robotics. More generally however, particle filters have many applications and uses. Computationally, it is a form of a genetic algorithm, with particles being scattered around, and then weights being given to said particles, and then sampling in accordance with those weights.</p>
+
+<p>Historically, particle filters belong to the subclass of <a href="https://en.wikipedia.org/wiki/Evolutionary_computation">evolutinary computing</a>, which is a subfield of artificial intelligence. Particle filters even trace back further to the larger field of <a href="https://en.wikipedia.org/wiki/Mean_field_particle_methods">mean field particle methods</a>. These are a type of Monte Carlo algorithms that are known for satisfying a nonlinear evolution equation. Essentially, this means the updating of the particles is not linear in the sense that <strong>often</strong> it is random and unpredictable because it depends on the sampling drawn. The big thing to take away here is that there is <strong>sequential interacting samples</strong>, meaning each of the particles, “interacts with the emperical measures of the process”, as <a href="https://en.wikipedia.org/wiki/Mean_field_particle_methods">Wikipedia</a> would say.</p>
+
+<p>This type of computing technique is actually, almost unsurprisingly, traced back to Alan Turing in the early 1950’s. Just a fun fact.</p>
+
+<h3 id="robotics">Robotics</h3>
+<p>So in theory, the particle filter is a way to localize your position in a given world, in linear time. This is a big ramp up from a Bayes Filter, which mantains a probability distribution over the entire search space and then updates with a motion and measurement model. This is how we were introduced to it in Mobile Robotics. So then the particle filter is a little bit more clever than the Bayes filter. It’s going to spread particles throughout your maze or map. You can think about these particles as almost baby robots. Then we’re going to get a command, and move all of our particles accordingly, take a measurement around, and give each particle a weight. Then, we resample our particles using those weights as the way to resample. <em>Eventually</em>, if we do a good job with our measurement update and we also do a good job scattering our particles initially, the particles should converge to some degree around the actual position of our robot.</p>
+
+<h1 id="particle-filter-algorithm">Particle Filter Algorithm</h1>
+
+<p>We can really think about this process as occuring in two steps, as <a href="http://www.swarthmore.edu/NatSci/mzucker1/index.html">Matt</a> laid out in class.</p>
+
+<p>The base starting point is we start with <script type="math/tex">n</script> particles drawn from some initial distribution. This could be uniform over the entire maze, or some other configuration.</p>
+
+<p>In other words, 
+<script type="math/tex">P = \{ x_1, x_2, ... x_{n-1}, x_n \}</script>
+where <script type="math/tex">x_i</script> is a state in our space.</p>
+
+<h3 id="1-motion-update">1. Motion Update</h3>
+<p><em>Note, the particle filter <strong>samples</strong> the motion model.</em>
+The motion update is relatively simple. We just move each particle from a given command. Let’s call this command <script type="math/tex">u</script>.<br />
+So:</p>
+
+<script type="math/tex; mode=display">P' = \{x_1', x_2', ..., x_n' \}</script>
+
+<p>where each <script type="math/tex">x_i</script> is sampled from <script type="math/tex">P(x_i ' \mid x_i , u )</script>.</p>
+
+<h3 id="2-measurement-update">2. Measurement Update</h3>
+<p><em>Note, the particle filter <strong>evaluates</strong> the measurement model.</em>
+The measurement update is a little bit more complex. We have to observe our measurement and then we want to know the probability of actually being at such a point. The tricky part is we have to do this for each <script type="math/tex">x_i '</script> or for each particle. Mathematically speaking, this looks like:</p>
+
+<script type="math/tex; mode=display">w_i = \eta \cdot p(z \mid x_i)</script>
+
+<p>where <script type="math/tex">\eta</script> is the normalizing factor here. So <script type="math/tex">\eta = \frac{1}{\sum p(z \mid x_i) }</script> . The <script type="math/tex">w</script>’s are the corresponding weights that result from the measurement model PDF.</p>
+
+<p>But what do these weights mean? They are like little probabilities essentially. So <script type="math/tex">w_i</script> is the probability that <script type="math/tex">x_i '</script> is a “good particle”. The good particles are going to align well with the sensor measurements that were reported.</p>
+
+<p>Then! We <strong>resample</strong>! We assemble <script type="math/tex">P = \{ x_1, x_2, ..., x_{n-1}, x_n \}</script> by sampling with replacement each <script type="math/tex">x_i</script> from <script type="math/tex">P'</script> with probability <script type="math/tex">w_i</script>.</p>
+
+<p>And that’s pretty much it! After this, we just repeat. It’s like a darwinistic approach. So just think about only the best particles from each generation are surviving.</p>
+
+<p>For more information about particle filters, <a href="https://en.wikipedia.org/wiki/Particle_filter">Wikipedia</a> always does a pretty good job.</p>
+
+<h1 id="raytracer">Raytracer</h1>
+
+<p>So in order to get our expected distances, we need to set up a raytracer for our robot. This is how we’re going to get our measurements and evaluate each particle’s position. We can imagine our particle is going look around in the world and we’re going to compare that with the real robot’s perspective as well. If there is a lot of overlap, then the weight is going to be high, because the probability of the robot actually being where the particle is, is also going to be high.</p>
+
+<p>Let’s look at some excerpts of the code.</p>
+
+<p>We have constructed a ray class. It has an origin and direction, both of which are vectors. This is going to be helpful for finding the distance between two rays. That’s the critical problem - in order to find the expected distance, we have our walls (which we constructed as rays), and we have our robot/particle which is shooting out a bunch of rays.</p>
+
+<p>So let’s look at the problem at hand. How do we find the distance between two vectors (and yes, I’m aware that I drew the wall as a line segment, but we wrote the code like a vector)?</p>
+
+<p><img src="/images/particle-filter/dist_bn_vec.png" alt="vec_distances" class="center-super-shrink" /></p>
+
+<p>For reference, let’s take the above as our diagram.</p>
+
+<p>We can represent the following:</p>
+
+<p>\begin{align}
+p_i &amp;= p_0 + \alpha \vec{d} \\ 
+p_i &amp;= p_1 + \beta (p_2 - p_1) 
+\end{align}</p>
+
+<p>Let’s rename this vector between <script type="math/tex">p_2</script> and <script type="math/tex">p_1</script>, as <script type="math/tex">\vec{k}</script>. In other words, <script type="math/tex">\vec{k} = p_2 - p_1</script></p>
+
+<p>Then, we can have,</p>
+
+<p>\begin{align}
+p_i &amp;= p_0 + \alpha \vec{d} \\ 
+p_i &amp;= p_1 + \beta (p_2 - p_1) = p_1 + \beta \vec{k} 
+\end{align}</p>
+
+<p>Then we can relate the two through <script type="math/tex">p_i</script>.</p>
+
+<p>\begin{align}
+p_1 + \beta \vec{k} &amp;= p_0 + \alpha \vec{d} \\ 
+\alpha \vec{d} - \beta \vec{k} &amp;= p_1 - p_0 
+\end{align}</p>
+
+<p>Thus relating these in matrix-vector notation.</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\left[
+\begin{array}{c|c}
+\vec{\mathbf{d}} & -\vec{\mathbf{k}} 
+\end{array}
+\right]
+=
+\left[
+\begin{array}{c}
+\alpha \\ 
+\beta 
+\end{array}
+\right]
+=
+\left[
+\begin{array}{c}
+p_1 \\
+-p_0
+\end{array}
+\right] %]]></script>
+
+<p>Note, that <script type="math/tex">\vec{b}</script> and <script type="math/tex">\vec{k}</script> are actually of shape <script type="math/tex">2 \times 1</script> as they live in <script type="math/tex">\mathbb{R}^2</script>, therefore the dimensinoality of this will work out. Also note, that we only care about when <script type="math/tex">\beta</script> lies in the range from [0,1]. If <script type="math/tex">\beta</script> is not in this range, than we can conclude that there is not a valid intersection. It means that it is not hitting this segment of the wall. We parametrized along our wall with the starting point at <script type="math/tex">\beta = 0</script> and the ending point at <script type="math/tex">\beta = 1</script>.</p>
+
+<p>With this matrix math set up, we know <script type="math/tex">\vec{d}</script> and we know <script type="math/tex">\vec{k}</script>. There’s a <em>bunch</em> of different ways that we could solve this problem. We just obviously utilized <code class="highlighter-rouge">numpy</code>’s nice built in solver. Specifically, this problem of finding the distance between our robot and the wall segment was really solved by the following short method:</p>
+
+<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="k">def</span> <span class="nf">find_xsection_bn_seg_and_ray</span><span class="p">(</span><span class="n">ray</span><span class="p">,</span> <span class="n">wall_segment</span><span class="p">):</span>
+    <span class="n">p0</span> <span class="o">=</span> <span class="n">ray</span><span class="o">.</span><span class="n">origin</span>
+    <span class="n">p1</span> <span class="o">=</span> <span class="n">wall_segment</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">p2</span> <span class="o">=</span> <span class="n">wall_segment</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    
+    <span class="n">starting_pt</span> <span class="o">=</span> <span class="n">vec2</span><span class="p">(</span><span class="n">p1</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">p1</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">ending_pt</span> <span class="o">=</span> <span class="n">vec2</span><span class="p">(</span><span class="n">p2</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">p2</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> 
+
+    <span class="n">k</span> <span class="o">=</span> <span class="n">ending_pt</span> <span class="o">-</span> <span class="n">starting_pt</span> 
+    <span class="n">k_vec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">k</span><span class="o">.</span><span class="n">getx</span><span class="p">(),</span> <span class="n">k</span><span class="o">.</span><span class="n">gety</span><span class="p">()])</span>
+    <span class="n">d_vec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">ray</span><span class="o">.</span><span class="n">direction</span><span class="o">.</span><span class="n">getx</span><span class="p">(),</span> <span class="n">ray</span><span class="o">.</span><span class="n">direction</span><span class="o">.</span><span class="n">gety</span><span class="p">()])</span>
+    <span class="n">matrix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">d_vec</span><span class="p">,</span> <span class="o">-</span><span class="n">k_vec</span><span class="p">])</span>
+    <span class="n">matrix</span> <span class="o">=</span> <span class="n">matrix</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span>
+    
+    <span class="n">temp</span> <span class="o">=</span> <span class="n">starting_pt</span> <span class="o">-</span> <span class="n">p0</span>
+    <span class="n">p_vec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">temp</span><span class="o">.</span><span class="n">getx</span><span class="p">(),</span> <span class="n">temp</span><span class="o">.</span><span class="n">gety</span><span class="p">()])</span>
+
+    <span class="n">a_b_vec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">matrix</span><span class="p">,</span> <span class="n">p_vec</span><span class="p">)</span> 
+</code></pre>
+</div>
+
+<h1 id="code">Code</h1>
+
+<p>The rest of the code is largely about just iterating over through the particles and calculating the probability and then picking from subsequent probabilities. That’s where the real meat of the particle filter really comes into play. The rest is just making sure that we’re picking the right particle and visualizing everything appropriately.</p>
+
+<p>I will show the measurement and motion update below, but the rest of the code can once again be found <a href="https://github.com/johnlarkin1/particle-filter">here</a>. Feel free to give it a run yourself!</p>
+
+<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="c"># This is our motion update.</span>
+<span class="k">def</span> <span class="nf">motion_update</span><span class="p">(</span><span class="n">particles</span><span class="p">,</span> <span class="n">control</span><span class="p">,</span> <span class="n">sigma_xy</span><span class="p">,</span> <span class="n">sigma_theta</span><span class="p">):</span>
+    <span class="n">nparticles</span> <span class="o">=</span> <span class="n">particles</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="c"># how many particles do we have</span>
+    <span class="n">noisex</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">scale</span> <span class="o">=</span> <span class="n">sigma_xy</span><span class="p">,</span> <span class="n">size</span> <span class="o">=</span> <span class="n">nparticles</span><span class="p">)</span> <span class="c"># noise for x</span>
+    <span class="n">noisey</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">scale</span> <span class="o">=</span> <span class="n">sigma_xy</span><span class="p">,</span> <span class="n">size</span> <span class="o">=</span> <span class="n">nparticles</span><span class="p">)</span> <span class="c"># noise for y</span>
+    <span class="n">thetanoise</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">scale</span> <span class="o">=</span> <span class="n">sigma_theta</span><span class="p">,</span> <span class="n">size</span> <span class="o">=</span> <span class="n">nparticles</span><span class="p">)</span> <span class="c"># noise for theta</span>
+    <span class="k">if</span> <span class="n">control</span> <span class="o">==</span> <span class="s">"forward"</span><span class="p">:</span>
+        <span class="n">particles</span><span class="p">[</span><span class="mi">0</span><span class="p">,:]</span> <span class="o">+=</span> <span class="mi">3</span> <span class="o">*</span> <span class="n">FT</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">particles</span><span class="p">[</span><span class="mi">2</span><span class="p">,:])</span> <span class="o">+</span> <span class="n">noisex</span>
+        <span class="n">particles</span><span class="p">[</span><span class="mi">1</span><span class="p">,:]</span> <span class="o">+=</span> <span class="mi">3</span> <span class="o">*</span> <span class="n">FT</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">particles</span><span class="p">[</span><span class="mi">2</span><span class="p">,:])</span> <span class="o">+</span> <span class="n">noisey</span>
+        <span class="n">particles</span><span class="p">[</span><span class="mi">2</span><span class="p">,:]</span> <span class="o">+=</span> <span class="n">thetanoise</span>
+    <span class="k">elif</span> <span class="n">control</span> <span class="o">==</span> <span class="s">"backward"</span><span class="p">:</span>
+        <span class="n">particles</span><span class="p">[</span><span class="mi">0</span><span class="p">,:]</span> <span class="o">-=</span> <span class="mi">3</span> <span class="o">*</span> <span class="n">FT</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">particles</span><span class="p">[</span><span class="mi">2</span><span class="p">,:])</span> <span class="o">+</span> <span class="n">noisex</span>
+        <span class="n">particles</span><span class="p">[</span><span class="mi">1</span><span class="p">,:]</span> <span class="o">-=</span> <span class="mi">3</span> <span class="o">*</span> <span class="n">FT</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">particles</span><span class="p">[</span><span class="mi">2</span><span class="p">,:])</span> <span class="o">+</span> <span class="n">noisey</span>
+        <span class="n">particles</span><span class="p">[</span><span class="mi">2</span><span class="p">,:]</span> <span class="o">+=</span> <span class="n">thetanoise</span>
+    <span class="k">elif</span> <span class="n">control</span> <span class="o">==</span> <span class="s">"turnleft"</span><span class="p">:</span>
+        <span class="n">particles</span><span class="p">[</span><span class="mi">0</span><span class="p">,:]</span> <span class="o">+=</span> <span class="n">noisex</span>
+        <span class="n">particles</span><span class="p">[</span><span class="mi">1</span><span class="p">,:]</span> <span class="o">+=</span> <span class="n">noisey</span>
+        <span class="n">particles</span><span class="p">[</span><span class="mi">2</span><span class="p">,:]</span> <span class="o">+=</span> <span class="mi">90</span><span class="o">*</span><span class="n">DEG</span> <span class="o">+</span> <span class="n">thetanoise</span>
+    <span class="k">elif</span> <span class="n">control</span> <span class="o">==</span> <span class="s">"turnright"</span><span class="p">:</span>
+        <span class="n">particles</span><span class="p">[</span><span class="mi">0</span><span class="p">,:]</span> <span class="o">+=</span> <span class="n">noisex</span>
+        <span class="n">particles</span><span class="p">[</span><span class="mi">1</span><span class="p">,:]</span> <span class="o">+=</span> <span class="n">noisey</span>
+        <span class="n">particles</span><span class="p">[</span><span class="mi">2</span><span class="p">,:]</span> <span class="o">-=</span> <span class="mi">90</span><span class="o">*</span><span class="n">DEG</span> <span class="o">+</span> <span class="n">thetanoise</span>
+    <span class="k">return</span> <span class="n">particles</span>
+</code></pre>
+</div>
+
+<p>The above code should make sense with what is being explained in the rest of the article. The motion update is relatively simple. We take a command in - in this case, it is a string of type: <code class="highlighter-rouge">forward</code>, <code class="highlighter-rouge">backward</code>, <code class="highlighter-rouge">turnleft</code>, or <code class="highlighter-rouge">turnright</code>. Based on that command, all of the particles are updated accordingly. Note, it is really important that you have a different x and y noise. Otherwise, it could end up looking like this (p.s. sorry about taking screenshots instead of saving the images):</p>
+
+<p><img src="/images/particle-filter/PreviousVersion.gif" alt="path1" class="center-shrink" /></p>
+
+<p>You can see that the noise is now directly correlated. Hence, why the particles now form a linear arrangement across the map. So watch out for your distributions! Besides that, that is all the code you need for the motion update!</p>
+
+<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="c"># This is our measurement update</span>
+<span class="k">def</span> <span class="nf">measurement_update</span><span class="p">(</span><span class="n">particles</span><span class="p">,</span> <span class="n">measured_distances</span><span class="p">):</span>
+    <span class="c"># read in our measured distances, just entering this in manually</span>
+    <span class="n">z</span> <span class="o">=</span> <span class="n">measured_distances</span>
+
+    <span class="c"># This is so we can alter how many rays we actually want to use</span>
+    <span class="n">z</span> <span class="o">=</span> <span class="n">z</span><span class="p">[::</span><span class="nb">len</span><span class="p">(</span><span class="n">z</span><span class="p">)</span><span class="o">/</span><span class="n">NUM_OF_RAYS</span><span class="p">]</span>
+    <span class="n">nan_location</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
+
+    <span class="c"># our weights should all be the same to start</span>
+    <span class="n">weights</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">NUM_OF_PARTICLES</span><span class="p">)</span>
+
+    <span class="c"># again, get the number of particles... could also use a our global variable</span>
+    <span class="n">nparticles</span> <span class="o">=</span> <span class="n">particles</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="c"># ok so here let's iterate over the particles</span>
+    <span class="k">for</span> <span class="n">particle_index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nparticles</span><span class="p">):</span>
+        <span class="n">expected_distances</span> <span class="o">=</span> <span class="n">help</span><span class="o">.</span><span class="n">expected_ranges</span><span class="p">(</span><span class="n">particles</span><span class="p">[:,</span><span class="n">particle_index</span><span class="p">],</span> <span class="n">angles_to_use</span><span class="p">,</span> <span class="n">WALL_SEGS</span><span class="p">)</span>
+        <span class="n">expected_dist</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">expected_distances</span><span class="p">)</span>
+
+        <span class="c"># then we need to iterate over each ray that the particle we're on has seen and compare to the prior </span>
+        <span class="k">for</span> <span class="n">ray_index</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">nan_location</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">val</span><span class="p">:</span>
+                <span class="n">weights</span><span class="p">[</span><span class="n">particle_index</span><span class="p">]</span> <span class="o">=</span> <span class="n">weights</span><span class="p">[</span><span class="n">particle_index</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">weights</span><span class="p">[</span><span class="n">particle_index</span><span class="p">]</span> <span class="o">=</span> <span class="n">weights</span><span class="p">[</span><span class="n">particle_index</span><span class="p">]</span> <span class="o">*</span> \
+                    <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="p">(</span> <span class="p">(</span> <span class="p">(</span><span class="n">z</span><span class="p">[</span><span class="n">ray_index</span><span class="p">]</span><span class="o">-</span><span class="n">expected_dist</span><span class="p">[</span><span class="n">ray_index</span><span class="p">])</span><span class="o">**</span><span class="mi">2</span> <span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">SIGMA_Z</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="p">)</span> <span class="p">)</span>
+
+    <span class="c"># Need to normalize our weights</span>
+    <span class="n">weights</span> <span class="o">=</span> <span class="n">weights</span> <span class="o">/</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="nb">sum</span><span class="p">(</span><span class="n">weights</span><span class="p">))</span>
+
+    <span class="c"># these are the particles that we're going to pick from</span>
+    <span class="n">particles_to_use</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">nparticles</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">num</span> <span class="o">=</span> <span class="n">nparticles</span><span class="p">)</span>
+
+    <span class="c"># get the indices of the surviving particles</span>
+    <span class="n">indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">particles_to_use</span><span class="p">,</span> <span class="n">size</span> <span class="o">=</span> <span class="n">nparticles</span><span class="p">,</span> <span class="n">p</span> <span class="o">=</span> <span class="n">weights</span><span class="p">)</span>
+    <span class="n">indices</span> <span class="o">=</span> <span class="n">indices</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+
+    <span class="c"># select the right particles</span>
+    <span class="n">particles</span> <span class="o">=</span> <span class="n">particles</span><span class="p">[:,</span><span class="n">indices</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">particles</span>
+</code></pre>
+</div>
+
+<p>This is really where the meat of the problem is. Mathematically, computing these weights or probabilities takes the form:</p>
+
+<script type="math/tex; mode=display">w_i = p(z \ | \ x_i ) = \prod_{j=1}^{m} p(z_j \ | \ x_i)</script>
+
+<p>So here, the <script type="math/tex">x_i</script> is the particle’s position in the world. <script type="math/tex">m</script> is the number of beams that are robot is using. Our z_j is some range for a given ray that is shot out from the robot. In this way, we’re looping over every particle, but then the particle’s probability is the product of all the probabilities for the ray. Hence, why this looks like a double for loop when it’s coded up. One for the particles and one for the rays!</p>
+
+<h1 id="output">Output</h1>
+
+<p>Here’s an output from our program! Note, we displayed the particles after both the motion and measurement update, that’s kind of why the particles jump around a bit.</p>
+
+<p><img src="/images/particle-filter/Path1.gif" alt="path1" class="center-shrink" /></p>
+
+<p>Also ignore the “Iteration” label on the y-axis. I’m just realizing it now, but I don’t want to recreate the gifs again.</p>
+
+<p>Here’s another path!</p>
+
+<p><img src="/images/particle-filter/Path2.gif" alt="path2" class="center-shrink" /></p>
+
+<p>What’s <em>really really <strong>really</strong> cool</em>, is that if you watch carefully, when the particles / Leela get to cell (2,1), they kind of hug the bottom most wall. Well, when we were gathering the sensor data from walking Leela through this maze, she actually swung close to that wall. The robot in the visualization doesn’t reflect Leela’s actual position as she traversed (that would have been cool, but hindsight is 20/20). The robot is solely going to the cells that we programmed in. However, the particles are actually adapting to what happened. They swing closer to the wall based on the <strong>actual</strong> sensor data!! How crazy / cool is that?</p>
+
+<h1 id="presentation">Presentation</h1>
+<p>Finally, we had to present to the class. The presentation pretty much just included everything that this. You can check out our actual presentation, or in the very least a pdf of our presentation <a href="/pdfs/E28 Final Project - Particle Filter.pdf">here</a>.</p>
+
+<h1 id="conclusion">Conclusion</h1>
+<p>Ok so first one big lesson learned:</p>
+
+<center> <strong> visual debugging is awesome and will make your life better. </strong> </center>
+
+<p>That lesson really got drilled home from Matt after we probably spent an hour trying to debug our code, without realizing that one of the walls we entered was totally incorrect. The other thing that we learned is that genetic algorithms are super interersting. Bayes Theorem has almost limitless applications. Probability is great and I need to learn more. Besides that, it was a really rewarding experience coming up with all of this. As always let me know any comments about my coding style, ways to better my code, corrections to my blog post, etc. Thanks for reading.</p>
+

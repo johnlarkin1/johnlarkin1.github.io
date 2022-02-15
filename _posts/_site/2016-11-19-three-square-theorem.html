@@ -1,0 +1,132 @@
+<p>What numbers can’t be represented as the sum of three squares?</p>
+
+<p>The question we’re trying to answer is what number(s) x cannot be represented as:</p>
+
+<script type="math/tex; mode=display">x = a^2 + b^2 + c^2</script>
+
+<p>First, let’s explore where this problem even came from. If you don’t want to read the post, check out the code <a href="https://github.com/johnlarkin1/three-square-problem">here</a>.</p>
+
+<h1 id="history-of-sum-of-three-squares-problem">History of Sum of Three Squares Problem</h1>
+
+<h3 id="my-history">My History</h3>
+<p>So this problem was actually pitched to me by my bright and awesome friend <a href="http://www.swarthmore.edu/news-events/qa-aditi-kulkarni-17-founder-red-lips-project">Deets</a>. Deets (real name Aditi Kulkarni) is a math minor at Swarthmore. Chem major. Premed. Essentially an art and psych minor on the side as well. Anyway, as I write this, she’s in number theory, a class that she has very mixed feelings about. Regardless, she was telling me about this problem originally presented in her number theory class. She was like</p>
+
+<blockquote>
+  <p>Hey tell me all the numbers that can’t be represented by the sum of three other squares. Write a program whatever.</p>
+</blockquote>
+
+<p>And I was hooked. The code and algorithm can be found <a href="https://github.com/johnlarkin1/three-square-problem">here</a>. But here’s the actual history of the problem.</p>
+
+<h3 id="real-history-of-the-problem">Real History of the Problem</h3>
+<p>This is a formulation by <a href="https://en.wikipedia.org/wiki/Adrien-Marie_Legendre">A.-M. Legendre</a>, a french mathematician. <em>If you get one thing out of this blog post, <strong>please</strong> let it be clicking on that link and checking out the caricature of A-M Legendre</em>. It is beyond wild.</p>
+
+<p>Anyway, so Legendre’s three-square theorem actually is the following:</p>
+<blockquote>
+  <p>A natural number can be represented as the sum of three square integers, <script type="math/tex">n = x^2 +y^2 +z^2</script> if and only if <script type="math/tex">n</script> is <strong>not</strong> of the form <script type="math/tex">n = 4^a (8\cdot b + 7)</script></p>
+</blockquote>
+
+<p>Aaaand that’s kind of the solution. I could have just generated numbers using that formula, but I was curious to see if there was an easy way to generate the numbers in another way, if we didn’t already know the answer. While there were multiple speculations and attempts at proofs, Legendre actually found the first proof for his 3-square theorem in 1796. Or at least that’s what <a href="https://en.wikipedia.org/wiki/Legendre's_three-square_theorem">this</a> article says. I, having not taken number theory, actually struggled for a clean proof on how to do this. I should still probably reach out to Deets, but <a href="http://www.ams.org/journals/proc/1957-008-02/S0002-9939-1957-0085275-8/S0002-9939-1957-0085275-8.pdf">this is one that I found</a>.</p>
+
+<p>I’ll lay out the base outline of the proof. They assert:</p>
+
+<p><strong>THEOREM 1:</strong> <em>If <script type="math/tex">m</script> is a positive integer not of the form <script type="math/tex">4^n (8n+7)</script>, then <script type="math/tex">m</script> is the sum of three squares.</em></p>
+
+<p>As of right now (11/24/16 11:38PM), I haven’t fulled worked out the math. I don’t understand a few of the other theorems needed to prove it, so I am going to come back to this portion.</p>
+
+<p><a href="http://www.math.uchicago.edu/~may/VIGRE/VIGRE2009/REUPapers/Wong.pdf">Here’s another super helpful link about this proof though</a>.</p>
+
+<h1 id="algorithm">Algorithm</h1>
+
+<p>Feel free to check out my code to the solution. I first wrote up a python script because I wanted to make sure I knew what I was doing and python is essentially like writing pseudocode. Then I made a much nicer (or at least I think so) version in C++.</p>
+
+<p>I would love any improvements on this brute-force approach to solving this problem. I have perused online and have not found too many programs that solve this in an easier way. It’s an interesting problem to see if we can do better than a brute force search. Right now, the program that I have developed is roughly <script type="math/tex">O(n^4)</script>. The logic is such: looping over every number between 1 and max range. <strong>Originally</strong>, for every one of those numbers, I am considering the entire range of the possible other three numbers, limiting them to a max value of the maximum number itself.</p>
+
+<p>That’s obviously dumb though. We’re never going to get to a point where we have some number, and then sum of any number greater than it is going to actually be equal to it. That doesn’t make sense. So then let’s only go up to the number itself.</p>
+
+<p>But again that’s also not as good as we can do. Realistically, we should go up to the square root of the number. Or like <script type="math/tex">\lfloor \sqrt[]{n} \rfloor</script> for each number.</p>
+
+<p>This greatly helped decrease the runtime. I will actually do an analytic analysis of the expected runtime, just to review a bit of the analytic skills.</p>
+
+<h1 id="example-runtime">Example Runtime</h1>
+
+<p><strong>Example 1: <script type="math/tex">MAX\_RANGE = 250</script></strong></p>
+
+<p><em>Note: The differences on the time will be explained below</em>.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">Upper Bound</th>
+      <th style="text-align: right">Real Time</th>
+      <th style="text-align: right">User Time</th>
+      <th style="text-align: right">Sys Time</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">MAX_RANGE (500)</td>
+      <td style="text-align: right">0m14.641s</td>
+      <td style="text-align: right">0m14.179s</td>
+      <td style="text-align: right">0m0.083s</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">number</td>
+      <td style="text-align: right">0m3.944s</td>
+      <td style="text-align: right">0m3.864s</td>
+      <td style="text-align: right">0m0.031s</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">ceil of sqrt(num)</td>
+      <td style="text-align: right">0m0.013s</td>
+      <td style="text-align: right">0m0.005s</td>
+      <td style="text-align: right">0m0.003s</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Obviously, I like the last option the most.</p>
+
+<p><strong>Time Notation Note</strong></p>
+
+<p>Let’s be clear about what this <code class="highlighter-rouge">time</code> command is doing with our program.</p>
+
+<p><code class="highlighter-rouge">real</code> - wall clock time. So we hit enter to execute our program and the timer starts and then when it is finished the timer ends. This includes the time to various other modules like I/O for example.<br />
+<code class="highlighter-rouge">user</code> - actual CPU time to execute the program. <code class="highlighter-rouge">real</code> and <code class="highlighter-rouge">user</code> should be relatively similar. So this is when things like the I/O don’t actually count.<br />
+<code class="highlighter-rouge">sys</code> - actual CPU time in the kernel. This is not library code, this is more like time in system calls. A clean (although unrealistic) example of what could create a drag on the <code class="highlighter-rouge">sys</code> report is if for example, your program needs to allocate like a GB of memory. That’s going to take forever and all of that time allocating memory would be clumped under <code class="highlighter-rouge">sys</code> time.</p>
+
+<p>See <a href="http://stackoverflow.com/questions/556405/what-do-real-user-and-sys-mean-in-the-output-of-time1">this link</a> for a highly popular stack overflow page about this.</p>
+
+<h1 id="time-analysis">Time Analysis</h1>
+
+<p>Let’s think for a second about the runtime of such a program. Specifically, we’ll consider the asymptotic runtime of such a program.</p>
+
+<p>Essentially, what we have is for some <script type="math/tex">n</script>, which is equivalent to our <script type="math/tex">MAX\_RANGE</script>, we have:</p>
+
+<script type="math/tex; mode=display">\sum_{num=0}^{n} \sum_{i=0}^{\sqrt[]{num}} \sum_{j=i}^{\sqrt[]{num}} \sum_{k=j}^{\sqrt[]{num}} k</script>
+
+<p>So really, there might be a better way to get an exact analytic runtime out of this, but it’s essentially going to be dominated by the inner most for loop. Which is essentially running for square root time. But we’re doing this three times over, so as of right now, I’m pretty sure we’ll be <script type="math/tex">O(n^4)</script>, but actually not positive.</p>
+
+<p>Let’s break it down logically.</p>
+
+<p>For each number, we’re going to look up to square root of that number. But for each number in that, we’re doing in the worst case square root of that number work. For each each number in that we’re doing in the worst square root of that work.</p>
+
+<p>In other words, I believe that we have those inner three dependent for loops being executed for:</p>
+
+<script type="math/tex; mode=display">\sum_{i=0}^{\sqrt[]{num}} \sum_{j=i}^{\sqrt[]{num}} \sum_{k=j}^{\sqrt[]{num}} k \approx \frac{(\sqrt[]{num}) (\sqrt[]{num}+1) (\sqrt[]{num}+2)}{6}</script>
+
+<p>This in accordance to the power series. Thus taking into acccount the last for-loop, we can see that this should be <script type="math/tex">O(n^{2.5})</script>, which is much better than the original <script type="math/tex">O(n^4)</script>.</p>
+
+<p>Therefore in conclusion, final estimated runtime:</p>
+
+<script type="math/tex; mode=display">O(n^{2.5})</script>
+
+<h1 id="extension">Extension</h1>
+
+<p>What’s better than considering if a number can be composed of three squares? What about if we gave ourselves one more degree of flexibility and said <strong>what numbers can be represented by the sum of four squares</strong>?</p>
+
+<p>The answer is conveniently all of them. Check it out <a href="https://en.wikipedia.org/wiki/Lagrange%27s_four-square_theorem">here</a>. The best part is? <em>All natural numbers can be represented by the sum of four integer squares</em>. So yeah. It’s a bit cooler than the three- square version, but how boring would a program be that just outputs an empty set?</p>
+
+<h1 id="conclusion">Conclusion</h1>
+
+<p>This obviously wasn’t really a code heavy project. You can <a href="https://github.com/johnlarkin1/three-square-problem">check out the code here</a>. But it’s got some pretty interesting math. I also am still relatively new at this so I figured this would be a good chance to get my feet wet on a project where I wasn’t really looking at pseudocode and there wasn’t really a clean path. That being said… the solution I implemented was still brute-force just with a slight twist. As always, if people have more clever solutions, then <em>please</em> let me know! I’d love to hone my skills.</p>
+

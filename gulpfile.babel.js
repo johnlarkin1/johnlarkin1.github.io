@@ -2,35 +2,35 @@
 "use strict";
 
 // Gulp and node
-const gulp = require( "gulp" );
-const cp = require( "child_process" );
-const notify = require( "gulp-notify" );
-const size = require( "gulp-size" );
+import gulp from "gulp";
+import cp from "child_process";
+import notify from "gulp-notify";
+import size from "gulp-size";
 
 // Basic workflow plugins
-const browserSync = require( "browser-sync" );
-const browserify = require( "browserify" );
-const source = require( "vinyl-source-stream" );
-const buffer = require( "vinyl-buffer" );
-const clean = require( "gulp-clean" );
-const sass = require( "gulp-sass" );
+import browserSync from "browser-sync";
+import browserify from "browserify";
+import source from "vinyl-source-stream";
+import buffer from "vinyl-buffer";
+import clean from "gulp-clean";
+import sass from "gulp-sass";
 const jekyll = process.platform === "win32" ? "jekyll.bat" : "jekyll";
 const messages = {
     jekyllBuild: "<span style=\"color: grey\">Running:</span> $ jekyll build"
 };
 
 // Performance workflow plugins
-const htmlmin = require( "gulp-htmlmin" );
-const prefix = require( "gulp-autoprefixer" );
-const sourcemaps = require( "gulp-sourcemaps" );
-const uglify = require( "gulp-uglify" );
-const critical = require( "critical" );
-const sw = require( "sw-precache" );
+import htmlmin from "gulp-htmlmin";
+import prefix from "gulp-autoprefixer";
+import sourcemaps from "gulp-sourcemaps";
+import uglify from "gulp-uglify";
+import critical from "critical";
+import sw from "sw-precache";
 
 // Image Generation
-const responsive = require( "gulp-responsive" );
-const rename = require( "gulp-rename" );
-const imagemin = require( "gulp-imagemin" );
+import responsive from "gulp-responsive";
+import rename from "gulp-rename";
+import imagemin from "gulp-imagemin";
 
 const src = {
   css: "_sass/jekyll-sleek.scss",

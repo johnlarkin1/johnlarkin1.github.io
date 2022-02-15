@@ -1,0 +1,80 @@
+<p>Want to be quicker when using vim? Or learn more about the war between Emacs and Vim?</p>
+
+<p>I use Vim and much of the posts that I’ve written for this website, as well as much of the backend architecture I wrote in vim. For larger projects, I prefer using <a href="https://atom.io/">atom</a> or <a href="https://www.sublimetext.com/">sublime</a>. However, for quicker projects, where I want a lightweight editor to access files and navigate a director quickly, I think vim is a perfect tool. Plus it’s going to be hard to find a computer that doesn’t have vim installed.</p>
+
+<p>As I was coming up with this website and some of the blog posts, I found myself dying to know more shortcuts. I knew the basics, but I thought it might be great to have a post where I could just store / share some of the tricks that I’ve learned in a convenient place. Essentially, most of the information can be found <a href="http://www.keyxl.com/aaa8263/290/VIM-keyboard-shortcuts.htm">here</a>. However, I thought even that was overkill.</p>
+
+<h2 id="general-vim-use">General Vim Use:</h2>
+
+<p><strong>Not in insert mode:</strong></p>
+
+<ul>
+  <li><code class="highlighter-rouge">y</code> - yank or copy</li>
+  <li><code class="highlighter-rouge">x</code> - cut</li>
+  <li><code class="highlighter-rouge">p</code> - paste</li>
+  <li><code class="highlighter-rouge">w</code> - jump to beginning of words (equivalent to shift + arrow keys on mac)</li>
+  <li><code class="highlighter-rouge">W</code> - jump to beginning of words (ignoring punctuation)</li>
+  <li><code class="highlighter-rouge">e</code> and <code class="highlighter-rouge">E</code> - same as above just to the end of the words</li>
+  <li><code class="highlighter-rouge">b</code> and <code class="highlighter-rouge">B</code> - same as above just jumping backwords</li>
+  <li><code class="highlighter-rouge">0</code> - move to beginning of the line</li>
+  <li><code class="highlighter-rouge">$</code> - jump to end of the line</li>
+  <li><code class="highlighter-rouge">ctrl + r</code> - redo</li>
+  <li><code class="highlighter-rouge">u</code> - undo</li>
+  <li><code class="highlighter-rouge">.</code> - redo last command</li>
+  <li><code class="highlighter-rouge">J</code> - join the current line and the line under cursor together</li>
+  <li><code class="highlighter-rouge">v</code> - start highlight</li>
+  <li><code class="highlighter-rouge">V</code> - highlight entire line</li>
+  <li><code class="highlighter-rouge">cw</code> - change the word (essentially deletes the word and then enters insert mode)</li>
+  <li><code class="highlighter-rouge">dd</code> - delete entire line</li>
+</ul>
+
+<p><strong>In insert mode</strong>:</p>
+
+<ul>
+  <li><code class="highlighter-rouge">shift + left || right keys</code> - move by full words (similar to w and b outside of insert mode) (also || indicates or)</li>
+  <li><code class="highlighter-rouge">i</code> - enter insert mode at cursor</li>
+  <li><code class="highlighter-rouge">A</code> - enter insert mode at end of line</li>
+  <li><code class="highlighter-rouge">o</code> - enter insert mode on new blank line below cursor</li>
+  <li><code class="highlighter-rouge">O</code> - enter insert mode on new blank line above cursor</li>
+</ul>
+
+<p><strong>Searching:</strong></p>
+
+<ul>
+  <li><code class="highlighter-rouge">/pattern</code> - searches for said pattern
+    <ul>
+      <li><code class="highlighter-rouge">n</code> - find next of said pattern</li>
+      <li><code class="highlighter-rouge">N</code> - find previous of said pattern</li>
+    </ul>
+  </li>
+</ul>
+
+<p><strong>Random Cool Tricks:</strong></p>
+
+<ul>
+  <li><code class="highlighter-rouge">~</code> - switch case of highlighted character</li>
+  <li><code class="highlighter-rouge">d*w</code> - where * is an integer, this will delete * many words</li>
+</ul>
+
+<p>I also thought it would be kind of cool if I provided some history behind Emacs and Vim and a little bit more about how they work.</p>
+
+<h1 id="history-of-vim">History of Vim</h1>
+<p>So there’s apparently a distinction between <em>Vim</em> and <em>Vi</em> both of which you can use from your terminal to just edit a file. Vim stands for Vi IMproved… over vi. Vim is free and is ranked one of the top editors every year. It was developed by <a href="https://en.wikipedia.org/wiki/Bram_Moolenaar">Bram Moolenaar</a>, who is just a random gnarly Dutch programmer. He developed it in 1988. 
+Big perks?</p>
+<ul>
+  <li>cross compatable across systems</li>
+  <li>it’s suuuuuper lightweight. you can make quick changes to a file and close it up in the blink of an eye</li>
+  <li>it divides into reading and editing vs insertion mode. helps differentiate tasks.</li>
+</ul>
+
+<h1 id="history-of-emacs">History of Emacs</h1>
+<p>I was surprised to see that Emacs was actually written in 1976. Given how ubiquitous Vim is, I would have figured that it would have come first, because it’s so lightweight. Emacs boasts of having over 2,000 commands. That’s sooo many commands, but imagine if you’re a master of them. It rewards the users who use it longer.
+People customize Emacs heavily. Which is great for their own internal use, but if you try to switch between versions of Emacs, then things are bound to be different and more complex. 
+Big perks?</p>
+<ul>
+  <li>highly customizable</li>
+  <li>features keyboard macros for user-defined batches of editing commands</li>
+  <li>capable of formatting and printing documents like a word processor</li>
+</ul>
+
+<p>It was pretty fun to do a bit of research about the two topics. Stack overflow has some very heated articles about it. This is something that people have been debating about and arguing for a long time. There obviously is no right or wrong answer, but there are just strong opinions about each side.</p>
