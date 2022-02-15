@@ -1,12 +1,9 @@
-# not totally sure what this is yet
-source 'https://rubygems.org'
+# frozen_string_literal: true
 
-#gem 'github-pages', group: :jekyll_plugins
-gem 'jekyll-compose', group: [:jekyll_plugins]
-gem 'minima'
+source "https://rubygems.org"
+gem "kramdown-parser-gfm"
+
 # STUPID emojis
 gem 'jemoji'
 
-# seems like i could add my own themes but it would be a lot of work
-
-
+gemspec

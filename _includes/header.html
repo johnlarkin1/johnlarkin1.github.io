@@ -1,28 +1,25 @@
-<header class="global-header">
-	<div class="global-header-wrapper">
-
-		<div class="mountain-outline">
-			<a class="nounderline" href="https://johnlarkin1.github.io">
-			<img src ="/images/mountain.svg" alt="Explore">
-			<p class="global-header-description">
-				Where will you go next?
-			</p>
-			</a>
-		</div>
-		
-		<nav class="site-navigation">
-		<!-- {% for pg in site.pages %}
-			{% if pg.title %}
-				<a class="page-link" href="{{ pg.url | prepend: site.baseurl }}">{{ pg.title }}</a>
-			{% endif %} 
-		{% endfor %}
-        -->
-        <a class="page-link" href="/coolsites"> Cool sites! </a>
-		<a class="page-link" href="/about"> About me! </a>
-        <!--
-        <a class="page-link" href="/classes"> Classes </a>
-        -->
-		</nav>	
-
-	</div>		
+<header class="header" itemscope itemtype="http://schema.org/SiteNavigationElement" aria-label="Main navigation">
+  <div class="container">
+    <div class="header__inner">
+      <a class="header__logo" href="{{ '/' | relative_url }}">
+        <div class="header__logo--container">
+          {% include logo.svg %}
+        </div>
+      </a>
+      <nav class="header__links">
+        <div class="container header__links-wrapper">
+          {% for item in site.navigation %}
+            <a class="header__link" href="{{ item.link | relative_url }}" itemprop="url">
+              <span itemprop="name">{{ item.name }}</span>
+            </a>
+          {% endfor %}
+        </div>
+      </nav>
+      <div class="header__toggle">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+  </div>
 </header>
