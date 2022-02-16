@@ -46,7 +46,7 @@ logo: /images/mountain.png
 # BUILD SETTINGS
 markdown: kramdown
 highlighter: rouge # or pygments or null
-theme: jekyll-sleek # Uncomment if you're using the theme as a ruby gem
+# theme: jekyll-sleek # Uncomment if you're using the theme as a ruby gem
 exclude:
   - README.md
   - node_modules
