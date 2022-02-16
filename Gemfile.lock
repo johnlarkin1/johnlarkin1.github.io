@@ -72,7 +72,7 @@ GEM
     pathutil (0.16.2)
       forwardable-extended (~> 2.6)
     public_suffix (4.0.6)
-    rake (10.5.0)
+    rake (12.3.3)
     rb-fsevent (0.11.1)
     rb-inotify (0.10.1)
       ffi (~> 1.0)
@@ -96,7 +96,7 @@ DEPENDENCIES
   jekyll-sleek!
   jemoji
   kramdown-parser-gfm
-  rake (~> 10.0)
+  rake (~> 12.3)
 
 BUNDLED WITH
    2.1.4
