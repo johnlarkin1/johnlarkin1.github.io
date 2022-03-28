@@ -5,7 +5,7 @@
   "main": "gulpfile.js",
   "type": "module",
   "dependencies": {
-    "dist": "^0.1.2",
+    "dist": "*",
     "fg-loadcss": "*",
     "jquery": "*",
     "lazysizes": "*",
