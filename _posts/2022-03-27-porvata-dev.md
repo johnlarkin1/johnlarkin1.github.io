@@ -20,6 +20,37 @@ Also this is from longer ago, but here's a photo of Nick J and I (also Will and 
 
 As an aside, and this is more biased obviously, but I've seen how hard both Nick and Will have worked to grow [Porvata][porvata], how much they care about the quality of their products, and how much they care about customer happiness and satisfaction. It's been extremely rewarding and impressive to watch them grow the company. I've always loved them as friends but I never had a good glimpse into their professional tendencies and it's just another facet into what makes them unique. It's also been a lot of fun to work aside them for this quick little side project, and inspiring to me to keep growing and working. 
 
+So let's dive in.
+
+# Table of Contents
+
+- [Background](#background)
+- [Introduction](#introduction)
+- [Overview of Architecture](#overview-of-architecture)
+- [Sweating the Details](#sweating-the-details)
+  * [[Shopify Partners][shopify-partner]](#-shopify-partners--shopify-partner-)
+  * [Shopify Authentication](#shopify-authentication)
+    + [`ngrok` and SSL Authentication](#-ngrok--and-ssl-authentication)
+  * [Shopify Order Events](#shopify-order-events)
+    + [GraphQL](#graphql)
+  * [Posting to SPAR](#posting-to-spar)
+    + [Interesting Questions](#interesting-questions)
+      - [Dynamic Pricing and SKU Checks](#dynamic-pricing-and-sku-checks)
+      - [Zip Codes](#zip-codes)
+      - [Multiple SPAR Legs](#multiple-spar-legs)
+      - [Cancellations](#cancellations)
+  * [Extras and Nice-to-Haves](#extras-and-nice-to-haves)
+    + [Email Notifications](#email-notifications)
+      - [Order Received Event](#order-received-event)
+      - [Unknown Error Event](#unknown-error-event)
+      - [Outside Zip Code Event](#outside-zip-code-event)
+      - [Partial Order Fulfillment Event](#partial-order-fulfillment-event)
+      - [Full Order Fulfillment Event](#full-order-fulfillment-event)
+    + [Additional Service Checking](#additional-service-checking)
+    + [Logging](#logging)
+    + [Linting and GitHooks](#linting-and-githooks)
+- [Conclusion](#conclusion)
+
 # Introduction
 Late into 2021, maybe around November, Will broached me saying that he might soon need a bit of development help on the backend side to tie together assembly integrations into orders. The gist is that [Porvata][porvata] would talk to [SPAR][spar], a third party company that would handle the assembly portion of orders. Before this, Will and Nick would often arrange for a TaskRabbit or some Fiver task if a customer personally emailed in and requested about assembly for one of their desks or chairs. After this, the goal was that customers could simply select assembly when going through the checkout process on [Porvata][porvata] and when the order shipped, they'd get a call and email from SPAR asking when a good time for them to handle assembly was. Ok cool.
 

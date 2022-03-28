@@ -6,7 +6,7 @@
 <div class="hero__categories"> <a class="label" href="/categories/#Development">Development</a>   <a class="label" href="/categories/#Friendship">Friendship</a>   <a class="label" href="/categories/#Favorites">Favorites</a>
 </div>
 <h1 class="hero__title">Porvata and SPAR Integration</h1>
-<p class="hero__meta"> <span> <time>27 Mar 2022</time> · </span> <span> 22 mins read </span></p>
+<p class="hero__meta"> <span> <time>27 Mar 2022</time> · </span> <span> 23 mins read </span></p>
 </div></div><main class="site__content"><div class="container">
 <article class="post-content" itemprop="articleBody"><p>I got to work with my best friend on an interesting development project. This was by far one of my favorite pieces of development work I’ve done.</p>
 <h1 id="background">Background</h1>
@@ -16,6 +16,51 @@
 <p><img src="/images/porvata-dev/nick-will-nick-and-i.jpg" alt="nick-will-nick-and-i" class="center-shrink"></p>
 <p><a href="https://porvata.com/">Porvata</a> helps to give consumers a better work from home setup, providing a range of great products like <a href="https://porvata.com/collections/all-desks/products/butcher-block-72-motorized-height-adjustable-standing-desk">72” desks</a> to <a href="https://porvata.com/collections/office-chairs/products/ergonomic-chair">ergonomic chairs</a> to even very helpful <a href="https://porvata.com/collections/wire-management-power-outlets/products/clamp-mounted-power-management">power strips</a> compatable with their desks. I’m obviosuly biased, but I have some of their products and endorse it heavily. I’d highly recommend anyone reading check it out for a couple minutes (at least for the site traffic / seo benefits).</p>
 <p>As an aside, and this is more biased obviously, but I’ve seen how hard both Nick and Will have worked to grow <a href="https://porvata.com/">Porvata</a>, how much they care about the quality of their products, and how much they care about customer happiness and satisfaction. It’s been extremely rewarding and impressive to watch them grow the company. I’ve always loved them as friends but I never had a good glimpse into their professional tendencies and it’s just another facet into what makes them unique. It’s also been a lot of fun to work aside them for this quick little side project, and inspiring to me to keep growing and working.</p>
+<p>So let’s dive in.</p>
+<h1 id="table-of-contents">Table of Contents</h1>
+<ul>
+<li><a href="#background">Background</a></li>
+<li><a href="#introduction">Introduction</a></li>
+<li><a href="#overview-of-architecture">Overview of Architecture</a></li>
+<li>
+<a href="#sweating-the-details">Sweating the Details</a><ul>
+<li><a href="#-shopify-partners--shopify-partner-">[Shopify Partners][shopify-partner]</a></li>
+<li>
+<a href="#shopify-authentication">Shopify Authentication</a><ul><li><a href="#-ngrok--and-ssl-authentication"><code class="language-plaintext highlighter-rouge">ngrok</code> and SSL Authentication</a></li></ul>
+</li>
+<li>
+<a href="#shopify-order-events">Shopify Order Events</a><ul><li><a href="#graphql">GraphQL</a></li></ul>
+</li>
+<li>
+<a href="#posting-to-spar">Posting to SPAR</a><ul><li>
+<a href="#interesting-questions">Interesting Questions</a><ul>
+<li><a href="#dynamic-pricing-and-sku-checks">Dynamic Pricing and SKU Checks</a></li>
+<li><a href="#zip-codes">Zip Codes</a></li>
+<li><a href="#multiple-spar-legs">Multiple SPAR Legs</a></li>
+<li><a href="#cancellations">Cancellations</a></li>
+</ul>
+</li></ul>
+</li>
+<li>
+<a href="#extras-and-nice-to-haves">Extras and Nice-to-Haves</a><ul>
+<li>
+<a href="#email-notifications">Email Notifications</a><ul>
+<li><a href="#order-received-event">Order Received Event</a></li>
+<li><a href="#unknown-error-event">Unknown Error Event</a></li>
+<li><a href="#outside-zip-code-event">Outside Zip Code Event</a></li>
+<li><a href="#partial-order-fulfillment-event">Partial Order Fulfillment Event</a></li>
+<li><a href="#full-order-fulfillment-event">Full Order Fulfillment Event</a></li>
+</ul>
+</li>
+<li><a href="#additional-service-checking">Additional Service Checking</a></li>
+<li><a href="#logging">Logging</a></li>
+<li><a href="#linting-and-githooks">Linting and GitHooks</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#conclusion">Conclusion</a></li>
+</ul>
 <h1 id="introduction">Introduction</h1>
 <p>Late into 2021, maybe around November, Will broached me saying that he might soon need a bit of development help on the backend side to tie together assembly integrations into orders. The gist is that <a href="https://porvata.com/">Porvata</a> would talk to <a href="https://sparinc.com/services/assembly-installation/">SPAR</a>, a third party company that would handle the assembly portion of orders. Before this, Will and Nick would often arrange for a TaskRabbit or some Fiver task if a customer personally emailed in and requested about assembly for one of their desks or chairs. After this, the goal was that customers could simply select assembly when going through the checkout process on <a href="https://porvata.com/">Porvata</a> and when the order shipped, they’d get a call and email from SPAR asking when a good time for them to handle assembly was. Ok cool.</p>
 <p>So in theory, as most development projects go, this sounded pretty standard and relatively simple. But the fun parts came in with the details. So let’s get to that.</p>
