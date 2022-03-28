@@ -15,8 +15,11 @@ $button-dark: #222325;
 $dark-light: #313237;
 $outline: #dbdbdb;
 $grey: #838c8d;
+$grey-light: lighten($grey, 40%);
 
 $font-stack: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Hiragino Sans GB", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
+
+$spacing-unit: 30px;
 
 // Breakpoints
 $xs: 0;

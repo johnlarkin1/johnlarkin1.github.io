@@ -69,6 +69,7 @@ compress_html:
 plugins:
   - jekyll-sitemap
   - jekyll-seo-tag
+  - jemoji
 
 # Not totally sure what this is doing, but seen it
 # ok so apparently this is relating the server time to the local time

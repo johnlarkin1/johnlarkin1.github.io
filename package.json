@@ -5,11 +5,13 @@
   "main": "gulpfile.js",
   "type": "module",
   "dependencies": {
+    "dist": "^0.1.2",
     "fg-loadcss": "*",
     "jquery": "*",
     "lazysizes": "*",
     "normalize.css": "*",
     "picturefill": "*",
+    "sass": "^1.49.9",
     "velocity-animate": "*"
   },
   "devDependencies": {

@@ -33,6 +33,10 @@ img {
   margin-right: auto;
 }
 
+img.emoji {
+  max-width: 12px;
+}
+
 img::selection {
   background: transparent;
 }
@@ -48,6 +52,18 @@ figure {
 /**************************************/
 /******* Text Formatting *************/
 /**************************************/
+
+blockquote {
+    color: $grey;
+    border-left: 4px solid $grey-light;
+    padding-left: calc($spacing-unit/2);
+    font-style: italic;
+    font-size: 1.10rem;
+
+    > :last-child {
+        margin-bottom: 0;
+    }
+}
 
 /**************************************/
 /******* Photo Formatting *************/
