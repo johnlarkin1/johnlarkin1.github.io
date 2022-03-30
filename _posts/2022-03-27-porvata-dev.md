@@ -16,7 +16,7 @@ Also this is from longer ago, but here's a photo of Nick J and I (also Will and 
 
 ![nick-will-nick-and-i](/images/porvata-dev/nick-will-nick-and-i.jpg){: .center-shrink }
 
-[Porvata][porvata] helps to give consumers a better work from home setup, providing a range of great products like [72" desks][porvata-desk] to [ergonomic chairs][porvata-chair] to even very helpful [power strips][porvata-power-strip] compatable with their desks. I've got some of their products and endorse it heavily. In the very least, I'd recommend anyone reading check this post check out their [site][porvata] for a couple minutes (at least for the site traffic!!).
+[Porvata][porvata] helps to give consumers a better work from home setup, providing a range of great products like [72" desks][porvata-desk] to [ergonomic chairs][porvata-chair] to even very helpful [power strips][porvata-power-strip] compatable with their desks. I've got some of their products and endorse it heavily. In the very least, I'd recommend anyone reading check their [site][porvata] for a couple minutes (at least for the site traffic).
 
 As an aside, and this is more biased obviously, but I've seen how hard both Nick and Will have worked to grow [Porvata][porvata]. They care about the quality of their products, and they care about customer happiness and satisfaction. It's been extremely rewarding and impressive to watch them grow as people and as a company throughout. I've always loved them as friends but I hadn't yet had a good glimpse into their professional tendencies. It's just another facet into what makes them unique. It's been a lot of fun to work with them for this side project, and it's been inspiring to me to keep growing as well.
 
