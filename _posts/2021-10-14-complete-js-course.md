@@ -24,7 +24,7 @@ My notes are really lengthy... I took them as Markdown and then compiled them in
 
 You can see the HTML version of my notes [here][notes-html-preview] (rendered through this nice Github html preview site [here][github-preview]).
 
-Here's a Table of Content generated from [here][https://ecotrust-canada.github.io/markdown-toc/].
+Here's a Table of Content generated from [here](https://ecotrust-canada.github.io/markdown-toc/).
 
 - [The Complete JavaScript Course 2021: From Zero to Expert](#the-complete-javascript-course-2021--from-zero-to-expert)
   * [Section 1: Welcome, Welcome, Welcome](#section-1--welcome--welcome--welcome)
@@ -212,12 +212,6 @@ Comments
 The class took a solid amount of time, but I feel like I learned a ton. I'm going to follow it up and take the Typescript/React class to actually get up to speed with modern web development classes. 
 
 I'd recommend the class.
-
-Other Helpful Links
-===================
-* [Swift UI Cheat Sheet][swift-cheatsheet]
-* [Impossible Grids][impossible-grids]
-* [Grid Trainer][grid-trainer]
 
 Again, the normal disclaimer. While I've included all of the code, please do not abuse this. You're only doing yourself a disservice in terms of what you learn.
 
