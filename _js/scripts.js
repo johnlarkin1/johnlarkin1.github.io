@@ -8,7 +8,7 @@ $( document ).ready( function() {
     toggleMobileNav();
     ShowHideNav();
     formCheck();
-
+    filterBlogCategories();
 } );
 
 // Close modal if ESC is pressed
@@ -191,7 +191,6 @@ $( ".modal__overlay" ).click( function() {
 
 function formCheck() {
     $( ".js-submit" ).click( function( e ) {
-
         e.preventDefault();
 
         var $inputs = $( ".form__input input" );
@@ -214,7 +213,7 @@ function formCheck() {
                 isError = true;
             }
             if ( $( textarea ).attr( "required", true ) && !validateRequired( $( textarea ).val() ) ) {
-                addErrorData( $( textarea ), "This field is required" );
+                addErrorData( $( textarea ), "This field is required - is this change getting detected" );
                 isError = true;
             }
         }
@@ -244,6 +243,17 @@ function validateEmail( value ) {
 function addErrorData( element, error ) {
     element.parent().addClass( "error" );
     element.after( "<span class='error-data'>" + error + "</span>" );
+}
+
+/* Filter navigation */
+function filterBlogCategories() {
+    $( ".filter-click" ).click( function( e ) {
+        e.preventDefault();
+        var button = $( ".filter-click" );
+        var button_val = button.val();
+
+        return button_val;
+    });
 }
 
 

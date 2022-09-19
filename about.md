@@ -10,6 +10,8 @@ I'm now living out in San Francisco with one of my best friends, [Henry](https:/
 
 I'm passionate about a lot of different subjects. I studied Computer Engineering at Swarthmore with a minor in Chemistry. I had incredible professors who covered a range of different topics from computer vision to Russian literature to the meaning of life (turns out, I'm not great at philosophy). 
 
-Again, feel free to reach out to me if you have any questions or comments! I'd love feedback on any articles or on the site itself. Anything to improve. 
+Again, feel free to reach out to me if you have any questions or comments! I'd love feedback on any articles or on the site itself. Anything to improve.
+
+As of late 2022, I decided to split my blog into a couple of major categories, along with subcategories so you can filter a bit more easily. The categories are **Tech**, **Reflection**, **Publications**, and **Travel**.
 
 Thanks all! 
