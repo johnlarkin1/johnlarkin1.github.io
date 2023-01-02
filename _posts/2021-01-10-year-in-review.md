@@ -88,6 +88,6 @@ I guess the only real conclusion I have from all of this, is that I'm lucky to b
 
 [comment]: <> (Bibliography)
 [streaks]: https://streaksapp.com/
-[iz-art]: https://www.instagram.com/isabellehudson_art/?hl=en
+[iz-art]: https://www.instagram.com/isabelle.hudson.art/
 [iz-linkedin]: https://www.linkedin.com/in/isabelle-hudson
 [abinitio]: https://www.abinitio.com/en/

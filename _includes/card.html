@@ -19,6 +19,16 @@
         />
         <noscript><img src="{{ site.url }}{{ site.baseurl }}/assets/img/posts/{{post.featured-img}}_thumb.jpg" alt="{{ post.title }}"></noscript>
       </figure>
+    {% elsif post.featured-gif %}
+      <figure class="post-card__thumb">
+        <img
+          src="{{ site.url }}{{ site.baseurl }}/assets/gif/{{post.featured-gif}}.gif"
+          data-srcset="{{ site.url }}{{ site.baseurl }}/assets/gif/{{post.featured-gif}}.gif"
+          class="lazyload blur"
+          alt="{{post.title}}"
+        />
+        <noscript><img src="{{ site.url }}{{ site.baseurl }}/assets/gif/{{post.featured-gif}}.gif" alt="{{ post.title }}"></noscript>
+      </figure>
     {% else %}
       <figure class="post-card__thumb">
         <div class="dark-bg"></div>

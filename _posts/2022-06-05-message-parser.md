@@ -3,7 +3,7 @@ title: iMessage Parsing and Analysis
 layout: post
 featured-img: imessage-parsing-slim
 major-category: tech
-categories: [Development]
+categories: [Development, Favorites]
 ---
 
 You know what kinda sucks? A lot of basic features in iMessages on both macOS and iOS. So I've built a command line tool dubbed `messages` to help alleviate some of those pains.

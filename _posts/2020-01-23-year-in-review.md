@@ -2,7 +2,7 @@
 title: 2019 - A Year in Review
 layout: post
 featured-img: 2019-year
-categories: [Year in Review]
+categories: [Year in Review, Favorites]
 ---
 
 I'm back! 

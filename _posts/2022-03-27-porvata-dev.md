@@ -415,7 +415,7 @@ And as for clear business results...
 Let me know if any questions / suggestions! Thanks for reading! I know this one was a long one. 
 
 [comment]: <> (Bibliography)
-[[matt]: https://mzucker.github.io/swarthmore/]
+[matt]: https://mzucker.github.io/swarthmore/]
 [porvata]: https://porvata.com/
 [will]: https://www.linkedin.com/in/will-jaroszewicz-27313466/
 [nick]: https://www.linkedin.com/in/nicholas-jaroszewicz/
