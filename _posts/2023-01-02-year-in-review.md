@@ -32,15 +32,15 @@ Thoughts on 2022
 ================
 Yeah so where to begin. 
 
-2022 I moved to San Francisco. I got to live with two of my best friends in an incredible city filled with outdoors and nature. I biked, I ran, I surfed some (and saw two whales playing maybe 100 or 200 feet from us). I met new people, made new friends, went on good dates, went on bad dates, and generally tried to soak in the West Coast lifestyle. You can read more about it on my [Leaving SF][leaving-sf] post.
+2022 I moved to San Francisco. I got to live with two of my best friends in an incredible city filled with outdoors and nature. I biked, I ran, I surfed some (and saw two whales playing maybe 100 or 200 feet from us). I met new people, made new friends, went on good dates, went on bad dates, and generally tried to soak in the West Coast lifestyle. You can read more about it on my [Leaving SF][leaving-sf ] post.
 
 All of that being said, I definitely did struggle some. Mentally - mostly. Probably some of the darkest days I've had in a looooong time in the middle of my SF tenure.
 
-I had some demons from really messed up past relationships that haunt me and still am doing my best to work through those. That coupled with some of my best friends progressing in their relationships was a lot to deal with. I think also living with a couple kind of exacerbated some of those mental stressors. And don't get me wrong! I could NOT be happier for my friends. Two of my best friends in the absolute world are dating sisters. One is engaged and one is well on the path to be engaged. That makes my heart sing - no doubt about it. And it also is a good example of healthy relationships and things that I am going to strive for in further relationships. 
+<!-- I had some demons from really messed up past relationships that haunt me and still am doing my best to work through those. That coupled with some of my best friends progressing in their relationships was a lot to deal with. I think also living with a couple kind of exacerbated some of those mental stressors. And don't get me wrong! I could NOT be happier for my friends. Two of my best friends in the absolute world are dating sisters. One is engaged and one is well on the path to be engaged. That makes my heart sing - no doubt about it. And it also is a good example of healthy relationships and things that I am going to strive for in further relationships.  -->
 
-I think - and I realize that for a public blog post - some of this is pretty personal, but I think it's good to air some of this out. I journal daily, and talk through some of these things, but I think publicly stating insecurities like this is empowering and helpful. 
+I realize that for a public blog post - perhaps that is too personal, but I feel it's good to air some of this out. I journal daily, and talk through some of these things, but I think publicly stating insecurities like this is empowering and helpful.
 
-Physically, I think 2022 was a good year for me. I got to run my first ever trail run - Dances with Dirt Devil's Lake - in Steinke Basin in the Wisconsin Dells. I was biking and running a ton and felt good. SF is a feeder for great outdoor athletic bonding. 
+Physically, 2022 was a good year for me. I got to run my first ever trail run - Dances with Dirt Devil's Lake - in Steinke Basin in the Wisconsin Dells. I was biking and running a ton and felt good. SF is a feeder for great outdoor athletic bonding.
 
 And the big news on my 2022 radar is that I moved out of SF. Basically one year later, and I moved to NYC. For a plethora of reasons but a leading factor is that many of my friends were moving and I wanted to live in the city at least for some time before not really being able to / not wanting to. 
 
