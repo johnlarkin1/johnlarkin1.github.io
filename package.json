@@ -5,13 +5,17 @@
   "main": "gulpfile.js",
   "type": "module",
   "dependencies": {
+    "crypto-js": "^4.1.1",
     "dist": "*",
     "fg-loadcss": "*",
     "jquery": "*",
     "lazysizes": "*",
     "normalize.css": "*",
     "picturefill": "*",
+    "prompt-sync": "^4.2.0",
     "sass": "^1.49.9",
+    "sha1": "^1.1.1",
+    "staticrypt": "^2.3.5",
     "velocity-animate": "*"
   },
   "devDependencies": {
