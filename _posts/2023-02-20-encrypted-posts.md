@@ -6,9 +6,8 @@ categories: [Development]
 test-encrypted: true
 encrypted: true
 encrypted-hash: 3aa4cb08d481cfe2b08e4a5e31777f642263d58d
+summary: I wanted to see if I could encrypt a blog post (in some way)
 ---
-
-I wanted to see if I could fully encrypt - in a borderline seamless way - some of my blog posts.
 
 # Introduction
 

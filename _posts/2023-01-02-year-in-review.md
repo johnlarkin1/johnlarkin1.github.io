@@ -3,9 +3,9 @@ title: 2022 - A Year in Review
 layout: post
 featured-img: 2022-year
 categories: [Year in Review]
+summary: What could be more fitting for 2022 than generating the above template with DALLE?
 ---
 
-What could be more fitting for 2022 than generating the above template with [DALLE][dalle]?
 
 Introduction
 ============
