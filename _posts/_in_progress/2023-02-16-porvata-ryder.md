@@ -1,5 +1,5 @@
 ---
-title: Porvata and SPAR Integration
+title: Porvata and Ryder Integration
 layout: post
 featured-img: porvata
 categories: [Development, Friendship, Favorites]

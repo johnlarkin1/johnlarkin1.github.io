@@ -3,6 +3,7 @@ title: Porvata and SPAR Integration
 layout: post
 featured-img: porvata
 categories: [Development, Friendship, Favorites]
+summary: I got to work with my best friend Will on a fun technical project!
 ---
 
 I got to work with my best friend [Will][will] on an interesting development project. This was by far one of my favorite pieces of development work I've done.

@@ -3,9 +3,10 @@ title: 2021 - A Year in Review
 layout: post
 featured-img: 2021-year
 categories: [Year in Review]
+summary: Lots of changes!
 ---
 
-Lots of changes. 
+Lots of changes.
 
 Introduction
 ============

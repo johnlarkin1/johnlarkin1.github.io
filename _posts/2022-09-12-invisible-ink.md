@@ -3,6 +3,7 @@ title: Invisible Ink
 layout: post
 featured-img: invisible-ink
 categories: [Quick]
+summary: I'm a sucker for invisible ink
 ---
 
 I thought it'd be fun to add some invisible ink to the blog. 

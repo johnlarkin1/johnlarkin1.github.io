@@ -3,6 +3,7 @@ title: 2020 - An Unforgettable Year in Review
 layout: post
 featured-img: 2020-year
 categories: [Year in Review]
+summary: Sheesh.
 ---
 
 Sheesh. 

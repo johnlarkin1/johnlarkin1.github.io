@@ -3,6 +3,7 @@ title: Stanford's CS193 - Developing Apps for iOS
 layout: post
 featured-img: ios-development
 categories: [Education]
+summary: Exploring SwiftUI and iOS app development.
 ---
 
 Exploring SwiftUI and iOS app development.

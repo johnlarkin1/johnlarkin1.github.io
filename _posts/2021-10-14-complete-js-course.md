@@ -3,6 +3,7 @@ title: Udemy - Complete JavaScript Course 2021
 layout: post
 featured-img: javascript
 categories: [Education]
+summary: Sharpening up my JavaScript skills and exploring web dev a bit more.
 ---
 
 Sharpening up my JavaScript skills and exploring web dev a bit more.
