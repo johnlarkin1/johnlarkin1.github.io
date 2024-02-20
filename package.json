@@ -16,7 +16,8 @@
     "sass": "^1.49.9",
     "sha1": "^1.1.1",
     "staticrypt": "^2.3.5",
-    "velocity-animate": "*"
+    "velocity-animate": "*",
+    "sharp": "^0.33.2"
   },
   "devDependencies": {
     "babel-core": "*",
@@ -29,18 +30,6 @@
     "eslint-config-jquery": "*",
     "eslint-plugin-dollar-sign": "*",
     "eslint-plugin-jquery": "*",
-    "gulp": "*",
-    "gulp-autoprefixer": "*",
-    "gulp-clean": "*",
-    "gulp-htmlmin": "*",
-    "gulp-imagemin": "*",
-    "gulp-notify": "*",
-    "gulp-rename": "*",
-    "gulp-responsive": "*",
-    "gulp-sass": "*",
-    "gulp-size": "*",
-    "gulp-sourcemaps": "*",
-    "gulp-uglify": "*",
     "sw-precache": "*",
     "vinyl-buffer": "*",
     "vinyl-source-stream": "*"
