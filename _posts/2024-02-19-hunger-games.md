@@ -19,7 +19,7 @@ We're going to focus on the third one in this post.
 
 # Context
 
-My girlfriend is a bit of a foodie. She's lived in New York for a long time and as a result, she knows the city better, and as a result, knows the restaurants waaaay better than me.
+My girlfriend is a bit of a foodie. She's lived in New York for a long time and as a result, she knows the city better and therefore the restaurants waaaay better than me.
 
 Many restaurants are on [Resy][resy], which is a great company and website. And some have very absurd and artificial rules about like "ok we only post 7 days before at 9am". And that's where we're going to focus in. Specifically - and I'll drop names - on [Don Angie][don-angie].
 
@@ -29,15 +29,15 @@ Many restaurants are on [Resy][resy], which is a great company and website. And 
 
 # Approach and Kudos
 
-So I check at 9:10am one day for a week out and literally all the reservations from 5pm - 11pm are gone :thinking:. Now, I don't know about to you, but that seems _slightly_ suspicious and I, of course, assume it's because everyone is basically technical now and there are bots that are scraping and targeting these high profile restaurants and then selling reservations on a secondary market because people are scumbags.
+Don Angie does exactly this - list reservations 7 days out at 9am. So I check at 9:10am one day for a week out and literally all the reservations from 5pm - 11pm are gone :thinking:. I don't know about to you, but that seems _slightly_ suspicious. I assume it's because there are loads of bots targeting these high profile restaurants and then selling reservations on a secondary market because people are scumbags.
 
-Now... I figure screw that and I'm going to just automate this at well, so at 9:00am i'll have some booking go through automatically.
+I figured that's ok though because... if you can't beat 'em, join em. I'll just automate this at well and join the foray.
 
 Now, I'm not going to lie, there's not a lot of code I wrote for this post, so I largely want this to just be an attribution of this [Github Repo](https://github.com/robertjdominguez/ez-resy). I want to give a big shoutout to Rob Dominguez for making this an open source project and not being an asshole. [Here's][rob-gh] his Github repo and [here's][rob-dev] his actual webpage. So feel free to give him some click traffic.
 
 # Technical Solution
 
-So again, there wasn't too much that I needed to do here. I bascially checked out his repo and then built a little wrapper script. I made a fork here: https://github.com/johnlarkin1/ez-resy-fork . It has a couple of helpful scripts good for targeting from cron.
+Again, there wasn't too much that I needed to do here. I checked out the above repo and then built a little wrapper script. I made a fork here: https://github.com/johnlarkin1/ez-resy-fork . It has a couple of helpful scripts good for targeting from cron (setting up environ, retry logic, etc).
 
 The way the repo works is that you:
 
