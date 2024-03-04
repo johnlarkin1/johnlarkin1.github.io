@@ -22,7 +22,7 @@ navigation: # Navigation links
   - {name: 'Contact', link: '/contact'}
 
 tagline: >
-My personal coding blog and thought journal.
+  My personal coding blog and thought journal.
 
 hero_img: posts/everest-edit_lg.jpg # Main background image: use the path from /assets/img/ => This will output /assets/img/posts/sleek_lg.jpg
 
