@@ -12,17 +12,21 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 const src = {
-  js: "_js/scripts.js"
+  js: '_js/scripts.js',
 };
 const dist = {
-  js: "_site/assets/js"
+  js: 'assets/js',
 };
 
 function bundleJS() {
   const b = browserify({
     entries: path.join(__dirname, src.js),
     debug: true,
-    transform: [babelify.configure({ /* your babel config here */ })]
+    transform: [
+      babelify.configure({
+        /* your babel config here */
+      }),
+    ],
   });
 
   b.transform(uglifyify, { global: true });
@@ -50,7 +54,7 @@ function bundleJS() {
 
     // Optionally, setup browserSync for live reloading
     browserSync.init({
-      server: path.join(__dirname, "./_site")
+      server: path.join(__dirname, './_site'),
     });
 
     browserSync.reload();
