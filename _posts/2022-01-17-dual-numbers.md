@@ -6,7 +6,7 @@ header-includes:
    - \usepackage{cancel}
 featured-img: dual-numbers
 mathjax: true
-categories: [Number Theory]
+categories: [Number Theory, Favorites]
 ---
 
 An homage to Matt and Swarthmore.
