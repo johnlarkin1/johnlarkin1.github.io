@@ -300,7 +300,7 @@ There are probably more, but from my research, these seem like the leading conte
 
 This slide is going to be a good illustration of the different approaches[^2]:
 
-![agg2](/images/hac/linkage-types.jpg){: .center }
+![agg2](/images/hac/linkage-types.jpg){: .center-image }
 
 As of right now, I'll try to support multiple types of linkage types. 
 
