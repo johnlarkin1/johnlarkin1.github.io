@@ -59,8 +59,6 @@ exclude:
   - npm-debug.log
   - gulpfile.js
   - sleek.jpg
-  - _site/assets/css/main.css
-  - _site/assets/js/bundle.js
 
 include: ['_pages']
 permalink: /:year/:title/

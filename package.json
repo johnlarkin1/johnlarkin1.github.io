@@ -13,6 +13,15 @@
     "dist": "*",
     "fg-loadcss": "*",
     "fs-extra": "^11.2.0",
+    "gulp-autoprefixer": "^9.0.0",
+    "gulp-clean": "^0.4.0",
+    "gulp-htmlmin": "^5.0.1",
+    "gulp-notify": "^4.0.0",
+    "gulp-rename": "^2.0.0",
+    "gulp-sass": "^5.1.0",
+    "gulp-size": "^5.0.0",
+    "gulp-sourcemaps": "^3.0.0",
+    "gulp-uglify": "^3.0.2",
     "html-minifier": "^4.0.0",
     "imagemin-cli": "^7.0.0",
     "jquery": "*",
@@ -62,7 +71,7 @@
     "watch:styles": "chokidar '_sass/**/*.scss' -c 'npm run sass'",
     "watch:js": "chokidar '_js/**/*.js' -c 'npm run js'",
     "watch:jekyll": "chokidar '(*.html|_layouts/*.html|_includes/*.html|_posts/*.md|pages_/*.md|_include/*html)' -c 'npm run jekyll-build'",
-    "start": "npm-run-all build --parallel serve watch"
+    "start": "gulp"
   },
   "repository": {
     "type": "git",
