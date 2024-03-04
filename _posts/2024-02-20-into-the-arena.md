@@ -713,7 +713,15 @@ The actual implementation is very simple, so I'll include that here:
 
 Honestly? Pretty well! 
 
-<div class="table-wrapper">
+<div class="table-wrapper"
+     style="display: block; /* or display: flex; */
+            width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+            position: relative; /* if needed */
+            left: 50%;
+            transform: translateX(-50%);"
+>
 <table>
     <thead>
       <tr>
