@@ -54,7 +54,7 @@ summary: Exploring a popular method of cluster analysis.
 
 Curious how you can make such fun clustering graphs like this? Read on! Or skip to here look at the results: [Takeways - how did we do?!](#takeways---how-did-we-do).
 
-![complete_third_party](/images/hac/dendrogram_3rd_party_complex_complete_leven.png){: .center}
+![complete_third_party](/images/hac/dendrogram_3rd_party_complex_complete_leven.png){: .center-image}
 
 # Introduction
 
@@ -341,7 +341,7 @@ This is relatively straight forward, and I'm utilizing `sklearn.metrics` 's `con
 
 My FAVORITE visual I saw while researching the confusion matrix was here: 
 
-![confusion matrix]( https://miro.medium.com/v2/resize:fit:924/format:webp/1*7EYylA6XlXSGBCF77j_rOA.png ){: .center}
+![confusion matrix]( https://miro.medium.com/v2/resize:fit:924/format:webp/1*7EYylA6XlXSGBCF77j_rOA.png ){: .center-image}
 
 courtesy of here[^3]. 
 
@@ -1462,37 +1462,37 @@ It'd be lovely if we could try different distance functions.
 
 ## Dendrogram Visualization
 
-![scratch_simple_single_leven](/images/hac/dendrogram_scratch_simple_single_leven.png){: .center}
+![scratch_simple_single_leven](/images/hac/dendrogram_scratch_simple_single_leven.png){: .center-image}
 <div class="image-caption">scratch_simple_single_leven</div>
-![3rd_party_simple_single_leven](/images/hac/dendrogram_3rd_party_simple_single_leven.png){: .center}
+![3rd_party_simple_single_leven](/images/hac/dendrogram_3rd_party_simple_single_leven.png){: .center-image}
 <div class="image-caption">3rd_party_simple_single_leven</div>
-![scratch_simple_complete_leven](/images/hac/dendrogram_scratch_simple_complete_leven.png){: .center}
+![scratch_simple_complete_leven](/images/hac/dendrogram_scratch_simple_complete_leven.png){: .center-image}
 <div class="image-caption">scratch_simple_complete_leven</div>
-![3rd_party_simple_complete_leven](/images/hac/dendrogram_3rd_party_simple_complete_leven.png){: .center}
+![3rd_party_simple_complete_leven](/images/hac/dendrogram_3rd_party_simple_complete_leven.png){: .center-image}
 <div class="image-caption">3rd_party_simple_complete_leven</div>
-![scratch_simple_average_leven](/images/hac/dendrogram_scratch_simple_average_leven.png){: .center}
+![scratch_simple_average_leven](/images/hac/dendrogram_scratch_simple_average_leven.png){: .center-image}
 <div class="image-caption">scratch_simple_average_leven</div>
-![3rd_party_simple_average_leven](/images/hac/dendrogram_3rd_party_simple_average_leven.png){: .center}
+![3rd_party_simple_average_leven](/images/hac/dendrogram_3rd_party_simple_average_leven.png){: .center-image}
 <div class="image-caption">3rd_party_simple_average_leven</div>
-![3rd_party_simple_ward_leven](/images/hac/dendrogram_3rd_party_simple_ward_leven.png){: .center}
+![3rd_party_simple_ward_leven](/images/hac/dendrogram_3rd_party_simple_ward_leven.png){: .center-image}
 <div class="image-caption">3rd_party_simple_ward_leven</div>
-![3rd_party_simple_centroid_leven](/images/hac/dendrogram_3rd_party_simple_centroid_leven.png){: .center}
+![3rd_party_simple_centroid_leven](/images/hac/dendrogram_3rd_party_simple_centroid_leven.png){: .center-image}
 <div class="image-caption">3rd_party_simple_centroid_leven</div>
-![scratch_complex_single_leven](/images/hac/dendrogram_scratch_complex_single_leven.png){: .center}
+![scratch_complex_single_leven](/images/hac/dendrogram_scratch_complex_single_leven.png){: .center-image}
 <div class="image-caption">scratch_complex_single_leven</div>
-![3rd_party_complex_single_leven](/images/hac/dendrogram_3rd_party_complex_single_leven.png){: .center}
+![3rd_party_complex_single_leven](/images/hac/dendrogram_3rd_party_complex_single_leven.png){: .center-image}
 <div class="image-caption">3rd_party_complex_single_leven</div>
-![scratch_complex_complete_leven](/images/hac/dendrogram_scratch_complex_complete_leven.png){: .center}
+![scratch_complex_complete_leven](/images/hac/dendrogram_scratch_complex_complete_leven.png){: .center-image}
 <div class="image-caption">scratch_complex_complete_leven</div>
-![3rd_party_complex_complete_leven](/images/hac/dendrogram_3rd_party_complex_complete_leven.png){: .center}
+![3rd_party_complex_complete_leven](/images/hac/dendrogram_3rd_party_complex_complete_leven.png){: .center-image}
 <div class="image-caption">3rd_party_complex_complete_leven</div>
-![scratch_complex_average_leven](/images/hac/dendrogram_scratch_complex_average_leven.png){: .center}
+![scratch_complex_average_leven](/images/hac/dendrogram_scratch_complex_average_leven.png){: .center-image}
 <div class="image-caption">scratch_complex_average_leven</div>
-![3rd_party_complex_average_leven](/images/hac/dendrogram_3rd_party_complex_average_leven.png){: .center}
+![3rd_party_complex_average_leven](/images/hac/dendrogram_3rd_party_complex_average_leven.png){: .center-image}
 <div class="image-caption">3rd_party_complex_average_leven</div>
-![3rd_party_complex_ward_leven](/images/hac/dendrogram_3rd_party_complex_ward_leven.png){: .center}
+![3rd_party_complex_ward_leven](/images/hac/dendrogram_3rd_party_complex_ward_leven.png){: .center-image}
 <div class="image-caption">3rd_party_complex_ward_leven</div>
-![3rd_party_complex_centroid_leven](/images/hac/dendrogram_3rd_party_complex_centroid_leven.png){: .center}
+![3rd_party_complex_centroid_leven](/images/hac/dendrogram_3rd_party_complex_centroid_leven.png){: .center-image}
 <div class="image-caption">3rd_party_complex_centroid_leven</div>
 
 [^1]: https://www.learndatasci.com/glossary/hierarchical-clustering/
