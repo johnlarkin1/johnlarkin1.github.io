@@ -46,6 +46,11 @@
       <span class="post-card__meta">
         <time>{{ post.date | date: date_format }}</time>
       </span>
+      <span class="post-card__meta"> - </span>
+      <span class="post-card__meta">
+        {% assign words = post.content | number_of_words %} {% if words < 360 %} 1 min {% else %} {{ words |
+        divided_by:180 }} mins {% endif %} read
+      </span>
     </div>
     {% if post.summary %}
     <p>{{ post.summary | strip_html | truncatewords:20 }}</p>
