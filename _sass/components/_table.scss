@@ -7,10 +7,12 @@ table {
   border-spacing: 0;
   border: 1px solid $border;
   border-radius: 4px;
-  font-size: 14.5px;
+  font-size: 1rem;
 
   th {
     background-color: $light-bg-color;
+    font-weight: bold;
+    color: white;
   }
 
   th,

@@ -1,89 +1,88 @@
-window.jQuery = window.$ = require( "jquery" );
-require( "velocity-animate/velocity.js" );
-require( "lazysizes" );
-require( "lazysizes/plugins/unveilhooks/ls.unveilhooks.js" );
+window.jQuery = window.$ = require('jquery');
+require('velocity-animate/velocity.js');
+require('lazysizes');
+require('lazysizes/plugins/unveilhooks/ls.unveilhooks.js');
 
 // Jquery & Velocity JS included in GULP
-$( document ).ready( function() {
-    toggleMobileNav();
-    ShowHideNav();
-    formCheck();
-    filterBlogCategories();
-} );
+$(document).ready(function () {
+  toggleMobileNav();
+  ShowHideNav();
+  formCheck();
+  filterBlogCategories();
+});
 
 // Close modal if ESC is pressed
-$( document ).keyup( function( e ) {
-    e.keyCode === 27 ? removeModal() : null;
-} );
+$(document).keyup(function (e) {
+  e.keyCode === 27 ? removeModal() : null;
+});
 
-$( window ).resize( function() {
-    $( ".header" ).removeClass( "hide-nav" ); // Ensure nav will be shown on resize
-    $( ".header__toggle" ).removeClass( "--open" );
-    $( ".header__links" ).removeClass( "js--open" );
-    $( ".header__links" ).removeAttr( "style" ); // If mobile nav was collapsed, make sure it's show on DESK
-    $( ".header__overlay" ).remove(); // Remove mobile navigation overlay in case it was opened
-} );
+$(window).resize(function () {
+  $('.header').removeClass('hide-nav'); // Ensure nav will be shown on resize
+  $('.header__toggle').removeClass('--open');
+  $('.header__links').removeClass('js--open');
+  $('.header__links').removeAttr('style'); // If mobile nav was collapsed, make sure it's show on DESK
+  $('.header__overlay').remove(); // Remove mobile navigation overlay in case it was opened
+});
 
 /*-------------------------------------------------------------------------*/
 /* MOBILE NAVIGATION */
 /* -----------------------------------------------------------------------*/
 
 function toggleMobileNav() {
-    $( ".header__toggle" ).click( function() {
-      if ( !$( ".header__links" ).is( ".velocity-animating" ) ) {
-        if ( $( ".header__links" ).hasClass( "js--open" ) ) {
-            hideMobileNav();
-        } else {
-            openMobileNav();
-        }
-      }
-    } );
-
-    $( "body" ).on( "click", function( e ) {
-
-      if ( e.target.classList.contains( "header__overlay" ) ) {
+  $('.header__toggle').click(function () {
+    if (!$('.header__links').is('.velocity-animating')) {
+      if ($('.header__links').hasClass('js--open')) {
         hideMobileNav();
+      } else {
+        openMobileNav();
       }
-    } );
+    }
+  });
+
+  $('body').on('click', function (e) {
+    if (e.target.classList.contains('header__overlay')) {
+      hideMobileNav();
+    }
+  });
 }
 
 function openMobileNav() {
-    $( ".header__links" ).velocity( "slideDown", {
-        duration: 300,
-        easing: "ease-out",
-        display: "block",
-        visibility: "visible",
-        begin: function() {
-            $( ".header__toggle" ).addClass( "--open" );
-            $( "body" ).append( "<div class='header__overlay'></div>" );
-        },
-        progress: function() {
-            $( ".header__overlay" ).addClass( "--open" );
-        },
-        complete: function() {
-            $( this ).addClass( "js--open" );
-        }
-    } );
+  $('.header__links').velocity('slideDown', {
+    duration: 300,
+    easing: 'ease-out',
+    display: 'block',
+    visibility: 'visible',
+    begin: function () {
+      $('.header__toggle').addClass('--open');
+      $('body').append("<div class='header__overlay'></div>");
+    },
+    progress: function () {
+      $('.header__overlay').addClass('--open');
+    },
+    complete: function () {
+      $(this).addClass('js--open');
+    },
+  });
 }
 
 function hideMobileNav() {
-    $( ".header__overlay" ).remove();
-    $( ".header__links" ).velocity( "slideUp", {
-        duration: 300,
-        easing: "ease-out",
-        display: "none",
-        visibility: "hidden",
-        begin: function() {
-            $( ".header__toggle" ).removeClass( "--open" );
-        },
-        progress: function() {
-            $( ".header__overlay" ).removeClass( "--open" );
-        },
-        complete: function() {
-            $( this ).removeClass( "js--open" );
-            $( ".header__toggle, .header__overlay" ).removeClass( "--open" );
-        }
-    } );
+  $('.header__overlay').remove();
+  $('.header__links').velocity('slideUp', {
+    duration: 300,
+    easing: 'ease-out',
+    display: 'none',
+    visibility: 'hidden',
+    begin: function () {
+      $('.header__toggle').removeClass('--open');
+    },
+    progress: function () {
+      $('.header__overlay').removeClass('--open');
+    },
+    complete: function () {
+      $(this).removeClass('js--open');
+      $('.header__toggle, .header__overlay').removeClass('--open');
+    },
+  });
 }
 
 /*-------------------------------------------------------------------------*/
@@ -91,65 +90,61 @@ function hideMobileNav() {
 /* -----------------------------------------------------------------------*/
 
 function ShowHideNav() {
-    var previousScroll = 0, // previous scroll position
-        $header = $( ".header" ), // just storing header in a variable
-        navHeight = $header.outerHeight(), // nav height
-        detachPoint = 576 + 60, // after scroll past this nav will be hidden
-        hideShowOffset = 6; // scroll value after which nav will be shown/hidden
+  var previousScroll = 0, // previous scroll position
+    $header = $('.header'), // just storing header in a variable
+    navHeight = $header.outerHeight(), // nav height
+    detachPoint = 576 + 60, // after scroll past this nav will be hidden
+    hideShowOffset = 6; // scroll value after which nav will be shown/hidden
 
-    $( window ).scroll( function() {
-        var wW = 1024;
+  $(window).scroll(function () {
+    var wW = 1024;
 
-        // if window width is more than 1024px start show/hide nav
-        if ( $( window ).width() >= wW ) {
-            if ( !$header.hasClass( "fixed" ) ) {
-                var currentScroll = $( this ).scrollTop(),
-                    scrollDifference = Math.abs( currentScroll - previousScroll );
+    // if window width is more than 1024px start show/hide nav
+    if ($(window).width() >= wW) {
+      if (!$header.hasClass('fixed')) {
+        var currentScroll = $(this).scrollTop(),
+          scrollDifference = Math.abs(currentScroll - previousScroll);
 
-                // if scrolled past nav
-                if ( currentScroll > navHeight ) {
-
-                    // if scrolled past detach point -> show nav
-                    if ( currentScroll > detachPoint ) {
-                        if ( !$header.hasClass( "fix-nav" ) ) {
-                            $header.addClass( "fix-nav" );
-                        }
-                    }
-
-                    if ( scrollDifference >= hideShowOffset ) {
-                        if ( currentScroll > previousScroll ) {
-
-                            // scroll down -> hide nav
-                            if ( !$header.hasClass( "hide-nav" ) ) {
-                                $header.addClass( "hide-nav" );
-                              }
-                        } else {
-
-                            // scroll up -> show nav
-                            if ( $header.hasClass( "hide-nav" ) ) {
-                                $( $header ).removeClass( "hide-nav" );
-                            }
-                        }
-                    }
-                } else {
-
-                    // at the top
-                    if ( currentScroll <= 0 ) {
-                        $header.removeClass( "hide-nav show-nav" );
-                        $header.addClass( "top" );
-                    }
-                }
+        // if scrolled past nav
+        if (currentScroll > navHeight) {
+          // if scrolled past detach point -> show nav
+          if (currentScroll > detachPoint) {
+            if (!$header.hasClass('fix-nav')) {
+              $header.addClass('fix-nav');
             }
+          }
 
-            // scrolled to the bottom -> show nav
-            if ( ( window.innerHeight + window.scrollY ) >= document.body.offsetHeight ) {
-                $header.removeClass( "hide-nav" );
+          if (scrollDifference >= hideShowOffset) {
+            if (currentScroll > previousScroll) {
+              // scroll down -> hide nav
+              if (!$header.hasClass('hide-nav')) {
+                $header.addClass('hide-nav');
+              }
+            } else {
+              // scroll up -> show nav
+              if ($header.hasClass('hide-nav')) {
+                $($header).removeClass('hide-nav');
+              }
             }
-            previousScroll = currentScroll;
+          }
         } else {
-            $header.addClass( "fix-nav" );
+          // at the top
+          if (currentScroll <= 0) {
+            $header.removeClass('hide-nav show-nav');
+            $header.addClass('top');
+          }
         }
-    } );
+      }
+
+      // scrolled to the bottom -> show nav
+      if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
+        $header.removeClass('hide-nav');
+      }
+      previousScroll = currentScroll;
+    } else {
+      $header.addClass('fix-nav');
+    }
+  });
 }
 
 /*-------------------------------------------------------------------------*/
@@ -157,105 +152,159 @@ function ShowHideNav() {
 /* -----------------------------------------------------------------------*/
 
 function openModal() {
-    $( "body" ).css( "overflow", "hidden" );
-    $( ".modal, .modal__overlay" ).show().css( "display", "flex" );
-    $( ".modal__inner" ).velocity( { translateY: 0, opacity: 1 } );
-    $( ".modal__overlay" ).velocity( { opacity: 1 }, 100 );
+  $('body').css('overflow', 'hidden');
+  $('.modal, .modal__overlay').show().css('display', 'flex');
+  $('.modal__inner').velocity({ translateY: 0, opacity: 1 });
+  $('.modal__overlay').velocity({ opacity: 1 }, 100);
 }
 
 function removeModal() {
-    $( "body" ).css( { "overflow": "visible" } );
-    $( ".modal, .modal__overlay, .modal__inner" ).velocity( { opacity: 0 }, function() {
-        $( ".modal" ).css( { opacity: 1 } );
-        $( ".modal__inner" ).css( {
-            "-webkit-transform": "translateY(200px)",
-            "-ms-transform": "translateY(200px)",
-            transform: "translateY(200px)"
-        } );
-        $( ".modal, .modal__overlay" ).hide();
-        $( ".modal__body" ).empty();
-    } );
+  $('body').css({ overflow: 'visible' });
+  $('.modal, .modal__overlay, .modal__inner').velocity({ opacity: 0 }, function () {
+    $('.modal').css({ opacity: 1 });
+    $('.modal__inner').css({
+      '-webkit-transform': 'translateY(200px)',
+      '-ms-transform': 'translateY(200px)',
+      transform: 'translateY(200px)',
+    });
+    $('.modal, .modal__overlay').hide();
+    $('.modal__body').empty();
+  });
 }
 
-$( ".js-modal-close" ).click( function() {
-    removeModal();
-} );
+$('.js-modal-close').click(function () {
+  removeModal();
+});
 
-$( ".modal__overlay" ).click( function() {
-    removeModal();
-} );
+$('.modal__overlay').click(function () {
+  removeModal();
+});
 
 /*-------------------------------------------------------------------------*/
 /* FORM VALIDATION */
 /* -----------------------------------------------------------------------*/
 
 function formCheck() {
-    $( ".js-submit" ).click( function( e ) {
-        e.preventDefault();
+  $('.js-submit').click(function (e) {
+    e.preventDefault();
 
-        var $inputs = $( ".form__input input" );
-        var textarea = $( ".form__input textarea" );
-        var isError = false;
+    var $inputs = $('.form__input input');
+    var textarea = $('.form__input textarea');
+    var isError = false;
 
-        $( ".form__input" ).removeClass( "error" );
-        $( ".error-data" ).remove();
+    $('.form__input').removeClass('error');
+    $('.error-data').remove();
 
-        for ( var i = 0; i < $inputs.length; i++ ) {
-            var input = $inputs[ i ];
-            if ( $( input ).attr( "required", true ) && !validateRequired( $( input ).val() ) ) {
+    for (var i = 0; i < $inputs.length; i++) {
+      var input = $inputs[i];
+      if ($(input).attr('required', true) && !validateRequired($(input).val())) {
+        addErrorData($(input), 'This field is required');
 
-                addErrorData( $( input ), "This field is required" );
-
-                isError = true;
-            }
-            if ( $( input ).attr( "required", true ) && $( input ).attr( "type" ) === "email" && !validateEmail( $( input ).val() ) ) {
-                addErrorData( $( input ), "Email address is invalid" );
-                isError = true;
-            }
-            if ( $( textarea ).attr( "required", true ) && !validateRequired( $( textarea ).val() ) ) {
-                addErrorData( $( textarea ), "This field is required - is this change getting detected" );
-                isError = true;
-            }
-        }
-        if ( isError === false ) {
-            $( "#contactForm" ).submit();
-        }
-    } );
+        isError = true;
+      }
+      if ($(input).attr('required', true) && $(input).attr('type') === 'email' && !validateEmail($(input).val())) {
+        addErrorData($(input), 'Email address is invalid');
+        isError = true;
+      }
+      if ($(textarea).attr('required', true) && !validateRequired($(textarea).val())) {
+        addErrorData($(textarea), 'This field is required - is this change getting detected');
+        isError = true;
+      }
+    }
+    if (isError === false) {
+      $('#contactForm').submit();
+    }
+  });
 }
 
 // Validate if the input is not empty
-function validateRequired( value ) {
-    if ( value === "" ) {
-      return false;
-    }
-    return true;
+function validateRequired(value) {
+  if (value === '') {
+    return false;
+  }
+  return true;
 }
 
 // Validate if the email is using correct format
-function validateEmail( value ) {
-    if ( value !== "" ) {
-        return /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/i.test( value );
-    }
-    return true;
+function validateEmail(value) {
+  if (value !== '') {
+    return /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/i.test(
+      value
+    );
+  }
+  return true;
 }
 
 // Add error message to the input
-function addErrorData( element, error ) {
-    element.parent().addClass( "error" );
-    element.after( "<span class='error-data'>" + error + "</span>" );
+function addErrorData(element, error) {
+  element.parent().addClass('error');
+  element.after("<span class='error-data'>" + error + '</span>');
 }
 
 /* Filter navigation */
 function filterBlogCategories() {
-    $( ".filter-click" ).click( function( e ) {
-        e.preventDefault();
-        var button = $( ".filter-click" );
-        var button_val = button.val();
+  $('.filter-click').click(function (e) {
+    e.preventDefault();
+    var button = $('.filter-click');
+    var button_val = button.val();
 
-        return button_val;
-    });
+    return button_val;
+  });
 }
 
+document.addEventListener('DOMContentLoaded', (event) => {
+  // Check if the footnotes div exists
+  const footnotesDiv = document.querySelector('.footnotes');
+  if (footnotesDiv) {
+    // Create the header element
+    const header = document.createElement('h2');
+    header.className = 'footnotes-header';
+    header.textContent = 'Footnotes';
+
+    // Insert the header before the footnotes content
+    footnotesDiv.insertBefore(header, footnotesDiv.firstChild);
+  }
+});
+
+document.addEventListener('DOMContentLoaded', (event) => {
+  document.querySelectorAll('td.f1-score').forEach((cell) => {
+    if (cell.textContent !== 'N/A') {
+      const score = parseFloat(cell.textContent);
+      if (score >= 0.8) {
+        cell.style.backgroundColor = '#4CAF50'; // Green
+      } else if (score >= 0.6) {
+        cell.style.backgroundColor = '#FFEB3B'; // Yellow
+      } else {
+        cell.style.backgroundColor = '#F44336'; // Red
+      }
+    }
+  });
+});
+
+document.addEventListener('DOMContentLoaded', (event) => {
+  const cells = Array.from(document.querySelectorAll('td.cluster-time')).filter((cell) => cell.textContent !== 'N/A');
+  const scores = cells.map((cell) => parseFloat(cell.textContent));
+  // Apply logarithm + 1 to avoid log(0)
+  const logScores = scores.map((score) => Math.log1p(score));
+  const minLogScore = Math.min(...logScores);
+  const maxLogScore = Math.max(...logScores);
+
+  function interpolateColor(logScore, minLogScore, maxLogScore) {
+    // Adjust the color interpolation to work on a logarithmic scale
+    const fraction = (logScore - minLogScore) / (maxLogScore - minLogScore);
+    const r = Math.round(255 * fraction); // Higher logScore gets more red
+    const g = Math.round(255 * (1 - fraction)); // Lower logScore gets more green
+    const b = 0; // Blue remains constant, adjust if desired
+    return `rgb(${r},${g},${b})`;
+  }
+
+  cells.forEach((cell) => {
+    const score = parseFloat(cell.textContent);
+    const logScore = Math.log1p(score); // Apply logarithm + 1 to score for color calculation
+    const color = interpolateColor(logScore, minLogScore, maxLogScore);
+    cell.style.backgroundColor = color;
+  });
+});
 
 /*-------------------------------------------------------------------------*/
 /* AJAX FORM SUBMIT

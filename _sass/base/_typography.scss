@@ -2,7 +2,7 @@
 body {
   background-color: $bg-color;
   font-family: $font-stack;
-  font-size: 1rem;
+  font-size: 0.9rem;
   line-height: 1.5;
   color: $text-color;
   -webkit-font-smoothing: antialiased;
@@ -73,7 +73,7 @@ mark {
 code {
   padding: 0.2em 0.4em;
   font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   color: $code-text-color;
   background-color: $code-bg-color;
   border-radius: 3px;
@@ -94,7 +94,7 @@ pre {
   > code {
     padding: 0;
     margin: 0;
-    font-size: 0.9rem;
+    font-size: 0.8rem;
     color: $code-text-color;
     word-break: normal;
     white-space: pre;

@@ -28,7 +28,7 @@ In addition to those great accomplishments, he also was tight with Archimedes wh
 
 However, sadly, the end of his life was not so glamorous. He got [ophthalmia] when he became older. Essentially, this is just an inflammation of the eye. However, it can be pretty intense. Unfortunately for our friend Eratosthenes, it did get pretty extreme. He became blind around 195 BC. After becoming blind, he couldn't read and he became pretty depressed. He ended up starving himself and died at 82 in Alexandria. 
 
-But! His name is not forgotten and he contributed in so many ways to get to the level of human experience that we are currently at. He also did a bit of work on prime numbers which is what we're going to talk about in this blog post. 
+But! His name is not forgotten and he contributed in so many ways to get to the level of human experience that we are currently at. **He** also did a bit of work on prime numbers which is what we're going to talk about in this blog post. 
 
 The beauty behind his simple algorithm for finding prime numbers is really its simplicity. Just staring at the gif and looking briefly at the pseudocode probably let me code it up in maybe 5 minutes. This is not a brag even. Trust me. It's just that the algorithm is really that simple. So let's get into that. 
 

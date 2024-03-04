@@ -18,20 +18,20 @@ First, a quick overview of what we'll be covering.
 - [Goals](#goals)
 - [Technology Used](#technology-used)
 - [Background](#background)
-  * [Sports Betting Context](#sports-betting-context)
-  * [Kelly Criterion](#kelly-criterion)
-  * [DraftKings](#draftkings)
+  - [Sports Betting Context](#sports-betting-context)
+  - [Kelly Criterion](#kelly-criterion)
+  - [DraftKings](#draftkings)
 - [Technical Discussion](#technical-discussion)
-  * [Part 1: Getting the Data](#part-1--getting-the-data)
-    + [Draftkings Difficulties](#draftkings-difficulties)
-      - [Approach A) Selenium + Beautiful Soup :x: :skull_and_crossbones: :x:](#approach-a--selenium---beautiful-soup--x---skull-and-crossbones---x-)
-      - [Approach B) Download .html + Beautiful Soup :x: :skull_and_crossbones: :x:](#approach-b--download-html---beautiful-soup--x---skull-and-crossbones---x-)
-      - [Approach B) Chrome Extension (winner) :white_check_mark: :partying_face: :white_check_mark:](#approach-b--chrome-extension--winner---white-check-mark---partying-face---white-check-mark-)
-  * [Part 2: Analyzing the Data](#part-2--analyzing-the-data)
-    + [Graphics](#graphics)
-    + [Technical Details](#technical-details)
-  * [Part 3 - Kelly Criterion](#part-3---kelly-criterion)
-    + [An Example](#an-example)
+  - [Part 1: Getting the Data](#part-1-getting-the-data)
+    - [Draftkings Difficulties](#draftkings-difficulties)
+      - [Approach A) Selenium + Beautiful Soup :x: :skull\_and\_crossbones: :x:](#approach-a-selenium--beautiful-soup-x-skull_and_crossbones-x)
+      - [Approach B) Download .html + Beautiful Soup :x: :skull\_and\_crossbones: :x:](#approach-b-download-html--beautiful-soup-x-skull_and_crossbones-x)
+      - [Approach B) Chrome Extension (winner) :white\_check\_mark: :partying\_face: :white\_check\_mark:](#approach-b-chrome-extension-winner-white_check_mark-partying_face-white_check_mark)
+  - [Part 2: Analyzing the Data](#part-2-analyzing-the-data)
+    - [Graphics](#graphics)
+    - [Technical Details](#technical-details)
+  - [Part 3 - Kelly Criterion](#part-3---kelly-criterion)
+    - [An Example](#an-example)
 - [Analysis Results](#analysis-results)
 - [Conclusion](#conclusion)
 
@@ -130,16 +130,25 @@ $$
 
 where
 
-$$f^{*} $$ - fraction of bankroll to wager
+$$ f^{*} $$ - fraction of bankroll to wager
 
-$$p$$ - probability of a win
+$$ p $$ - probability of a win
 
-$$b$$ - proportion of bet gained with a win
+$$ b $$ - proportion of bet gained with a win
 
 Note, for American:
 
-* If negative, $$ b = size * \frac{100}{ \| odds \| } $$ 
-* If positive, $$ b = size * \frac{ \| odds \| }{100} $$
+* If negative, 
+
+$$ 
+b = size * \frac{100}{ \| odds \| } 
+$$ 
+
+* If positive, 
+
+$$
+b = size * \frac{ \| odds \| }{100} 
+$$
 
 ## DraftKings
 

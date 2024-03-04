@@ -3,7 +3,7 @@ title: 'The Hunger Games: NYC Edition'
 layout: post
 featured-img: jules-ari-tv-dinner
 categories: [Development]
-summary: It's an absolute battle to get to get a reservation in NYC
+summary: It's an absolute battle to get to get a reservation in NYC. Maybe automation can help?
 ---
 
 # Introduction
@@ -21,7 +21,7 @@ We're going to focus on the third one in this post.
 
 My girlfriend is a bit of a foodie. She's lived in New York for a long time and as a result, she knows the city better and therefore the restaurants waaaay better than me.
 
-Many restaurants are on [Resy][resy], which is a great company and website. And some have very absurd and artificial rules about like "ok we only post 7 days before at 9am". And that's where we're going to focus in. Specifically - and I'll drop names - on [Don Angie][don-angie].
+Many restaurants are on [Resy][resy], which is a solid company. However, I don't love that restaurants impose some absurd and artificial rules about like "ok we only post 7 days before at 9am". And that's where we're going to focus in. Specifically - and I'll drop names - on [Don Angie][don-angie].
 
 ![path1](/images/hunger-games/don-angie-original.png){: .center-shrink }
 
