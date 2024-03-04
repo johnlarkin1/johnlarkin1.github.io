@@ -3,7 +3,7 @@ title: 'Into the Arena: Hierarchical Agglomerative Clustering'
 layout: post
 featured-gif: hierarch-agg-clustering
 mathjax: true
-categories: [Algorithms, Development, A.I., M.L.]
+categories: [Favorites, Algorithms, Development, A.I., M.L.]
 summary: Exploring a popular method of cluster analysis.
 ---
 
@@ -292,11 +292,11 @@ So you can imagine that you have two clusters, and the linkage is basically goin
 
 There are probably more, but from my research, these seem like the leading contenders:
 
-* Minimum Linkage / Single Linkage
-* Maximum Linkage / Complete Linkage
-* Average Linkage
-* Centroid Linkage
-* Ward's Criterion (for euclidean distances)
+* [Minimum Linkage / Single Linkage][single-linkage]
+* [Maximum Linkage / Complete Linkage][complete-linkage]
+* [Average Linkage][average-linkage]
+* [Centroid Linkage][centroid-linkage]
+* [Ward's Criterion (for euclidean distances)][wards-linkage]
 
 This slide is going to be a good illustration of the different approaches[^2]:
 
@@ -1514,3 +1514,8 @@ It'd be lovely if we could try different distance functions.
 [f1-score]: https://scikit-learn.org/stable/modules/generated/sklearn.metrics.f1_score.html
 [recall-and-precision]: https://en.wikipedia.org/wiki/Precision_and_recall
 [string-similarity-algorithms]: https://yassineelkhal.medium.com/the-complete-guide-to-string-similarity-algorithms-1290ad07c6b7
+[single-linkage]: https://en.wikipedia.org/wiki/Single-linkage_clustering
+[complete-linkage]: https://en.wikipedia.org/wiki/Complete-linkage_clustering
+[average-linkage]: https://www.statistics.com/glossary/average-group-linkage/#:~:text=The%20average%20group%20linkage%20is,centroids%20)%20of%20the%20two%20clusters.
+[centroid-linkage]: https://nlp.stanford.edu/IR-book/html/htmledition/centroid-clustering-1.html
+[wards-linkage]: https://en.wikipedia.org/wiki/Ward%27s_method
