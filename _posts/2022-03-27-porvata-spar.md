@@ -267,7 +267,7 @@ This wasn't too bad just basically required some extra validation in terms of ch
 
 Here's a demo of that:
 
-https://capture.dropbox.com/JCyXdxLMnzPGDywN
+<https://capture.dropbox.com/JCyXdxLMnzPGDywN>
 
 <p align="center">
     <iframe src="https://capture.dropbox.com/JCyXdxLMnzPGDywN?raw=1" 
