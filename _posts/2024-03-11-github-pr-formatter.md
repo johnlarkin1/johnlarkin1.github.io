@@ -32,7 +32,7 @@ The thing is, if you're titling your PRs well, they should convey enough informa
 
 # Solution
 
-So perhaps a fun Chrome Extension can help here!
+So perhaps a fun Chrome Extension can help!
 
 What if we just let you pick how you wanted your resulting link to look in Slack? So here's how I like it:
 
