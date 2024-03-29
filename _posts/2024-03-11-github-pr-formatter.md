@@ -3,7 +3,7 @@ title: A Better Way to Reference PRs
 layout: post
 featured-img: gh-pr-formatter-icon
 categories: [Development]
-summary: I'm not a fan of Slack auto unfurling my whole PR description.
+summary: My first published Chrome Extension! All because I'm not a fan of Slack auto unfurling my whole PR description.
 ---
 
 # 🔌 Shameless (somewhat shameful) Plug! 🔌

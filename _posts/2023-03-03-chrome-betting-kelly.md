@@ -103,17 +103,17 @@ For a little bit more background, most sites use American Odds. Now, there's bas
 I'm not going to give a full rundown of all of those, and how to convert between, but basically, some examples:
 
 - American odds
-  - `-150` would mean you have to outlay $150 to win $100
-  - `+150` would mean you have to outlay $100 to win $150
+  - `-150` would mean you have to outlay `$150` to win `$100`
+  - `+150` would mean you have to outlay `$100` to win `$150`
   - Basically meaning negative American odds indicates favorable events
 - Fractional odds
-  - `2 to 3` would mean you have to outlay $300 to win $200 (note that this is the same as -150 American)
-  - `3 to 2` would mean you have to outlay $200 to win $300
+  - `2 to 3` would mean you have to outlay `$300` to win `$200` (note that this is the same as -150 American)
+  - `3 to 2` would mean you have to outlay `$200` to win `$300`
 - Decimal odds
-  - `1.667` would mean if you bet $150 you'd win $100 (or in other words if you bet 100, you'd get 1.667)
-  - `2.500` would mean if you bet $100 you'd get $150 (basically subtracting off the $100 (or 1) that was bet)
+  - `1.667` would mean if you bet `$150` you'd win `$100` (or in other words if you bet 100, you'd get 1.667)
+  - `2.500` would mean if you bet `$100` you'd get `$150` (basically subtracting off the `$100` (or 1) that was bet)
 
-I personally find decimal the most confusing, but it's basically just normalized to $1.
+I personally find decimal the most confusing, but it's basically just normalized to `$1`.
 
 ## Kelly Criterion
 
@@ -131,7 +131,7 @@ $$
 
 where
 
-$$ f^{\*} $$ - fraction of bankroll to wager
+$$f^*$$ - fraction of bankroll to wager
 
 $$ p $$ - probability of a win
 
