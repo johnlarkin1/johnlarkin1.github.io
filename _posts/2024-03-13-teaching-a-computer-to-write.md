@@ -42,6 +42,7 @@ TODO
   - [Stacked LSTM and MDN](#stacked-lstm-and-mdn)
   - [Final Result](#final-result)
 - [Code](#code)
+  - [Plan of Attack](#plan-of-attack)
   - [Looking back at college code 😬](#looking-back-at-college-code-)
   - [Data and Loading Data](#data-and-loading-data)
   - [Model and Tensorflow Updates](#model-and-tensorflow-updates)
@@ -388,7 +389,24 @@ We now are going to feed the output from our LSTM cascade into the GMM in order 
 
 # Code
 
-Ok so that's all well and good and some fun math and neural network construction, but the meat of this project is about what we're actually building with this theory. So let's get to some of the code.
+Ok so that's all well and good and some fun math and neural network construction, but the meat of this project is about what we're actually building with this theory. So let's lay out our to do list.
+
+## Plan of Attack
+
+- ✅ Refamiliarize myself with old college code
+- ✅ Scrap old college code and start fresh
+- ✅ Build out data loader
+  - Should include normalizing the data, given we're only working with offsets (dx, dy, eos), and purging erroneous data
+- ✅ Build (and test!) a simple MDN (with basic neural network layers)
+- ✅ Build (and test!) a basic model using basic LSTM from Tensorflow
+- ✅ Build (and test!) customized peephole LSTM from the paper using Tensorflow 2.0
+- ☑️ Build (and test!) customized peephole LSTM with MDN on simple training data (zigzag/loops/cosine)
+- ☑️ Build (and test!) customized peephole LSTM with MDN on single set of stroke data
+  - Get visualizations and the works
+- ☑️ Train on AWS GPU enabled EC2 instance on full data
+  - Showcase prediction and density networks as they've been trained on test set
+- ☑️ Extend (and test) prediction model to synthesis model for generating novel handwriting
+  - Sample and generate handwriting
 
 ## Looking back at college code 😬
 
@@ -424,7 +442,132 @@ One thing to note. For the sake of my time (given I'm no longer doing an enginee
 
 Ok so... this was a **humbling** experience. Given how much Tensorflow has changed, and how rusty I am at building out neural network models, I decided to start from the scratch (similar to Tom and my paper back in the day). Step 1: just implement a basic neural network layer, some 2D data, and feed that into the network and then the MDN to get prediction of the x and y data.
 
-🎉 Voila - not too painful. Here's the code, it's relatively straightforward.
+🎉 However, voila - not tooooo painful 😅. Here's the code, it's relatively straightforward.
+
+```python
+class MDNLayer(tf.keras.layers.Layer):
+    def __init__(self, num_components, **kwargs):
+        super(MDNLayer, self).__init__(**kwargs)
+        self.num_components = num_components
+        # The number of parameters per mixture component: 2 means, 2 standard deviations, 1 correlation
+        # Plus 1 for the mixture weights and 1 for the end-of-stroke probability
+        self.output_dim = num_components * NUM_MIXTURE_COMPONENTS_PER_COMPONENT + 1
+
+    def build(self, input_shape):
+        # Weights for mixture weights
+        self.W_pi = self.add_weight(
+            name="W_pi", shape=(input_shape[-1], self.num_components), initializer="uniform", trainable=True
+        )
+        # Weights for means
+        self.W_mu = self.add_weight(
+            name="W_mu", shape=(input_shape[-1], self.num_components * 2), initializer="uniform", trainable=True
+        )
+        # Weights for standard deviations
+        self.W_sigma = self.add_weight(
+            name="W_sigma",
+            shape=(input_shape[-1], self.num_components * 2),
+            initializer=tf.keras.initializers.TruncatedNormal(mean=0.0, stddev=0.1),  # Small stddev
+            trainable=True,
+        )
+        # Weights for correlation coefficients
+        self.W_rho = self.add_weight(
+            name="W_rho", shape=(input_shape[-1], self.num_components), initializer="uniform", trainable=True
+        )
+        # Weights for end-of-stroke probability
+        self.W_eos = self.add_weight(name="W_eos", shape=(input_shape[-1], 1), initializer="uniform", trainable=True)
+        # Bias for mixture weights
+        self.b_pi = self.add_weight(name="b_pi", shape=(self.num_components,), initializer="zeros", trainable=True)
+        # Bias for means
+        self.b_mu = self.add_weight(name="b_mu", shape=(self.num_components * 2,), initializer="zeros", trainable=True)
+        # Bias for standard deviations
+        self.b_sigma = self.add_weight(
+            name="b_sigma", shape=(self.num_components * 2,), initializer="zeros", trainable=True
+        )
+        # Bias for correlation coefficients
+        self.b_rho = self.add_weight(name="b_rho", shape=(self.num_components,), initializer="zeros", trainable=True)
+        # Bias for end-of-stroke probability
+        self.b_eos = self.add_weight(name="b_eos", shape=(1,), initializer="zeros", trainable=True)
+
+        # Again, i think we need this?
+        self.built = True
+
+    def call(self, inputs):
+        pi = tf.nn.softmax(tf.matmul(inputs, self.W_pi) + self.b_pi)
+        mu = tf.matmul(inputs, self.W_mu) + self.b_mu
+        sigma = tf.exp(tf.clip_by_value(tf.matmul(inputs, self.W_sigma) + self.b_sigma, -5, 5))
+        sigma = tf.debugging.check_numerics(sigma, "Check sigma: ")
+        rho = tf.tanh(tf.matmul(inputs, self.W_rho) + self.b_rho)
+        eos = tf.sigmoid(tf.matmul(inputs, self.W_eos) + self.b_eos)
+        eos = tf.reshape(eos, [-1, inputs.shape[1], 1])
+        outputs = tf.concat([pi, mu, sigma, rho, eos], axis=2)
+        return outputs
+
+def mdn_loss(y_true, y_pred, num_components):
+"""Calculate the mixture density loss.
+
+    Args:
+    - y_true: The true next points in the sequence, with shape [batch_size, seq_length, 3].
+              The last dimension is (delta x, delta y, end_of_stroke).
+    - y_pred: The concatenated MDN outputs, with shape [batch_size, seq_length, num_components * 6 + 1].
+              This consists of mixture weights, means, log standard deviations, correlation coefficients,
+              and end stroke probabilities.
+    - num_components: The number of mixture components.
+
+    Returns:
+    - The calculated loss.
+    """
+
+    out_pi, out_sigma1, out_sigma2, out_rho, out_mu1, out_mu2, out_eos = tf.split(
+        y_pred, [num_components] * NUM_MIXTURE_COMPONENTS_PER_COMPONENT + [1], axis=-1
+    )
+    out_pi = tf.debugging.check_numerics(out_pi, "Check out_pi: ")
+    out_sigma1 = tf.maximum(out_sigma1, EPSILON)
+    out_sigma2 = tf.maximum(out_sigma2, EPSILON)
+
+    # Since direct broadcasting to a target shape with None is not possible,
+    # adjust shapes without relying on tf.broadcast_to
+    # Expand dimensions of x_data, y_data to allow TensorFlow to broadcast automatically
+    x_data, y_data, eos_data = tf.split(y_true, [1, 1, 1], axis=-1)
+
+    # HEre, we should just be taking advantage of Tensy's broadcasting
+    z = (
+        tf.square((x_data - out_mu1) / out_sigma1)
+        + tf.square((y_data - out_mu2) / out_sigma2)
+        - 2 * out_rho * (x_data - out_mu1) * (y_data - out_mu2) / (out_sigma1 * out_sigma2)
+    )
+
+    # Ensure out_rho is within a valid range to avoid sqrt of negative numbers
+    safe_out_rho = tf.clip_by_value(out_rho, -1 + EPSILON, 1 - EPSILON)
+
+    # Add an epsilon to denom to ensure it cannot be zero or too close to zero
+    denom = 2 * np.pi * out_sigma1 * out_sigma2 * tf.sqrt(1 - tf.square(safe_out_rho)) + EPSILON
+
+    # Recalculate gaussian_exp_arg with clipping to avoid extreme values
+    max_exp_arg = 50
+    gaussian_exp_arg = -z / (2 * (1 - tf.square(safe_out_rho)))
+    gaussian_exp_arg = tf.clip_by_value(gaussian_exp_arg, -max_exp_arg, max_exp_arg)
+
+    # Calculate gaussian, ensuring the result is within a valid probability range
+    gaussian = tf.exp(gaussian_exp_arg) / denom
+
+    # I was getting slammed by nans and derivatives going to infinity
+    gaussian = tf.debugging.check_numerics(gaussian, "Check gaussian after division: ")
+
+    weighted_gaussian = out_pi * gaussian
+    weighted_gaussian = tf.debugging.check_numerics(weighted_gaussian, "Check weighted_gaussian: ")
+    weighted_sum = tf.reduce_sum(weighted_gaussian, axis=2, keepdims=True)
+    weighted_sum = tf.debugging.check_numerics(weighted_sum, "Check weighted_sum: ")
+
+    eos_likelihood = eos_data * out_eos + (1 - eos_data) * (1 - out_eos)
+
+    loss_gaussian = -tf.reduce_sum(tf.math.log(tf.maximum(weighted_sum, EPSILON)))
+    loss_gaussian = tf.debugging.check_numerics(loss_gaussian, "Check loss_gaussian: ")
+    loss_eos = -tf.reduce_sum(tf.math.log(tf.maximum(eos_likelihood, EPSILON)))
+    loss_eos = tf.debugging.check_numerics(loss_eos, "Check loss_eos: ")
+    negative_log_likelihood = (loss_gaussian + loss_eos) / tf.cast(tf.size(x_data), dtype=tf.float32)
+
+    return negative_log_likelihood
+```
 
 ## Predictive Handwriting Network
 
