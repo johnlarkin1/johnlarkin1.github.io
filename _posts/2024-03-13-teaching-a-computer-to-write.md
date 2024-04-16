@@ -4,12 +4,27 @@ layout: post
 featured-gif:
 mathjax: true
 categories: [Favorites, Algorithms, Development, A.I., M.L.]
-summary: Let's use some LSTMs, GMMs, and MDNs to teach a computer how to handwrite. Keyboardwrite?
+summary: Jeez. For basically 7 years this has been on my wishlist.
 ---
+
+<div class="markdown-alert markdown-alert-disclaimer">
+<p>So first of all... this was a pretty large "pet" project. A bit of a Frankenstein. And if you came here excited to read about transformers and LLMs and GPTs, sorry you've come to the wrong place. Which maybe was a bad use of my time, but had an itch to scratch. LSTMs are a precursor, largely solved at sequential data. They aren't as smart (in a way) as LLMs and they don't utilize attention in the same way whatsoever. But it's fun math and an interesting project. </p>
+
+<p> Second of all, I'll outright say some of the structure and logical code was adapted from the brilliant (yet mysterious) <a href="https://github.com/sjvasquez">sjvasquez</a>. Pretty sure they’re at Facebook on the AI side, but yeah it’s their one popular public repo.</p>
+
+<p>Third, that code doesn’t work on the latest Tensorflow version (2.16.1 at time of writing). Additionally, I provide quite a couple of models so we can see the progression from a simple neural net to a basic LSTM to Peephole LSTM to a stacked cascade of Peephole LSTMs to Mixture Density Networks to Attention Mechanism to Attention RNN to finally throwing it all together to the full Handwriting Synthesis Network that Graves originally wrote about.</p>
+
+<p>Fourth, this was by far the most energy and effort I’ve put into a blog post, so please - even if you don’t read it - enjoy the visualizations. I spent basically two weeks in between <a href="https://dropbox.com/">Dropbox</a> and <a href="https://www.mojo.com/">Mojo</a> working on this like… a solid amount. It was a large <em>large</em> time commitment, and even a financial commitment, given some GPU costs. I ended up using <a href="https://vast.ai/">vast.ai</a> to train my model on a more performant machine and then <code class="language-plaintext highlighter-rouge">scp</code> the weights / <code class="language-plaintext highlighter-rouge">.keras</code> file over. I probably should have been learning a bit more about Scylla coupled with Go for Mojo, but c'est la vie.</p>
+
+<p>Finally, I know people are going to give me some flack for not embracing the time off more, but as my family and my ex said, this was my time and I can do with it what I wish. I also can't understate how badly I wanted this project to work. This was my senior engineering project and it’s basically been eating my brain for 7 years since I graduated. I enjoy (and also hate) these problems of dimensionality, complex math, understanding how some ML models are so brilliantly put together. Alex Graves and Chris Olah were basically engineering legends to me in college and that remains true.</p>
+
+<p>Enjoy!</p>
+
+</div>
 
 # Motivating Visualizations
 
-This is a bit of a long one, so I figured I would include some pretty visualizations to get you all excited.
+Ok all that being said, let's have some visualizations to motivate us.
 
 TODO
 
@@ -24,10 +39,11 @@ TODO
   - [Tom and My Engineering Thesis](#tom-and-my-engineering-thesis)
 - [Acknowledgements](#acknowledgements)
 - [Software](#software)
-  - [Tensorflow's Programming Paradigm](#tensorflows-programming-paradigm)
-  - [Tensorflow Version - How the times have changed](#tensorflow-version---how-the-times-have-changed)
-  - [Tensorflow's Tensorboard](#tensorflows-tensorboard)
-- [Neural Network Theory](#neural-network-theory)
+  - [Tensorflow](#tensorflow)
+    - [Programming Paradigm](#programming-paradigm)
+    - [Versions - How the times have changed](#versions---how-the-times-have-changed)
+    - [Tensorboard](#tensorboard)
+- [Base Neural Network Theory](#base-neural-network-theory)
   - [Lions, Bears, and Many Neural Networks, oh my](#lions-bears-and-many-neural-networks-oh-my)
   - [Basic Neural Network](#basic-neural-network)
     - [Hyper Parameters](#hyper-parameters)
@@ -36,12 +52,24 @@ TODO
   - [Recurrent Neural Network](#recurrent-neural-network)
   - [Long Short Term Memory Networks](#long-short-term-memory-networks)
     - [Understanding the LLM Structure](#understanding-the-llm-structure)
-- [Probabilistic Model Theory + Graves Extensions](#probabilistic-model-theory--graves-extensions)
+- [Putting Theory into Code](#putting-theory-into-code)
+  - [LSTM Cell with Peephole Connections](#lstm-cell-with-peephole-connections)
+    - [Theory](#theory)
+    - [Code](#code)
   - [Gaussian Mixture Models](#gaussian-mixture-models)
+    - [Theory](#theory-1)
+    - [Code](#code-1)
   - [Mixture Density Networks](#mixture-density-networks)
-  - [Stacked LSTM and MDN](#stacked-lstm-and-mdn)
+    - [Theory](#theory-2)
+    - [Code](#code-2)
+  - [Attention Mechanism](#attention-mechanism)
+    - [Theory](#theory-3)
+    - [Code](#code-3)
+  - [Stacked LSTM](#stacked-lstm)
+    - [Theory](#theory-4)
+    - [Code](#code-4)
   - [Final Result](#final-result)
-- [Code](#code)
+- [Code](#code-5)
   - [Plan of Attack](#plan-of-attack)
   - [Looking back at college code 😬](#looking-back-at-college-code-)
   - [Data and Loading Data](#data-and-loading-data)
@@ -88,7 +116,9 @@ You can also check it out here: [**Application of Neural Networks with Handwriti
 
 In college, we decided between [Tensorflow][tensorflow] and [Pytorch][pytorch]. I thought about re-implementing this in [pytorch], but I kind of figured that I wanted to see what's changed with [tensorflow] and that I was a bit more familiar with that programming paradigm.
 
-## Tensorflow's Programming Paradigm
+## Tensorflow
+
+### Programming Paradigm
 
 Tensorflow has this interesting programming paradigm, where you are more or less creating a graph. So you define `Tensor`s and then when you run your dependency graph, those things are actually translated.
 
@@ -99,40 +129,23 @@ I have this quote from the Tensorflow API:
 > 1. Building your computational dependency graph.
 > 2. Running your dependency graph.
 
-## Tensorflow Version - How the times have changed
+This was the old way, but now that's not totally true. Apparently, Tensorflow 2.0 helped out a lot with the computational model and the notion of eagerly executing, rather than building the graph and then having everything run at once.
+
+### Versions - How the times have changed
 
 So - another fun fact - when we were doing this in college, we were on **tensorflow version v0.11**!!! They hadn't even released a major version. Now, I'm doing this on Tensorflow **2.16.1**. So the times have definitely changed.
 
 ![being-old](/images/generative-handwriting/being_old.jpeg){: .center-shrink }
 
-There's never enough time in the day.
+Definitely haven't been able to keep up with all those changes.
 
-<div class="markdown-alert markdown-alert-note">
-  <p>Apparently, Tensorflow 2.0 helped out a lot with the computational model and the notion of eagerly executing, rather than building the graph and then having everything run at once.</p>
-</div>
-
-<!--
-<div class="markdown-alert markdown-alert-tip">
-  <p><strong>Tip:</strong> Optional information to help a user be more successful.</p>
-</div>
-
-<div class="markdown-alert markdown-alert-important">
-  <p><strong>Important:</strong> Crucial information necessary for users to succeed.</p>
-</div>
-
-<div class="markdown-alert markdown-alert-warning">
-  <p><strong>Warning:</strong> Critical content demanding immediate user attention due to potential risks.</p>
-</div>
-
-<div class="markdown-alert markdown-alert-caution">
-  <p><strong>Caution:</strong> Negative potential consequences of an action.</p>
-</div> -->
-
-## Tensorflow's Tensorboard
+### Tensorboard
 
 Another cool thing about [Tensorflow][tf] that should be mentioned is the ability to utilize the [Tensorboard][tensorboard]. This is a visualization suite that creates a local website where you can interactively and with a live stream visualize your dependency graph. You can do cool things like confirm that the error is actually decreasing over the epochs.
 
-# Neural Network Theory
+We used this a bit more in college. I didn't get a real chance to dive into the updates made from this.
+
+# Base Neural Network Theory
 
 I am not going to dive into details as much as we did for our senior E90 thesis, but I do want to cover a couple of the building blocks.
 
@@ -278,11 +291,88 @@ Then right in the center of the image above there are two neural network layers 
 
 The final neural network layer is called the output gate. It determines the relevant portion of the cell state to output as $h_t$. Once again, we feed $x_t \cdot h_{t-1}$ through a sigmoid layer whose output, $o_t = \sigma (W_o \cdot [h_{t-1}, x_t] + b_o)$, we piecewise multiple with $\tanh(C_t)$. The result of the multiplication determines the output of the LSTM module. Note that the <span style="color:purple">**purple**</span> $\tanh$ is not a neural network layer, but a piecewise multiplication intended to push the current cell state into a reasonable domain.
 
-# Probabilistic Model Theory + Graves Extensions
+# Putting Theory into Code
 
-There are a couple of other components that Alex used in his paper. We'll explore those here.
+I thought for awhile about how to structure this part. I, at first, was going to cover theory and code, but hopefully I've built the code out in a way that's easy to read (largely thanks to Tensorflow). So I'm going to walk through a couple of building blocks, and split each section into theory and code.
+
+## LSTM Cell with Peephole Connections
+
+### Theory
+
+The basic LSTM cell (`tf.keras.layers.LSTMCell`) does not actually have the notion of peephole connections.
+
+According to the very functional code that [sjvasquez] wrote, I don't think we actually need it, but I figured it would be fun to implement regardless. Back in the old days, when Tensorflow would support add-ons, there was some work around this [here][lstm-peep], but that project was deprecated.
+
+### Code
+
+The adjustment in code to the basic LSTM cell is pretty light, the code comments should be pretty descriptive.
+
+```python
+    def call(self, inputs: tf.Tensor, state: Tuple[tf.Tensor, tf.Tensor]):
+        """
+        This is basically implementing Graves's equations on page 5
+        https://www.cs.toronto.edu/~graves/preprint.pdf
+        equations 5-11.
+
+        From the paper,
+        * sigma is the logistic sigmoid function
+        * i -> input gate
+        * f -> forget gate
+        * o -> output gate
+        * c -> cell state
+        * W_{hi} - hidden-input gate matrix
+        * W_{xo} - input-output gate matrix
+        * W_{ci} - are diagonal
+          + so element m in each gate vector only receives input from
+          + element m of the cell vector
+        """
+        # Both of these are going to be shape (?, num_lstm_units)
+        h_tm1, c_tm1 = state
+        # Compute linear combinations for input, forget, and output gates, and cell candidate
+        # Basically the meat of eq, 7, 8, 9, 10
+        z = (
+            tf.matmul(inputs, self.kernel)
+            + tf.matmul(h_tm1, self.recurrent_kernel)
+            + self.bias
+        )
+        # Split the transformations into input, forget, cell, and output components
+        i, f, c_candidate, o = tf.split(z, num_or_size_splits=4, axis=1)
+
+        if self.should_apply_peephole:
+            # Peephole connections before the activation functions
+            i += c_tm1 * self.peephole_weights[:, 0]
+            f += c_tm1 * self.peephole_weights[:, 1]
+
+        # apply the activations - first step for eq. 7, eq. 8. eq. 10
+        i = tf.sigmoid(i)
+        f = tf.sigmoid(f)
+        o = tf.sigmoid(o)
+
+        if self.should_clip_gradients:
+            # Per Graves, we need to apply gradient clipping to still fight off
+            # the exploding derivative issue. It's a bit weird
+            # to do it here maybe so that's why this bool defaults to off.
+            i = tf.clip_by_value(i, -self.clip_value, self.clip_value)
+            f = tf.clip_by_value(f, -self.clip_value, self.clip_value)
+            o = tf.clip_by_value(o, -self.clip_value, self.clip_value)
+            c_candidate = tf.clip_by_value(
+                c_candidate, -self.clip_value, self.clip_value
+            )
+
+        c_candidate = tf.tanh(c_candidate)
+        c = f * c_tm1 + i * c_candidate
+        if self.should_apply_peephole:
+            # Adjusting the output gate with peephole connection after computing new cell state
+            o += c * self.peephole_weights[:, 2]
+
+        # Compute final hidden state -> Equation 11
+        h = o * tf.tanh(c)
+        return h, [h, c]
+```
 
 ## Gaussian Mixture Models
+
+### Theory
 
 ![gmm-viz](https://miro.medium.com/v2/resize:fit:996/1*kJYirC6ewCqX1M6UiXmLHQ.gif){: .basic-center }
 _Reference for the image... I didn't create this one[^4]_{: .basic-center}
@@ -302,7 +392,13 @@ From [Brilliant][brilliant], there are really two steps for the EM step:
 >
 > The second step is known as the maximization step or M step, which consists of maximizing the expectations calculated in the E step with respect to the model parameters. This step consists of updating the values $\phi_k, \mu_k$ , and $\sigma_k$ .
 
+### Code
+
+There's actually not a whole lot of code to provide here. GMMs are more of the technique that we'll combine with the output of a neural network. That leads us smoothly to our next section.
+
 ## Mixture Density Networks
+
+### Theory
 
 [Mixture Density Networks][mdn] are an extension of GMMs that predict the parameters of a mixture probability distribution.
 
@@ -362,7 +458,351 @@ $$
 \tag{9}
 $$
 
-## Stacked LSTM and MDN
+### Code
+
+Here's the corresponding code section for my mixture density network.
+
+<details>
+  <summary><b>FULL CODE HERE</b></summary>
+
+<!-- prettier-ignore-start -->
+{% highlight python %}
+import tensorflow as tf
+import numpy as np
+
+from constants import NUM_MIXTURE_COMPONENTS_PER_COMPONENT
+
+
+class MixtureDensityLayer(tf.keras.layers.Layer):
+    def __init__(self, num_components, name="mdn", **kwargs):
+        super(MixtureDensityLayer, self).__init__(name=name, **kwargs)
+        self.num_components = num_components
+        # The number of parameters per mixture component: 2 means, 2 standard deviations, 1 correlation
+        # Plus 1 for the mixture weights and 1 for the end-of-stroke probability
+        self.output_dim = num_components * NUM_MIXTURE_COMPONENTS_PER_COMPONENT + 1
+        self.name = name
+
+    def build(self, input_shape):
+        # Weights for mixture weights
+        self.batch_size = input_shape[0]
+        self.sequence_length = input_shape[1]
+        self.W_pi = self.add_weight(
+            name=f"{self.name}_W_pi",
+            shape=(input_shape[-1], self.num_components),
+            initializer="uniform",
+            trainable=True,
+        )
+        # Weights for means
+        self.W_mu = self.add_weight(
+            name=f"{self.name}_W_mu",
+            shape=(input_shape[-1], self.num_components * 2),
+            initializer="uniform",
+            trainable=True,
+        )
+        # Weights for standard deviations
+        self.W_sigma = self.add_weight(
+            name=f"{self.name}_W_sigma",
+            shape=(input_shape[-1], self.num_components * 2),
+            initializer=tf.keras.initializers.TruncatedNormal(mean=0.0, stddev=0.1),
+            trainable=True,
+        )
+        # Weights for correlation coefficients
+        self.W_rho = self.add_weight(
+            name=f"{self.name}_W_rho",
+            shape=(input_shape[-1], self.num_components),
+            initializer="uniform",
+            trainable=True,
+        )
+        # Weights for end-of-stroke probability
+        self.W_eos = self.add_weight(
+            name=f"{self.name}_W_eos",
+            shape=(input_shape[-1], 1),
+            initializer="uniform",
+            trainable=True,
+        )
+        # Bias for mixture weights
+        self.b_pi = self.add_weight(
+            name=f"{self.name}_b_pi",
+            shape=(self.num_components,),
+            initializer="zeros",
+            trainable=True,
+        )
+        # Bias for means
+        self.b_mu = self.add_weight(
+            name=f"{self.name}_b_mu",
+            shape=(self.num_components * 2,),
+            initializer="zeros",
+            trainable=True,
+        )
+        # Bias for standard deviations
+        self.b_sigma = self.add_weight(
+            name=f"{self.name}_b_sigma",
+            shape=(self.num_components * 2,),
+            initializer="zeros",
+            trainable=True,
+        )
+        # Bias for correlation coefficients
+        self.b_rho = self.add_weight(
+            name=f"{self.name}_b_rho",
+            shape=(self.num_components,),
+            initializer="zeros",
+            trainable=True,
+        )
+        # Bias for end-of-stroke probability
+        self.b_eos = self.add_weight(
+            name=f"{self.name}_b_eos", shape=(1,), initializer="zeros", trainable=True
+        )
+
+    def call(self, inputs):
+        eps = 1e-8
+        sigma_eps = 1e-4
+
+        pi = tf.nn.softmax(tf.matmul(inputs, self.W_pi) + self.b_pi)
+
+        mu = tf.matmul(inputs, self.W_mu) + self.b_mu
+        mu1, mu2 = tf.split(mu, num_or_size_splits=2, axis=2)
+
+        sigma = tf.exp(tf.matmul(inputs, self.W_sigma) + self.b_sigma)
+        sigmas = tf.clip_by_value(sigma, sigma_eps, np.inf)
+        sigma1, sigma2 = tf.split(sigmas, num_or_size_splits=2, axis=2)
+
+        rho = tf.tanh(tf.matmul(inputs, self.W_rho) + self.b_rho)
+        rho = tf.clip_by_value(rho, eps - 1.0, 1.0 - eps)
+
+        eos = tf.sigmoid(tf.matmul(inputs, self.W_eos) + self.b_eos)
+        eos = tf.reshape(eos, [-1, inputs.shape[1], 1])
+
+        outputs = tf.concat([pi, mu1, mu2, sigma1, sigma2, rho, eos], axis=2)
+
+        tf.debugging.assert_shapes(
+            [
+                (pi, (self.batch_size, self.sequence_length, self.num_components)),
+                (mu1, (self.batch_size, self.sequence_length, self.num_components)),
+                (mu2, (self.batch_size, self.sequence_length, self.num_components)),
+                (sigma1, (self.batch_size, self.sequence_length, self.num_components)),
+                (sigma2, (self.batch_size, self.sequence_length, self.num_components)),
+                (rho, (self.batch_size, self.sequence_length, self.num_components)),
+                (eos, (self.batch_size, self.sequence_length, 1)),
+                (outputs, (self.batch_size, self.sequence_length, self.output_dim)),
+            ]
+        )
+        return outputs
+
+
+@tf.keras.utils.register_keras_serializable()
+def mdn_loss(y_true, y_pred, stroke_lengths, num_components, eps=1e-8):
+    """Calculate the mixture density loss with masking for valid sequence lengths.
+
+    Args:
+    - y_true: The true next points in the sequence, with shape [batch_size, seq_length, 3].
+    - y_pred: The concatenated MDN outputs, with shape [batch_size, seq_length, num_components * 6 + 1].
+    - stroke_lengths: The actual lengths of each sequence in the batch, with shape [batch_size].
+    - num_components: The number of mixture components.
+
+    Returns:
+    - The calculated loss.
+    """
+
+    out_pi, out_mu1, out_mu2, out_sigma1, out_sigma2, out_rho, out_eos = tf.split(
+        y_pred,
+        [num_components] * NUM_MIXTURE_COMPONENTS_PER_COMPONENT + [1],
+        axis=2,
+    )
+
+    tf.debugging.assert_shapes(
+        [
+            (out_pi, (None, None, num_components)),
+            (out_mu1, (None, None, num_components)),
+            (out_mu2, (None, None, num_components)),
+            (out_sigma1, (None, None, num_components)),
+            (out_sigma2, (None, None, num_components)),
+            (out_rho, (None, None, num_components)),
+            (out_eos, (None, None, 1)),
+        ]
+    )
+    tf.debugging.assert_greater(
+        out_sigma1, 0.0, message="out_sigma1 has non-positive values"
+    )
+    tf.debugging.assert_greater(
+        out_sigma2, 0.0, message="out_sigma2 has non-positive values"
+    )
+    tf.debugging.assert_near(
+        tf.reduce_sum(out_pi, axis=-1),
+        tf.ones_like(tf.reduce_sum(out_pi, axis=-1)),
+        atol=1e-5,
+        message="out_pi is not close to 1.0",
+    )
+    x_data, y_data, eos_data = tf.split(y_true, [1, 1, 1], axis=-1)
+    norm = 1.0 / (
+        2 * np.pi * out_sigma1 * out_sigma2 * tf.sqrt(1 - tf.square(out_rho) + eps)
+    )
+    Z = (
+        tf.square((x_data - out_mu1) / (out_sigma1))
+        + tf.square((y_data - out_mu2) / (out_sigma2))
+        - (
+            2
+            * out_rho
+            * (x_data - out_mu1)
+            * (y_data - out_mu2)
+            / (out_sigma1 * out_sigma2)
+        )
+    )
+
+    exp = -Z / (2 * (1 - tf.square(out_rho)))
+    gaussian_likelihoods = tf.exp(exp) * norm
+    gmm_likelihood = tf.reduce_sum(out_pi * gaussian_likelihoods, axis=2)
+    gmm_likelihood = tf.clip_by_value(gmm_likelihood, eps, np.inf)
+
+    bernoulli_likelihood = tf.squeeze(
+        tf.where(tf.equal(tf.ones_like(eos_data), eos_data), out_eos, 1 - out_eos)
+    )
+    bernoulli_likelihood = tf.clip_by_value(bernoulli_likelihood, eps, 1.0 - eps)
+
+    nll = -1 * (tf.math.log(gmm_likelihood) + tf.math.log(bernoulli_likelihood))
+
+    # Create a mask for valid sequence lengths
+    if stroke_lengths is not None:
+        max_len = tf.shape(y_true)[1]
+        mask = tf.sequence_mask(stroke_lengths, maxlen=max_len, dtype=tf.float32)
+
+        # Apply the mask to the negative log-likelihood
+        masked_nll = nll * mask
+        masked_nll = tf.where(
+            tf.not_equal(mask, 0), masked_nll, tf.zeros_like(masked_nll)
+        )
+
+        # Calculate the loss, considering only the valid parts of each sequence
+        loss = tf.reduce_sum(masked_nll) / tf.reduce_sum(mask)
+        return loss
+    else:
+        return tf.reduce_sum(nll)
+
+<!-- prettier-ignore-end -->
+
+{% endhighlight %}
+
+</details>
+<br/>
+
+That being said, I just want to explicitly highlight a couple of portions. We build the various parameters that we train, but then here's where we're doing the math above:
+
+```python
+        pi = tf.nn.softmax(tf.matmul(inputs, self.W_pi) + self.b_pi)
+
+        mu = tf.matmul(inputs, self.W_mu) + self.b_mu
+        mu1, mu2 = tf.split(mu, num_or_size_splits=2, axis=2)
+
+        sigma = tf.exp(tf.matmul(inputs, self.W_sigma) + self.b_sigma)
+        sigmas = tf.clip_by_value(sigma, sigma_eps, np.inf)
+        sigma1, sigma2 = tf.split(sigmas, num_or_size_splits=2, axis=2)
+
+        rho = tf.tanh(tf.matmul(inputs, self.W_rho) + self.b_rho)
+        rho = tf.clip_by_value(rho, eps - 1.0, 1.0 - eps)
+
+        eos = tf.sigmoid(tf.matmul(inputs, self.W_eos) + self.b_eos)
+        eos = tf.reshape(eos, [-1, inputs.shape[1], 1])
+
+        outputs = tf.concat([pi, mu1, mu2, sigma1, sigma2, rho, eos], axis=2)
+```
+
+And then here is where we're computing the loss (similar to above):
+
+```python
+@tf.keras.utils.register_keras_serializable()
+def mdn_loss(y_true, y_pred, stroke_lengths, num_components, eps=1e-8):
+    """Calculate the mixture density loss with masking for valid sequence lengths.
+
+    Args:
+    - y_true: The true next points in the sequence, with shape [batch_size, seq_length, 3].
+    - y_pred: The concatenated MDN outputs, with shape [batch_size, seq_length, num_components * 6 + 1].
+    - stroke_lengths: The actual lengths of each sequence in the batch, with shape [batch_size].
+    - num_components: The number of mixture components.
+
+    Returns:
+    - The calculated loss.
+    """
+
+    out_pi, out_mu1, out_mu2, out_sigma1, out_sigma2, out_rho, out_eos = tf.split(
+        y_pred,
+        [num_components] * NUM_MIXTURE_COMPONENTS_PER_COMPONENT + [1],
+        axis=2,
+    )
+    x_data, y_data, eos_data = tf.split(y_true, [1, 1, 1], axis=-1)
+    norm = 1.0 / (
+        2 * np.pi * out_sigma1 * out_sigma2 * tf.sqrt(1 - tf.square(out_rho) + eps)
+    )
+    Z = (
+        tf.square((x_data - out_mu1) / (out_sigma1))
+        + tf.square((y_data - out_mu2) / (out_sigma2))
+        - (
+            2
+            * out_rho
+            * (x_data - out_mu1)
+            * (y_data - out_mu2)
+            / (out_sigma1 * out_sigma2)
+        )
+    )
+
+    exp = -Z / (2 * (1 - tf.square(out_rho)))
+    gaussian_likelihoods = tf.exp(exp) * norm
+    gmm_likelihood = tf.reduce_sum(out_pi * gaussian_likelihoods, axis=2)
+    gmm_likelihood = tf.clip_by_value(gmm_likelihood, eps, np.inf)
+
+    bernoulli_likelihood = tf.squeeze(
+        tf.where(tf.equal(tf.ones_like(eos_data), eos_data), out_eos, 1 - out_eos)
+    )
+    bernoulli_likelihood = tf.clip_by_value(bernoulli_likelihood, eps, 1.0 - eps)
+
+    nll = -1 * (tf.math.log(gmm_likelihood) + tf.math.log(bernoulli_likelihood))
+
+    if stroke_lengths is not None:
+        max_len = tf.shape(y_true)[1]
+        mask = tf.sequence_mask(stroke_lengths, maxlen=max_len, dtype=tf.float32)
+
+        # Apply the mask to the negative log-likelihood
+        masked_nll = nll * mask
+        masked_nll = tf.where(
+            tf.not_equal(mask, 0), masked_nll, tf.zeros_like(masked_nll)
+        )
+
+        # Calculate the loss, considering only the valid parts of each sequence
+        loss = tf.reduce_sum(masked_nll) / tf.reduce_sum(mask)
+        return loss
+    else:
+        return tf.reduce_sum(nll)
+
+```
+
+## Attention Mechanism
+
+### Theory
+
+The attention mechanism really only comes into play with the Synthesis Network which sadly [Tom][tom] and I never got to in college. The idea (similar to most attention notions) is that we need to tell our model more specifically where to focus. This isn't like the transformer notion of attention from the famous "Attention is All You Need" paper, but it's the idea that we have various Gaussians to indicate probabilistically where we should be focusing. We utilize one-hot encoding vectors over our input characters so that we can more clearly identify the numerical representation. So the question we're basically answering is like "oh, i see a 'w' character, generally how far along do we need to write for that?" to help also answer the question of when do we need to terminate.
+
+The mathematical representation is here:
+
+> Given a length $U$ character sequence $\mathbf{c}$ and a length $T$ data sequence $\mathbf{x}$, the soft window $w_t$ into $\mathbf{c}$ at timestep $t$ ($1 \leq t \leq T$) is defined by the following discrete convolution with a mixture of $K$ Gaussian functions
+>
+> $$
+> \begin{align}
+> \phi(t, u) &= \sum_{k=1}^K \alpha^k_t\exp\left(-\beta_t^k\left(\kappa_t^k-u\right)^2\right)\\
+> w_t &= \sum_{u=1}^U \phi(t, u)c_u
+> \end{align}
+> $$
+>
+> where $\phi(t, u)$ is the \emph{window weight} of $c_u$ at timestep $t$.
+>
+> Intuitively, the $\kappa_t$ parameters control the location of the window, the $\beta_t$ parameters control the width of the window and the $\alpha_t$ parameters control the importance of the window within the mixture.
+>
+> The size of the soft window vectors is the same as the size of the character vectors $c_u$ (assuming a one-hot encoding, this will be the number of characters in the alphabet).
+>
+> Note that the window mixture is not normalised and hence does not determine a probability distribution; however the window weight $\phi(t, u)$ can be loosely interpreted as the network's belief that it is writing character $c_u$ at time $t$.
+
+### Code
+
+## Stacked LSTM
+
+### Theory
 
 The one distinction between Graves's setup and a standard LSTM is that Graves uses a _cascade_ of LSTMs. So we use the MDN to generate a probabilistic prediction however our neural network is the cascade of LSTMs.
 
@@ -381,6 +821,115 @@ The one thing to note is that there is a dimensionality increase given we now ha
 >
 > $$\begin{align} \textrm{final dimension} = k \frac{m(m+1)}{2} \end{align}$$
 
+### Code
+
+This is where the various `cell` vs `layer` concept in Tensorflow was very nice.
+
+From our top level model, we have:
+
+```python
+class DeepHandwritingSynthesisModel(tf.keras.Model):
+    """
+    A similar implementation to the previous model, but with a different approach to the attention mechanism. This is batched for efficiency
+    """
+
+    def __init__(
+        self,
+        units=400,
+        num_layers=3,
+        num_mixture_components=20,
+        num_chars=73,
+        num_attention_gaussians=10,
+        **kwargs,
+    ):
+        super().__init__(**kwargs)
+        self.num_chars = num_chars
+        self.lstm_cells = [LSTMPeepholeCell(units, idx) for idx in range(num_layers)]
+        self.attention_mechanism = AttentionMechanism(
+            num_gaussians=num_attention_gaussians, num_chars=num_chars
+        )
+        self.attention_rnn_cell = AttentionRNNCell(
+            self.lstm_cells, self.attention_mechanism, self.num_chars
+        )
+        self.rnn_layer = tf.keras.layers.RNN(
+            self.attention_rnn_cell, return_sequences=True
+        )
+        self.mdn_layer = MixtureDensityLayer(num_mixture_components)
+```
+
+You can see here how the parts all come together smoothly. The custom RNN cell takes the lstm_cells (which are stacked), and then can basically abstract out and operate on the individual time steps without having to worry about actually introducing another `for` loop. This is beneficial because of the batching and GPU win we can get when it eventually becomes time.
+
+For the actual `AttentionRNNCell`, this is what I'm talking about:
+
+```python
+class AttentionRNNCell(tf.keras.layers.Layer):
+    def __init__(self, lstm_cells, attention_mechanism, num_chars, **kwargs):
+        super().__init__(**kwargs)
+        self.lstm_cells = lstm_cells
+        self.attention_mechanism = attention_mechanism
+        self.num_chars = num_chars
+        self.state_size = [cell.state_size for cell in lstm_cells] + [
+            tf.TensorShape([attention_mechanism.num_gaussians]),
+            tf.TensorShape([num_chars]),
+        ]
+        self.output_size = lstm_cells[-1].output_size
+        # The one-hot encoding of the character sequence
+        # will be set by the model before calling the cell
+        self.char_seq_one_hot = None
+        # Same for the length of the character sequence
+        self.char_seq_len = None
+
+    def call(self, inputs, states):
+        assert self.char_seq_one_hot is not None, "char_seq_one_hot is not set"
+        assert self.char_seq_len is not None, "char_seq_len is not set"
+
+        x_t = inputs
+        (
+            s1_state_h,
+            s1_state_c,
+            s2_state_h,
+            s2_state_c,
+            s3_state_h,
+            s3_state_c,
+            kappa,
+            w,
+        ) = states
+
+        # LSTM layer 1
+        s1_in = tf.concat([w, x_t], axis=1)
+        s1_out, s1_state_new = self.lstm_cells[0](s1_in, [s1_state_h, s1_state_c])
+
+        # Attention
+        attention_inputs = tf.concat([w, x_t, s1_out], axis=1)
+        w_new, kappa_new = self.attention_mechanism(
+            attention_inputs, kappa, self.char_seq_one_hot, self.char_seq_len
+        )
+
+        # LSTM layer 2
+        s2_in = tf.concat([x_t, s1_out, w_new], axis=1)
+        s2_out, s2_state_new = self.lstm_cells[1](s2_in, [s2_state_h, s2_state_c])
+
+        # LSTM layer 3
+        s3_in = tf.concat([x_t, s2_out, w_new], axis=1)
+        s3_out, s3_state_new = self.lstm_cells[2](s3_in, [s3_state_h, s3_state_c])
+
+        # Preparing new states as a list to return
+        new_states = [
+            s1_state_new[0],
+            s1_state_new[1],
+            s2_state_new[0],
+            s2_state_new[1],
+            s3_state_new[0],
+            s3_state_new[1],
+            kappa_new,
+            w_new,
+        ]
+
+        return s3_out, new_states
+```
+
+And the various concatenation between inputs is what Graves means when he says "deep in space and time".
+
 ## Final Result
 
 Alright finally! So what do we have, and what can we do now?
@@ -392,21 +941,6 @@ We now are going to feed the output from our LSTM cascade into the GMM in order 
 Ok so that's all well and good and some fun math and neural network construction, but the meat of this project is about what we're actually building with this theory. So let's lay out our to do list.
 
 ## Plan of Attack
-
-- ✅ Refamiliarize myself with old college code
-- ✅ Scrap old college code and start fresh
-- ✅ Build out data loader
-  - Should include normalizing the data, given we're only working with offsets (dx, dy, eos), and purging erroneous data
-- ✅ Build (and test!) a simple MDN (with basic neural network layers)
-- ✅ Build (and test!) a basic model using basic LSTM from Tensorflow
-- ✅ Build (and test!) customized peephole LSTM from the paper using Tensorflow 2.0
-- ☑️ Build (and test!) customized peephole LSTM with MDN on simple training data (zigzag/loops/cosine)
-- ☑️ Build (and test!) customized peephole LSTM with MDN on single set of stroke data
-  - Get visualizations and the works
-- ☑️ Train on AWS GPU enabled EC2 instance on full data
-  - Showcase prediction and density networks as they've been trained on test set
-- ☑️ Extend (and test) prediction model to synthesis model for generating novel handwriting
-  - Sample and generate handwriting
 
 ## Looking back at college code 😬
 
@@ -815,3 +1349,8 @@ When re-reading my old draft blog post, I liked the way I ended things. So here 
 [brilliant]: https://brilliant.org/
 [iam-database]: https://fki.tic.heia-fr.ch/databases/iam-on-line-handwriting-database
 [tensorflow-lstm]: https://www.tensorflow.org/api_docs/python/tf/keras/layers/LSTM
+[sjvasquez]: https://github.com/sjvasquez
+[dropbox]: https://dropbox.com/
+[mojo]: https://www.mojo.com/
+[vast]: https://vast.ai/
+[lstm-peep]: https://www.tensorflow.org/addons/api_docs/python/tfa/rnn/PeepholeLSTMCell

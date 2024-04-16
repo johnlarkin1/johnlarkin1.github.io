@@ -393,7 +393,7 @@ ink:hover {
 
     // Positioning the icon
     &::after {
-      content: url($alert-icon-note); // Your SVG icon (ensure it's properly encoded)
+      content: url($alert-icon-note);
       position: absolute;
       top: 0.5rem;
     }
@@ -403,7 +403,35 @@ ink:hover {
       top: 2rem; // Adjust this value to move the text under the "Note:" label
       padding-bottom: 0.5rem;
     }
+  }
 
+  &-disclaimer {
+    border-left-color: $alert-disclaimer;
+
+    // Positioning the label "Disclaimer:"
+    &::before {
+      content: 'Disclaimer:';
+      font-weight: bold;
+      color: $alert-disclaimer;
+      position: absolute;
+      left: 3rem; // Align with the icon
+      top: 0.5rem; // Position from the top
+      display: block; // Make it a block element
+      margin-bottom: 0.5rem;
+    }
+
+    // Optionally, position an icon
+    &::after {
+      content: url($alert-icon-disclaimer);
+      position: absolute;
+      top: 0.5rem;
+    }
+
+    p {
+      position: relative;
+      top: 2rem;
+      padding-bottom: 0.5rem;
+    }
   }
 
   &.markdown-alert-tip {
@@ -425,6 +453,8 @@ ink:hover {
     border-left-color: $alert-caution;
     &::before { background-image: url($alert-icon-caution); }
   }
+
+  
 }
 
 .collapsible-code-container {
