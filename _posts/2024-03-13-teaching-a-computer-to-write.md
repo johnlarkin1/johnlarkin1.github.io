@@ -22,9 +22,9 @@ summary: Jeez. For basically 7 years this has been on my wishlist.
 
 </div>
 
-# Motivating Visualizations
+# ✍️ Motivating Visualizations
 
-Ok all that being said, let's have some visualizations to motivate us.
+Today, you're going to learn how to teach a computer to write. And I don't mean producing text, I mean learning how to write like a human learns how to write with a pen and paper. So here are some fun motivating images.
 
 TODO
 
@@ -32,18 +32,19 @@ TODO
 
 # Table of Contents
 
-- [Motivating Visualizations](#motivating-visualizations)
+- [✍️ Motivating Visualizations](#️-motivating-visualizations)
 - [Table of Contents](#table-of-contents)
-- [Motivation](#motivation)
-- [History](#history)
+- [🥅 Motivation](#-motivation)
+- [👨‍🏫 History](#-history)
   - [Tom and My Engineering Thesis](#tom-and-my-engineering-thesis)
-- [Acknowledgements](#acknowledgements)
-- [Software](#software)
+- [🙏 Acknowledgements](#-acknowledgements)
+- [👾 Software](#-software)
   - [Tensorflow](#tensorflow)
     - [Programming Paradigm](#programming-paradigm)
     - [Versions - How the times have changed](#versions---how-the-times-have-changed)
     - [Tensorboard](#tensorboard)
-- [Base Neural Network Theory](#base-neural-network-theory)
+- [📊 Data](#-data)
+- [🧠 Base Neural Network Theory](#-base-neural-network-theory)
   - [Lions, Bears, and Many Neural Networks, oh my](#lions-bears-and-many-neural-networks-oh-my)
   - [Basic Neural Network](#basic-neural-network)
     - [Hyper Parameters](#hyper-parameters)
@@ -52,7 +53,7 @@ TODO
   - [Recurrent Neural Network](#recurrent-neural-network)
   - [Long Short Term Memory Networks](#long-short-term-memory-networks)
     - [Understanding the LLM Structure](#understanding-the-llm-structure)
-- [Putting Theory into Code](#putting-theory-into-code)
+- [🧬 Concepts to Code](#-concepts-to-code)
   - [LSTM Cell with Peephole Connections](#lstm-cell-with-peephole-connections)
     - [Theory](#theory)
     - [Code](#code)
@@ -69,29 +70,19 @@ TODO
     - [Theory](#theory-4)
     - [Code](#code-4)
   - [Final Result](#final-result)
-- [Code](#code-5)
-  - [Plan of Attack](#plan-of-attack)
-  - [Looking back at college code 😬](#looking-back-at-college-code-)
-  - [Data and Loading Data](#data-and-loading-data)
-  - [Model and Tensorflow Updates](#model-and-tensorflow-updates)
-  - [MDN Predictions with Simple Neural Network](#mdn-predictions-with-simple-neural-network)
-  - [Predictive Handwriting Network](#predictive-handwriting-network)
-  - [Synthetic Handwriting Generation Network](#synthetic-handwriting-generation-network)
-- [Results](#results)
-  - [Basic MDN Predictions with Simple Network](#basic-mdn-predictions-with-simple-network)
-  - [Predictive Handwriting Visualizations](#predictive-handwriting-visualizations)
-  - [Generative Handwriting Visualizations](#generative-handwriting-visualizations)
-- [Troubles](#troubles)
-- [Hardware](#hardware)
+- [🏆 Results](#-results)
+  - [Vast AI GPU Enabled Execution](#vast-ai-gpu-enabled-execution)
+    - [Snafu - Gradient Explosion Problem](#snafu---gradient-explosion-problem)
+  - [Drawing Code](#drawing-code)
 - [Conclusion](#conclusion)
 
-# Motivation
+# 🥅 Motivation
 
 I never actually ended up publishing it, but I had a draft blog post written maybe right after college, about some of the work that a good friend (and absolutely incredible engineer) [Tom Wilmots][tom] and I did in college.
 
 I'm going to pull pieces of that, but the time has changed, and I wanted to revisit some of the work we did back in college, and clean it up some, given the boom of generative AI. Also I'm a better engineer and we had a small bug in some of the modeling that I want to flush out.
 
-# History
+# 👨‍🏫 History
 
 [Tom] and I were very interested in the concept of teaching a computer how to write in college. There is a very famous [paper] that was published around 2013 from Canadian computer scientist [Alex Graves][ag], titled _Generating Sequences With Recurrent Neural Networks_. At [Swarthmore][swat], you have to do Engineering theses, called [E90s][e90].
 
@@ -105,14 +96,14 @@ For the actual paper that we wrote, check it out here:
 
 You can also check it out here: [**Application of Neural Networks with Handwriting Samples**][paper].
 
-# Acknowledgements
+# 🙏 Acknowledgements
 
 - **[Tom Wilmots][tom]** - One of the brightest and best engineers I've worked with. He was an Engineering and Economics double major from [Swarthmore][swat]. He was the inspiration for this project in college, and I wouldn't have gotten anywhere without him.
 - **[Matt Zucker][mz]** - Absolutely no surprise here. One of my role models and constant inspirations, Matt was kind enough to be Tom and my academic advisor for this final engineering project. He's an outstanding professor at Swarthmore College and the institution is beyond fortunate to have him.
 - **[Alex Graves][ag]** - Another genius that both Tom and I had the pleasure of working with. **He actually responded to our emails!**. I remember that in college, I lost my mind when he emailed back. That a professional (who was a professor at the University of Toronto, see [here][gravesToronto]). He is the author of [this paper][paper], which Matt found for us and pretty much was the basis of our project. Alex is at Google now and is crushing it. He's also the creator of the [Neural Turing Machine][ntm], which peaked my interest after having taken [Theory of Computation][toc], with my other fantastic professor [Lila Fontes][lila] and learning about [Turing machines][turingmachines].
 - **[David Ha][dha]** - Yet another genius who we had the priviledge of corresponding with. Check out his blog [here][otoro]. It's beautiful. He also is very prolific on [ArXiv][arxiv] which is always cool to see.
 
-# Software
+# 👾 Software
 
 In college, we decided between [Tensorflow][tensorflow] and [Pytorch][pytorch]. I thought about re-implementing this in [pytorch], but I kind of figured that I wanted to see what's changed with [tensorflow] and that I was a bit more familiar with that programming paradigm.
 
@@ -145,7 +136,19 @@ Another cool thing about [Tensorflow][tf] that should be mentioned is the abilit
 
 We used this a bit more in college. I didn't get a real chance to dive into the updates made from this.
 
-# Base Neural Network Theory
+# 📊 Data
+
+We're using the [IAM Online Handwriting Database][iam-database]. Specifically, I'm looking at `data/lineStrokes-all.tar.gz`, which is XML data that looks like this:
+
+![data](/images/generative-handwriting/example_data.png){: .center-super-shrink }
+
+There's also this note:
+
+> The database is divided into 4 parts, a training set, a first validation set, a second validation set and a final test set. The training set may be used for training the recognition system, while the two validation sets may be used for optimizing some meta-parameters. The final test set must be left unseen until the final test is performed. Note that you are allowed to use also other data for training etc, but report all the changes when you publish your experimental results and let the test set unchanged (It contains 3859 sequences, i.e. XML-files - one for each text line).
+
+So that determines our training set, validation set, second validation set, and a final test set.
+
+# 🧠 Base Neural Network Theory
 
 I am not going to dive into details as much as we did for our senior E90 thesis, but I do want to cover a couple of the building blocks.
 
@@ -291,7 +294,9 @@ Then right in the center of the image above there are two neural network layers 
 
 The final neural network layer is called the output gate. It determines the relevant portion of the cell state to output as $h_t$. Once again, we feed $x_t \cdot h_{t-1}$ through a sigmoid layer whose output, $o_t = \sigma (W_o \cdot [h_{t-1}, x_t] + b_o)$, we piecewise multiple with $\tanh(C_t)$. The result of the multiplication determines the output of the LSTM module. Note that the <span style="color:purple">**purple**</span> $\tanh$ is not a neural network layer, but a piecewise multiplication intended to push the current cell state into a reasonable domain.
 
-# Putting Theory into Code
+# 🧬 Concepts to Code
+
+When very first starting this project, I kind of figured that I would be able to use some of my college code, but looking back. It's quite a mess and I don't think that's the way to go about it.
 
 I thought for awhile about how to structure this part. I, at first, was going to cover theory and code, but hopefully I've built the code out in a way that's easy to read (largely thanks to Tensorflow). So I'm going to walk through a couple of building blocks, and split each section into theory and code.
 
@@ -936,365 +941,313 @@ Alright finally! So what do we have, and what can we do now?
 
 We now are going to feed the output from our LSTM cascade into the GMM in order to build a probabilistic prediction model for the next stroke. The GMM will then be fed the actual next point, in order to create some idea of the deviation os that the loss can be properly minimized.
 
-# Code
+# 🏆 Results
 
-Ok so that's all well and good and some fun math and neural network construction, but the meat of this project is about what we're actually building with this theory. So let's lay out our to do list.
+## Vast AI GPU Enabled Execution
 
-## Plan of Attack
+```bash
+2024-04-21 19:01:02.183969: I tensorflow/core/platform/cpu_feature_guard.cc:210] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+train data found. Loading...
+test data found. Loading...
+valid2 data found. Loading...
+valid1 data found. Loading...
+2024-04-21 19:01:04.798925: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1928] Created device /job:localhost/replica:0/task:0/device:GPU:0 with 22455 MB memory:  -> device: 0, name: NVIDIA GeForce RTX 3090, pci bus id: 0000:82:00.0, compute capability: 8.6
+2024-04-21 19:01:05.887036: I external/local_tsl/tsl/profiler/lib/profiler_session.cc:104] Profiler session initializing.
+2024-04-21 19:01:05.887070: I external/local_tsl/tsl/profiler/lib/profiler_session.cc:119] Profiler session started.
+2024-04-21 19:01:05.887164: I external/local_xla/xla/backends/profiler/gpu/cupti_tracer.cc:1239] Profiler found 1 GPUs
+2024-04-21 19:01:05.917572: I external/local_tsl/tsl/profiler/lib/profiler_session.cc:131] Profiler session tear down.
+2024-04-21 19:01:05.917763: I external/local_xla/xla/backends/profiler/gpu/cupti_tracer.cc:1364] CUPTI activity buffer flushed
+Epoch 1/10000
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1713726072.109654    2329 service.cc:145] XLA service 0x7ad5bc004600 initialized for platform CUDA (this does not guarantee that XLA will be used). Devices:
+I0000 00:00:1713726072.109731    2329 service.cc:153]   StreamExecutor device (0): NVIDIA GeForce RTX 3090, Compute Capability 8.6
+2024-04-21 19:01:12.346749: I tensorflow/compiler/mlir/tensorflow/utils/dump_mlir_util.cc:268] disabling MLIR crash reproducer, set env var `MLIR_CRASH_REPRODUCER_DIRECTORY` to enable.
+W0000 00:00:1713726072.691839    2329 assert_op.cc:38] Ignoring Assert operator assert_greater/Assert/AssertGuard/Assert
+W0000 00:00:1713726072.694098    2329 assert_op.cc:38] Ignoring Assert operator assert_greater_1/Assert/AssertGuard/Assert
+W0000 00:00:1713726072.696267    2329 assert_op.cc:38] Ignoring Assert operator assert_near/Assert/AssertGuard/Assert
+2024-04-21 19:01:13.095183: I external/local_xla/xla/stream_executor/cuda/cuda_dnn.cc:465] Loaded cuDNN version 8906
+2024-04-21 19:01:14.883021: W external/local_xla/xla/service/hlo_rematerialization.cc:2941] Can't reduce memory use below 17.97GiB (19297974672 bytes) by rematerialization; only reduced to 20.51GiB (22027581828 bytes), down from 20.67GiB (22193496744 bytes) originally
+I0000 00:00:1713726076.329853    2329 device_compiler.h:188] Compiled cluster using XLA!  This line is logged at most once for the lifetime of the process.
+167/168 ━━━━━━━━━━━━━━━━━━━━ 0s 685ms/step - loss: 2.8113W0000 00:00:1713726191.427557    2333 assert_op.cc:38] Ignoring Assert operator assert_greater/Assert/AssertGuard/Assert
+W0000 00:00:1713726191.429182    2333 assert_op.cc:38] Ignoring Assert operator assert_greater_1/Assert/AssertGuard/Assert
+W0000 00:00:1713726191.430622    2333 assert_op.cc:38] Ignoring Assert operator assert_near/Assert/AssertGuard/Assert
+2024-04-21 19:03:13.488256: W external/local_xla/xla/service/hlo_rematerialization.cc:2941] Can't reduce memory use below 17.97GiB (19298282069 bytes) by rematerialization; only reduced to 19.75GiB (21203023676 bytes), down from 19.87GiB (21340423652 bytes) originally
+168/168 ━━━━━━━━━━━━━━━━━━━━ 0s 709ms/step - loss: 2.8097
+Epoch 1: Saving model.
 
-## Looking back at college code 😬
+Epoch 1: Loss improved from None to 0.0, saving model.
+Model parameters after the 1st epoch:
+Model: "deep_handwriting_synthesis_model"
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┓
+┃ Layer (type)                         ┃ Output Shape                ┃         Param # ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━┩
+│ lstm_peephole_cell                   │ ?                           │         764,400 │
+│ (LSTMPeepholeCell)                   │                             │                 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ lstm_peephole_cell_1                 │ ?                           │       1,404,400 │
+│ (LSTMPeepholeCell)                   │                             │                 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ lstm_peephole_cell_2                 │ ?                           │       1,404,400 │
+│ (LSTMPeepholeCell)                   │                             │                 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ attention (AttentionMechanism)       │ ?                           │          14,310 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ attention_rnn_cell                   │ ?                           │       3,587,510 │
+│ (AttentionRNNCell)                   │                             │                 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ rnn (RNN)                            │ ?                           │       3,587,510 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ mdn (MixtureDensityLayer)            │ ?                           │          48,521 │
+└──────────────────────────────────────┴─────────────────────────────┴─────────────────┘
+ Total params: 7,272,064 (27.74 MB)
+ Trainable params: 3,636,031 (13.87 MB)
+ Non-trainable params: 0 (0.00 B)
+ Optimizer params: 3,636,033 (13.87 MB)
 
-Yeah, so I haven't looked at a lot of my college work recently, but damn. This was SO messy. And it's fair, I was a senior in college and didn't have industry experience, and you know we basically were treating our codebase like many scripts tied together.
+All parameters:
+===============
+[[ lstm_peephole_kernel1 ]] shape: (76, 1600)
+[[ lstm_peephole_recurrent_kernel1 ]] shape: (400, 1600)
+[[ lstm_peephole_weights1 ]] shape: (400, 3)
+[[ lstm_peephole_bias1 ]] shape: (1600,)
+[[ lstm_peephole_kernel2 ]] shape: (476, 1600)
+[[ lstm_peephole_recurrent_kernel2 ]] shape: (400, 1600)
+[[ lstm_peephole_weights2 ]] shape: (400, 3)
+[[ lstm_peephole_bias2 ]] shape: (1600,)
+[[ lstm_peephole_kernel3 ]] shape: (476, 1600)
+[[ lstm_peephole_recurrent_kernel3 ]] shape: (400, 1600)
+[[ lstm_peephole_weights3 ]] shape: (400, 3)
+[[ lstm_peephole_bias3 ]] shape: (1600,)
+[[ kernel ]] shape: (476, 30)
+[[ bias ]] shape: (30,)
+[[ mdn_W_pi ]] shape: (400, 20)
+[[ mdn_W_mu ]] shape: (400, 40)
+[[ mdn_W_sigma ]] shape: (400, 40)
+[[ mdn_W_rho ]] shape: (400, 20)
+[[ mdn_W_eos ]] shape: (400, 1)
+[[ mdn_b_pi ]] shape: (20,)
+[[ mdn_b_mu ]] shape: (40,)
+[[ mdn_b_sigma ]] shape: (40,)
+[[ mdn_b_rho ]] shape: (20,)
+[[ mdn_b_eos ]] shape: (1,)
 
-But yeah... here's a look at some of the way we had organized things:
+Trainable parameters:
+=====================
+[[ lstm_peephole_kernel1 ]] shape: (76, 1600)
+[[ lstm_peephole_recurrent_kernel1 ]] shape: (400, 1600)
+[[ lstm_peephole_weights1 ]] shape: (400, 3)
+[[ lstm_peephole_bias1 ]] shape: (1600,)
+[[ lstm_peephole_kernel2 ]] shape: (476, 1600)
+[[ lstm_peephole_recurrent_kernel2 ]] shape: (400, 1600)
+[[ lstm_peephole_weights2 ]] shape: (400, 3)
+[[ lstm_peephole_bias2 ]] shape: (1600,)
+[[ lstm_peephole_kernel3 ]] shape: (476, 1600)
+[[ lstm_peephole_recurrent_kernel3 ]] shape: (400, 1600)
+[[ lstm_peephole_weights3 ]] shape: (400, 3)
+[[ lstm_peephole_bias3 ]] shape: (1600,)
+[[ kernel ]] shape: (476, 30)
+[[ bias ]] shape: (30,)
+[[ mdn_W_pi ]] shape: (400, 20)
+[[ mdn_W_mu ]] shape: (400, 40)
+[[ mdn_W_sigma ]] shape: (400, 40)
+[[ mdn_W_rho ]] shape: (400, 20)
+[[ mdn_W_eos ]] shape: (400, 1)
+[[ mdn_b_pi ]] shape: (20,)
+[[ mdn_b_mu ]] shape: (40,)
+[[ mdn_b_sigma ]] shape: (40,)
+[[ mdn_b_rho ]] shape: (20,)
+[[ mdn_b_eos ]] shape: (1,)
 
-![being-old](/images/generative-handwriting/college_messy_structure.png){: .center-super-shrink }
-
-**Ouch**. 🧹
-
-<div class="markdown-alert markdown-alert-note">
-  <p>So... I basically started fresh with a new repo, given Tensorflow has changed so much, and I couldn't really bear to look at the old code.</p>
-</div>
-
-## Data and Loading Data
-
-We're using the [IAM Online Handwriting Database][iam-database]. Specifically, I'm looking at `data/lineStrokes-all.tar.gz`, which is XML data that looks like this:
-
-![data](/images/generative-handwriting/example_data.png){: .center-super-shrink }
-
-There's also this note:
-
-> The database is divided into 4 parts, a training set, a first validation set, a second validation set and a final test set. The training set may be used for training the recognition system, while the two validation sets may be used for optimizing some meta-parameters. The final test set must be left unseen until the final test is performed. Note that you are allowed to use also other data for training etc, but report all the changes when you publish your experimental results and let the test set unchanged (It contains 3859 sequences, i.e. XML-files - one for each text line).
-
-So that determines our training set, validation set, second validation set, and a final test set.
-
-## Model and Tensorflow Updates
-
-One thing to note. For the sake of my time (given I'm no longer doing an engineering thesis, I'm going to lean a bit more on Tensorflow than Tom and I did in college). So for example, [Tensorflow][tensorflow] has a [pre-built LSTM component][tensorflow-lstm] which I'll be taking advantage of.
-
-## MDN Predictions with Simple Neural Network
-
-Ok so... this was a **humbling** experience. Given how much Tensorflow has changed, and how rusty I am at building out neural network models, I decided to start from the scratch (similar to Tom and my paper back in the day). Step 1: just implement a basic neural network layer, some 2D data, and feed that into the network and then the MDN to get prediction of the x and y data.
-
-🎉 However, voila - not tooooo painful 😅. Here's the code, it's relatively straightforward.
-
-```python
-class MDNLayer(tf.keras.layers.Layer):
-    def __init__(self, num_components, **kwargs):
-        super(MDNLayer, self).__init__(**kwargs)
-        self.num_components = num_components
-        # The number of parameters per mixture component: 2 means, 2 standard deviations, 1 correlation
-        # Plus 1 for the mixture weights and 1 for the end-of-stroke probability
-        self.output_dim = num_components * NUM_MIXTURE_COMPONENTS_PER_COMPONENT + 1
-
-    def build(self, input_shape):
-        # Weights for mixture weights
-        self.W_pi = self.add_weight(
-            name="W_pi", shape=(input_shape[-1], self.num_components), initializer="uniform", trainable=True
-        )
-        # Weights for means
-        self.W_mu = self.add_weight(
-            name="W_mu", shape=(input_shape[-1], self.num_components * 2), initializer="uniform", trainable=True
-        )
-        # Weights for standard deviations
-        self.W_sigma = self.add_weight(
-            name="W_sigma",
-            shape=(input_shape[-1], self.num_components * 2),
-            initializer=tf.keras.initializers.TruncatedNormal(mean=0.0, stddev=0.1),  # Small stddev
-            trainable=True,
-        )
-        # Weights for correlation coefficients
-        self.W_rho = self.add_weight(
-            name="W_rho", shape=(input_shape[-1], self.num_components), initializer="uniform", trainable=True
-        )
-        # Weights for end-of-stroke probability
-        self.W_eos = self.add_weight(name="W_eos", shape=(input_shape[-1], 1), initializer="uniform", trainable=True)
-        # Bias for mixture weights
-        self.b_pi = self.add_weight(name="b_pi", shape=(self.num_components,), initializer="zeros", trainable=True)
-        # Bias for means
-        self.b_mu = self.add_weight(name="b_mu", shape=(self.num_components * 2,), initializer="zeros", trainable=True)
-        # Bias for standard deviations
-        self.b_sigma = self.add_weight(
-            name="b_sigma", shape=(self.num_components * 2,), initializer="zeros", trainable=True
-        )
-        # Bias for correlation coefficients
-        self.b_rho = self.add_weight(name="b_rho", shape=(self.num_components,), initializer="zeros", trainable=True)
-        # Bias for end-of-stroke probability
-        self.b_eos = self.add_weight(name="b_eos", shape=(1,), initializer="zeros", trainable=True)
-
-        # Again, i think we need this?
-        self.built = True
-
-    def call(self, inputs):
-        pi = tf.nn.softmax(tf.matmul(inputs, self.W_pi) + self.b_pi)
-        mu = tf.matmul(inputs, self.W_mu) + self.b_mu
-        sigma = tf.exp(tf.clip_by_value(tf.matmul(inputs, self.W_sigma) + self.b_sigma, -5, 5))
-        sigma = tf.debugging.check_numerics(sigma, "Check sigma: ")
-        rho = tf.tanh(tf.matmul(inputs, self.W_rho) + self.b_rho)
-        eos = tf.sigmoid(tf.matmul(inputs, self.W_eos) + self.b_eos)
-        eos = tf.reshape(eos, [-1, inputs.shape[1], 1])
-        outputs = tf.concat([pi, mu, sigma, rho, eos], axis=2)
-        return outputs
-
-def mdn_loss(y_true, y_pred, num_components):
-"""Calculate the mixture density loss.
-
-    Args:
-    - y_true: The true next points in the sequence, with shape [batch_size, seq_length, 3].
-              The last dimension is (delta x, delta y, end_of_stroke).
-    - y_pred: The concatenated MDN outputs, with shape [batch_size, seq_length, num_components * 6 + 1].
-              This consists of mixture weights, means, log standard deviations, correlation coefficients,
-              and end stroke probabilities.
-    - num_components: The number of mixture components.
-
-    Returns:
-    - The calculated loss.
-    """
-
-    out_pi, out_sigma1, out_sigma2, out_rho, out_mu1, out_mu2, out_eos = tf.split(
-        y_pred, [num_components] * NUM_MIXTURE_COMPONENTS_PER_COMPONENT + [1], axis=-1
-    )
-    out_pi = tf.debugging.check_numerics(out_pi, "Check out_pi: ")
-    out_sigma1 = tf.maximum(out_sigma1, EPSILON)
-    out_sigma2 = tf.maximum(out_sigma2, EPSILON)
-
-    # Since direct broadcasting to a target shape with None is not possible,
-    # adjust shapes without relying on tf.broadcast_to
-    # Expand dimensions of x_data, y_data to allow TensorFlow to broadcast automatically
-    x_data, y_data, eos_data = tf.split(y_true, [1, 1, 1], axis=-1)
-
-    # HEre, we should just be taking advantage of Tensy's broadcasting
-    z = (
-        tf.square((x_data - out_mu1) / out_sigma1)
-        + tf.square((y_data - out_mu2) / out_sigma2)
-        - 2 * out_rho * (x_data - out_mu1) * (y_data - out_mu2) / (out_sigma1 * out_sigma2)
-    )
-
-    # Ensure out_rho is within a valid range to avoid sqrt of negative numbers
-    safe_out_rho = tf.clip_by_value(out_rho, -1 + EPSILON, 1 - EPSILON)
-
-    # Add an epsilon to denom to ensure it cannot be zero or too close to zero
-    denom = 2 * np.pi * out_sigma1 * out_sigma2 * tf.sqrt(1 - tf.square(safe_out_rho)) + EPSILON
-
-    # Recalculate gaussian_exp_arg with clipping to avoid extreme values
-    max_exp_arg = 50
-    gaussian_exp_arg = -z / (2 * (1 - tf.square(safe_out_rho)))
-    gaussian_exp_arg = tf.clip_by_value(gaussian_exp_arg, -max_exp_arg, max_exp_arg)
-
-    # Calculate gaussian, ensuring the result is within a valid probability range
-    gaussian = tf.exp(gaussian_exp_arg) / denom
-
-    # I was getting slammed by nans and derivatives going to infinity
-    gaussian = tf.debugging.check_numerics(gaussian, "Check gaussian after division: ")
-
-    weighted_gaussian = out_pi * gaussian
-    weighted_gaussian = tf.debugging.check_numerics(weighted_gaussian, "Check weighted_gaussian: ")
-    weighted_sum = tf.reduce_sum(weighted_gaussian, axis=2, keepdims=True)
-    weighted_sum = tf.debugging.check_numerics(weighted_sum, "Check weighted_sum: ")
-
-    eos_likelihood = eos_data * out_eos + (1 - eos_data) * (1 - out_eos)
-
-    loss_gaussian = -tf.reduce_sum(tf.math.log(tf.maximum(weighted_sum, EPSILON)))
-    loss_gaussian = tf.debugging.check_numerics(loss_gaussian, "Check loss_gaussian: ")
-    loss_eos = -tf.reduce_sum(tf.math.log(tf.maximum(eos_likelihood, EPSILON)))
-    loss_eos = tf.debugging.check_numerics(loss_eos, "Check loss_eos: ")
-    negative_log_likelihood = (loss_gaussian + loss_eos) / tf.cast(tf.size(x_data), dtype=tf.float32)
-
-    return negative_log_likelihood
+Trainable parameter count:
+==========================
+3636031
+168/168 ━━━━━━━━━━━━━━━━━━━━ 133s 728ms/step - loss: 2.7931
+Epoch 2/10000
+ 60/168 ━━━━━━━━━━━━━━━━━━━━ 1:14 686ms/step - loss: 2.4870
 ```
 
-## Predictive Handwriting Network
+Ok so that's all well and good and some fun math and neural network construction, but the meat of this project is about what we're actually building with this theory. So let's lay out our to-do list.
 
-Ok so let's just look at our model. This is by far my favorite part of this whole process. I'm not smart enough (like Alex Graves) to figure out the architectures and build such generational impact as something like an LSTM cell, but I do love that we can translate mathematical equations to code. Let's observe:
+### Snafu - Gradient Explosion Problem
 
-<details>
-<summary><b>Full Code</b></summary>
+Somehow on my first run through of this, I was still getting explodient gradients in the later stages of training my model.
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">LSTMCellWithPeepholes</span><span class="p">(</span><span class="n">tf</span><span class="p">.</span><span class="n">keras</span><span class="p">.</span><span class="n">layers</span><span class="p">.</span><span class="n">Layer</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num_lstm_units</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">LSTMCellWithPeepholes</span><span class="p">,</span> <span class="bp">self</span><span class="p">).</span><span class="n">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-        <span class="bp">self</span><span class="p">.</span><span class="n">num_lstm_units</span> <span class="o">=</span> <span class="n">num_lstm_units</span>
-        <span class="bp">self</span><span class="p">.</span><span class="n">state_size</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="p">.</span><span class="n">num_lstm_units</span><span class="p">,</span> <span class="bp">self</span><span class="p">.</span><span class="n">num_lstm_units</span><span class="p">]</span>
+As a result, I chose the laborious and time consuming process to run the training model on CPU so that I could print out debugging information and then run `tensorboard`'s Debugger model so I could inspect which gradients were exploding to `nan` or dreaded `inf`.
 
-    <span class="k">def</span> <span class="nf">build</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_shape</span><span class="p">):</span>
-        <span class="s">"""
-        Building the LSTM cell with peephole connections.
-        Basically defining all of the appropriate weights, biases, and peephole weights.
-        """</span>
-        <span class="bp">self</span><span class="p">.</span><span class="n">kernel</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">add_weight</span><span class="p">(</span>
-            <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">input_shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="bp">self</span><span class="p">.</span><span class="n">num_lstm_units</span> <span class="o">*</span> <span class="mi">4</span><span class="p">),</span> <span class="n">initializer</span><span class="o">=</span><span class="s">"uniform"</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">"kernel"</span>
-        <span class="p">)</span>
-        <span class="bp">self</span><span class="p">.</span><span class="n">recurrent_kernel</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">add_weight</span><span class="p">(</span>
-            <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">num_lstm_units</span><span class="p">,</span> <span class="bp">self</span><span class="p">.</span><span class="n">num_lstm_units</span> <span class="o">*</span> <span class="mi">4</span><span class="p">),</span> <span class="n">initializer</span><span class="o">=</span><span class="s">"uniform"</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">"recurrent_kernel"</span>
-        <span class="p">)</span>
+## Drawing Code
 
-        <span class="c1"># Peephole weights for input, forget, and output gates
-
-</span> <span class="bp">self</span><span class="p">.</span><span class="n">peephole_weights</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">add_weight</span><span class="p">(</span>
-<span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">num_lstm_units</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">initializer</span><span class="o">=</span><span class="s">"uniform"</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">"peephole_weights"</span>
-<span class="p">)</span>
-<span class="bp">self</span><span class="p">.</span><span class="n">bias</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">add_weight</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">num_lstm_units</span> <span class="o">\*</span> <span class="mi">4</span><span class="p">,),</span> <span class="n">initializer</span><span class="o">=</span><span class="s">"zeros"</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">"bias"</span><span class="p">)</span>
-
-        <span class="c1"># Apparently - and again struggles of Tensorflow - this is imperative because if you define
-
-</span> <span class="c1"># a built method then it's more or less lazy loaded, and so you need to set this
-</span> <span class="c1"># property so tensorflow knows that you're totally live for your Layer.
-</span> <span class="bp">self</span><span class="p">.</span><span class="n">built</span> <span class="o">=</span> <span class="bp">True</span>
-
-    <span class="k">def</span> <span class="nf">call</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputs</span><span class="p">:</span> <span class="n">tf</span><span class="p">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">states</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">tf</span><span class="p">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">tf</span><span class="p">.</span><span class="n">Tensor</span><span class="p">]):</span>
-        <span class="s">"""
-        This is basically implementing Graves's equations on page 5
-        https://www.cs.toronto.edu/~graves/preprint.pdf
-        equations 5-11.
-
-        From the paper,
-        * sigma is the logistic sigmoid function
-        * i -&gt; input gate
-        * f -&gt; forget gate
-        * o -&gt; output gate
-        * c -&gt; cell state
-        * W_{hi} - hidden-input gate matrix
-        * W_{xo} - input-output gate matrix
-        * W_{ci} - are diagonal
-          + so element m in each gate vector only receives input from
-          + element m of the cell vector
-        """</span>
-        <span class="c1"># Both of these are going to be shape (?, num_lstm_units)
-
-</span> <span class="n">h_tm1</span><span class="p">,</span> <span class="n">c_tm1</span> <span class="o">=</span> <span class="n">states</span>
-
-        <span class="c1"># Compute linear combinations for input, forget, and output gates, and cell candidate
-
-</span> <span class="n">z</span> <span class="o">=</span> <span class="n">tf</span><span class="p">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">inputs</span><span class="p">,</span> <span class="bp">self</span><span class="p">.</span><span class="n">kernel</span><span class="p">)</span> <span class="o">+</span> <span class="n">tf</span><span class="p">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">h_tm1</span><span class="p">,</span> <span class="bp">self</span><span class="p">.</span><span class="n">recurrent_kernel</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="p">.</span><span class="n">bias</span>
-
-        <span class="c1"># Split the transformations into input, forget, cell, and output components
-
-</span> <span class="n">i</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">c_candidate</span><span class="p">,</span> <span class="n">o</span> <span class="o">=</span> <span class="n">tf</span><span class="p">.</span><span class="n">split</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">num_or_size_splits</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-
-        <span class="c1"># Peephole connections: directly use without reshaping, assuming self.peephole_weights is defined with shape (num_lstm_units, 3)
-
-</span> <span class="n">i*peephole</span> <span class="o">=</span> <span class="n">c_tm1</span> <span class="o">*</span> <span class="bp">self</span><span class="p">.</span><span class="n">peephole*weights</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="c1"># For input gate
-</span> <span class="n">f_peephole</span> <span class="o">=</span> <span class="n">c_tm1</span> <span class="o">*</span> <span class="bp">self</span><span class="p">.</span><span class="n">peephole*weights</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="c1"># For forget gate
-</span>
-<span class="c1"># Update cell state -&gt; element-wise multiply forget gate with cell state
-</span> <span class="c1"># This is equation 9 from Graves's paper
-</span> <span class="n">c</span> <span class="o">=</span> <span class="n">f</span> <span class="o">*</span> <span class="n">c*tm1</span> <span class="o">+</span> <span class="n">i</span> <span class="o">*</span> <span class="n">tf</span><span class="p">.</span><span class="n">tanh</span><span class="p">(</span><span class="n">c_candidate</span><span class="p">)</span>
-
-        <span class="n">o_peephole</span> <span class="o">=</span> <span class="n">c</span> <span class="o">*</span> <span class="bp">self</span><span class="p">.</span><span class="n">peephole_weights</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span>  <span class="c1"># For output gate
-
-</span>
-        <span class="c1"># add the peephole adjustment before the gate activations
-</span>        <span class="n">i</span> <span class="o">+=</span> <span class="n">i_peephole</span>
-        <span class="n">f</span> <span class="o">+=</span> <span class="n">f_peephole</span>
-        <span class="n">o</span> <span class="o">+=</span> <span class="n">o_peephole</span>
-
-        <span class="c1"># apply the activations - first step for eq. 7, eq. 8. eq 9
-
-</span> <span class="n">i</span> <span class="o">=</span> <span class="n">tf</span><span class="p">.</span><span class="n">sigmoid</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
-<span class="n">f</span> <span class="o">=</span> <span class="n">tf</span><span class="p">.</span><span class="n">sigmoid</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
-<span class="n">o</span> <span class="o">=</span> <span class="n">tf</span><span class="p">.</span><span class="n">sigmoid</span><span class="p">(</span><span class="n">o</span><span class="p">)</span>
-
-        <span class="c1"># Compute final hidden state -&gt; Equation 11
-
-</span> <span class="n">h</span> <span class="o">=</span> <span class="n">o</span> <span class="o">\*</span> <span class="n">tf</span><span class="p">.</span><span class="n">tanh</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
-<span class="k">return</span> <span class="n">h</span><span class="p">,</span> <span class="p">[</span><span class="n">h</span><span class="p">,</span> <span class="n">c</span><span class="p">]</span>
-
-    <span class="k">def</span> <span class="nf">get_config</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">config</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">LSTMCellWithPeepholes</span><span class="p">,</span> <span class="bp">self</span><span class="p">).</span><span class="n">get_config</span><span class="p">()</span>
-        <span class="n">config</span><span class="p">.</span><span class="n">update</span><span class="p">({</span><span class="s">"units"</span><span class="p">:</span> <span class="bp">self</span><span class="p">.</span><span class="n">num_lstm_units</span><span class="p">})</span>
-        <span class="k">return</span> <span class="n">config</span>
-
-</code></pre></div></div>
-
-</details>
-<br>
-
-This code:
+The code to actually write, which I dubbed `Calligrapher` was relatively simple as it creates an initial data point and supplied user texts and then queries the model based on those two inputs to what the actual handwriting data should look like. More or less, that code is here:
 
 ```python
-c = f * c_tm1 + i * tf.tanh(c_candidate)
+class Calligrapher:
+    def __init__(self, model_path: str, num_output_mixtures: int) -> None:
+        self.model_path = model_path
+        self.num_output_mixtures = num_output_mixtures
+        self.model, self.loaded = load_model_if_exists(
+            model_path,
+            custom_objects={
+                "mdn_loss": mdn_loss,
+                "AttentionMechanism": AttentionMechanism,
+                "AttentionRNNCell": AttentionRNNCell,
+                "MixtureDensityLayer": MixtureDensityLayer,
+                "DeepHandwritingSynthesisModel": DeepHandwritingSynthesisModel,
+            },
+        )
+        if not self.loaded:
+            raise ValueError(f"Model not loaded from {model_path}")
 
-o_peephole = c * self.peephole_weights[:, 2]  # For output gate
+    def sample_gaussian_2d(self, mu1, mu2, s1, s2, rho):
+        """
+        Sample a point from a 2D Gaussian.
+        """
+        cov = [[s1 * s1, rho * s1 * s2], [rho * s1 * s2, s2 * s2]]
+        x, y = np.random.multivariate_normal([mu1, mu2], cov)
+        return x, y
 
-# add the peephole adjustment before the gate activations
-i += i_peephole
-f += f_peephole
-o += o_peephole
+    def adjust_parameters(self, pi_logits, mu1, mu2, sigma1, sigma2, rho, bias):
+        """
+        Adjust the parameters for biased sampling.
+        """
+        sigma1_adj = np.exp(np.log(sigma1) - bias)
+        sigma2_adj = np.exp(np.log(sigma2) - bias)
+        pi_adj = np.exp(np.log(pi_logits) * (1 + bias))
+        pi_adj /= np.sum(pi_adj, axis=-1, keepdims=True)
+        return pi_adj, mu1, mu2, sigma1_adj, sigma2_adj, rho
 
-# apply the activations - first step for eq. 7, eq. 8. eq 9
-i = tf.sigmoid(i)
-f = tf.sigmoid(f)
-o = tf.sigmoid(o)
+    def encode_characters(self, lines, char_to_idx, max_length):
+        """
+        Encodes text lines to a format suitable for the model.
+        """
+        encoded_lines = np.zeros((len(lines), max_length), dtype=int)
+        for i, line in enumerate(lines):
+            encoded_line = [char_to_idx.get(char, 0) for char in line]
+            encoded_lines[i, : len(encoded_line)] = encoded_line[:max_length]
+        return encoded_lines
 
-# Compute final hidden state -> Equation 11
-h = o * tf.tanh(c)
-return h, [h, c]
+    def sample(
+        self, lines: list[str], max_char_len=MAX_CHAR_LEN, bias=0.0, temperature=1.0
+    ):
+        """
+        Sample handwriting sequences with optional bias and temperature.
+        """
+
+        encoded_lines = np.array([encode_ascii(line) for line in lines])
+        batch_size = len(encoded_lines)
+        x_in = np.zeros((batch_size, max_char_len, 3), dtype=np.float32)
+        chars_seq_len = np.zeros([batch_size])
+        char_seq = np.zeros((len(lines), max_char_len), dtype=int)
+        for i, line in enumerate(encoded_lines):
+            char_seq[i, : len(line)] = line
+
+        # Get MDN outputs
+        mdn_outputs = self.model(x_in, char_seq, chars_seq_len)
+        pi_logits, mu1, mu2, sigma1, sigma2, rho, eos_logits = tf.split(
+            mdn_outputs, [self.num_output_mixtures] * 6 + [1], axis=-1
+        )
+        pi_logits /= temperature  # Apply temperature to soften pi distribution
+
+        if bias != 0.0:
+            pi, mu1, mu2, sigma1, sigma2, rho = self.adjust_parameters(
+                pi_logits.numpy(),
+                mu1.numpy(),
+                mu2.numpy(),
+                sigma1.numpy(),
+                sigma2.numpy(),
+                rho.numpy(),
+                bias,
+            )
+        else:
+            pi = tf.nn.softmax(pi_logits, axis=-1).numpy()
+
+        # Sample from the GMM
+        indices = [np.random.choice(20, p=pi[i]) for i in range(pi.shape[0])]
+        selected_mu1 = np.take_along_axis(
+            mu1, np.expand_dims(indices, axis=-1), axis=-1
+        )
+        selected_mu2 = np.take_along_axis(
+            mu2, np.expand_dims(indices, axis=-1), axis=-1
+        )
+        selected_sigma1 = np.take_along_axis(
+            sigma1, np.expand_dims(indices, axis=-1), axis=-1
+        )
+        selected_sigma2 = np.take_along_axis(
+            sigma2, np.expand_dims(indices, axis=-1), axis=-1
+        )
+        selected_rho = np.take_along_axis(
+            rho, np.expand_dims(indices, axis=-1), axis=-1
+        )
+
+        sampled_points = [
+            self.sample_gaussian_2d(
+                selected_mu1[i, 0],
+                selected_mu2[i, 0],
+                selected_sigma1[i, 0],
+                selected_sigma2[i, 0],
+                selected_rho[i, 0],
+            )
+            for i in range(pi.shape[0])
+        ]
+
+        # Sample eos with temperature applied
+        eos = tf.sigmoid(eos_logits / temperature).numpy()
+
+        return sampled_points, eos
+
+    def write(
+        self,
+        strokes: list[Tuple[np.ndarray, np.ndarray]],
+        lines: list[str],
+        filename: str = "output.svg",
+        bias=0.0,
+        temperature=1.0,
+        stroke_colors=None,
+        stroke_widths=None,
+    ):
+        """
+        Draws pseudo handwriting given lines of text and visualizes it as an SVG image.
+        """
+        stroke_colors = stroke_colors or ["black"] * len(lines)
+        stroke_widths = stroke_widths or [2] * len(lines)
+
+        # Generate sampled points for each line of text
+        strokes = self.sample(lines, bias=bias, temperature=temperature)
+
+        # Visualization
+        line_height = 60
+        view_width = 1000
+        view_height = line_height * (len(strokes) + 1)
+
+        dwg = svgwrite.Drawing(filename=filename, size=(view_width, view_height))
+        dwg.add(dwg.rect(insert=(0, 0), size=("100%", "100%"), fill="white"))
+
+        initial_y_offset = line_height
+        for sampled_points, color, width in zip(strokes, stroke_colors, stroke_widths):
+            prev_eos = 1.0
+            p = "M {},{}".format(0, initial_y_offset)
+            for x, y, eos in sampled_points:
+                command = "M" if prev_eos == 1.0 else "L"
+                p += " {} {},{}".format(command, x, -y + initial_y_offset)
+                prev_eos = eos
+            path = svgwrite.path.Path(p)
+            path = path.stroke(color=color, width=width, linecap="round").fill("none")
+            dwg.add(path)
+            initial_y_offset += line_height
+
+        dwg.save()
+
+
+if __name__ == "__main__":
+    texts = ["Better to have loved", "and lost", "than never loved at all"]
+    calligrapher = Calligrapher(model_load_path, num_output_mixtures=1)
+    calligrapher.write(texts, "output.svg")
 ```
-
-corresponds exactly to these equations:
-
-$$
-\begin{align}
-i_t &= \sigma\left(W_{xi} x_t + W_{hi} h_{t-1} + W_{ci} c_{t-1}  + b_i\right) \tag{7} \\
-f_t &= \sigma\left(W_{xf} x_t + W_{hf} h_{t-1} + W_{cf} c_{t-1} + b_f \right) \tag{8} \\
-c_t &= f_t c_{t-1} + i_t \tanh \left(W_{xc} x_t + W_{hc} h_{t-1} + b_c\right) \tag{9} \\
-o_t &= \sigma\left(W_{xo} x_t + W_{ho} h_{t-1} + W_{co} c_{t} + b_o\right) \tag{10} \\
-h_t &= o_t \tanh(c_t) \tag{11}
-\end{align}
-$$
-
-<div class="markdown-alert markdown-alert-note">
-  <p>These equation tags are from the paper so there is overlap. </p>
-</div>
-
-## Synthetic Handwriting Generation Network
-
-# Results
-
-## Basic MDN Predictions with Simple Network
-
-## Predictive Handwriting Visualizations
-
-## Generative Handwriting Visualizations
-
-# Troubles
-
-God dang, I _almost_ forgot from college how annoying debugging Tensorflow can be.
-
-![first-time-debugging](https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiaqcJg0701YTca6MJxrTUyX5MBA7xtbrHfzob4TOEPnT7DCl1iDMyU82PTn9kpoQKrvTWhZgm0bBXWCTssu841uf5XsIgwOZx7wsLAhxsm1Jk6aBs9Jw9JTimFx7wDa0rAROLKImifIoE/s1600/47446306_2163002007046355_8400391397395398656_n.png){: .center-super-shrink }
-
-The big thing is just figuring out all of the dimensionality of your various `tensor`s and making sure that broadcasting works smoothly.
-
-So the **core** of our processing was done in this dimension:
-
-**Input Dimension:**
-
-$$
-\left[\text{batch size}, \text{sequence length}, 3\right]
-$$
-
-The final $3$ dimension is because we're operating on $(x, y, \text{eos})$ data.
-
-**Output Dimension from Mixture Density Network (MDN):**
-
-$$
-\left[
-\text{batch size}, \text{sequence length}, \text{num mixtures} * 6
-\right]
-$$
-
-This output dimension arises from the MDN and includes parameters for each mixture component. Each mixture component requires six parameters:
-
-- Weight ($\pi_{i}$) for each mixture component.
-- Mean ($\mu_{i}$) for both the $x$ and $y$ dimensions of each mixture component.
-- Standard deviation ($\sigma_{i}$) for both the $x$ and $y$ dimensions of each mixture component.
-- End of stroke ($e_{i}$) as a lone dimension representing the end of stroke probability (from Bernoulli)
-
-# Hardware
-
-So - I need a new laptop - but I did all of the local development on my Macbook 2020 that has 500GB of SSD and only 8GB of RAM. And no fancy Nvidia GPU enabled to speed this up exponentially. So I wrote the code locally but then just rented an AWS EC2 instance to actually run the code.
 
 # Conclusion
+
+This - again - was an absolute bear of a project and took considerable effort and engineering.
+
+I don't think I'll embark on a project of this nature in awhile, unless I can feel some more tangible external benefits of doing something like this. But enjoy! And feel free to pull the code and dive in yourself.
 
 When re-reading my old draft blog post, I liked the way I ended things. So here it is:
 
