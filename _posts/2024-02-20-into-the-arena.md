@@ -8,6 +8,7 @@ summary: Exploring a popular method of cluster analysis.
 ---
 
 # Table of Contents
+
 - [Table of Contents](#table-of-contents)
 - [Motivation](#motivation)
 - [Introduction](#introduction)
@@ -60,7 +61,7 @@ Curious how you can make such fun clustering graphs like this? Read on! Or skip 
 
 Recently, I decided to throw my hat into the interviewing **arena**. And with that, I got burned pretty bad for this role that I was a bit fixated with.
 
-I have not interviewed much, and as a result, I prepped decently hard for this job interview process. While I did make it to the final day, and did well on the design and coding challenges, ultimately the company decided to pass on me given they felt they had "given me too many prompts". I am assuming that was related to my relatively slow start in the first coding interview, and perhaps some of the open endedness of the system design question. It's fair feedback and it's a fair point. I don't know if I totally agree with it, but in reality, it doesn't matter what I believe, because it's what they decided. 
+I have not interviewed much, and as a result, I prepped decently hard for this job interview process. While I did make it to the final day, and did well on the design and coding challenges, ultimately the company decided to pass on me given they felt they had "given me too many prompts". I am assuming that was related to my relatively slow start in the first coding interview, and perhaps some of the open endedness of the system design question. It's fair feedback and it's a fair point. I don't know if I totally agree with it, but in reality, it doesn't matter what I believe, because it's what they decided.
 
 ![meme](/images/hac/anikan-padme-meme.jpeg){: .center-shrink }
 
@@ -77,29 +78,29 @@ Before jumping into the problem, I want to explain a bit more about the title an
 1. It feels like a constant battle to correctly answer interview questions and nail system design questions
 2. It is the constant question of: **`Are you not entertained?`**
 
-I'll be the first to say it, I hate the interview process. I have given now hundreds of interviers to experienced candidates across big tech to juniors in college looking for their internships. It's inheritely a terrible solution to a hard problem. 
+I'll be the first to say it, I hate the interview process. I have given now hundreds of interviers to experienced candidates across big tech to juniors in college looking for their internships. It's inheritely a terrible solution to a hard problem.
 
 Here's what I somewhat think comes across:
 
-* Have you seen this interview question before? 
-* Can you recall time complexity analysis from college? 
-* Do you understand underlying data structures?
-* Do you at least somewhat know how to program?
-* Generally, how do you decompose problems?
+- Have you seen this interview question before?
+- Can you recall time complexity analysis from college?
+- Do you understand underlying data structures?
+- Do you at least somewhat know how to program?
+- Generally, how do you decompose problems?
 
 What I don't think comes across:
 
-* Will you care about your job? 
-* Will you be a good teammate? 
-* Are you going to work hard?
+- Will you care about your job?
+- Will you be a good teammate?
+- Are you going to work hard?
 
-To me, in terms of who I want to work with, these later points (that traditional software engineering totally misses) are just as, if not more, important than the first couple of points. 
+To me, in terms of who I want to work with, these later points (that traditional software engineering totally misses) are just as, if not more, important than the first couple of points.
 
-Anyway, rant over. Moving onto the fun technical stuff. 
+Anyway, rant over. Moving onto the fun technical stuff.
 
 # Goal
 
-Explore a fun problem, generate a cool [dendogram], and learn something new.  
+Explore a fun problem, generate a cool [dendogram], and learn something new.
 
 # Problem
 
@@ -144,7 +145,7 @@ Here's the gist of the problem:
 >
 > ```
 
-I'm going to further simplify the problem a little bit more and just use the retailer_nm_modified. 
+I'm going to further simplify the problem a little bit more and just use the retailer_nm_modified.
 
 # Approach
 
@@ -152,11 +153,11 @@ We're going to break down our approach into a couple of parts. Firstly, we'll ge
 
 # Part 1 - Fake Data 🧑‍💻
 
-I'm going to further simplify the problem by excluding some of the location data. 
+I'm going to further simplify the problem by excluding some of the location data.
 
-The actual problem that I saw had store_address, zip, city, etc. My thought was we could use some geodist library or some type of logic about two stores probably won't be in the zip code (just so they're not cannabalizing each other). However, just to protect my own time, given I'm blogging amidst the million of other things I need to do, we'll focus on names. 
+The actual problem that I saw had store_address, zip, city, etc. My thought was we could use some geodist library or some type of logic about two stores probably won't be in the zip code (just so they're not cannabalizing each other). However, just to protect my own time, given I'm blogging amidst the million of other things I need to do, we'll focus on names.
 
-So before, we even get to the algorithm, let's generate some fake data. 
+So before, we even get to the algorithm, let's generate some fake data.
 
 <div class="lds-container">
   <div class="lds-ring">
@@ -167,7 +168,7 @@ So before, we even get to the algorithm, let's generate some fake data.
   </div>
 </div>
 
-Great, check out the script that did that [here][data-gen-script], but voila: 
+Great, check out the script that did that [here][data-gen-script], but voila:
 
 ```
 ╭─johnlarkin@Larkin-Air hierarchical-agglomerative-clustering ‹main›
@@ -190,7 +191,7 @@ You can see that the data is largely garbled, but I did put some focus on just s
 
 You can skip to the end, but I actually have two types of data generation, easy and hard. This was some type of check (besides the confusion matrix) that we're clustering the easy data well, and the hard data less well.
 
-It's basically a toggle into the degree of simulated dirty data that we are creating. Basically, it comes down to this: 
+It's basically a toggle into the degree of simulated dirty data that we are creating. Basically, it comes down to this:
 
 ```python
 # Input
@@ -238,16 +239,16 @@ def modify_retailer_name(name):
 
 # Part 2 - Theory of Hierarchical Agglomerative Clustering 👨‍🏫
 
-Ok so everyone's favorite part - let's get into the theory. 
+Ok so everyone's favorite part - let's get into the theory.
 
-## What is Hierarchical Clustering? 
+## What is Hierarchical Clustering?
 
-Clustering is the process of creating groups based on some characteristics. The final result is a set of clusters, where each cluster is distinct from one another in some meaningful way. Often, given that we're focusing on *hierarchical* clustering, the output can be represented as a [dendogram]. We'll produce one by the end of today's blog post.  
+Clustering is the process of creating groups based on some characteristics. The final result is a set of clusters, where each cluster is distinct from one another in some meaningful way. Often, given that we're focusing on _hierarchical_ clustering, the output can be represented as a [dendogram]. We'll produce one by the end of today's blog post.
 
 Some important points about hierarchical clustering[^1]:
 
 1. No need to specify the number of clusters. The algorithm takes care of finding the clusters at the appropriate interval.
-2. Data can often by organized into a dendogram. 
+2. Data can often by organized into a dendogram.
 
 Visually, here are two examples.
 
@@ -255,56 +256,56 @@ Visually, here are two examples.
 
 ![agg2](/images/hac/hierarch-agg-clustering-demo2.gif){: .center-shrink }
 
-### What is Agglomerative Clustering? 
+### What is Agglomerative Clustering?
 
-You can probably get a good idea of context from the *agglomerative* portion (*agglomerare* meaning to "wind into a ball", *ad* meaning "to," and glomerare, "ball of yarn.")
+You can probably get a good idea of context from the _agglomerative_ portion (_agglomerare_ meaning to "wind into a ball", _ad_ meaning "to," and glomerare, "ball of yarn.")
 
-This approach starts with all of the data points as individuals. So the approach is: 
+This approach starts with all of the data points as individuals. So the approach is:
 
-1. Each data point is its own cluster 
-2. Each cluster is merged with the most similar cluster 
+1. Each data point is its own cluster
+2. Each cluster is merged with the most similar cluster
 3. Repeat until only a single cluster remains
 
 ### What is Divisive Clustering?
 
-More or less, this is the opposite strategy as agglomerative. Here are all of the points start as a single cluster, and we break them down. 
+More or less, this is the opposite strategy as agglomerative. Here are all of the points start as a single cluster, and we break them down.
 
 1. All data points start as part of the same cluster
 2. Recursively split each cluster into smaller subcluster based on dis-similarity
 
-Divisive clustering is much more of a "divide and conquer" type algorithm approach. 
+Divisive clustering is much more of a "divide and conquer" type algorithm approach.
 
 Visually, it looks like:
 
 ![agg2](/images/hac/hierarch-div-clustering-demo.gif){: .center-shrink }
 
-And yes, that's the same gif just basically done in reverse. 
+And yes, that's the same gif just basically done in reverse.
 
-We're going to focus on agglomerative clustering. 
+We're going to focus on agglomerative clustering.
 
-### What is a linkage? 
+### What is a linkage?
 
-A **linkage** is the criterion used to determine the distance between clusters. 
+A **linkage** is the criterion used to determine the distance between clusters.
 
 So you can imagine that you have two clusters, and the linkage is basically going to be how we identify the similarity between clusters.
 
-### What are the various linkage approaches? 
+### What are the various linkage approaches?
 
 There are probably more, but from my research, these seem like the leading contenders:
 
-* [Minimum Linkage / Single Linkage][single-linkage]
-* [Maximum Linkage / Complete Linkage][complete-linkage]
-* [Average Linkage][average-linkage]
-* [Centroid Linkage][centroid-linkage]
-* [Ward's Criterion (for euclidean distances)][wards-linkage]
+- [Minimum Linkage / Single Linkage][single-linkage]
+- [Maximum Linkage / Complete Linkage][complete-linkage]
+- [Average Linkage][average-linkage]
+- [Centroid Linkage][centroid-linkage]
+- [Ward's Criterion (for euclidean distances)][wards-linkage]
 
 This slide is going to be a good illustration of the different approaches[^2]:
 
 ![agg2](/images/hac/linkage-types.jpg){: .center-image }
 
-As of right now, I'll try to support multiple types of linkage types. 
+As of right now, I'll try to support multiple types of linkage types.
 
-### What is Precision? 
+### What is Precision?
 
 [Precision][recall-and-precision] measures the accuracy of positive predictions.
 It is the ratio of correctly predicted positive observations to the total predicted positive observations.
@@ -316,10 +317,11 @@ Precision = \frac{TP}{TP + FP}
 $$
 
 where
-- $$ TP $$  = True Positives
+
+- $$ TP $$ = True Positives
 - $$ FP $$ = False Positives
 
-### What is Recall? 
+### What is Recall?
 
 Also called sensitivity, [recall][recall-and-precision] is the ability of a classifier to find all the positive samples.
 Ratio of correctly predicted positive observations to all of the observations in the class.
@@ -331,75 +333,76 @@ Recall = \frac{TP}{TP + FN}
 $$
 
 where
+
 - $$ TP $$ = True Positives
 - $$ FN $$ = False Negatives
 
-
 ### What is a Confusion Matrix?
 
-This is relatively straight forward, and I'm utilizing `sklearn.metrics` 's `confusion_matrix`. 
+This is relatively straight forward, and I'm utilizing `sklearn.metrics` 's `confusion_matrix`.
 
-My FAVORITE visual I saw while researching the confusion matrix was here: 
+My FAVORITE visual I saw while researching the confusion matrix was here:
 
-![confusion matrix]( https://miro.medium.com/v2/resize:fit:924/format:webp/1*7EYylA6XlXSGBCF77j_rOA.png ){: .center-image}
+![confusion matrix](https://miro.medium.com/v2/resize:fit:924/format:webp/1*7EYylA6XlXSGBCF77j_rOA.png){: .center-image}
 
-courtesy of here[^3]. 
+courtesy of here[^3].
 
-However, for more data points, the confusion matrix basically represents these values dispersed throughout. 
+However, for more data points, the confusion matrix basically represents these values dispersed throughout.
 
-From [their documentation][confusion-matrix], 
+From [their documentation][confusion-matrix],
 
-> By definition a confusion matrix *C* is such that *C_{i, j}* is equal to the number of observations known to be in group *i* and predicted to be in group *j*.
-> 
-> Thus in binary classification, the count of true negatives is *C_{0,0}*, false negatives is *C_{1,0}*
-> true positives is *C_{1,1}*, and false positives is *C_{0,1}*.
+> By definition a confusion matrix _C_ is such that _C\_{i, j}_ is equal to the number of observations known to be in group _i_ and predicted to be in group _j_.
+>
+> Thus in binary classification, the count of true negatives is _C\_{0,0}_, false negatives is _C\_{1,0}_
+> true positives is _C\_{1,1}_, and false positives is _C\_{0,1}_.
 
-### What is an F1 Score? 
+### What is an F1 Score?
 
-I wanted some way to compare results with a single number for the easy vs hard data that we generated, and how well we clustered. The metric I decided to use was the [weighted F1 score][f1-score]. 
+I wanted some way to compare results with a single number for the easy vs hard data that we generated, and how well we clustered. The metric I decided to use was the [weighted F1 score][f1-score].
 
 This is a way to get a single numerical value that combines aspects of [recall and precision][recall-and-precision].
 
 # Part 3 - Algorithmic Approach 👾
 
-So let's dive into the fundamentals and a bit more of a technical breakdown about how this is going to work. 
+So let's dive into the fundamentals and a bit more of a technical breakdown about how this is going to work.
 
 There is one main question that is abstracted by the algorithm:
-* How do you identify the "distance" between clusters?
-* How do you identify the new clusters center, so that you can then compare other clusters to that updated one?
+
+- How do you identify the "distance" between clusters?
+- How do you identify the new clusters center, so that you can then compare other clusters to that updated one?
 
 ## How to compute distance?
 
-Here is where we have a lot of different approaches and it kind of depends on the actual data at hand. For example, we have basically geolocation data and somewhat distorted retailer names. 
+Here is where we have a lot of different approaches and it kind of depends on the actual data at hand. For example, we have basically geolocation data and somewhat distorted retailer names.
 
 There's a lot of different approaches we could take here, but when given the actual assignment, I harkened back to my bioinformatics classes. There were two that I remembered:
 
-* [**Hamming Distance**][hamming]
-* [**Levenshtein Distance**][levenshtein] (although I'm positive I didn't spell it correctly in the interview)
+- [**Hamming Distance**][hamming]
+- [**Levenshtein Distance**][levenshtein] (although I'm positive I didn't spell it correctly in the interview)
 
-From the quick research, I decided on using Levenshtein distance given it's a bit more modern and sophisticated than the hamming distance. 
+From the quick research, I decided on using Levenshtein distance given it's a bit more modern and sophisticated than the hamming distance.
 
 So the general idea is going to be, we:
 
-1. Build a matrix that shows the Levenshtein distance from one data point to the next 
-2. Find the most similar data point based on the above distance 
-3. Merge into a cluster 
-4. Repeat until only a single cluster 
-5. Generate our fun dendogram 
+1. Build a matrix that shows the Levenshtein distance from one data point to the next
+2. Find the most similar data point based on the above distance
+3. Merge into a cluster
+4. Repeat until only a single cluster
+5. Generate our fun dendogram
 
 ## How to identify the new clusters center?
 
-Here is where we're going to use the linkage type and leave the clusters as one, but just compute the distance. We'll use `Single` as our linkage type, meaning we'll be looking for the minimum. 
+Here is where we're going to use the linkage type and leave the clusters as one, but just compute the distance. We'll use `Single` as our linkage type, meaning we'll be looking for the minimum.
 
 # Part 4 - Ground Up Implementation 👷‍♂️
 
-This section is going to be focused on a bit more to the question I saw, where we're doing things from the ground up so that we can better understand the actual algorithm. 
+This section is going to be focused on a bit more to the question I saw, where we're doing things from the ground up so that we can better understand the actual algorithm.
 
 This is not going to be as performant, or as fun, as part 5, so if you just want to skip to that section, be my guest.
 
 ## Heart of the Implementation
 
-You can definitely check out the [code here][code], but I wanted to showcase the heart of the manual implementation for the Hierarchical Clustering Algorithm. 
+You can definitely check out the [code here][code], but I wanted to showcase the heart of the manual implementation for the Hierarchical Clustering Algorithm.
 
 ```python
 def hierarchical_clustering_from_scratch(
@@ -607,22 +610,21 @@ def hierarchical_clustering_from_scratch(
         return self.processed_data
 ```
 
-
 ## Questions that Arose
 
-### Early Stopping Criterion 
+### Early Stopping Criterion
 
-One thing to note is that the whole point of the Hierarchical Clustering Algorithm is that we converge to a single cluster. That's a little bit different than what we want here, because we want to have a cluster_id per each retailer. So there's two things we can do here: 1) stop when we have the number of clusters we know (given we have the retailer_nm and so we'll know the number of unique clusters) 2) generate an interactive dendrogram and then try to pick various cutoff points based on the number of clusters. 
+One thing to note is that the whole point of the Hierarchical Clustering Algorithm is that we converge to a single cluster. That's a little bit different than what we want here, because we want to have a cluster_id per each retailer. So there's two things we can do here: 1) stop when we have the number of clusters we know (given we have the retailer_nm and so we'll know the number of unique clusters) 2) generate an interactive dendrogram and then try to pick various cutoff points based on the number of clusters.
 
 **As a result, in our slight variation of Hierarchical Clustering Algorithm, we're going to implement a stopping criterion which correlates to the number of unique retailer names.**
 
 ### Mapping Generated ClusterIds to Ground Truth Label
 
-So we'll have our early stopping criterion, but then the question arises of how do we map ***OUR*** generated `cluster_ids` to the `ground_truth_labels`. 
+So we'll have our early stopping criterion, but then the question arises of how do we map **_OUR_** generated `cluster_ids` to the `ground_truth_labels`.
 
 **I think the best way to do this is to identify per our computed cluster the most frequent (i.e. the [mode]) `ground_truth_label` that we've seen and then map it accordingly.**
 
-Basically, a simple example would be like this: 
+Basically, a simple example would be like this:
 
 ```python
 >>> import pandas as pd
@@ -648,23 +650,23 @@ Basically, a simple example would be like this:
 {1: 7, 2: 3, 6: 2, 7: 1}
 ```
 
-### Plotting a Dendrogram 
+### Plotting a Dendrogram
 
-For sure the most annoying part of this whole project was trying to build out the apporpriate linkage matrix to pass to `scipy`'s `dendrogram`. 
+For sure the most annoying part of this whole project was trying to build out the apporpriate linkage matrix to pass to `scipy`'s `dendrogram`.
 
-Partially the issue was indexing and partially the issue was that we're stopping early so some of the structure about the linkage matrix (described [here][linkage-matrix-structure]) was inherently incorrect. 
+Partially the issue was indexing and partially the issue was that we're stopping early so some of the structure about the linkage matrix (described [here][linkage-matrix-structure]) was inherently incorrect.
 
 It was annoying, but if you want to see some fun visualizations, check it out here: [Dendrogram Visualization](#dendrogram-visualization).
 
 # Part 5 - Polished Implementation 💅
 
-So again, all of the above, and all of the [code found here][code] was largely aimed at implementing the hierarchical clustering algorithm from scratch. 
+So again, all of the above, and all of the [code found here][code] was largely aimed at implementing the hierarchical clustering algorithm from scratch.
 
-This section is trying to utilize 3rd party libraries to perform that our self. 
+This section is trying to utilize 3rd party libraries to perform that our self.
 
-At first I thought it would be best if there was two separate scripts to do the clustering, but after writing the code, I decided that some input or feature flags at the top of the script would work just as well. 
+At first I thought it would be best if there was two separate scripts to do the clustering, but after writing the code, I decided that some input or feature flags at the top of the script would work just as well.
 
-So I refactored my code to include this portion. 
+So I refactored my code to include this portion.
 
 ```python
 SHOULD_USE_THIRD_PARTY = False
@@ -681,7 +683,7 @@ SHOULD_USE_THIRD_PARTY = False
         return self.hierarchical_clustering_from_scratch(should_enforce_stopping_criteria)
 ```
 
-The actual implementation is very simple, so I'll include that here: 
+The actual implementation is very simple, so I'll include that here:
 
 ```python
     def hierarchical_clustering_from_third_party(self) -> pd.DataFrame:
@@ -708,10 +710,9 @@ The actual implementation is very simple, so I'll include that here:
         self.processed_data["cluster_id"] = cluster_labels
 ```
 
-
 # Takeways - how did we do?!
 
-Honestly? Pretty well! 
+Honestly? Pretty well!
 
 <div class="table-wrapper"
      style="display: block; /* or display: flex; */
@@ -1428,9 +1429,9 @@ Honestly? Pretty well!
 </table>
 </div>
 
-One of the most satisfying things about this was seeing that there were some exact alignments between my implementation and the third party implementation. 
+One of the most satisfying things about this was seeing that there were some exact alignments between my implementation and the third party implementation.
 
-There were also some discrepancies which I kind of figure is because of various optimizations and the fact that scipy's example is probably doing some more advanced stuff under the hood, but seeing similar results across the board, made me feel pretty good about my implementation, and furthermore, my understanding that I had fully grokked how this algorithm works. 
+There were also some discrepancies which I kind of figure is because of various optimizations and the fact that scipy's example is probably doing some more advanced stuff under the hood, but seeing similar results across the board, made me feel pretty good about my implementation, and furthermore, my understanding that I had fully grokked how this algorithm works.
 
 ## Misses 🎯
 
@@ -1444,25 +1445,26 @@ I think Levenshtein distance is still optimal, but I wanted to also explore the 
 
 ## Wins 🎉
 
-### Accuracy 
+### Accuracy
 
-Pretty good F1 scores! Which was exciting to see. Our native results were pretty compartive to the 3rd party `scipy` solution. 
+Pretty good F1 scores! Which was exciting to see. Our native results were pretty compartive to the 3rd party `scipy` solution.
 
-### Beautiful Visualizations 
+### Beautiful Visualizations
 
-See below, but I think these are pretty fun to look at and analyze. 
+See below, but I think these are pretty fun to look at and analyze.
 
-### Deeper Understanding and New Technical Skills 
+### Deeper Understanding and New Technical Skills
 
-I learned a ton during this process and I was pretty fired up with what I built and this post. It's definitely one of my favorites. 
+I learned a ton during this process and I was pretty fired up with what I built and this post. It's definitely one of my favorites.
 
 ## Next Steps 🪜
 
-It'd be lovely if we could try different distance functions. 
+It'd be lovely if we could try different distance functions.
 
 ## Dendrogram Visualization
 
 ![scratch_simple_single_leven](/images/hac/dendrogram_scratch_simple_single_leven.png){: .center-image}
+
 <div class="image-caption">scratch_simple_single_leven</div>
 ![3rd_party_simple_single_leven](/images/hac/dendrogram_3rd_party_simple_single_leven.png){: .center-image}
 <div class="image-caption">3rd_party_simple_single_leven</div>
