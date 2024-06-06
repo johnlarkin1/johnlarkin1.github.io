@@ -2,8 +2,9 @@
 title: Porvata and SPAR Integration
 layout: post
 featured-img: porvata
-categories: [Development, Friendship, Favorites]
+categories: [⭐️ Favorites, Development, Friendship]
 summary: I got to work with my best friend Will on a fun technical project!
+favorite: true
 ---
 
 I got to work with my best friend [Will][will] on an interesting development project. This was by far one of my favorite pieces of development work I've done.
@@ -27,12 +28,13 @@ So let's dive in.
 # Table of Contents
 
 - [Background](#background)
+- [Table of Contents](#table-of-contents)
 - [Introduction](#introduction)
 - [Overview of Architecture](#overview-of-architecture)
 - [Sweating the Details](#sweating-the-details)
-  - [[Shopify Partners][shopify-partner]](#-shopify-partners--shopify-partner-)
+  - [Shopify Partners](#shopify-partners)
   - [Shopify Authentication](#shopify-authentication)
-    - [`ngrok` and SSL Authentication](#-ngrok--and-ssl-authentication)
+    - [`ngrok` and SSL Authentication](#ngrok-and-ssl-authentication)
   - [Shopify Order Events](#shopify-order-events)
     - [GraphQL](#graphql)
   - [Posting to SPAR](#posting-to-spar)
