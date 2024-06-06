@@ -3,8 +3,9 @@ title: 'Into the Arena: Hierarchical Agglomerative Clustering'
 layout: post
 featured-gif: hierarch-agg-clustering
 mathjax: true
-categories: [Favorites, Algorithms, Development, A.I., M.L.]
+categories: [⭐️ Favorites, Algorithms, Development, A.I., M.L.]
 summary: Exploring a popular method of cluster analysis.
+favorite: true
 ---
 
 # Table of Contents
