@@ -209,7 +209,7 @@ Let's look at $$f(x) = x^2 + 7x - 18$$ and evaluate the function at $$f(7)$$. To
 $$
 \begin{align*}
 f(x) &= x^2 + 7x - 18 \\
-f(7) &= 7^2 + 7\cdot7 - 18 && \text{conver to dual first!} \\
+f(7) &= 7^2 + 7\cdot7 - 18 && \text{convert to dual first!} \\
 f(7 + \varepsilon) &= (7 + \varepsilon)^2 + 7\cdot(7 + \varepsilon) - 18 && \text{reminder, we're basically adding 0 so it's fine!} \\
 &= 49 + 14 \varepsilon + \varepsilon^2 + 49 + 7\varepsilon - 18 \\
 &= 80 + 21 \varepsilon \\
