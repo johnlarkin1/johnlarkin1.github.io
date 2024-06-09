@@ -3,7 +3,7 @@ title: 'Teaching a Computer How to Write'
 layout: post
 featured-gif:
 mathjax: true
-categories: [Favorites, Algorithms, Development, A.I., M.L.]
+categories: [⭐️ Favorites, Algorithms, Development, A.I., M.L.]
 summary: Jeez. For basically 7 years this has been on my wishlist.
 ---
 
@@ -22,13 +22,21 @@ summary: Jeez. For basically 7 years this has been on my wishlist.
 
 </div>
 
+<br>
+
+<div class="markdown-alert markdown-alert-note">
+<p>Ok one more. Very topical!! One thing that came out while I was writing this up and finalizing it, was this paper: <b><a href="https://arxiv.org/abs/2405.04517">xLSTM: Extended Long Short-Term Memory</a></b>. I'm hoping to explore that at some point, but it seems a structural improvement of some of the issues I talk about (and run into while training) below.</p>
+</div>
+
+<br>
+
 # ✍️ Motivating Visualizations
 
 Today, you're going to learn how to teach a computer to write. And I don't mean producing text, I mean learning how to write like a human learns how to write with a pen and paper. So here are some fun motivating images.
 
 TODO
 
-[See here for more](#generative-handwriting-visualizations).
+[See here for more](#visualizations).
 
 # Table of Contents
 
@@ -72,8 +80,11 @@ TODO
   - [Final Result](#final-result)
 - [🏆 Results](#-results)
   - [Vast AI GPU Enabled Execution](#vast-ai-gpu-enabled-execution)
-    - [Snafu - Gradient Explosion Problem](#snafu---gradient-explosion-problem)
+    - [Problem #1 - Gradient Explosion Problem](#problem-1---gradient-explosion-problem)
+    - [Problem #2 - OOM Galore](#problem-2---oom-galore)
   - [Drawing Code](#drawing-code)
+  - [Visualizations](#visualizations)
+    - [Learning with Dummy Data](#learning-with-dummy-data)
 - [Conclusion](#conclusion)
 
 # 🥅 Motivation
@@ -1069,11 +1080,145 @@ Epoch 2/10000
 
 Ok so that's all well and good and some fun math and neural network construction, but the meat of this project is about what we're actually building with this theory. So let's lay out our to-do list.
 
-### Snafu - Gradient Explosion Problem
+### Problem #1 - Gradient Explosion Problem
 
 Somehow on my first run through of this, I was still getting explodient gradients in the later stages of training my model.
 
 As a result, I chose the laborious and time consuming process to run the training model on CPU so that I could print out debugging information and then run `tensorboard`'s Debugger model so I could inspect which gradients were exploding to `nan` or dreaded `inf`.
+
+Here's an example of what that looked like:
+
+![tensorboard](/images/generative-handwriting/tensorboard-debugging.png){: .center-image}
+
+Which was even more annoying because of this: https://github.com/tensorflow/tensorflow/issues/59215 issue.
+
+### Problem #2 - OOM Galore
+
+Uh oh, looks like the `vast.ai` instance I utilized didn't have enough memory. Here is an example of one of the errors I ran into:
+
+<details>
+  <summary>Out of memory error here</summary>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Out of memory while trying to allocate 22271409880 bytes.
+BufferAssignment OOM Debugging.
+BufferAssignment stats:
+             parameter allocation:   29.54MiB
+              constant allocation:         4B
+        maybe_live_out allocation:   27.74MiB
+     preallocated temp allocation:   20.74GiB
+                 total allocation:   20.77GiB
+Peak buffers:
+        Buffer 1:
+                Size: 3.40GiB
+                Operator: op_type="EmptyTensorList" op_name="gradient_tape/deep_handwriting_synthesis_model_1/rnn_1/while/deep_handwriting_synthesis_model_1/rnn_1/while/attention_rnn_cell_1/lstm_peephole_cell_2_1/MatMul/ReadVariableOp_0/accumulator" source_file="/root/code/venv/lib/python3.11/site-packages/tensorflow/python/framework/ops.py" source_line=1177
+                XLA Label: fusion
+                Shape: f32[1200,476,1600]
+                ==========================
+
+        Buffer 2:
+                Size: 3.40GiB
+                Operator: op_type="EmptyTensorList" op_name="gradient_tape/deep_handwriting_synthesis_model_1/rnn_1/while/deep_handwriting_synthesis_model_1/rnn_1/while/attention_rnn_cell_1/lstm_peephole_cell_2_1/MatMul/ReadVariableOp_0/accumulator" source_file="/root/code/venv/lib/python3.11/site-packages/tensorflow/python/framework/ops.py" source_line=1177
+                XLA Label: fusion
+                Shape: f32[1200,476,1600]
+                ==========================
+
+        Buffer 3:
+                Size: 2.86GiB
+                Operator: op_type="EmptyTensorList" op_name="gradient_tape/deep_handwriting_synthesis_model_1/rnn_1/while/deep_handwriting_synthesis_model_1/rnn_1/while/attention_rnn_cell_1/lstm_peephole_cell_2_1/MatMul_1/ReadVariableOp_0/accumulator" source_file="/root/code/venv/lib/python3.11/site-packages/tensorflow/python/framework/ops.py" source_line=1177
+                XLA Label: fusion
+                Shape: f32[1200,400,1600]
+                ==========================
+
+        Buffer 4:
+                Size: 2.86GiB
+                Operator: op_type="EmptyTensorList" op_name="gradient_tape/deep_handwriting_synthesis_model_1/rnn_1/while/deep_handwriting_synthesis_model_1/rnn_1/while/attention_rnn_cell_1/lstm_peephole_cell_2_1/MatMul_1/ReadVariableOp_0/accumulator" source_file="/root/code/venv/lib/python3.11/site-packages/tensorflow/python/framework/ops.py" source_line=1177
+                XLA Label: fusion
+                Shape: f32[1200,400,1600]
+                ==========================
+
+        Buffer 5:
+                Size: 2.86GiB
+                Operator: op_type="EmptyTensorList" op_name="gradient_tape/deep_handwriting_synthesis_model_1/rnn_1/while/deep_handwriting_synthesis_model_1/rnn_1/while/attention_rnn_cell_1/lstm_peephole_cell_2_1/MatMul_1/ReadVariableOp_0/accumulator" source_file="/root/code/venv/lib/python3.11/site-packages/tensorflow/python/framework/ops.py" source_line=1177
+                XLA Label: fusion
+                Shape: f32[1200,400,1600]
+                ==========================
+
+        Buffer 6:
+                Size: 556.64MiB
+                Operator: op_type="EmptyTensorList" op_name="gradient_tape/deep_handwriting_synthesis_model_1/rnn_1/while/deep_handwriting_synthesis_model_1/rnn_1/while/attention_rnn_cell_1/lstm_peephole_cell_1/MatMul/ReadVariableOp_0/accumulator" source_file="/root/code/venv/lib/python3.11/site-packages/tensorflow/python/framework/ops.py" source_line=1177
+                XLA Label: fusion
+                Shape: f32[1200,76,1600]
+                ==========================
+
+        Buffer 7:
+                Size: 219.73MiB
+                Operator: op_type="While" op_name="deep_handwriting_synthesis_model_1/rnn_1/while" source_file="/root/code/venv/lib/python3.11/site-packages/tensorflow/python/framework/ops.py" source_line=1177
+                XLA Label: fusion
+                Shape: f32[1200,64,10,75]
+                ==========================
+
+        Buffer 8:
+                Size: 219.73MiB
+                Operator: op_type="While" op_name="deep_handwriting_synthesis_model_1/rnn_1/while" source_file="/root/code/venv/lib/python3.11/site-packages/tensorflow/python/framework/ops.py" source_line=1177
+                XLA Label: fusion
+                Shape: f32[1200,64,10,75]
+                ==========================
+
+        Buffer 9:
+                Size: 219.73MiB
+                Operator: op_type="While" op_name="deep_handwriting_synthesis_model_1/rnn_1/while" source_file="/root/code/venv/lib/python3.11/site-packages/tensorflow/python/framework/ops.py" source_line=1177
+                XLA Label: fusion
+                Shape: f32[1200,64,10,75]
+                ==========================
+
+        Buffer 10:
+                Size: 139.45MiB
+                Operator: op_type="While" op_name="deep_handwriting_synthesis_model_1/rnn_1/while" source_file="/root/code/venv/lib/python3.11/site-packages/tensorflow/python/framework/ops.py" source_line=1177
+                XLA Label: fusion
+                Shape: f32[1200,64,476]
+                ==========================
+
+        Buffer 11:
+                Size: 139.45MiB
+                Operator: op_type="While" op_name="deep_handwriting_synthesis_model_1/rnn_1/while" source_file="/root/code/venv/lib/python3.11/site-packages/tensorflow/python/framework/ops.py" source_line=1177
+                XLA Label: fusion
+                Shape: f32[1200,64,476]
+                ==========================
+
+        Buffer 12:
+                Size: 139.45MiB
+                Operator: op_type="While" op_name="deep_handwriting_synthesis_model_1/rnn_1/while" source_file="/root/code/venv/lib/python3.11/site-packages/tensorflow/python/framework/ops.py" source_line=1177
+                XLA Label: fusion
+                Shape: f32[1200,64,476]
+                ==========================
+
+        Buffer 13:
+                Size: 117.19MiB
+                Operator: op_type="While" op_name="deep_handwriting_synthesis_model_1/rnn_1/while" source_file="/root/code/venv/lib/python3.11/site-packages/tensorflow/python/framework/ops.py" source_line=1177
+                XLA Label: fusion
+                Shape: f32[1200,64,400]
+                ==========================
+
+        Buffer 14:
+                Size: 117.19MiB
+                Operator: op_type="While" op_name="deep_handwriting_synthesis_model_1/rnn_1/while" source_file="/root/code/venv/lib/python3.11/site-packages/tensorflow/python/framework/ops.py" source_line=1177
+                XLA Label: fusion
+                Shape: f32[1200,64,400]
+                ==========================
+
+        Buffer 15:
+                Size: 117.19MiB
+                Operator: op_type="While" op_name="deep_handwriting_synthesis_model_1/rnn_1/while" source_file="/root/code/venv/lib/python3.11/site-packages/tensorflow/python/framework/ops.py" source_line=1177
+                XLA Label: fusion
+                Shape: f32[1200,64,400]
+                ==========================
+
+
+         [[]]
+
+</code></pre></div></div>
+
+</details>
 
 ## Drawing Code
 
@@ -1242,6 +1387,28 @@ if __name__ == "__main__":
     calligrapher = Calligrapher(model_load_path, num_output_mixtures=1)
     calligrapher.write(texts, "output.svg")
 ```
+
+## Visualizations
+
+### Learning with Dummy Data
+
+Again, we used dummy data to start with to ensure our various components were learning and converging correctly.
+
+Here is the dummy data:
+
+![dummy_data](/images/generative-handwriting/viz/dummy_data.png){: .center-image}
+
+Here is just our cascade of LSTMs learning on the loop-da-loop data and predicting on a single sequence. This is not optimized or utilizing the mixture density network.
+
+![handwriting_loop_lstm_simple](/images/generative-handwriting/viz/handwriting_loop_simplified.gif){: .center-image}
+
+![handwriting_zig_lstm_simple](/images/generative-handwriting/viz/handwriting_zigzag_simplified.gif){: .center-image}
+
+Here is our entire network and just sampling from the means (not showing the mixture densities) across the entire example datasets. One thing to note here if you can see how the LSTMs can still handle this type of larger contexts. Again, it pales in comparison to modern day transformer context, but still impressive.
+
+![handwriting_loop_lstm_simple](/images/generative-handwriting/viz/loop_epoch200_mixtures5.gif){: .center-image}
+
+![handwriting_zig_lstm_simple](/images/generative-handwriting/viz/zigzag_epoch200_mixtures5.gif){: .center-image}
 
 # Conclusion
 
