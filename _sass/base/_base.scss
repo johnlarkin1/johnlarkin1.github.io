@@ -1,9 +1,15 @@
+:root {
+  color-scheme: dark;
+}
+
 html {
   box-sizing: border-box;
 }
 
 body {
   -webkit-overflow-scrolling: touch;
+  background-color: $dark-bg;
+  color: $dark-text;
 }
 
 *,

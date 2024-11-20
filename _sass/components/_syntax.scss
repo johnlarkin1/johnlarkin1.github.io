@@ -207,3 +207,18 @@
 .highlight {
   background-color: #f8f8f8;
 }
+
+
+.highlight {
+  background-color: $dark-code-bg;
+  border-radius: 6px;
+  
+  .c, .c1, .cm { color: #666; } // Comments
+  .k, .kd { color: #cc99cd; }   // Keywords
+  .s, .s1, .s2 { color: #7ec699; } // Strings
+  .na { color: #e6b450; }       // Names/attributes
+  .nb { color: #59c2ff; }       // Built-in names
+  .nf { color: #7aa2f7; }       // Function names
+  .n { color: #c0caf5; }        // Names
+  .o { color: #89ddff; }        // Operators
+}

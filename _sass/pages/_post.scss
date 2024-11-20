@@ -1,5 +1,5 @@
 .post-content {
-  max-width: 52.5rem;
+  max-width: 75rem;
   margin: 0 auto;
   padding-top: 2.5em;
 
@@ -59,4 +59,33 @@
       }
     }
   }
+}
+
+.video-container {
+  text-align: center;
+  margin: 20px auto;
+  width: 95%; /* Slightly less than full width */
+  max-width: 1200px;
+}
+
+.video-wrapper {
+  position: relative;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.video-wrapper iframe {
+  aspect-ratio: 16/9;
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.video-caption {
+  margin: 8px 0 0;
+  color: #666;
+  font-style: italic;
 }
