@@ -29,8 +29,22 @@ $lg: 62em; //992px
 $xl: 75em; //1200px
 
 // Code
+$code-font: "JetBrains Mono", Consolas, "Liberation Mono", Menlo, monospace;
+
 $code-bg-color: #f6f8fa !default;
 $code-text-color: #25292e !default;
+$code-block-bg: darken($code-bg-color, 2%) !default;
+$code-font-family: "JetBrains Mono", Consolas, "Liberation Mono", Menlo, monospace !default;
+$code-border-color: #e1e4e8 !default;
+
+$dark-bg: #1a1a1a !default;
+$dark-text: #e4e4e4 !default;
+$dark-code-bg: #1e1e1e !default; 
+$dark-code-text: #d4d4d4 !default;
+$dark-heading: #fff !default;
+$dark-link: #68a4f1 !default;
+$dark-border: #333 !default;
+$dark-code-bg: #2d2d2d !default;
 
 // Borders
 $border-color: #dce6f0 !default;

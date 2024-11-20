@@ -2,7 +2,7 @@
 body {
   background-color: $bg-color;
   font-family: $font-stack;
-  font-size: 0.9rem;
+  font-size: 1.0rem;
   line-height: 1.5;
   color: $text-color;
   -webkit-font-smoothing: antialiased;
@@ -72,32 +72,57 @@ mark {
 
 code {
   padding: 0.2em 0.4em;
-  font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
-  font-size: 0.8rem;
+  font-family: $code-font;
+  font-size: 0.85em;
   color: $code-text-color;
   background-color: $code-bg-color;
-  border-radius: 3px;
+  border-radius: 4px;
+  
+  @media (prefers-color-scheme: dark) {
+    color: $dark-code-text;
+    background-color: $dark-code-bg;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
 }
 
 pre {
-  padding: 0.8rem;
-  margin-top: 0;
-  margin-bottom: 1rem;
+  padding: 1rem;
+  margin: 1.5rem 0;
   overflow-x: auto;
-  font: 1rem Consolas, "Liberation Mono", Menlo, Courier, monospace;
+  font-family: $code-font;
+  font-size: 0.85em;
+  line-height: 1.45;
   color: $code-text-color;
-  word-wrap: normal;
   background-color: $code-bg-color;
-  border: solid 1px $border-color;
-  border-radius: 0.3rem;
+  border: 1px solid $border-color;
+  border-radius: 6px;
+
+  // Scrollbar styling
+  &::-webkit-scrollbar {
+    height: 8px;
+    background-color: transparent;
+  }
+  
+  &::-webkit-scrollbar-thumb {
+    background-color: rgba(#000, 0.2);
+    border-radius: 4px;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    color: $dark-code-text;
+    background-color: $dark-code-bg;
+    border-color: $dark-border;
+
+    &::-webkit-scrollbar-thumb {
+      background-color: rgba(255, 255, 255, 0.2);
+    }
+  }
 
   > code {
     padding: 0;
     margin: 0;
-    font-size: 0.8rem;
-    color: $code-text-color;
-    word-break: normal;
-    white-space: pre;
+    font-size: inherit;
+    color: inherit;
     background: transparent;
     border: 0;
   }
