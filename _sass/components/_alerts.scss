@@ -1,0 +1,150 @@
+.markdown-alert {
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-left: .25em solid;
+  position: relative;
+  background-color: $code-bg-color;
+  border-radius: .375rem;
+
+  @media (prefers-color-scheme: dark) {
+    background-color: rgba(255, 255, 255, 0.05);
+  }
+
+  p {
+    position: relative;
+    top: 2rem;
+    padding-bottom: .5rem;
+  }
+}
+
+// Note alert
+.markdown-alert-note {
+  border-left-color: $alert-note;
+
+  &::before {
+    content: "Note:";
+    font-weight: bold;
+    color: $alert-note;
+    position: absolute;
+    left: 3rem;
+    top: .5rem;
+    display: block;
+    margin-bottom: .5rem;
+  }
+
+  &::after {
+    content: url($alert-icon-note);
+    position: absolute;
+    top: .5rem;
+  }
+}
+
+// Tip alert
+.markdown-alert-tip {
+  border-left-color: $alert-tip;
+
+  &::before {
+    content: "Tip:";
+    font-weight: bold;
+    color: $alert-tip;
+    position: absolute;
+    left: 3rem;
+    top: .5rem;
+    display: block;
+    margin-bottom: .5rem;
+  }
+
+  &::after {
+    content: url($alert-icon-tip);
+    position: absolute;
+    top: .5rem;
+  }
+}
+
+// Important alert
+.markdown-alert-important {
+  border-left-color: $alert-important;
+
+  &::before {
+    content: "Important:";
+    font-weight: bold;
+    color: $alert-important;
+    position: absolute;
+    left: 3rem;
+    top: .5rem;
+    display: block;
+    margin-bottom: .5rem;
+  }
+
+  &::after {
+    content: url($alert-icon-important);
+    position: absolute;
+    top: .5rem;
+  }
+}
+
+// Warning alert
+.markdown-alert-warning {
+  border-left-color: $alert-warning;
+
+  &::before {
+    content: "Warning:";
+    font-weight: bold;
+    color: $alert-warning;
+    position: absolute;
+    left: 3rem;
+    top: .5rem;
+    display: block;
+    margin-bottom: .5rem;
+  }
+
+  &::after {
+    content: url($alert-icon-warning);
+    position: absolute;
+    top: .5rem;
+  }
+}
+
+// Caution alert
+.markdown-alert-caution {
+  border-left-color: $alert-caution;
+
+  &::before {
+    content: "Caution:";
+    font-weight: bold;
+    color: $alert-caution;
+    position: absolute;
+    left: 3rem;
+    top: .5rem;
+    display: block;
+    margin-bottom: .5rem;
+  }
+
+  &::after {
+    content: url($alert-icon-caution);
+    position: absolute;
+    top: .5rem;
+  }
+}
+
+// Disclaimer alert
+.markdown-alert-disclaimer {
+  border-left-color: $alert-disclaimer;
+
+  &::before {
+    content: "Disclaimer:";
+    font-weight: bold;
+    color: $alert-disclaimer;
+    position: absolute;
+    left: 3rem;
+    top: .5rem;
+    display: block;
+    margin-bottom: .5rem;
+  }
+
+  &::after {
+    content: url($alert-icon-disclaimer);
+    position: absolute;
+    top: .5rem;
+  }
+} 
