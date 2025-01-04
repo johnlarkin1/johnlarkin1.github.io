@@ -5,16 +5,19 @@
   min-height: 250px;
   border-radius: 4px;
   overflow: hidden;
-  background-color: $bg-color;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
-  margin-bottom: 2.25rem; // don't use % value see more: https://github.com/philipwalton/flexbugs/issues/86
+  background-color: $dark-card-bg;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(255, 255, 255, 0.05);
+  margin-bottom: 2.25rem;
   border-bottom: 0;
-  transition: box-shadow .25s ease;
+  transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
 
   &:hover,
   &:focus {
     border-bottom: 0;
-    box-shadow: 0 2px 40px 0 hsla(232, 8%, 63%, .3);
+    transform: translateY(-4px);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.4),
+                0 0 32px rgba(88, 55, 245, 0.35),
+                0 0 0 1px rgba(255, 255, 255, 0.05);
   }
 
   @include breakpoint($md) {
@@ -70,12 +73,12 @@
     position: relative;
     padding: 1.875rem 1.25rem 0.625rem;
     width: 100%;
-    color: $grey;
+    color: $dark-text;
     border-bottom: 0;
 
     &:focus,
     &:hover {
-      color: $grey;
+      color: $dark-text;
       border-bottom: 0;
     }
   }
@@ -90,7 +93,7 @@
 
   &__thumb {
     margin: 0;
-    background: $bg-color;
+    background: $dark-card-bg;
     position: relative;
     overflow: hidden;
 
@@ -118,9 +121,11 @@
     position: relative;
 
     &:hover {
-      background-color: #fffae6;
-      transform: scale(1.02);
-      transition: background-color 0.3s ease, transform 0.3s ease;
+      background-color: rgba(255, 250, 230, 0.1);
+      transform: translateY(-4px) scale(1.01);
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.4),
+                  0 0 32px rgba(255, 215, 0, 0.35),
+                  0 0 0 1px rgba(255, 255, 255, 0.05);
     }
   }
 }

@@ -1,224 +1,71 @@
-.highlight table td { padding: 5px; }
-.highlight table pre { margin: 0; }
-.highlight .cm {
-  color: #999988;
-  font-style: italic;
-}
-.highlight .cp {
-  color: #999999;
-  font-weight: bold;
-}
-.highlight .c1 {
-  color: #999988;
-  font-style: italic;
-}
-.highlight .cs {
-  color: #999999;
-  font-weight: bold;
-  font-style: italic;
-}
-.highlight .c, .highlight .cd {
-  color: #999988;
-  font-style: italic;
-}
-.highlight .err {
-  color: #a61717;
-  background-color: #e3d2d2;
-}
-.highlight .gd {
-  color: #000000;
-  background-color: #ffdddd;
-}
-.highlight .ge {
-  color: #000000;
-  font-style: italic;
-}
-.highlight .gr {
-  color: #aa0000;
-}
-.highlight .gh {
-  color: #999999;
-}
-.highlight .gi {
-  color: #000000;
-  background-color: #ddffdd;
-}
-.highlight .go {
-  color: #888888;
-}
-.highlight .gp {
-  color: #555555;
-}
-.highlight .gs {
-  font-weight: bold;
-}
-.highlight .gu {
-  color: #aaaaaa;
-}
-.highlight .gt {
-  color: #aa0000;
-}
-.highlight .kc {
-  color: #000000;
-  font-weight: bold;
-}
-.highlight .kd {
-  color: #000000;
-  font-weight: bold;
-}
-.highlight .kn {
-  color: #000000;
-  font-weight: bold;
-}
-.highlight .kp {
-  color: #000000;
-  font-weight: bold;
-}
-.highlight .kr {
-  color: #000000;
-  font-weight: bold;
-}
-.highlight .kt {
-  color: #445588;
-  font-weight: bold;
-}
-.highlight .k, .highlight .kv {
-  color: #000000;
-  font-weight: bold;
-}
-.highlight .mf {
-  color: #009999;
-}
-.highlight .mh {
-  color: #009999;
-}
-.highlight .il {
-  color: #009999;
-}
-.highlight .mi {
-  color: #009999;
-}
-.highlight .mo {
-  color: #009999;
-}
-.highlight .m, .highlight .mb, .highlight .mx {
-  color: #009999;
-}
-.highlight .sb {
-  color: #d14;
-}
-.highlight .sc {
-  color: #d14;
-}
-.highlight .sd {
-  color: #d14;
-}
-.highlight .s2 {
-  color: #d14;
-}
-.highlight .se {
-  color: #d14;
-}
-.highlight .sh {
-  color: #d14;
-}
-.highlight .si {
-  color: #d14;
-}
-.highlight .sx {
-  color: #d14;
-}
-.highlight .sr {
-  color: #009926;
-}
-.highlight .s1 {
-  color: #d14;
-}
-.highlight .ss {
-  color: #990073;
-}
-.highlight .s {
-  color: #d14;
-}
-.highlight .na {
-  color: #008080;
-}
-.highlight .bp {
-  color: #999999;
-}
-.highlight .nb {
-  color: #0086B3;
-}
-.highlight .nc {
-  color: #445588;
-  font-weight: bold;
-}
-.highlight .no {
-  color: #008080;
-}
-.highlight .nd {
-  color: #3c5d5d;
-  font-weight: bold;
-}
-.highlight .ni {
-  color: #800080;
-}
-.highlight .ne {
-  color: #990000;
-  font-weight: bold;
-}
-.highlight .nf {
-  color: #990000;
-  font-weight: bold;
-}
-.highlight .nl {
-  color: #990000;
-  font-weight: bold;
-}
-.highlight .nn {
-  color: #555555;
-}
-.highlight .nt {
-  color: #000080;
-}
-.highlight .vc {
-  color: #008080;
-}
-.highlight .vg {
-  color: #008080;
-}
-.highlight .vi {
-  color: #008080;
-}
-.highlight .nv {
-  color: #008080;
-}
-.highlight .ow {
-  color: #000000;
-  font-weight: bold;
-}
-.highlight .o {
-  color: #000000;
-  font-weight: bold;
-}
-.highlight .w {
-  color: #bbbbbb;
-}
-.highlight {
-  background-color: #f8f8f8;
-}
-
-
-.highlight {
-  background-color: $dark-code-bg;
-  border-radius: 6px;
+/**
+ * Syntax highlighting styles
+ */
+ 
+code {
+  padding: 0.2em 0.4em;
+  font-size: 90%;
+  background-color: $code-bg-color;
+  border-radius: 3px;
+  font-family: $code-font-family;
   
-  .c, .c1, .cm { color: #666; } // Comments
-  .k, .kd { color: #cc99cd; }   // Keywords
-  .s, .s1, .s2 { color: #7ec699; } // Strings
-  .na { color: #e6b450; }       // Names/attributes
-  .nb { color: #59c2ff; }       // Built-in names
-  .nf { color: #7aa2f7; }       // Function names
-  .n { color: #c0caf5; }        // Names
-  .o { color: #89ddff; }        // Operators
+  @media (prefers-color-scheme: dark) {
+    background-color: $dark-code-bg;
+    color: $dark-code-text;
+  }
+}
+
+pre {
+  margin: 1.5rem 0 2rem;
+  padding: 1.25rem;
+  font-size: 0.95em;
+  line-height: 1.7;
+  overflow-x: auto;
+  border-radius: 8px;
+  background-color: $code-block-bg;
+  font-family: $code-font-family;
+  border: 1px solid $code-border-color;
+
+  @media (prefers-color-scheme: dark) {
+    background-color: $dark-code-bg;
+    border-color: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.3),
+                0 0 0 1px rgba(255, 255, 255, 0.05);
+  }
+
+  > code {
+    padding: 0;
+    margin: 0;
+    font-size: 1em;
+    word-break: normal;
+    white-space: pre;
+    background: transparent;
+    border: 0;
+  }
+}
+
+.highlight {
+  margin: 1.5rem 0 2rem;
+  background-color: $code-block-bg;
+  border-radius: 8px;
+
+  @media (prefers-color-scheme: dark) {
+    background-color: $dark-code-bg;
+    
+    .k, .kd, .kn, .kp, .kr, .kt { color: $dark-syntax-keyword; }   // Keywords
+    .s, .s1, .s2 { color: $dark-syntax-string; }                    // Strings
+    .mi, .mf, .mh, .il { color: $dark-syntax-number; }             // Numbers
+    .c, .c1, .cm, .cp { color: $dark-syntax-comment; }             // Comments
+    .nc, .nn { color: $dark-syntax-type; }                         // Types
+    .nf, .na { color: $dark-syntax-function; }                     // Functions
+    .nv, .vc, .vg, .vi { color: $dark-syntax-variable; }          // Variables
+    .o, .ow { color: $dark-syntax-operator; }                      // Operators
+    
+    // Additional syntax elements
+    .nl { color: $dark-syntax-keyword; }                           // Property names
+    .nt { color: $dark-syntax-keyword; }                           // Tags
+    .nb { color: $dark-syntax-builtin; }                           // Builtins
+    .py { color: $dark-syntax-variable; }                          // Python
+    .nx { color: $dark-syntax-function; }                          // Other names
+  }
 }

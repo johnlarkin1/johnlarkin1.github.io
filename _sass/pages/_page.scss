@@ -88,7 +88,8 @@
 }
 
 .blog {
-  background-color: #f9f9f9;
+  // background-color: lighten($dark-bg, 10%);
+  background-color: $dark-bg;
 }
 
 .post-list {

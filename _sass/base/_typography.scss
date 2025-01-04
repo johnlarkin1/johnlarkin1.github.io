@@ -1,17 +1,17 @@
 // General
 body {
-  background-color: $bg-color;
+  background-color: $dark-bg;
   font-family: $font-stack;
   font-size: 1.0rem;
   line-height: 1.5;
-  color: $text-color;
+  color: $dark-text;
   -webkit-font-smoothing: antialiased;
   -webkit-text-size-adjust: 100%;
 }
 
 ::selection {
-  color: $bg-color;
-  background-color: $reverse;
+  color: $dark-bg;
+  background-color: $dark-text;
 }
 
 // Reboot
@@ -27,17 +27,17 @@ h3,
 h4,
 h5,
 h6 {
-  color: $heading-color;
+  color: $dark-heading;
   margin-top: 0;
   margin-bottom: .5rem;
 }
 
 //reset link
 a {
-  color: $link-color;
+  color: $dark-link;
   text-decoration: none;
   transition: all .2s linear;
-  border-bottom: 1px dashed $link-color;
+  border-bottom: 1px dashed $dark-link;
 
   &:active,
   &:focus {
@@ -46,14 +46,14 @@ a {
 
   &:hover,
   &:focus {
-    color: $primary-light;
-    border-bottom: 1px solid $primary-light;
+    color: lighten($dark-link, 10%);
+    border-bottom: 1px solid lighten($dark-link, 10%);
   }
 }
 
 hr {
   height: 1px;
-  background: $border;
+  background: $dark-border;
   border: 0;
 }
 
@@ -125,5 +125,16 @@ pre {
     color: inherit;
     background: transparent;
     border: 0;
+  }
+}
+
+blockquote {
+  color: $dark-blockquote-color;
+  border-left: 4px solid $dark-blockquote-border;
+  padding-left: calc($spacing-unit/2);
+  font-style: italic;
+
+  > :last-child {
+    margin-bottom: 0;
   }
 }
