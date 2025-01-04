@@ -1,17 +1,17 @@
 footer {
   padding: 2.8125rem 0;
-  border-top: 1px solid #f0f0f0;
+  border-top: 1px solid $dark-footer-border;
   text-align: center;
   font-size: 0.875rem;
-  color: rgba(33,33,33,0.6);
+  color: $dark-text;
 
   a {
-    color: rgba(33,33,33,0.6);
+    color: $dark-text;
     border-bottom: 0;
 
     &:hover,
     &:focus {
-      color: $primary;
+      color: $dark-link;
       border-bottom: 0;
     }
   }

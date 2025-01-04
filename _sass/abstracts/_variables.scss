@@ -39,12 +39,30 @@ $code-border-color: #e1e4e8 !default;
 
 $dark-bg: #1a1a1a !default;
 $dark-text: #e4e4e4 !default;
-$dark-code-bg: #1e1e1e !default; 
-$dark-code-text: #d4d4d4 !default;
-$dark-heading: #fff !default;
+$dark-heading: #ffffff !default;
 $dark-link: #68a4f1 !default;
-$dark-border: #333 !default;
-$dark-code-bg: #2d2d2d !default;
+$dark-border: #333333 !default;
+$dark-code-bg: #0d1117 !default;
+$dark-code-text: #e6e6e6 !default;
+
+// Syntax highlighting colors for dark mode
+$dark-syntax-keyword: #ff7b72 !default;     // More vibrant keywords (reddish)
+$dark-syntax-string: #a5d6ff !default;      // Brighter strings (light blue)
+$dark-syntax-number: #79c0ff !default;      // Brighter numbers
+$dark-syntax-comment: #8b949e !default;     // Subtle but readable comments
+$dark-syntax-type: #ffa657 !default;        // More vibrant types (orange)
+$dark-syntax-function: #d2a8ff !default;    // Brighter functions (purple)
+$dark-syntax-variable: #79c0ff !default;    // Brighter variables
+$dark-syntax-operator: #ff7b72 !default;    // More visible operators
+$dark-syntax-builtin: #ffa657 !default;     // More visible builtins
+
+// Dark mode specific colors
+$dark-card-bg: #242424 !default;
+$dark-footer-border: #333333 !default;
+$dark-blockquote-color: #a0a0a0 !default;
+$dark-blockquote-border: #404040 !default;
+$dark-table-border: #404040 !default;
+$dark-table-header: #2d2d2d !default;
 
 // Borders
 $border-color: #dce6f0 !default;

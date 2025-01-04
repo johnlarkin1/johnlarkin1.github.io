@@ -5,19 +5,19 @@ table {
   margin-bottom: 1.25rem;
   border-collapse: collapse;
   border-spacing: 0;
-  border: 1px solid $border;
+  border: 1px solid $dark-table-border;
   border-radius: 4px;
   font-size: 0.9rem;
 
   th {
-    background-color: $light-bg-color;
+    background-color: $dark-table-header;
     font-weight: bold;
-    color: white;
+    color: $dark-text;
   }
 
   th,
   td {
     padding: 6px 13px;
-    border: 1px solid $border;
+    border: 1px solid $dark-table-border;
   }
 }

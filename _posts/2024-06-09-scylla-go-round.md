@@ -60,7 +60,7 @@ The beginning part of this is going to be a bit similar to this series [**Scylla
 
 Here's a code walk through:
 
-```
+```zsh
 ╭─johnlarkin@Larkin-MacBook-Air ~/Documents/coding/scylla-go-round ‹main›
 ╰─➤  docker run --name scyllaU -d scylladb/scylla:5.2.0 --overprovisioned 1 --smp 1
 
@@ -100,7 +100,7 @@ Ok fantastic! So now:
 
 Let's move on to the second part:
 
-```
+```zsh
 ╭─johnlarkin@Larkin-MacBook-Air ~/Documents/coding/scylla-go-round ‹main›
 ╰─➤  docker exec -it scyllaU cqlsh
 
@@ -176,7 +176,7 @@ WHERE keyspace_name = 'dog_park';
 
 Finally! Let's use our Python script:
 
-```
+```zsh
 ╭─johnlarkin@Larkin-MacBook-Air ~/Documents/coding/scylla-go-round ‹main›
 ╰─➤  python scylla_go_round/main.py
 usage: main.py [-h] --keyspace KEYSPACE [--host HOST] [--username USERNAME] [--password PASSWORD]
@@ -188,13 +188,13 @@ Oh one other thing is you'll probably want to run your container with its networ
 
 So now let's try our `docker run` portion again:
 
-```
+```zsh
 docker run --rm -ti -p 127.0.0.1:9042:9042 --name scyllaU -d scylladb/scylla:5.2.0 --overprovisioned 1 --smp 1 --listen-address 0.0.0.0 --broadcast-rpc-address 127.0.0.1
 ```
 
 And then locally:
 
-```
+```zsh
 ╭─johnlarkin@Larkin-MacBook-Air ~/Documents/coding/scylla-go-round ‹main›
 ╰─➤  nc -vz localhost 9042
 Connection to localhost port 9042 [tcp/*] succeeded!
