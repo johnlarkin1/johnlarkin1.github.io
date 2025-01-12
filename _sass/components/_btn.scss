@@ -53,3 +53,36 @@ button:disabled {
     background-color: $button-dark;
   }
 }
+
+
+input[type="checkbox"] {
+  // Reset properties that don't make sense for checkboxes
+  padding: 0;
+  border: 0;
+  width: auto; // Remove width 100% from generic input styles
+  margin: 5px;
+  cursor: pointer;
+
+  // Optional: Add a custom appearance
+  appearance: none; // This line will remove the default checkbox style
+  // Add your custom styles below, for example:
+  height: 15px;
+  width: 15px;
+  background-color: $bg-color;
+  border: 1px solid $border-color;
+  transition: background-color .25s, border-color .25s;
+
+  &:checked {
+    background-color: $button-dark;
+    border-color: $button-dark;
+  }
+
+  &:focus {
+    border-color: $primary;
+  }
+
+  // You may also want to handle the hover state for visual feedback
+  &:hover {
+    border-color: darken($border-color, 10%);
+  }
+}
