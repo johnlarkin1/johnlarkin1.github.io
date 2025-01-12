@@ -27,7 +27,7 @@
     color: $alert-note;
     position: absolute;
     left: 3rem;
-    top: .5rem;
+    top: .6rem;
     display: block;
     margin-bottom: .5rem;
   }
@@ -35,7 +35,7 @@
   &::after {
     content: url($alert-icon-note);
     position: absolute;
-    top: .5rem;
+    top: .7rem;
   }
 }
 
@@ -49,7 +49,7 @@
     color: $alert-tip;
     position: absolute;
     left: 3rem;
-    top: .5rem;
+    top: .6rem;
     display: block;
     margin-bottom: .5rem;
   }
@@ -57,7 +57,7 @@
   &::after {
     content: url($alert-icon-tip);
     position: absolute;
-    top: .5rem;
+    top: .7rem;
   }
 }
 
@@ -71,7 +71,7 @@
     color: $alert-important;
     position: absolute;
     left: 3rem;
-    top: .5rem;
+    top: .6rem;
     display: block;
     margin-bottom: .5rem;
   }
@@ -79,7 +79,7 @@
   &::after {
     content: url($alert-icon-important);
     position: absolute;
-    top: .5rem;
+    top: .7rem;
   }
 }
 
@@ -93,7 +93,7 @@
     color: $alert-warning;
     position: absolute;
     left: 3rem;
-    top: .5rem;
+    top: .6rem;
     display: block;
     margin-bottom: .5rem;
   }
@@ -101,7 +101,7 @@
   &::after {
     content: url($alert-icon-warning);
     position: absolute;
-    top: .5rem;
+    top: .7rem;
   }
 }
 
@@ -115,7 +115,7 @@
     color: $alert-caution;
     position: absolute;
     left: 3rem;
-    top: .5rem;
+    top: .6rem;
     display: block;
     margin-bottom: .5rem;
   }
@@ -123,7 +123,7 @@
   &::after {
     content: url($alert-icon-caution);
     position: absolute;
-    top: .5rem;
+    top: .7rem;
   }
 }
 
@@ -137,7 +137,7 @@
     color: $alert-disclaimer;
     position: absolute;
     left: 3rem;
-    top: .5rem;
+    top: .6rem;
     display: block;
     margin-bottom: .5rem;
   }
@@ -145,6 +145,6 @@
   &::after {
     content: url($alert-icon-disclaimer);
     position: absolute;
-    top: .5rem;
+    top: .7rem;
   }
 } 

@@ -337,6 +337,7 @@ This post was the key for me, and unlocked the logic I needed to detect 3 out of
 
 <blockquote class="reddit-embed-bq" style="height:316px" data-embed-height="316"><a href="https://www.reddit.com/r/adventofcode/comments/1hla5ql/2024_day_24_part_2_a_guide_on_the_idea_behind_the/">[2024 Day 24 Part 2] A guide on the idea behind the solution</a><br> by<a href="https://www.reddit.com/user/LxsterGames/">u/LxsterGames</a> in<a href="https://www.reddit.com/r/adventofcode/">adventofcode</a></blockquote><script async="" src="https://embed.reddit.com/widgets.js" charset="UTF-8"></script>
 
+<br/>
 The final one I also didn't quite do perfectly. The post above has some more details about how to determine exactly the wrong gate (which I got in principle) but I didn't spend enough time coding it up. I just tried all combinations, collected the ones that resulted in the right number, and then tried a range of different test cases for input and made sure it was functioning like a full adder gate.
 
 So... a little bit gritty there but it got the job done.

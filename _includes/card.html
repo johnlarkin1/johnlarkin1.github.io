@@ -40,7 +40,10 @@
         alt="{{post.title}}"
       />
       <noscript>
-        <img src="{{ site.url }}{{ site.baseurl }}/assets/gif/{{post.featured-gif}}.gif" alt="{{ post.title }}" />
+        <img
+          src="{{ site.url }}{{ site.baseurl }}/assets/gif/{{post.featured-gif}}.gif"
+          alt="{{ post.title }}"
+        />
       </noscript>
     </figure>
     {% else %}
@@ -57,9 +60,9 @@
         <time>{{ post.date | date: date_format }}</time>
       </span>
       <span class="post-card__meta"> - </span>
-      <span class="post-card__meta">
-        {% assign words = post.content | number_of_words %} {% if words < 360 %} 1 min {% else %} {{ words |
-        divided_by:180 }} mins {% endif %} read
+      <span class="post-card__meta" style="font-style: italic">
+        {% assign words = post.content | number_of_words %} {% if words < 360 %}
+        1 min {% else %} {{ words | divided_by:180 }} mins {% endif %} read
       </span>
     </div>
     {% if post.summary %}
