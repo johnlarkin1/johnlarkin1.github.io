@@ -23,6 +23,7 @@ favorite: true
 
 - [Table of Contents](#table-of-contents)
 - [Motivation](#motivation)
+  - [Driving Motivation](#driving-motivation)
 - [Quantum Physics Fundamentals](#quantum-physics-fundamentals)
   - [What is Quantum Mechanics?](#what-is-quantum-mechanics)
   - [History](#history)
@@ -69,7 +70,20 @@ In this post, we're going to:
 2. See how those apply to the quantum computing landscape
 3. Look at some very basic visualizations and ideas
 4. Explore some public companies and latest research that I'm interested in (just bullish in the space)
-5. Talk about what might be next
+
+## Driving Motivation
+
+Here's where we're going to eventually get to in terms of understanding:
+
+<div style="text-align: center;">
+<iframe src="https://ion-trap-visualizer-prrb.vercel.app/" 
+        width="800px" 
+        height="850px" 
+        frameborder="0" 
+        ></iframe>
+</div>
+
+We're eventually going is building the application [here](https://ion-trap-visualizer-prrb.vercel.app/) which basically simulates some of the math behind the Paul trap.
 
 # Quantum Physics Fundamentals
 
@@ -181,7 +195,7 @@ The paper is renown because it is one of the first arguments that quantum simula
 Feynman also had a more specific quantum computing article that he published in 1986. You can check that one out here:
 
 <div style="text-align: center;">
-    <embed src="http://www.quantum-dynamic.eu/doc/feynman85_qmc_optics_letters.pdf" width="500" height="375" type="application/pdf">
+    <embed src="{{ site.baseurl }}/pdfs/feynman85_qmc_optics_letters.pdf" width="500" height="375" type="application/pdf">
 </div>
 
 This one I have not read and definitely have not fully grokked. Feynman introduced a novel architecture for how to build a quantum computer. This is true electrical engineering, proposing the construction of an `AND` and `NOT` gate, as well as `FAN OUT` and`EXCHANGE` gates. He also introduces a `CNOT` gate (controlled not).
