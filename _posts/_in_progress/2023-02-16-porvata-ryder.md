@@ -2,13 +2,15 @@
 title: Porvata and Ryder Integration
 layout: post
 featured-img: porvata
-categories: [Development, Friendship, Favorites]
+categories: [Development, Friends, Favorites]
 ---
 
 # Background
+
 In order to increase [Porvata's][porvata] delivery and customer support, they decided to integrate with [Ryder][ryder]
 
 # Design
+
 So Ryder can support borderline endless file format communications. They prefer [AC2][ac2], or Applicability Statement 2, which is:
 
 > a http based protocol to transmit messages (especially EDI messages) safely, cheaply and quickly.

@@ -56,7 +56,7 @@ img {
   height: auto;
   width: auto;
   vertical-align: middle;
-  margin-left: auto;
+  margin-left: auto;              
   margin-right: auto;
   border-radius: 12px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -173,6 +173,77 @@ ink:hover {
   text-align: center;
   font-size: .8rem;
   color: grey;
+}
+
+.image-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+}
+
+.image-container img {
+  width: 300px;
+  height: auto;
+  margin: 10px; /* Add some padding between images */
+}
+
+.image-caption {
+  text-align: center;
+}
+
+.image-transformation {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.step {
+  text-align: center;
+}
+
+.step img {
+  max-width: 200px;
+  border: 2px solid #ccc;
+  border-radius: 10px;
+  margin-bottom: 10px;
+}
+
+.arrow {
+  font-size: 24px;
+  margin: 0 10px;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.arrow.active {
+  opacity: 1;
+}
+
+.left {
+  float: left;
+  margin: 0.75rem 1rem 1rem 0;
+}
+
+.right {
+  float: right;
+  margin: 0.75rem 0 1rem 1rem;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  width: 40%;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto; 
+}
+
+.grid-container img {
+  width: 100%;
+  height: auto;
 }
 
 /**************************************/

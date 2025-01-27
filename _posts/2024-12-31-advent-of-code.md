@@ -8,6 +8,9 @@ categories: [Advent of Code, Development]
 summary: Slogging through Advent of Code 2024
 ---
 
+# Table of Contents
+
+- [Table of Contents](#table-of-contents)
 - [Introduction](#introduction)
 - [Background](#background)
 - [Goal](#goal)
