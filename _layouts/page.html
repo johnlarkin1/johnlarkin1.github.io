@@ -19,7 +19,13 @@ layout: compress
 
     {% include header.html %}
 
-    <div class="hero--small">
+    {% if page.featured-img %}
+    <div class="hero--med lazyload" data-bg="{{ site.url }}{{ site.baseurl }}/assets/img/posts/{{ page.featured-img }}.jpg">
+    {% elsif page.featured-gif %}
+    <div class="hero--med lazyload" data-bg="{{ site.url }}{{ site.baseurl }}/assets/gif/{{ page.featured-gif }}.gif">
+    {% else %}
+    <div class="hero--med">
+    {% endif %}
       <div class="hero__wrap">
         <h1 class="hero__title">{{ page.title }}</h1>
       </div>

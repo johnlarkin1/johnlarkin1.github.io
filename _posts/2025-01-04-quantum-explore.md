@@ -2,7 +2,7 @@
 title: "Exploring Quantum: A Trapped Ion Approach"
 layout: post
 featured-gif: paul-trap-viz-small
-categories: [⭐️ Favorites, Physics, Quantum]
+categories: [⭐️ Favorites, Physics, Quantum, Development]
 summary: '"God does not play dice" - Einstein 1926'
 mathjax: true
 favorite: true
@@ -75,6 +75,9 @@ In this post, we're going to:
 
 Here's where we're going to eventually get to in terms of understanding:
 
+<div class="markdown-alert markdown-alert-tip">
+<p>Hint: It's interactive! Try playing around with the demo below!</p>
+</div>
 <div style="text-align: center;">
 <iframe src="https://ion-trap-visualizer-prrb.vercel.app/" 
         width="800px" 
@@ -500,6 +503,9 @@ So in other words,
 
 So what does this really mean? How can you experiment with this? Again, I'm going to show some excerpts but going to lean on ~ObservableHQ here~. Ok so I was going to go with Observable but man that syntax absolutely sucks. I just fired up a quick Vite project and made a separate repo, and deployed that to Vercel. You can also play around with this here: [https://ion-trap-visualizer-prrb.vercel.app/](https://ion-trap-visualizer-prrb.vercel.app/).
 
+<div class="markdown-alert markdown-alert-tip">
+<p>It's interactive! Try playing around with the demo below!</p>
+</div>
 <div style="text-align: center;">
 <iframe src="https://ion-trap-visualizer-prrb.vercel.app/" 
         width="100%" 
