@@ -29,8 +29,22 @@ footer {
   margin-right: 1.5rem;
 }
 
+
 .social__icon {
   fill: currentColor;
-  height: 1.5rem;
-  width: 1.5rem;
+  width: 32px;
+  height: 32px;
+  display: inline-block;
+  color: var(--icon-color, #000);
+  transition: transform 0.2s ease;
+}
+
+@media (prefers-color-scheme: dark) {
+  .social__icon {
+    color: var(--icon-color-dark, #fff);
+  }
+}
+
+.social__link:hover .social__icon {
+  transform: scale(1.1); /* Optional: hover effect */
 }
