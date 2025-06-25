@@ -58,7 +58,7 @@ Here's an actual demo of the solver operating. Note, the fallback to OpenAI if w
 
 You can't quite tell but all the mouse interactions from the clicking on the `start` button to the actual entering and dragging of keywords is all automated.
 
-You can check out the code here.
+You can check out the code [here][word-hunt-solver-github].
 
 # Tech Stack
 
@@ -670,3 +670,4 @@ As always, if you all have any helpful comments, constructive feedback, or quest
 [pygetwindow]:https://pypi.org/project/PyGetWindow/
 [hlt]: https://docs.opencv.org/3.4/d9/db0/tutorial_hough_lines.html
 [retina-display-article]: https://medium.com/@tracy_blog/pyautogui-and-retina-displays-2d5c37a5aa5e
+[]

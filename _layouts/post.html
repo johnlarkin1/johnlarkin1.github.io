@@ -164,6 +164,9 @@ layout: compress
 
   {% include footer.html %}
   {% include mathjax.html %}
+  {% if page.mermaid %}
+  {% include mermaid.html %}
+  {% endif %}
 </body>
 
 </html>

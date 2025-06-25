@@ -1,0 +1,62 @@
+<!-- _includes/mermaid.html - Load libraries for Mermaid with pan/zoom -->
+<script
+  defer
+  src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"
+></script>
+<script defer src="https://unpkg.com/panzoom@9/dist/panzoom.min.js"></script>
+
+<style>
+  /* Basic Mermaid styling */
+  .mermaid {
+    text-align: center;
+    margin: 1.5rem 0;
+  }
+  
+  .mermaid svg {
+    max-width: 100% !important;
+    height: auto;
+    margin: 0 auto;
+  }
+  
+  /* Pan/zoom wrapper styling */
+  .mermaid-wrapper {
+    position: relative;
+  }
+  
+  .mermaid-wrapper .mermaid svg {
+    cursor: grab;
+  }
+  
+  .mermaid-wrapper .mermaid svg:active {
+    cursor: grabbing;
+  }
+  
+  .mermaid-btn {
+    padding: 4px 8px;
+    font-size: 0.75rem;
+    border: 1px solid #555;
+    border-radius: 4px;
+    background: #333;
+    color: #fff;
+    cursor: pointer;
+    user-select: none;
+  }
+  
+  .mermaid-btn:hover {
+    background: #444;
+  }
+  
+  /* Mindmap specific styling - no border or background */
+  .mermaid svg[id*="mindmap"] {
+    border: none;
+    background: transparent;
+    padding: 1rem;
+  }
+  
+  /* Pan/zoom wrapper dark styling */
+  .mermaid-wrapper {
+    background: #1a1a1a !important;
+    border-color: #444 !important;
+  }
+  
+</style>
