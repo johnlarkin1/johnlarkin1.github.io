@@ -58,7 +58,7 @@ Here's an actual demo of the solver operating. Note, the fallback to OpenAI if w
 
 You can't quite tell but all the mouse interactions from the clicking on the `start` button to the actual entering and dragging of keywords is all automated.
 
-You can check out the code here.
+You can check out the code [here][word-hunt-solver-github].
 
 # Tech Stack
 

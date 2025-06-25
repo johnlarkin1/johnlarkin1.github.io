@@ -147,4 +147,26 @@
     position: absolute;
     top: .7rem;
   }
+}
+
+// AI Generated alert
+.markdown-alert-ai {
+  border-left-color: $alert-ai;
+
+  &::before {
+    content: "AI Generated:";
+    font-weight: bold;
+    color: $alert-ai;
+    position: absolute;
+    left: 3rem;
+    top: .6rem;
+    display: block;
+    margin-bottom: .5rem;
+  }
+
+  &::after {
+    content: url($alert-icon-ai);
+    position: absolute;
+    top: .7rem;
+  }
 } 
