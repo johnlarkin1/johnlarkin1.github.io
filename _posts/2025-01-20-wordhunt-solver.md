@@ -670,4 +670,3 @@ As always, if you all have any helpful comments, constructive feedback, or quest
 [pygetwindow]:https://pypi.org/project/PyGetWindow/
 [hlt]: https://docs.opencv.org/3.4/d9/db0/tutorial_hough_lines.html
 [retina-display-article]: https://medium.com/@tracy_blog/pyautogui-and-retina-displays-2d5c37a5aa5e
-[]
