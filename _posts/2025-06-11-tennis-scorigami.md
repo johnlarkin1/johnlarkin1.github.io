@@ -587,8 +587,11 @@ mindmap
         SportRadar API
     Database
       PostgreSQL
-        Neon (5GB)
-        Connection Pooling
+        Neon
+          Neon MCP
+          Connection Pooling
+        Supabase
+        Aiven
       Drizzle ORM
         Type Safety
         Migrations
@@ -610,6 +613,11 @@ mindmap
 ```
 
 <div class="image-caption">Technology stack mindmap</div>
+<br/>
+
+Here's a fun example of Neon MCP plugging away with Claude Code (feel free to click on the image to magnify):
+
+![neon-mcp-example](/images/tennis-scorigami/neon-mcp-example.png){: .center-small .lightbox-image}
 
 # Engineering + Design
 
