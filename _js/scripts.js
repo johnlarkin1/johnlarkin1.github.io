@@ -12,6 +12,7 @@ $(document).ready(function () {
   initGitHubRepoCards();
   initLightbox();
   initMermaid();
+  initScrollIndicator();
 });
 
 // Close modal if ESC is pressed
@@ -719,4 +720,117 @@ function addPanZoomToMermaid(container) {
   $wrap.append($controls);
 
   console.log("Pan/zoom controls added successfully");
+}
+
+// Initialize scroll indicator for pinned/year sections
+function initScrollIndicator() {
+  const $indicator = $(".scroll-indicator");
+  if ($indicator.length === 0) return;
+
+  const $items = $indicator.find(".scroll-indicator__item");
+  if ($items.length === 0) return;
+
+  // Find all post cards and organize by section
+  const $allPosts = $(".post-card");
+  if ($allPosts.length === 0) return;
+
+  const sections = [];
+
+  // Check for pinned posts
+  const $pinnedPosts = $allPosts.filter('[data-pinned="true"]');
+  if ($pinnedPosts.length > 0) {
+    const $indicatorItem = $items.filter('[data-section="pinned"]');
+    if ($indicatorItem.length > 0) {
+      sections.push({
+        name: "pinned",
+        $item: $indicatorItem,
+        $firstPost: $pinnedPosts.first(),
+      });
+    }
+  }
+
+  // Group regular posts by year and find first post of each year
+  const yearMap = new Map();
+  $allPosts.not('[data-pinned="true"]').each(function () {
+    const year = $(this).data("year");
+    if (year && !yearMap.has(year)) {
+      yearMap.set(year, $(this));
+    }
+  });
+
+  // Add year sections in order
+  yearMap.forEach((firstPost, year) => {
+    const $indicatorItem = $items.filter('[data-section="year-' + year + '"]');
+    if ($indicatorItem.length > 0) {
+      sections.push({
+        name: "year-" + year,
+        $item: $indicatorItem,
+        $firstPost: firstPost,
+      });
+    }
+  });
+
+  if (sections.length === 0) return;
+
+  // Update active section based on scroll position
+  function updateActiveSection() {
+    const scrollTop = $(window).scrollTop();
+    const windowHeight = $(window).height();
+    const scrollMid = scrollTop + windowHeight / 3;
+
+    // Check if we're past the hero section
+    const hero = $(".hero");
+    const heroHeight = hero.length > 0 ? hero.offset().top + hero.outerHeight() : 0;
+
+    if (scrollTop + 200 > heroHeight) {
+      $indicator.addClass("visible");
+    } else {
+      $indicator.removeClass("visible");
+    }
+
+    let activeSection = sections[0];
+
+    // Find which section we're in
+    for (let i = 0; i < sections.length; i++) {
+      const section = sections[i];
+      if (section.$firstPost.length > 0) {
+        const postTop = section.$firstPost.offset().top;
+        if (scrollMid >= postTop) {
+          activeSection = section;
+        }
+      }
+    }
+
+    // Update active state
+    $items.removeClass("active");
+    if (activeSection) {
+      activeSection.$item.addClass("active");
+    }
+  }
+
+  // Throttle scroll events
+  let scrollTimeout;
+  $(window).on("scroll", function () {
+    if (scrollTimeout) clearTimeout(scrollTimeout);
+    scrollTimeout = setTimeout(updateActiveSection, 50);
+  });
+
+  // Initial update
+  updateActiveSection();
+
+  // Click to scroll to section
+  $items.on("click", function (e) {
+    e.preventDefault();
+    const sectionName = $(this).data("section");
+    const section = sections.find((s) => s.name === sectionName);
+
+    if (section && section.$firstPost.length > 0) {
+      $("html, body").animate(
+        {
+          scrollTop: section.$firstPost.offset().top - 100,
+        },
+        600
+      );
+    }
+  });
 }

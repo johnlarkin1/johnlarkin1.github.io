@@ -1,20 +1,25 @@
 <div
-  class="post-card {% if post.favorite %}favorite{% endif %}"
+  class="post-card {% if post.favorite %}favorite{% endif %} {% if post.pinned %}pinned{% endif %}"
+  data-year="{{ post.date | date: '%Y' }}"
+  {% if post.pinned %}data-pinned="true"{% endif %}
   itemprop="blogPosts"
   itemscope=""
   itemtype="http://schema.org/BlogPosting"
 >
-  {% if post.categories %} {% assign categories = post.categories %}
   <span class="post-card__label">
-    {% for category in post.categories %}
-    <a
-      href="{{site.baseurl}}/categories/#{{category|slugize}}"
-      class="label {% if category == '⭐️ Favorites' %}post-card__favorite-badge{% endif %}"
-      >{{ category }}</a
-    >
-    {% unless forloop.last %}&nbsp;{% endunless %} {% endfor %}
+    {% if post.pinned %}
+    <span class="label post-card__pinned-badge">📌 PINNED</span>
+    {% endif %}
+    {% if post.categories %} {% assign categories = post.categories %}
+      {% for category in post.categories %}
+      <a
+        href="{{site.baseurl}}/categories/#{{category|slugize}}"
+        class="label {% if category == '⭐️ Favorites' %}post-card__favorite-badge{% endif %}"
+        >{{ category }}</a
+      >
+      {% unless forloop.last %}&nbsp;{% endunless %} {% endfor %}
+    {% endif %}
   </span>
-  {% endif %}
   <a href="{{ post.url | relative_url }}">
     {% if post.featured-img %}
     <figure class="post-card__thumb">
