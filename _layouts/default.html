@@ -27,6 +27,27 @@ layout: compress
     </div>
 
     <main class="site__content">
+      <!-- Scroll Progress Indicator -->
+      <div class="scroll-indicator">
+        <div class="scroll-indicator__track">
+          {% assign pinned_posts = site.posts | where: "pinned", true %}
+          {% if pinned_posts.size > 0 %}
+          <a href="#pinned-section" class="scroll-indicator__item" data-section="pinned">
+            <span class="scroll-indicator__marker"></span>
+            <span class="scroll-indicator__label">📌 Pinned</span>
+          </a>
+          {% endif %}
+
+          {% assign posts_by_year = site.posts | where_exp: "post", "post.pinned != true" | group_by_exp: "post", "post.date | date: '%Y'" %}
+          {% for year_group in posts_by_year %}
+          <a href="#year-{{ year_group.name }}" class="scroll-indicator__item" data-section="year-{{ year_group.name }}">
+            <span class="scroll-indicator__marker"></span>
+            <span class="scroll-indicator__label">{{ year_group.name }}</span>
+          </a>
+          {% endfor %}
+        </div>
+      </div>
+
 <!--       <div class="button-group filter-button-group justify-content-center basic-center">
         <button onclick= class="btn filter-click" type="submit" value="tech">
           Tech
@@ -41,7 +62,14 @@ layout: compress
         <div class="container">
           <div class="post-list" itemscope="" itemtype="http://schema.org/Blog">
 
-            {% for post in site.posts %}
+            {% assign pinned_posts = site.posts | where: "pinned", true %}
+            {% assign regular_posts = site.posts | where_exp: "post", "post.pinned != true" %}
+
+            {% for post in pinned_posts %}
+              {% include card.html %}
+            {% endfor %}
+
+            {% for post in regular_posts %}
               {% include card.html %}
             {% endfor %}
 

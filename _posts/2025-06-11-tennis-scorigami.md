@@ -2,6 +2,7 @@
 title: "Tennis Scorigami"
 layout: post
 featured-gif: tennis-scorigami
+pinned: true
 categories: [⭐️ Favorites, Development, Friends]
 summary: "Exploring unscored tennis scores with my friends (and hopefully you)"
 favorite: true

@@ -68,6 +68,23 @@
     }
   }
 
+  &__pinned-badge {
+    background: #5837F5;
+    color: white!important;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-weight: bold;
+    font-size: 0.75rem;
+    display: inline-block;
+
+    &:focus,
+    &:hover {
+      color: white!important;
+      background-color: #7C5DFA;
+      border: 2px solid #7C5DFA;
+    }
+  }
+
   &__inner {
     display: block;
     position: relative;
@@ -128,6 +145,19 @@
       transform: translateY(-4px) scale(1.01);
       box-shadow: 0 12px 28px rgba(0, 0, 0, 0.4),
                   0 0 32px rgba(255, 215, 0, 0.35),
+                  0 0 0 1px rgba(255, 255, 255, 0.05);
+    }
+  }
+
+  &.pinned {
+    border: 2px solid #5837F5;
+    position: relative;
+
+    &:hover {
+      background-color: rgba(88, 55, 245, 0.1);
+      transform: translateY(-4px) scale(1.01);
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.4),
+                  0 0 32px rgba(88, 55, 245, 0.45),
                   0 0 0 1px rgba(255, 255, 255, 0.05);
     }
   }
