@@ -1,5 +1,5 @@
 ---
-title: 'Teaching a Computer How to Write'
+title: "Teaching a Computer How to Write"
 layout: post
 featured-gif:
 mathjax: true
@@ -119,6 +119,8 @@ You can also check it out here: [**Application of Neural Networks with Handwriti
 
 In college, we decided between [Tensorflow][tensorflow] and [Pytorch][pytorch]. I thought about re-implementing this in [pytorch], but I kind of figured that I wanted to see what's changed with [tensorflow] and that I was a bit more familiar with that programming paradigm.
 
+<!-- Ok scratch that! As of 2025-09-16, I did decide to pivot to [jax] given that seems to be all the rage with top AI labs and squeezing out perf from hardware. So i'll show you where I pivot. -->
+
 ## Tensorflow
 
 ### Programming Paradigm
@@ -147,6 +149,14 @@ Definitely haven't been able to keep up with all those changes.
 Another cool thing about [Tensorflow][tf] that should be mentioned is the ability to utilize the [Tensorboard][tensorboard]. This is a visualization suite that creates a local website where you can interactively and with a live stream visualize your dependency graph. You can do cool things like confirm that the error is actually decreasing over the epochs.
 
 We used this a bit more in college. I didn't get a real chance to dive into the updates made from this.
+
+<!-- ## JAX
+
+### Programming Paradigm
+
+So JAX is a bit different from Tensorflow. It's a less graph based and more Pythonic. It is meant to be pure functions that can then be `jit` compiled to XLA. Given this compilation, JAX performance is better than tensorflow.
+
+Given that this is a smaller project (obviously way less parameters than anything on the transformer layer), JAX is almost certainly overkill. However, I want to learn and expand out. -->
 
 # 📊 Data
 
@@ -817,6 +827,88 @@ The mathematical representation is here:
 
 ### Code
 
+```python
+@tf.keras.utils.register_keras_serializable()
+class AttentionMechanism(tf.keras.layers.Layer):
+    """
+    Attention mechanism for the handwriting synthesis model.
+    This is a version of the attention mechanism used in
+    the original paper by Alex Graves. It uses a Gaussian
+    window to focus on different parts of the character sequence
+    at each time step.
+    """
+
+    def __init__(self, num_gaussians, num_chars, name="attention", **kwargs):
+        super(AttentionMechanism, self).__init__(**kwargs)
+        self.num_gaussians = num_gaussians
+        self.num_chars = num_chars
+        self.name_mod = name
+
+    def build(self, input_shape):
+        self.dense_attention = tf.keras.layers.Dense(
+            units=3 * self.num_gaussians,
+            activation="softplus",
+            name=f"{self.name_mod}_dense",
+        )
+        super().build(input_shape)
+
+    def call(self, inputs, prev_kappa, char_seq_one_hot, sequence_lengths):
+        # Generate concatenated attention parameters - just utilizing
+        # the dense layer so that I don't have to manually define the matrix
+        attention_params = self.dense_attention(inputs)
+        alpha, beta, kappa_increment = tf.split(attention_params, 3, axis=1)
+
+        # Normalize and clip kappa and beta...
+        alpha = tf.maximum(alpha, 1e-8)
+        beta = tf.maximum(beta, 1e-8)
+        kappa_increment = tf.maximum(kappa_increment, 1e-8)
+
+        kappa = prev_kappa + kappa_increment
+        char_len = tf.shape(char_seq_one_hot)[1]
+        batch_size = tf.shape(inputs)[0]
+        u = tf.cast(tf.range(0, char_len), tf.float32)  # Shape: [char_len]
+        u = tf.reshape(u, [1, 1, -1])  # Shape: [1, 1, char_len]
+        u = tf.tile(u, [batch_size, self.num_gaussians, 1])  # Shape: [batch_size, num_gaussians, char_len]
+
+        # gaussian window
+        alpha = tf.expand_dims(alpha, axis=-1)  # Shape: [batch_size, num_gaussians, 1]
+        beta = tf.expand_dims(beta, axis=-1)  # Shape: [batch_size, num_gaussians, 1]
+        kappa = tf.expand_dims(kappa, axis=-1)  # Shape: [batch_size, num_gaussians, 1]
+
+        # phi - attention weights
+        phi = alpha * tf.exp(-beta * tf.square(kappa - u))  # Shape: [batch_size, num_gaussians, char_len]
+        phi = tf.reduce_sum(phi, axis=1)  # Sum over the gaussians: [batch_size, char_len]
+
+        # sequence mask
+        sequence_mask = tf.sequence_mask(sequence_lengths, maxlen=char_len, dtype=tf.float32)
+        phi = phi * sequence_mask  # Apply mask to attention weights
+
+        # normalize
+        phi_sum = tf.reduce_sum(phi, axis=1, keepdims=True) + 1e-8
+        phi = phi / phi_sum
+
+        # window vec
+        phi = tf.expand_dims(phi, axis=-1)  # Shape: [batch_size, char_len, 1]
+        w = tf.reduce_sum(phi * char_seq_one_hot, axis=1)  # Shape: [batch_size, num_chars]
+
+        return w, kappa[:, :, 0]  # Return updated kappa
+
+    def get_config(self):
+        config = super().get_config()
+        config.update(
+            {
+                "num_gaussians": self.num_gaussians,
+                "num_chars": self.num_chars,
+                "name": self.name_mod,
+            }
+        )
+        return config
+
+    @classmethod
+    def from_config(cls, config):
+        return cls(**config)
+```
+
 ## Stacked LSTM
 
 ### Theory
@@ -1091,7 +1183,7 @@ Here's an example of what that looked like:
 
 ![tensorboard](/images/generative-handwriting/tensorboard-debugging.png){: .center-image}
 
-Which was even more annoying because of this: https://github.com/tensorflow/tensorflow/issues/59215 issue.
+Which was even more annoying because of this: <https://github.com/tensorflow/tensorflow/issues/59215> issue.
 
 ### Problem #2 - OOM Galore
 
@@ -1491,3 +1583,4 @@ When re-reading my old draft blog post, I liked the way I ended things. So here 
 [mojo]: https://www.mojo.com/
 [vast]: https://vast.ai/
 [lstm-peep]: https://www.tensorflow.org/addons/api_docs/python/tfa/rnn/PeepholeLSTMCell
+[jax]:https://github.com/jax-ml/jax
