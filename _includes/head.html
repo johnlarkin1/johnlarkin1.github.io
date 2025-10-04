@@ -3,12 +3,66 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
+  {% if page.featured-video %}
+  <meta property="og:type" content="video.other" />
+  <meta
+    property="og:video"
+    content="{{ site.url }}{{ site.baseurl }}/assets/video/{{ page.featured-video }}.mp4"
+  />
+  <meta
+    property="og:video:secure_url"
+    content="{{ site.url }}{{ site.baseurl }}/assets/video/{{ page.featured-video }}.mp4"
+  />
+  <meta property="og:video:type" content="video/mp4" />
+  <meta property="og:video:width" content="1200" />
+  <meta property="og:video:height" content="630" />
   {% if page.featured-gif %}
   <meta
     property="og:image"
     content="{{ site.url }}{{ site.baseurl }}/assets/gif/{{ page.featured-gif }}.gif"
   />
   <meta property="og:image:type" content="image/gif" />
+  {% elsif page.featured-img %}
+  <meta
+    property="og:image"
+    content="{{ site.url }}{{ site.baseurl }}/assets/img/posts/{{ page.featured-img }}_lg.jpg"
+  />
+  <meta property="og:image:type" content="image/jpeg" />
+  {% endif %}
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta name="twitter:card" content="summary_large_image" />
+  {% if page.featured-gif %}
+  <meta
+    name="twitter:image"
+    content="{{ site.url }}{{ site.baseurl }}/assets/gif/{{ page.featured-gif }}.gif"
+  />
+  {% elsif page.featured-img %}
+  <meta
+    name="twitter:image"
+    content="{{ site.url }}{{ site.baseurl }}/assets/img/posts/{{ page.featured-img }}_lg.jpg"
+  />
+  {% endif %}
+  {% elsif page.featured-gif %}
+  <meta property="og:type" content="video.other" />
+  <meta
+    property="og:video"
+    content="{{ site.url }}{{ site.baseurl }}/assets/gif/{{ page.featured-gif }}.gif"
+  />
+  <meta
+    property="og:video:secure_url"
+    content="{{ site.url }}{{ site.baseurl }}/assets/gif/{{ page.featured-gif }}.gif"
+  />
+  <meta property="og:video:type" content="image/gif" />
+  <meta property="og:video:width" content="1200" />
+  <meta property="og:video:height" content="630" />
+  <meta
+    property="og:image"
+    content="{{ site.url }}{{ site.baseurl }}/assets/gif/{{ page.featured-gif }}.gif"
+  />
+  <meta property="og:image:type" content="image/gif" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta
     name="twitter:image"
