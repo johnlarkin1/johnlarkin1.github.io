@@ -3,10 +3,27 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  {% if page.featured-img %}
+  {% if page.featured-gif %}
   <meta
     property="og:image"
-    content="{{ site.url }}{{ site.baseurl }}/assets/img/posts/{{ page.featured-img }}.jpg"
+    content="{{ site.url }}{{ site.baseurl }}/assets/gif/{{ page.featured-gif }}.gif"
+  />
+  <meta property="og:image:type" content="image/gif" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta
+    name="twitter:image"
+    content="{{ site.url }}{{ site.baseurl }}/assets/gif/{{ page.featured-gif }}.gif"
+  />
+  {% elsif page.featured-img %}
+  <meta
+    property="og:image"
+    content="{{ site.url }}{{ site.baseurl }}/assets/img/posts/{{ page.featured-img }}_lg.jpg"
+  />
+  <meta property="og:image:type" content="image/jpeg" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta
+    name="twitter:image"
+    content="{{ site.url }}{{ site.baseurl }}/assets/img/posts/{{ page.featured-img }}_lg.jpg"
   />
   {% endif %} {% seo %}
 
