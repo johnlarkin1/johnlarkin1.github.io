@@ -2,7 +2,7 @@
 title: Book BrAin
 layout: post
 featured-img: book-brain
-categories: [⭐️ Favorites, Development, Ai, Rag, LLMs, qdrant]
+categories: [⭐️ Favorites, Dev, Ai, Rag, LLMs, qdrant]
 summary: Automating book reports. An exploration into chunking, qdrant, and embedding queries.
 favorite: true
 ---

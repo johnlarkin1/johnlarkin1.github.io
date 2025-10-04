@@ -3,7 +3,7 @@ title: "Launching Scrollz"
 layout: post
 featured-img: scrollz-preview
 pinned: true
-categories: [Scrollz, Development, Friends]
+categories: [Scrollz]
 summary: "If you're sick of an inbox cluttered with newsletters, Scrollz might be for you"
 favorite: false
 ---

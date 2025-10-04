@@ -1,42 +1,35 @@
 ---
 title: "Teaching a Computer How to Write"
 layout: post
-featured-gif:
+featured-gif: TODO
 mathjax: true
-categories: [⭐️ Favorites, Algorithms, Development, A.I., M.L.]
-summary: Jeez. For basically 7 years this has been on my wishlist.
+pinned: true
+categories: [⭐️ Favorites, Algorithms, Dev, A.I., M.L.]
+summary: TODO
 ---
 
 <div class="markdown-alert markdown-alert-disclaimer">
-<p>So first of all... this was a pretty large "pet" project. A bit of a Frankenstein. And if you came here excited to read about transformers and LLMs and GPTs, sorry you've come to the wrong place. Which maybe was a bad use of my time, but had an itch to scratch. LSTMs are a precursor, largely solved at sequential data. They aren't as smart (in a way) as LLMs and they don't utilize attention in the same way whatsoever. But it's fun math and an interesting project. </p>
 
-<p> Second of all, I'll outright say some of the structure and logical code was adapted from the brilliant (yet mysterious) <a href="https://github.com/sjvasquez">sjvasquez</a>. Pretty sure they’re at Facebook on the AI side, but yeah it’s their one popular public repo.</p>
+<p>This is a relatively long post! I would encourage you if you're trying to learn from 0 -> 1 to read the whole thing, but feel free to jump around as you so wish. I would say there's three main portions: concept, theory, and code.
+</p>
 
-<p>Third, that code doesn’t work on the latest Tensorflow version (2.16.1 at time of writing). Additionally, I provide quite a couple of models so we can see the progression from a simple neural net to a basic LSTM to Peephole LSTM to a stacked cascade of Peephole LSTMs to Mixture Density Networks to Attention Mechanism to Attention RNN to finally throwing it all together to the full Handwriting Synthesis Network that Graves originally wrote about.</p>
-
-<p>Fourth, this was by far the most energy and effort I’ve put into a blog post, so please - even if you don’t read it - enjoy the visualizations. I spent basically two weeks in between <a href="https://dropbox.com/">Dropbox</a> and <a href="https://www.mojo.com/">Mojo</a> working on this like… a solid amount. It was a large <em>large</em> time commitment, and even a financial commitment, given some GPU costs. I ended up using <a href="https://vast.ai/">vast.ai</a> to train my model on a more performant machine and then <code class="language-plaintext highlighter-rouge">scp</code> the weights / <code class="language-plaintext highlighter-rouge">.keras</code> file over. I probably should have been learning a bit more about Scylla coupled with Go for Mojo, but c'est la vie.</p>
-
-<p>Finally, I know people are going to give me some flack for not embracing the time off more, but as my family and my ex said, this was my time and I can do with it what I wish. I also can't understate how badly I wanted this project to work. This was my senior engineering project and it’s basically been eating my brain for 7 years since I graduated. I enjoy (and also hate) these problems of dimensionality, complex math, understanding how some ML models are so brilliantly put together. Alex Graves and Chris Olah were basically engineering legends to me in college and that remains true.</p>
+<p>My purpose here was to build up from the basics and really understand the flow. I provide quite a couple of models so we can see the progression from a simple neural net to a basic LSTM to Peephole LSTM to a stacked cascade of Peephole LSTMs to Mixture Density Networks to Attention Mechanism to Attention RNN to the Handwriting Prediction Network to finally throwing it all together to the full Handwriting Synthesis Network that Graves originally wrote about.</p>
 
 <p>Enjoy!</p>
 
 </div>
 
-<br>
-
 <div class="markdown-alert markdown-alert-note">
-<p>Ok one more. Very topical!! One thing that came out while I was writing this up and finalizing it, was this paper: <b><a href="https://arxiv.org/abs/2405.04517">xLSTM: Extended Long Short-Term Memory</a></b>. I'm hoping to explore that at some point, but it seems a structural improvement of some of the issues I talk about (and run into while training) below.</p>
+<p>One thing that I would highly recommend - if you're interested in the theory of LSTMs and why sigmoid vs tanh activations were chosen, I would really encourage reading Chris Olah's <b><a href="https://colah.github.io/posts/2015-08-Understanding-LSTMs/">Understanding LSTMs</a></b> blog post. It does a fantastic job.</p>
 </div>
 
 <br>
 
 # ✍️ Motivating Visualizations
 
-Today, you're going to learn how to teach a computer to write. And I don't mean producing text, I mean learning how to write like a human learns how to write with a pen and paper. So here are some fun motivating images.
+Today, we're going to learn how to teach a computer to write. I don't mean generating text (which would have been probably a better thing to study in college), I mean learning to write like a human learns how to write with a pen and paper. My results eventually were pretty good, here are some motivating visualizations:
 
-TODO
-
-[See here for more](#visualizations).
+<!-- TODO:@larkin -->
 
 # Table of Contents
 
@@ -46,11 +39,15 @@ TODO
 - [👨‍🏫 History](#-history)
   - [Tom and My Engineering Thesis](#tom-and-my-engineering-thesis)
 - [🙏 Acknowledgements](#-acknowledgements)
+- [📝 Concept](#-concept)
 - [👾 Software](#-software)
   - [Tensorflow](#tensorflow)
     - [Programming Paradigm](#programming-paradigm)
     - [Versions - How the times have changed](#versions---how-the-times-have-changed)
     - [Tensorboard](#tensorboard)
+  - [Pytorch](#pytorch)
+  - [JAX](#jax)
+    - [Programming Paradigm](#programming-paradigm-1)
 - [📊 Data](#-data)
 - [🧠 Base Neural Network Theory](#-base-neural-network-theory)
   - [Lions, Bears, and Many Neural Networks, oh my](#lions-bears-and-many-neural-networks-oh-my)
@@ -90,13 +87,13 @@ TODO
 
 # 🥅 Motivation
 
-I never actually ended up publishing it, but I had a draft blog post written maybe right after college, about some of the work that a good friend (and absolutely incredible engineer) [Tom Wilmots][tom] and I did in college.
+This motivation is clear - this is something that I have wanted to find the time to do right since college. My engineering thesis was on this Graves paper. My senior year, I worked with my good friend (also he's a brilliant engineer) [Tom Wilmots][tom] to understand and dive into this paper.
 
-I'm going to pull pieces of that, but the time has changed, and I wanted to revisit some of the work we did back in college, and clean it up some, given the boom of generative AI. Also I'm a better engineer and we had a small bug in some of the modeling that I want to flush out.
+I'm going to pull pieces of that, but the time has changed, and I wanted to revisit some of the work we did, hopefully clean it up, and finally put a nail in this (so my girlfriend / friends don't have to keep hearing about it).
 
 # 👨‍🏫 History
 
-[Tom] and I were very interested in the concept of teaching a computer how to write in college. There is a very famous [paper] that was published around 2013 from Canadian computer scientist [Alex Graves][ag], titled _Generating Sequences With Recurrent Neural Networks_. At [Swarthmore][swat], you have to do Engineering theses, called [E90s][e90].
+[Tom] and I were very interested in the concept of teaching a computer how to write in college. There is a very famous [paper] that was published around 2013 from Canadian computer scientist [Alex Graves][ag], titled [_Generating Sequences With Recurrent Neural Networks_][gen-sequences]. At [Swarthmore][swat], you have to do Engineering thesis, called [E90s][e90]. It's basically a year (although I'd argue it's more of a semester when it all shakes out) long project focused on doing a piece of work you're proud of.
 
 ## Tom and My Engineering Thesis
 
@@ -110,22 +107,28 @@ You can also check it out here: [**Application of Neural Networks with Handwriti
 
 # 🙏 Acknowledgements
 
-- **[Tom Wilmots][tom]** - One of the brightest and best engineers I've worked with. He was an Engineering and Economics double major from [Swarthmore][swat]. He was the inspiration for this project in college, and I wouldn't have gotten anywhere without him.
-- **[Matt Zucker][mz]** - Absolutely no surprise here. One of my role models and constant inspirations, Matt was kind enough to be Tom and my academic advisor for this final engineering project. He's an outstanding professor at Swarthmore College and the institution is beyond fortunate to have him.
-- **[Alex Graves][ag]** - Another genius that both Tom and I had the pleasure of working with. **He actually responded to our emails!**. I remember that in college, I lost my mind when he emailed back. That a professional (who was a professor at the University of Toronto, see [here][gravesToronto]). He is the author of [this paper][paper], which Matt found for us and pretty much was the basis of our project. Alex is at Google now and is crushing it. He's also the creator of the [Neural Turing Machine][ntm], which peaked my interest after having taken [Theory of Computation][toc], with my other fantastic professor [Lila Fontes][lila] and learning about [Turing machines][turingmachines].
-- **[David Ha][dha]** - Yet another genius who we had the priviledge of corresponding with. Check out his blog [here][otoro]. It's beautiful. He also is very prolific on [ArXiv][arxiv] which is always cool to see.
+Before I dive in, I do want to make some acknowledgements just given this is a partial resumption of work.
+
+- **[Tom Wilmots][tom]** - One of the brightest and best engineers I've worked with. He was an Engineering and Economics double major from [Swarthmore][swat]. Pretty sure I would have failed my E90 thesis without him.
+- **[Matt Zucker][mz]** - One of my role models and constant inspirations, Matt was kind enough to be Tom and my academic advisor for this final engineering project. He is the best professor I've come across.
+- **[Alex Graves][ag]** - A professor that both Tom and I had the pleasure of working with. **He responded to our emails, which I'm still very appreciative of**. You can see more about his work at the University of Toronto [here][gravesToronto]). He is the author of [this paper][paper], which Matt found for us and pretty much was the basis of our project. He's also the creator of the [Neural Turing Machine][ntm], which peaked my interest after having taken [Theory of Computation][toc], with my other fantastic professor [Lila Fontes][lila] and learning about [Turing machines][turingmachines].
+- **[David Ha][dha]** - Another brilliant scientist who we had the privilege of corresponding with. Check out his blog [here][otoro]. It's beautiful. He also is very prolific on [ArXiv][arxiv] which is always cool to see.
+
+# 📝 Concept
+
+This section is going to be for non-technical people to understand what we were trying to do. It's relatively simple. At a very high level, **we are trying to teach a computer how to generate human looking handwriting**. To do that, we are going to train a neural network. We are going to use a public dataset, called [IAM Online Handwriting Database][iam-database]. This dataset had a ton of people write on a tablet where the data was being recorded. It collected basically sets of `Stroke` data, which were tuples of $(x, y, t)$, where $(x, y)$ are the coordinates on the tablet, and $t$ is the timestamp. We'll use this data to train a model so that across all of the participants we have this blended approach of how to write like a human.
 
 # 👾 Software
 
-In college, we decided between [Tensorflow][tensorflow] and [Pytorch][pytorch]. I thought about re-implementing this in [pytorch], but I kind of figured that I wanted to see what's changed with [tensorflow] and that I was a bit more familiar with that programming paradigm.
+In college, we decided between [Tensorflow][tensorflow] and [Pytorch][pytorch]. In college, we used Tensorflow. However, given the times, I wanted to still resume our tensorflow approach with updated designs, but I also wanted to try and use [JAX]. [JAX] is... newer. But it's gotten some hype online and I think there's a solid amount of adoption across the bigger AI labs now. In my opinion, Tensorflow is dying, Pytorch is the new status quo, and JAX is the new kid on the block. However, I'm not an ML researcher clearing millions of dollars. So grain of salt. This [clickbaity article][pytorch-rant] which declares _"Pytorch is dead. Long live JAX"_ got a ton of flak online, but regardless... it piqued my interest enough to try it here.
 
-<!-- Ok scratch that! As of 2025-09-16, I did decide to pivot to [jax] given that seems to be all the rage with top AI labs and squeezing out perf from hardware. So i'll show you where I pivot. -->
+I'll cover all three here and yeah probably dive deepest into tensorflow... but feel free to skip this section.
 
 ## Tensorflow
 
 ### Programming Paradigm
 
-Tensorflow has this interesting programming paradigm, where you are more or less creating a graph. So you define `Tensor`s and then when you run your dependency graph, those things are actually translated.
+Tensorflow has this interesting programming paradigm, where you are more or less creating a graph. You define `Tensor`s and then when you run your dependency graph, those things are actually translated.
 
 I have this quote from the Tensorflow API:
 
@@ -150,13 +153,25 @@ Another cool thing about [Tensorflow][tf] that should be mentioned is the abilit
 
 We used this a bit more in college. I didn't get a real chance to dive into the updates made from this.
 
-<!-- ## JAX
+## Pytorch
+
+[PyTorch][pytorch] is now basically the defacto standard for most serious research labs and AI shops. To me, it seems like things are still somewhat ported to Tensorflow for production, but I'm not totally sure about convention.
+
+Pytorch seems to thread the line between Tensorflow and JAX. Functions don't necessarily need to be pure to be utilized. You can loop and mutate state in a `nn.Module` just fine.
+
+I won't be covering pytorch but I certainly will come back around to it in later projects.
+
+## JAX
+
+The new up and comer! I think it's largely a crowd favorite for it's speed. Documentation is obviously worse. One Redditor summarized it nicely:
+
+<blockquote class="reddit-embed-bq" data-embed-theme="dark" data-embed-height="396"><a href="https://www.reddit.com/r/MachineLearning/comments/1b08qv6/comment/ks6u1e2/">Comment</a><br> by<a href="https://www.reddit.com/user/Few-Pomegranate4369/">u/Few-Pomegranate4369</a> from discussion<a href="https://www.reddit.com/r/MachineLearning/comments/1b08qv6/d_is_it_worth_switching_to_jax_from/"></a><br> in<a href="https://www.reddit.com/r/MachineLearning/">MachineLearning</a></blockquote><script async="" src="https://embed.reddit.com/widgets.js" charset="UTF-8"></script>
+
+Documentation is certainly worse and I hit numerous roadblocks where functions weren't actually pure and then the JIT compile portion basically failed on startup.
 
 ### Programming Paradigm
 
-So JAX is a bit different from Tensorflow. It's a less graph based and more Pythonic. It is meant to be pure functions that can then be `jit` compiled to XLA. Given this compilation, JAX performance is better than tensorflow.
-
-Given that this is a smaller project (obviously way less parameters than anything on the transformer layer), JAX is almost certainly overkill. However, I want to learn and expand out. -->
+JAX and Pytorch are definitely the most like traditional Python imperative flow. The restriction on JAX is largely around pure functions. Tensorflow is also gradually moving away from the compile your graph and then run it paradigm.
 
 # 📊 Data
 
@@ -188,7 +203,7 @@ We're going to explore some of the zoo in a bit more detail, specifically, focus
 ![basic-nn](https://www.researchgate.net/publication/336440220/figure/fig3/AS:839177277042688@1577086862947/A-illustration-of-neural-networks-NNs-a-a-basic-NN-is-composed-of-the-input-output.jpg)
 _Reference for the image.[^2]_{: .basic-center}
 
-The core structure of a neural network is the connections between all of the neurons. Each connection carries an activatino signal of varying strength. If the incoming signal to a neuron is strong enough, then the signal is permeated through the next stages of the network.
+The core structure of a neural network is the connections between all of the neurons. Each connection carries an activation signal of varying strength. If the incoming signal to a neuron is strong enough, then the signal is permeated through the next stages of the network.
 
 There is a input layer that feeds the data into the hidden layer. The outputs from the hidden layer are then passed to the output layer. Every connection between nodes carries a weight determining the amount of information that gets passed through.
 
@@ -211,7 +226,7 @@ However, let's give a bit more context. There's really two broad types of neural
 
 These neural networks channel information in **one direction**.
 
-The figure above is showing a feedforward neural network because **the connectinos do not allow for the same input data to be seen multiple times by the same node.**
+The figure above is showing a feedforward neural network because **the connections do not allow for the same input data to be seen multiple times by the same node.**
 
 These networks are generally very well used for mapping raw data to categories. For example, classifying a face from an image.
 
@@ -245,7 +260,7 @@ Also note, $f(x)$ should be a smooth non-linear activation function that maps ou
 
 ### Backpropagation
 
-[Backpropagation][backprop] is the mechanism in which we pass the error back through the network starting at the output node. Generally, we minimize using stochastic gradient descent. Again, lots of different ways we can define our error, but we can use sum of squared residuals between our $k$ targets and the output of $k$ nodes of the network.
+[Backpropagation][backprop] is the mechanism in which we pass the error back through the network starting at the output node. Generally, we minimize using [stochastic gradient descent][stoch-grad-desc]. Again, lots of different ways we can define our error, but we can use sum of squared residuals between our $k$ targets and the output of $k$ nodes of the network.
 
 $$
 \begin{align}
@@ -282,7 +297,7 @@ Per Tom and my paper,
 
 > An ideal RNN would theoretically be able to remember as far back as was necessary in order to to make an accurate prediction. However, as with many things, the theory does not carry over to reality. RNNs have trouble learning long term dependencies due to the vanishing gradient problem. An example of such a long term dependency might be if we are trying to predict the last word in the following sentence ”My family originally comes from Belgium so my native language is PREDICTION”. A normal RNN would possibly be able to recognize that the prediction should be a language but it would need the earlier context of Belgium to be able to accurately predict DUTCH.
 
-Topically, this is why the craze around LLMs is so impressive. There's a lot more going on with LLMs with vector databases and how much native knowledge they have already ingested.
+Topically, this is why the craze around LLMs is so impressive. There's a lot more going on with LLMs... which... I will not cover here.
 
 The notion of [backpropagation][backprop] is basically the same just we also have the added dimension of time.
 
@@ -308,13 +323,22 @@ _Reference for the image.[^3]_{: .basic-center}
 
 The top line is key to the LSTM's ability to remember. It is called the cell state. We'll reference it as $C_t$.
 
-The first neural network layer is a sigmoid function. It takes as input the concatenation between the current input $x_t$ and the output of the previous module $h_{t-1}$. This is coined as the forget gate. It is in control of what to forget for the cell state.
+The first neural network layer is a sigmoid function. It takes as input the concatenation between the current input $x_t$ and the output of the previous module $h_{t-1}$. This is coined as the forget gate. It is in control of what to forget for the cell state. The sigmoid function is a good architecture decision here because it basically outputs numbers between [0,1] indicating how much the layer should let through.
 
 We piecewise multiply the output of the sigmoid layer $f_t = \sigma(W_f \cdot [h_{t-1}, x_t] + b_f)$, with the cell state from the previous module $C_{t-1}$, forgetting the things that it doesn't see as important.
 
 Then right in the center of the image above there are two neural network layers which make up the update gate. First, $x_t \cdot h_{t-1}$ is pushed through both a sigmoid ($\sigma$) layer and a $\tanh$ layer. The output of this sigmoid layer $i_t = \sigma (W_i \cdot [h_{t-1}, x_t] + b_C)$ determines which values to use to update, and the output of the $\tanh$ layer $\hat{C} = \sigma (W_C \cdot [h_{t-1}, x_{t} + b_C$, proposes an entirely new cell state. These two results are then piecewise multiplied and added to the current cell state (which we just edited using the forget layer) outputting the new cell state $C_t$.
 
 The final neural network layer is called the output gate. It determines the relevant portion of the cell state to output as $h_t$. Once again, we feed $x_t \cdot h_{t-1}$ through a sigmoid layer whose output, $o_t = \sigma (W_o \cdot [h_{t-1}, x_t] + b_o)$, we piecewise multiple with $\tanh(C_t)$. The result of the multiplication determines the output of the LSTM module. Note that the <span style="color:purple">**purple**</span> $\tanh$ is not a neural network layer, but a piecewise multiplication intended to push the current cell state into a reasonable domain.
+
+<div class="markdown-alert markdown-alert-note">
+<p><b>I'm serious... you guys should check out Olah's <a href="https://colah.github.io/posts/2015-08-Understanding-LSTMs/">Understanding LSTMs</a>. Here he is back in 2015 strongly foreshadowing transformers given the focus on attention (which is truly the hardest part of all this) blog post.</b></p>
+</div>
+
+![olah-attention](/images/generative-handwriting/olah-attention.png){: .center-shrink }
+_Reference for the image.[^3]_{: .basic-center}
+
+<br>
 
 # 🧬 Concepts to Code
 
@@ -429,7 +453,7 @@ There's actually not a whole lot of code to provide here. GMMs are more of the t
 
 [Mixture Density Networks][mdn] are an extension of GMMs that predict the parameters of a mixture probability distribution.
 
-![mdn-viz](https://www.researchgate.net/profile/Baptiste-Feron/publication/325194613/figure/fig2/AS:643897080434701@1530528435323/Mixture-Density-Network-The-output-of-a-neural-network-parametrizes-a-Gaussian-mixture.png){: .basic-center }
+![mdn-viz](https://towardsdatascience.com/wp-content/uploads/2024/05/1UKuoYsGWis22cOV7KpLjVg.png){: .basic-center }
 _Reference for the image.[^6]_{: .basic-center}
 
 Per our paper:
@@ -1536,7 +1560,7 @@ When re-reading my old draft blog post, I liked the way I ended things. So here 
 [^3]: https://colah.github.io/posts/2015-08-Understanding-LSTMs/
 [^4]: https://miro.medium.com/v2/resize:fit:996/1*kJYirC6ewCqX1M6UiXmLHQ.gif
 [^5]: https://arxiv.org/abs/1308.0850
-[^6]: https://www.researchgate.net/profile/Baptiste-Feron/publication/325194613/figure/fig2/AS:643897080434701@1530528435323/Mixture-Density-Network-The-output-of-a-neural-network-parametrizes-a-Gaussian-mixture.png
+[^6]: https://towardsdatascience.com/wp-content/uploads/2024/05/1UKuoYsGWis22cOV7KpLjVg.png
 
 [comment]: <> (Bibliography)
 [code]: https://github.com/johnlarkin1/sudoku-solver
@@ -1583,4 +1607,11 @@ When re-reading my old draft blog post, I liked the way I ended things. So here 
 [mojo]: https://www.mojo.com/
 [vast]: https://vast.ai/
 [lstm-peep]: https://www.tensorflow.org/addons/api_docs/python/tfa/rnn/PeepholeLSTMCell
-[jax]:https://github.com/jax-ml/jax
+[JAX]:https://github.com/jax-ml/jax
+[hnews]: https://news.ycombinator.com/item?id=45440431
+[xlstm-ref]: https://news.ycombinator.com/item?id=45440431#:~:text=What%27s%20with%20all,crypto/DeFi%20pitch.
+[xlstm]: https://arxiv.org/abs/2405.04517
+[gen-sequences]: https://arxiv.org/abs/1308.0850
+[pytorch-rant]: https://neel04.github.io/my-website/blog/pytorch_rant/
+[stoch-grad-descent]: https://en.wikipedia.org/wiki/Stochastic_gradient_descent
+[understanding-lstms]: https://colah.github.io/posts/2015-08-Understanding-LSTMs/

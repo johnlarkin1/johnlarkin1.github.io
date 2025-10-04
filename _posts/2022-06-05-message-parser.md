@@ -3,7 +3,7 @@ title: iMessage Parsing and Analysis
 layout: post
 featured-img: imessage-parsing-slim
 major-category: tech
-categories: [⭐️ Favorites, Development]
+categories: [⭐️ Favorites, Dev]
 favorite: true
 ---
 

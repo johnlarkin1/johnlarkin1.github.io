@@ -2,7 +2,7 @@
 title: Encrypted Blog Posts
 layout: post
 featured-img: lock
-categories: [Development]
+categories: [Dev]
 test-encrypted: true
 encrypted: true
 encrypted-hash: 3aa4cb08d481cfe2b08e4a5e31777f642263d58d

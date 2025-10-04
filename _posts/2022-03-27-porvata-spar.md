@@ -2,7 +2,7 @@
 title: Porvata and SPAR Integration
 layout: post
 featured-img: porvata
-categories: [⭐️ Favorites, Development, Friends]
+categories: [⭐️ Favorites, Dev, Friends]
 summary: I got to work with my best friend Will on a fun technical project!
 favorite: true
 ---
@@ -83,7 +83,7 @@ Here are some of the benefits that this provides:
 
 - It's _really_ relatively painless
   - There wasn't a big delay or like secondary approval, it's just signing up an account
-- **Development testing**
+- **Dev testing**
   - This was the big one. I - unfortunately - do not write perfect code. While unit tests help, it was nice to walk through with orders and simulate different customer actions.
 - Hello, it's fun?!
   - I got to set up my own little Pet Store and simulate orders going through so that I could ensure we were parsing the data on the backend correctly as well as subscribing to the appropriate order events.

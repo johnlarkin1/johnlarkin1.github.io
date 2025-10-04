@@ -4,7 +4,7 @@ layout: post
 featured-img: advent-of-code-2024
 mathjax: true
 major-category: tech
-categories: [Advent of Code, Development]
+categories: [Advent of Code, Dev]
 summary: Slogging through Advent of Code 2024
 ---
 
