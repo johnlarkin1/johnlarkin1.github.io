@@ -1,7 +1,9 @@
 ---
 title: "Teaching a Computer How to Write"
 layout: post
-featured-gif: TODO
+featured-video: tennis-scorigami
+featured-poster: tennis-scorigami
+featured-gif: generative-handwriting
 mathjax: true
 pinned: true
 categories: [⭐️ Favorites, Algorithms, Dev, A.I., M.L.]
@@ -15,6 +17,8 @@ summary: TODO
 
 <p>My purpose here was to build up from the basics and really understand the flow. I provide quite a couple of models so we can see the progression from a simple neural net to a basic LSTM to Peephole LSTM to a stacked cascade of Peephole LSTMs to Mixture Density Networks to Attention Mechanism to Attention RNN to the Handwriting Prediction Network to finally throwing it all together to the full Handwriting Synthesis Network that Graves originally wrote about.</p>
 
+<p>There's other things that maybe I'll discuss in the future like the need to pickle JAX models because if they're XLA compatible then you can't run inference on your CPU and issues like that. Another thing I didn't discuss really was temperature and bias for sampling. I also (sadly) didn't cover priming. However, I spent far more time on this than I should have. If you have any questions - as always - feel free to reach out if curious. </p>
+
 <p>Enjoy!</p>
 
 </div>
@@ -27,9 +31,29 @@ summary: TODO
 
 # ✍️ Motivating Visualizations
 
-Today, we're going to learn how to teach a computer to write. I don't mean generating text (which would have been probably a better thing to study in college), I mean learning to write like a human learns how to write with a pen and paper. My results eventually were pretty good, here are some motivating visualizations:
+Today, we're going to learn how to teach a computer to write. I don't mean generating text (which would have been probably a better thing to study in college), I mean learning to write like a human learns how to write with a pen and paper. My results (eventually) were pretty good, here are some motivating visualizations.
 
-<!-- TODO:@larkin -->
+Let's look at one. My family used to have this hung over our kitchen sink when I was a kid. I ate breakfast every day looking at it.
+
+{% include quote.html
+    text="The heart has its reasons which reason knows nothing of"
+    author="Blaise Pascal"
+    source="\"Pensées\""
+%}
+
+![heart-writing-cleansed](/images/generative-handwriting/synth_outputs/heart_has_its_reason/writing_cleansed.png){: .basic-center .lightbox-image}
+
+![heart-writing-gif](/images/generative-handwriting/synth_outputs/heart_has_its_reason/writing.gif){: .basic-center .lightbox-image}
+
+![heart-mdn-aggregate](/images/generative-handwriting/synth_outputs/heart_has_its_reason/mdn_aggregate.png){: .basic-center .lightbox-image}
+
+![heart-attention-gif](/images/generative-handwriting/synth_outputs/heart_has_its_reason/attention_combined.gif){: .basic-center .lightbox-image}
+
+![heart-mdn](/images/generative-handwriting/synth_outputs/heart_has_its_reason/mdn.png){: .basic-center .lightbox-image}
+
+![heart-sampling-gif](/images/generative-handwriting/synth_outputs/heart_has_its_reason/sampling.gif){: .basic-center .lightbox-image}
+
+Again, I'd recommend jumping down to here: [Synthesis Model Sampling](#synthesis-model-sampling). Arguably, the best part of this post. I'll discuss what all these visualizations mean in detail.
 
 # Table of Contents
 
@@ -77,17 +101,20 @@ Today, we're going to learn how to teach a computer to write. I don't mean gener
   - [Stacked LSTM](#stacked-lstm)
     - [Theory](#theory-5)
     - [Code](#code-5)
-- [Tensorflow code here](#tensorflow-code-here)
-- [JAX code here](#jax-code-here)
   - [Final Result](#final-result)
-- [🏆 Results](#-results)
+- [🏋️ Training Results](#️-training-results)
   - [Vast AI GPU Enabled Execution](#vast-ai-gpu-enabled-execution)
     - [Problem #1 - Gradient Explosion Problem](#problem-1---gradient-explosion-problem)
     - [Problem #2 - OOM Galore](#problem-2---oom-galore)
     - [Sanity Check - Validating Model Dimensions (with AI... so somewhat)](#sanity-check---validating-model-dimensions-with-ai-so-somewhat)
-  - [Drawing Code](#drawing-code)
-  - [Visualizations](#visualizations)
-    - [Learning with Dummy Data](#learning-with-dummy-data)
+- [✍️ Visualizations](#️-visualizations)
+  - [Learning with Dummy Data](#learning-with-dummy-data)
+  - [Synthesis Model Sampling](#synthesis-model-sampling)
+    - [Heart has its reasons](#heart-has-its-reasons)
+    - [Loved and lost](#loved-and-lost)
+    - [It has to be symphonic](#it-has-to-be-symphonic)
+    - [Is a model a lie?](#is-a-model-a-lie)
+    - [Fish folly](#fish-folly)
 - [Conclusion](#conclusion)
 
 # 🥅 Motivation
@@ -186,6 +213,9 @@ We're using the [IAM Online Handwriting Database][iam-database]. Specifically, I
 
 ![data](/images/generative-handwriting/example_data.png){: .center-super-shrink .lightbox-image}
 
+<div class="image-caption">Example Handwriting IAM Data</div>
+<br>
+
 There's also this note:
 
 > The database is divided into 4 parts, a training set, a first validation set, a second validation set and a final test set. The training set may be used for training the recognition system, while the two validation sets may be used for optimizing some meta-parameters. The final test set must be left unseen until the final test is performed. Note that you are allowed to use also other data for training etc, but report all the changes when you publish your experimental results and let the test set unchanged (It contains 3859 sequences, i.e. XML-files - one for each text line).
@@ -200,15 +230,19 @@ I am not going to dive into details as much as we did for our senior E90 thesis,
 
 I would highly encourage you to check out this website: <https://www.asimovinstitute.org/neural-network-zoo/>. I remember seeing it in college when working on this thesis and was stunned. If you're too lazy to click, check out the fun picture:
 
-![neural-network-zoo](/images/generative-handwriting/neural_network_zoo.png){: .center-shrink .lightbox-image}
-_Reference for the image.[^1]_{: .basic-center}
+![neural-network-zoo](/images/generative-handwriting/neural_network_zoo.png){: .center-super-shrink .lightbox-image}
+
+<div class="image-caption">Courtesy of <a href="https://www.asimovinstitute.org/neural-network-zoo/">Asimov Institute</a></div>
+<br>
 
 We're going to explore some of the zoo in a bit more detail, specifically, focusing on [LSTMs][lstm].
 
 ## Basic Neural Network
 
-![basic-nn](https://www.researchgate.net/publication/336440220/figure/fig3/AS:839177277042688@1577086862947/A-illustration-of-neural-networks-NNs-a-a-basic-NN-is-composed-of-the-input-output.jpg)
-_Reference for the image.[^2]_{: .basic-center}
+![basic-nn](https://aiml.com/wp-content/uploads/2023/08/Illustration-of-a-neural-net-1024x594.png){: .center-shrink .lightbox-image}
+
+<div class="image-caption">Courtesy of <a href="https://aiml.com/what-is-the-basic-architecture-of-an-artificial-neural-network-ann/">AI ML</a></div>
+<br>
 
 The core structure of a neural network is the connections between all of the neurons. Each connection carries an activation signal of varying strength. If the incoming signal to a neuron is strong enough, then the signal is permeated through the next stages of the network.
 
@@ -295,8 +329,10 @@ The major downfall of this simple network is that we don't have full context. Wi
 
 This visualization from [Christopher Olah][colah] (who holy hell i just realized is a co-founder of [Anthropic][anthropic], but who Tom and I used to follow closely in college) is a great visualization:
 
-![rnn-unrolled](/images/generative-handwriting/rnn_unrolled.png){: .center-shrink }
-_Reference for the image.[^3]_{: .basic-center}
+![rnn-unrolled](/images/generative-handwriting/rnn_unrolled.png){: .center-shrink .lightbox-image }
+
+<div class="image-caption">Courtesy of Chris Olah's <a href="https://colah.github.io/posts/2015-08-Understanding-LSTMs/">Understanding LSTMs</a></div>
+<br>
 
 This RNN module is being unrolled over multiple timestamps. Information is passed within a module at time step $t$ to the module at $t+1$.
 
@@ -318,15 +354,19 @@ However, [Sepp Hochreiter][sepp-hochreiter] and [Juergen Schmidhuber][juergen-sc
 
 Every form of RNN has repeating modules that pass information across timesteps, and LSTMs are no different. Where they different is the inner structure of each module. While a standard RNN might have a single neural layer, LSTMs have four.
 
-![lstm-viz](/images/generative-handwriting/lstm.png){: .center-shrink }
-_Reference for the image.[^3]_{: .basic-center}
+![lstm-viz](/images/generative-handwriting/lstm.png){: .center-shrink .lightbox-image}
+
+<div class="image-caption">Courtesy of Chris Olah's <a href="https://colah.github.io/posts/2015-08-Understanding-LSTMs/">Understanding LSTMs</a></div>
+<br>
 
 ### Understanding the LLM Structure
 
 So let's better understand the structure above. There's a way more comprehensive walkthrough [here][colah]. I'd encourage you to check out that walkthrough.
 
-![lstm-viz](/images/generative-handwriting/single_lstm_module.png){: .center-super-shrink }
-_Reference for the image.[^3]_{: .basic-center}
+![lstm-viz](/images/generative-handwriting/single_lstm_module.png){: .center-super-shrink .lightbox-image }
+
+<div class="image-caption">Courtesy of Chris Olah's <a href="https://colah.github.io/posts/2015-08-Understanding-LSTMs/">Understanding LSTMs</a></div>
+<br>
 
 The top line is key to the LSTM's ability to remember. It is called the cell state. We'll reference it as $C_t$.
 
@@ -343,7 +383,9 @@ The final neural network layer is called the output gate. It determines the rele
 </div>
 
 ![olah-attention](/images/generative-handwriting/olah-attention.png){: .center-shrink }
-_Reference for the image.[^3]_{: .basic-center}
+
+<div class="image-caption">Courtesy of Chris Olah's <a href="https://colah.github.io/posts/2015-08-Understanding-LSTMs/">Understanding LSTMs</a></div>
+<br>
 
 <br>
 
@@ -512,8 +554,10 @@ class HandwritingModel(nnx.Module):
 
 ### Theory
 
-![gmm-viz](https://miro.medium.com/v2/resize:fit:996/1*kJYirC6ewCqX1M6UiXmLHQ.gif){: .basic-center }
-_Reference for the image... I didn't create this one[^4]_{: .basic-center}
+![gmm-viz](https://miro.medium.com/v2/resize:fit:996/1*kJYirC6ewCqX1M6UiXmLHQ.gif){: .center-super-shrink .lightbox-image}
+
+<div class="image-caption"><a href="https://miro.medium.com/v2/resize:fit:996/1*kJYirC6ewCqX1M6UiXmLHQ.gif">reference</a></div>
+<br>
 
 [Gaussian Mixture Models][gmm] are an unsupervised technique to learn an underlying probabilistic model.
 
@@ -540,8 +584,10 @@ There's actually not a whole lot of code to provide here. GMMs are more of the t
 
 [Mixture Density Networks][mdn] are an extension of GMMs that predict the parameters of a mixture probability distribution.
 
-![mdn-viz](https://towardsdatascience.com/wp-content/uploads/2024/05/1UKuoYsGWis22cOV7KpLjVg.png){: .basic-center }
-_Reference for the image.[^6]_{: .basic-center}
+![mdn-viz](https://towardsdatascience.com/wp-content/uploads/2024/05/1UKuoYsGWis22cOV7KpLjVg.png){: .basic-center .lightbox-image}
+
+<div class="image-caption">Courtesy of <a href="https://towardsdatascience.com/wp-content/uploads/2024/05/1UKuoYsGWis22cOV7KpLjVg.png">Towards Data Science</a></div>
+<br>
 
 Per our paper:
 
@@ -1097,8 +1143,10 @@ Per our paper:
 
 So it looks something like this:
 
-![graves-stacked-lstm](/images/generative-handwriting/graves_stacked_lstm.png){: .center-shrink }
-_Alex Graves 2013.[^5]_{: .basic-center}
+![graves-stacked-lstm](/images/generative-handwriting/graves_stacked_lstm.png){: .center-super-shrink .lightbox-image}
+
+<div class="image-caption">Courtesy of Alex Graves's <a href="https://arxiv.org/abs/1308.0850">paper</a></div>
+<br>
 
 The one thing to note is that there is a dimensionality increase given we now have these hidden layers. Tom and I broke this down in our paper here:
 
@@ -1106,13 +1154,13 @@ The one thing to note is that there is a dimensionality increase given we now ha
 >
 > $$\begin{align} \textrm{final dimension} = k \frac{m(m+1)}{2} \end{align}$$
 
+Here's my take is that I actually like how I constructed the Tensorflow version more from a composability perspective. I think the code is cleaner. However, c'est la vie.
+
 ### Code
 
 This is where the various `cell` vs `layer` concept in Tensorflow was very nice.
 
 You can see here how the parts all come together smoothly. The custom RNN cell takes the lstm_cells (which are stacked), and then can basically abstract out and operate on the individual time steps without having to worry about actually introducing another `for` loop. This is beneficial because of the batching and GPU win we can get when it eventually becomes time.
-
-For the actual `AttentionRNNCell`, this is what I'm talking about:
 
 <!-- prettier-ignore-start -->
 
@@ -1125,14 +1173,160 @@ For the actual `AttentionRNNCell`, this is what I'm talking about:
     <div class="code-toggle__pane code-toggle__pane--active" data-pane="tensorflow">
 {% highlight python %}
 
-# Tensorflow code here
+@tf.keras.utils.register_keras_serializable()
+class DeepHandwritingSynthesisModel(tf.keras.Model):
+    """
+    A similar implementation to the previous model,
+    but now we're throwing the good old attention mechanism back into the mix.
+    """
+
+    def __init__(
+        self,
+        units: int = NUM_LSTM_CELLS_PER_HIDDEN_LAYER,
+        num_layers: int = NUM_LSTM_HIDDEN_LAYERS,
+        num_mixture_components: int = NUM_BIVARIATE_GAUSSIAN_MIXTURE_COMPONENTS,
+        num_chars: int = ALPHABET_SIZE,
+        num_attention_gaussians: int = NUM_ATTENTION_GAUSSIAN_COMPONENTS,
+        gradient_clip_value: float = GRADIENT_CLIP_VALUE,
+        enable_mdn_regularization: bool = False,
+        debug=False,
+        **kwargs,
+    ):
+        super().__init__(**kwargs)
+        self.units = units
+        self.num_layers = num_layers
+        self.num_mixture_components = num_mixture_components
+        self.num_chars = num_chars
+        self.num_attention_gaussians = num_attention_gaussians
+        self.gradient_clip_value = gradient_clip_value
+        self.enable_mdn_regularization = enable_mdn_regularization
+        # Store LSTM cells as tracked attributes instead of list
+        self.lstm_cells = []
+        for idx in range(num_layers):
+            cell = LSTMPeepholeCell(units, idx)
+            setattr(self, f'lstm_cell_{idx}', cell)  # Register as tracked attribute
+            self.lstm_cells.append(cell)
+
+        self.attention_mechanism = AttentionMechanism(num_gaussians=num_attention_gaussians, num_chars=num_chars)
+        self.attention_rnn_cell = AttentionRNNCell(self.lstm_cells, self.attention_mechanism, self.num_chars)
+        self.rnn_layer = tf.keras.layers.RNN(self.attention_rnn_cell, return_sequences=True)
+        self.mdn_layer = MixtureDensityLayer(num_mixture_components, enable_regularization=enable_mdn_regularization)
+        self.debug = debug
+
+        # metrics
+        self.loss_tracker = tf.keras.metrics.Mean(name="loss")
+        self.nll_tracker = tf.keras.metrics.Mean(name="nll")
+        self.eos_accuracy_tracker = tf.keras.metrics.Mean(name="eos_accuracy")
+        self.eos_prob_tracker = tf.keras.metrics.Mean(name="eos_prob")
+
+    def call(
+        self, inputs: Dict[str, tf.Tensor], training: Optional[bool] = None, mask: Optional[tf.Tensor] = None
+    ) -> tf.Tensor:
+        input_strokes = inputs["input_strokes"]
+        input_chars = inputs["input_chars"]
+        input_char_lens = inputs["input_char_lens"]
+
+        # one-hot encode the character sequence and set RNN cell attributes
+        char_seq_one_hot = tf.one_hot(input_chars, depth=self.num_chars)
+        self.attention_rnn_cell.char_seq_one_hot = char_seq_one_hot
+        self.attention_rnn_cell.char_seq_len = input_char_lens
+
+        # initial states
+        batch_size = tf.shape(input_strokes)[0]
+        initial_states = self.attention_rnn_cell.get_initial_state(batch_size=batch_size, dtype=input_strokes.dtype)
+        initial_states_list = [
+            initial_states["lstm_0_h"],
+            initial_states["lstm_0_c"],
+            initial_states["lstm_1_h"],
+            initial_states["lstm_1_c"],
+            initial_states["lstm_2_h"],
+            initial_states["lstm_2_c"],
+            initial_states["kappa"],
+            initial_states["w"],
+        ]
+
+        # then through our RNN (which wraps stacked LSTM cells + attention mechanism)
+        # and then through our MDN layer
+        outputs = self.rnn_layer(input_strokes, initial_state=initial_states_list, training=training)
+        final_output = self.mdn_layer(outputs)
+        return final_output
 
 {% endhighlight %}
 </div>
 <div class="code-toggle__pane" data-pane="jax">
 {% highlight python %}
 
-# JAX code here
+    def __call__(
+        self,
+        inputs: jnp.ndarray,
+        char_seq: Optional[jnp.ndarray] = None,
+        char_lens: Optional[jnp.ndarray] = None,
+        initial_state: Optional[RNNState] = None,
+        return_state: bool = False,
+    ) -> jnp.ndarray:
+        batch_size, seq_len, _ = inputs.shape
+
+        if initial_state is None:
+            h = jnp.zeros((self.config.num_layers, batch_size, self.config.hidden_size), inputs.dtype)
+            c = jnp.zeros_like(h)
+            kappa = jnp.zeros((batch_size, self.config.num_attention_gaussians), inputs.dtype)
+            window = jnp.zeros((batch_size, self.config.alphabet_size), inputs.dtype)
+        else:
+            h, c = initial_state.hidden, initial_state.cell
+            kappa, window = initial_state.kappa, initial_state.window
+
+        def step(carry, x_t):
+            h, c, kappa, window = carry
+            h_layers = []
+            c_layers = []
+
+            # layer1
+            if self.synthesis_mode:
+                layer1_input = jnp.concatenate([window, x_t], axis=-1)
+            else:
+                layer1_input = x_t
+
+            h1, c1 = self.lstm_cell(layer1_input, h[0], c[0], 0)
+            h_layers.append(h1)
+            c_layers.append(c1)
+
+            # layer1 -> attention
+            if self.synthesis_mode and char_seq is not None and char_lens is not None:
+                window, kappa = self.compute_attention(h1, kappa, window, x_t, char_seq, char_lens)
+
+            # attention -> layer2 and layer3
+            for layer_idx in range(1, self.config.num_layers):
+                if self.synthesis_mode:
+                    layer_input = jnp.concatenate([x_t, h_layers[-1], window], axis=-1)
+                else:
+                    layer_input = jnp.concatenate([x_t, h_layers[-1]], axis=-1)
+
+                h_new, c_new = self.lstm_cell(layer_input, h[layer_idx], c[layer_idx], layer_idx)
+                h_layers.append(h_new)
+                c_layers.append(c_new)
+
+            h_new = jnp.stack(h_layers)
+            c_new = jnp.stack(c_layers)
+
+            # mdn output from final hidden state
+            mdn_out = self.mdn_layer(h_layers[-1])  # [B, 6M+1]
+
+            return (h_new, c_new, kappa, window), mdn_out
+
+        # this was the major unlock for JAX performance
+        # it allows us to vectorize the computation over the time dimension
+        # transpose inputs from [B, T, 3] to [T, B, 3] for scan
+        inputs_transposed = inputs.swapaxes(0, 1)
+        (h, c, kappa, window), outputs = jax.lax.scan(step, (h, c, kappa, window), inputs_transposed)
+
+        # transpose back
+        outputs = outputs.swapaxes(0, 1)
+
+        if return_state:
+            final_state = RNNState(hidden=h, cell=c, kappa=kappa, window=window)
+            return outputs, final_state
+
+        return outputs
 
 {% endhighlight %}
 </div>
@@ -1142,123 +1336,30 @@ For the actual `AttentionRNNCell`, this is what I'm talking about:
 
 <!-- prettier-ignore-end -->
 
-```python
-class DeepHandwritingSynthesisModel(tf.keras.Model):
-    """
-    A similar implementation to the previous model, but with a different approach to the attention mechanism. This is batched for efficiency
-    """
-
-    def __init__(
-        self,
-        units=400,
-        num_layers=3,
-        num_mixture_components=20,
-        num_chars=73,
-        num_attention_gaussians=10,
-        **kwargs,
-    ):
-        super().__init__(**kwargs)
-        self.num_chars = num_chars
-        self.lstm_cells = [LSTMPeepholeCell(units, idx) for idx in range(num_layers)]
-        self.attention_mechanism = AttentionMechanism(
-            num_gaussians=num_attention_gaussians, num_chars=num_chars
-        )
-        self.attention_rnn_cell = AttentionRNNCell(
-            self.lstm_cells, self.attention_mechanism, self.num_chars
-        )
-        self.rnn_layer = tf.keras.layers.RNN(
-            self.attention_rnn_cell, return_sequences=True
-        )
-        self.mdn_layer = MixtureDensityLayer(num_mixture_components)
-```
-
-```python
-class AttentionRNNCell(tf.keras.layers.Layer):
-    def __init__(self, lstm_cells, attention_mechanism, num_chars, **kwargs):
-        super().__init__(**kwargs)
-        self.lstm_cells = lstm_cells
-        self.attention_mechanism = attention_mechanism
-        self.num_chars = num_chars
-        self.state_size = [cell.state_size for cell in lstm_cells] + [
-            tf.TensorShape([attention_mechanism.num_gaussians]),
-            tf.TensorShape([num_chars]),
-        ]
-        self.output_size = lstm_cells[-1].output_size
-        # The one-hot encoding of the character sequence
-        # will be set by the model before calling the cell
-        self.char_seq_one_hot = None
-        # Same for the length of the character sequence
-        self.char_seq_len = None
-
-    def call(self, inputs, states):
-        assert self.char_seq_one_hot is not None, "char_seq_one_hot is not set"
-        assert self.char_seq_len is not None, "char_seq_len is not set"
-
-        x_t = inputs
-        (
-            s1_state_h,
-            s1_state_c,
-            s2_state_h,
-            s2_state_c,
-            s3_state_h,
-            s3_state_c,
-            kappa,
-            w,
-        ) = states
-
-        # LSTM layer 1
-        s1_in = tf.concat([w, x_t], axis=1)
-        s1_out, s1_state_new = self.lstm_cells[0](s1_in, [s1_state_h, s1_state_c])
-
-        # Attention
-        attention_inputs = tf.concat([w, x_t, s1_out], axis=1)
-        w_new, kappa_new = self.attention_mechanism(
-            attention_inputs, kappa, self.char_seq_one_hot, self.char_seq_len
-        )
-
-        # LSTM layer 2
-        s2_in = tf.concat([x_t, s1_out, w_new], axis=1)
-        s2_out, s2_state_new = self.lstm_cells[1](s2_in, [s2_state_h, s2_state_c])
-
-        # LSTM layer 3
-        s3_in = tf.concat([x_t, s2_out, w_new], axis=1)
-        s3_out, s3_state_new = self.lstm_cells[2](s3_in, [s3_state_h, s3_state_c])
-
-        # Preparing new states as a list to return
-        new_states = [
-            s1_state_new[0],
-            s1_state_new[1],
-            s2_state_new[0],
-            s2_state_new[1],
-            s3_state_new[0],
-            s3_state_new[1],
-            kappa_new,
-            w_new,
-        ]
-
-        return s3_out, new_states
-```
-
-And the various concatenation between inputs is what Graves means when he says "deep in space and time".
-
 ## Final Result
 
 Alright finally! So what do we have, and what can we do now?
 
 We now are going to feed the output from our LSTM cascade into the GMM in order to build a probabilistic prediction model for the next stroke. The GMM will then be fed the actual next point, in order to create some idea of the deviation os that the loss can be properly minimized.
 
-# 🏆 Results
+# 🏋️ Training Results
 
 ## Vast AI GPU Enabled Execution
 
-```bash
+<details>
+  <summary style="background-color: #d4edda; padding: 10px; border-radius: 5px; cursor: pointer; color: #155724; font-weight: bold;">
+    Vast AI GPU Enabled Running
+  </summary>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+
 2024-04-21 19:01:02.183969: I tensorflow/core/platform/cpu_feature_guard.cc:210] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
 To enable the following instructions: AVX2 FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
 train data found. Loading...
 test data found. Loading...
 valid2 data found. Loading...
 valid1 data found. Loading...
-2024-04-21 19:01:04.798925: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1928] Created device /job:localhost/replica:0/task:0/device:GPU:0 with 22455 MB memory:  -> device: 0, name: NVIDIA GeForce RTX 3090, pci bus id: 0000:82:00.0, compute capability: 8.6
+2024-04-21 19:01:04.798925: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1928] Created device /job:localhost/replica:0/task:0/device:GPU:0 with 22455 MB memory: -> device: 0, name: NVIDIA GeForce RTX 3090, pci bus id: 0000:82:00.0, compute capability: 8.6
 2024-04-21 19:01:05.887036: I external/local_tsl/tsl/profiler/lib/profiler_session.cc:104] Profiler session initializing.
 2024-04-21 19:01:05.887070: I external/local_tsl/tsl/profiler/lib/profiler_session.cc:119] Profiler session started.
 2024-04-21 19:01:05.887164: I external/local_xla/xla/backends/profiler/gpu/cupti_tracer.cc:1239] Profiler found 1 GPUs
@@ -1266,18 +1367,18 @@ valid1 data found. Loading...
 2024-04-21 19:01:05.917763: I external/local_xla/xla/backends/profiler/gpu/cupti_tracer.cc:1364] CUPTI activity buffer flushed
 Epoch 1/10000
 WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
-I0000 00:00:1713726072.109654    2329 service.cc:145] XLA service 0x7ad5bc004600 initialized for platform CUDA (this does not guarantee that XLA will be used). Devices:
-I0000 00:00:1713726072.109731    2329 service.cc:153]   StreamExecutor device (0): NVIDIA GeForce RTX 3090, Compute Capability 8.6
+I0000 00:00:1713726072.109654 2329 service.cc:145] XLA service 0x7ad5bc004600 initialized for platform CUDA (this does not guarantee that XLA will be used). Devices:
+I0000 00:00:1713726072.109731 2329 service.cc:153] StreamExecutor device (0): NVIDIA GeForce RTX 3090, Compute Capability 8.6
 2024-04-21 19:01:12.346749: I tensorflow/compiler/mlir/tensorflow/utils/dump_mlir_util.cc:268] disabling MLIR crash reproducer, set env var `MLIR_CRASH_REPRODUCER_DIRECTORY` to enable.
-W0000 00:00:1713726072.691839    2329 assert_op.cc:38] Ignoring Assert operator assert_greater/Assert/AssertGuard/Assert
-W0000 00:00:1713726072.694098    2329 assert_op.cc:38] Ignoring Assert operator assert_greater_1/Assert/AssertGuard/Assert
-W0000 00:00:1713726072.696267    2329 assert_op.cc:38] Ignoring Assert operator assert_near/Assert/AssertGuard/Assert
+W0000 00:00:1713726072.691839 2329 assert_op.cc:38] Ignoring Assert operator assert_greater/Assert/AssertGuard/Assert
+W0000 00:00:1713726072.694098 2329 assert_op.cc:38] Ignoring Assert operator assert_greater_1/Assert/AssertGuard/Assert
+W0000 00:00:1713726072.696267 2329 assert_op.cc:38] Ignoring Assert operator assert_near/Assert/AssertGuard/Assert
 2024-04-21 19:01:13.095183: I external/local_xla/xla/stream_executor/cuda/cuda_dnn.cc:465] Loaded cuDNN version 8906
 2024-04-21 19:01:14.883021: W external/local_xla/xla/service/hlo_rematerialization.cc:2941] Can't reduce memory use below 17.97GiB (19297974672 bytes) by rematerialization; only reduced to 20.51GiB (22027581828 bytes), down from 20.67GiB (22193496744 bytes) originally
-I0000 00:00:1713726076.329853    2329 device_compiler.h:188] Compiled cluster using XLA!  This line is logged at most once for the lifetime of the process.
-167/168 ━━━━━━━━━━━━━━━━━━━━ 0s 685ms/step - loss: 2.8113W0000 00:00:1713726191.427557    2333 assert_op.cc:38] Ignoring Assert operator assert_greater/Assert/AssertGuard/Assert
-W0000 00:00:1713726191.429182    2333 assert_op.cc:38] Ignoring Assert operator assert_greater_1/Assert/AssertGuard/Assert
-W0000 00:00:1713726191.430622    2333 assert_op.cc:38] Ignoring Assert operator assert_near/Assert/AssertGuard/Assert
+I0000 00:00:1713726076.329853 2329 device_compiler.h:188] Compiled cluster using XLA! This line is logged at most once for the lifetime of the process.
+167/168 ━━━━━━━━━━━━━━━━━━━━ 0s 685ms/step - loss: 2.8113W0000 00:00:1713726191.427557 2333 assert_op.cc:38] Ignoring Assert operator assert_greater/Assert/AssertGuard/Assert
+W0000 00:00:1713726191.429182 2333 assert_op.cc:38] Ignoring Assert operator assert_greater_1/Assert/AssertGuard/Assert
+W0000 00:00:1713726191.430622 2333 assert_op.cc:38] Ignoring Assert operator assert_near/Assert/AssertGuard/Assert
 2024-04-21 19:03:13.488256: W external/local_xla/xla/service/hlo_rematerialization.cc:2941] Can't reduce memory use below 17.97GiB (19298282069 bytes) by rematerialization; only reduced to 19.75GiB (21203023676 bytes), down from 19.87GiB (21340423652 bytes) originally
 168/168 ━━━━━━━━━━━━━━━━━━━━ 0s 709ms/step - loss: 2.8097
 Epoch 1: Saving model.
@@ -1286,92 +1387,74 @@ Epoch 1: Loss improved from None to 0.0, saving model.
 Model parameters after the 1st epoch:
 Model: "deep_handwriting_synthesis_model"
 ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┓
-┃ Layer (type)                         ┃ Output Shape                ┃         Param # ┃
+┃ Layer (type) ┃ Output Shape ┃ Param # ┃
 ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━┩
-│ lstm_peephole_cell                   │ ?                           │         764,400 │
-│ (LSTMPeepholeCell)                   │                             │                 │
+│ lstm_peephole_cell │ ? │ 764,400 │
+│ (LSTMPeepholeCell) │ │ │
 ├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
-│ lstm_peephole_cell_1                 │ ?                           │       1,404,400 │
-│ (LSTMPeepholeCell)                   │                             │                 │
+│ lstm_peephole_cell_1 │ ? │ 1,404,400 │
+│ (LSTMPeepholeCell) │ │ │
 ├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
-│ lstm_peephole_cell_2                 │ ?                           │       1,404,400 │
-│ (LSTMPeepholeCell)                   │                             │                 │
+│ lstm_peephole_cell_2 │ ? │ 1,404,400 │
+│ (LSTMPeepholeCell) │ │ │
 ├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
-│ attention (AttentionMechanism)       │ ?                           │          14,310 │
+│ attention (AttentionMechanism) │ ? │ 14,310 │
 ├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
-│ attention_rnn_cell                   │ ?                           │       3,587,510 │
-│ (AttentionRNNCell)                   │                             │                 │
+│ attention_rnn_cell │ ? │ 3,587,510 │
+│ (AttentionRNNCell) │ │ │
 ├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
-│ rnn (RNN)                            │ ?                           │       3,587,510 │
+│ rnn (RNN) │ ? │ 3,587,510 │
 ├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
-│ mdn (MixtureDensityLayer)            │ ?                           │          48,521 │
+│ mdn (MixtureDensityLayer) │ ? │ 48,521 │
 └──────────────────────────────────────┴─────────────────────────────┴─────────────────┘
- Total params: 7,272,064 (27.74 MB)
- Trainable params: 3,636,031 (13.87 MB)
- Non-trainable params: 0 (0.00 B)
- Optimizer params: 3,636,033 (13.87 MB)
+Total params: 7,272,064 (27.74 MB)
+Trainable params: 3,636,031 (13.87 MB)
+Non-trainable params: 0 (0.00 B)
+Optimizer params: 3,636,033 (13.87 MB)
 
 All parameters:
-===============
-[[ lstm_peephole_kernel1 ]] shape: (76, 1600)
-[[ lstm_peephole_recurrent_kernel1 ]] shape: (400, 1600)
-[[ lstm_peephole_weights1 ]] shape: (400, 3)
-[[ lstm_peephole_bias1 ]] shape: (1600,)
-[[ lstm_peephole_kernel2 ]] shape: (476, 1600)
-[[ lstm_peephole_recurrent_kernel2 ]] shape: (400, 1600)
-[[ lstm_peephole_weights2 ]] shape: (400, 3)
-[[ lstm_peephole_bias2 ]] shape: (1600,)
-[[ lstm_peephole_kernel3 ]] shape: (476, 1600)
-[[ lstm_peephole_recurrent_kernel3 ]] shape: (400, 1600)
-[[ lstm_peephole_weights3 ]] shape: (400, 3)
-[[ lstm_peephole_bias3 ]] shape: (1600,)
-[[ kernel ]] shape: (476, 30)
-[[ bias ]] shape: (30,)
-[[ mdn_W_pi ]] shape: (400, 20)
-[[ mdn_W_mu ]] shape: (400, 40)
-[[ mdn_W_sigma ]] shape: (400, 40)
-[[ mdn_W_rho ]] shape: (400, 20)
-[[ mdn_W_eos ]] shape: (400, 1)
-[[ mdn_b_pi ]] shape: (20,)
-[[ mdn_b_mu ]] shape: (40,)
-[[ mdn_b_sigma ]] shape: (40,)
-[[ mdn_b_rho ]] shape: (20,)
-[[ mdn_b_eos ]] shape: (1,)
+
+[[lstm_peephole_kernel1]] shape: (76, 1600)
+[[lstm_peephole_recurrent_kernel1]] shape: (400, 1600)
+[[lstm_peephole_weights1]] shape: (400, 3)
+[[lstm_peephole_bias1]] shape: (1600,)
+[[lstm_peephole_kernel2]] shape: (476, 1600)
+[[lstm_peephole_recurrent_kernel2]] shape: (400, 1600)
+[[lstm_peephole_weights2]] shape: (400, 3)
+[[lstm_peephole_bias2]] shape: (1600,)
+[[lstm_peephole_kernel3]] shape: (476, 1600)
+[[lstm_peephole_recurrent_kernel3]] shape: (400, 1600)
+[[lstm_peephole_weights3]] shape: (400, 3)
+[[lstm_peephole_bias3]] shape: (1600,)
+[[kernel]] shape: (476, 30)
+[[bias]] shape: (30,)
+[[mdn_W_pi]] shape: (400, 20)
+[[mdn_W_mu]] shape: (400, 40)
+[[mdn_W_sigma]] shape: (400, 40)
+[[mdn_W_rho]] shape: (400, 20)
+[[mdn_W_eos]] shape: (400, 1)
+[[mdn_b_pi]] shape: (20,)
+[[mdn_b_mu]] shape: (40,)
+[[mdn_b_sigma]] shape: (40,)
+[[mdn_b_rho]] shape: (20,)
+[[mdn_b_eos]] shape: (1,)
 
 Trainable parameters:
-=====================
-[[ lstm_peephole_kernel1 ]] shape: (76, 1600)
-[[ lstm_peephole_recurrent_kernel1 ]] shape: (400, 1600)
-[[ lstm_peephole_weights1 ]] shape: (400, 3)
-[[ lstm_peephole_bias1 ]] shape: (1600,)
-[[ lstm_peephole_kernel2 ]] shape: (476, 1600)
-[[ lstm_peephole_recurrent_kernel2 ]] shape: (400, 1600)
-[[ lstm_peephole_weights2 ]] shape: (400, 3)
-[[ lstm_peephole_bias2 ]] shape: (1600,)
-[[ lstm_peephole_kernel3 ]] shape: (476, 1600)
-[[ lstm_peephole_recurrent_kernel3 ]] shape: (400, 1600)
-[[ lstm_peephole_weights3 ]] shape: (400, 3)
-[[ lstm_peephole_bias3 ]] shape: (1600,)
-[[ kernel ]] shape: (476, 30)
-[[ bias ]] shape: (30,)
-[[ mdn_W_pi ]] shape: (400, 20)
-[[ mdn_W_mu ]] shape: (400, 40)
-[[ mdn_W_sigma ]] shape: (400, 40)
-[[ mdn_W_rho ]] shape: (400, 20)
-[[ mdn_W_eos ]] shape: (400, 1)
-[[ mdn_b_pi ]] shape: (20,)
-[[ mdn_b_mu ]] shape: (40,)
-[[ mdn_b_sigma ]] shape: (40,)
-[[ mdn_b_rho ]] shape: (20,)
-[[ mdn_b_eos ]] shape: (1,)
+
+(same here)
 
 Trainable parameter count:
-==========================
+
 3636031
 168/168 ━━━━━━━━━━━━━━━━━━━━ 133s 728ms/step - loss: 2.7931
 Epoch 2/10000
- 60/168 ━━━━━━━━━━━━━━━━━━━━ 1:14 686ms/step - loss: 2.4870
-```
+60/168 ━━━━━━━━━━━━━━━━━━━━ 1:14 686ms/step - loss: 2.4870
+
+</code></pre></div></div>
+
+</details>
+
+<br/>
 
 Ok so that's all well and good and some fun math and neural network construction, but the meat of this project is about what we're actually building with this theory. So let's lay out our to-do list.
 
@@ -1383,7 +1466,7 @@ As a result, I chose the laborious and time consuming process to run the trainin
 
 Here's an example of what that looked like:
 
-![tensorboard](/images/generative-handwriting/tensorboard-debugging.png){: .center-image}
+![tensorboard](/images/generative-handwriting/tensorboard-debugging.png){: .center-shrink .lightbox-image}
 
 Which was even more annoying because of this: <https://github.com/tensorflow/tensorflow/issues/59215> issue.
 
@@ -1532,25 +1615,13 @@ So where does AI using AI come in? I wanted to validate that the shapes of my tr
 
 <br/>
 
-## Drawing Code
+# ✍️ Visualizations
 
-This was largely autoregressively sampling from the model given various text input (at least for the synthesis model). I honestly just had Claude Code do most of the heavy lifty explaining the project and what I wanted to see `phi`s, kappa progression, mixture density gaussians lighting up, etc.
-
-## Visualizations
-
-### Learning with Dummy Data
+## Learning with Dummy Data
 
 Again, we used dummy data to start with to ensure our various components were learning and converging correctly.
 
-Here is the dummy data:
-
-![dummy_data](/images/generative-handwriting/viz/dummy_data.png){: .center-shrink}
-
-Here is just our cascade of LSTMs learning on the loop-da-loop data and predicting on a single sequence. This is not optimized or utilizing the mixture density network.
-
-![handwriting_loop_lstm_simple](/images/generative-handwriting/viz/handwriting_loop_simplified.gif){: .center-shrink }
-
-![handwriting_zig_lstm_simple](/images/generative-handwriting/viz/handwriting_zigzag_simplified.gif){: .center-shrink }
+I'm not going to burn too many pixels with these visualizations given I think they're less interesting.
 
 Here is our entire network and just sampling from the means (not showing the mixture densities) across the entire example datasets. One thing to note here if you can see how the LSTMs can still handle this type of larger contexts. Again, it pales in comparison to modern day transformer context, but still impressive.
 
@@ -1558,11 +1629,140 @@ Here is our entire network and just sampling from the means (not showing the mix
 
 ![handwriting_zig_lstm_simple](/images/generative-handwriting/viz/zigzag_epoch200_mixtures5.gif){: .center-shrink }
 
+## Synthesis Model Sampling
+
+So again, given the above information, $\phi(t, u)$ represents the networks belief that it's writing character $c_u$ at time $t$. It's monotonically increasing (which makes sense and is enforced mathematically) and we can see its pretty stepwise increasing.
+
+One of my favorite portions of these visualizations is the **mixture components weights**. You can see the various Gaussians activating for different parts of the synthesis network. For example, for end of stroke signals, we have separate Gaussians owning that portion of the model.
+
+Most of these were generated like so:
+
+```python
+╭─johnlarkin@Mac ~/Documents/coding/generative-handwriting-jax ‹main*›
+╰─➤  uv run python generative_handwriting/generate/generate_handwriting_cpu.py \
+    --checkpoint "checkpoints_saved/synthesis/loss_-2.59/checkpoint_216_cpu.pkl" \
+    --text "It has to be symphonic" \
+    --bias "0.75" \
+    --temperature "0.75" \
+    --fps "60" \
+    --formats "all" \
+    --seed "42"
+```
+
+Another note is... my termination condition logic probably could be improved. Remember, we're doing one-hot encoding which includes the null terminator. So the null term should be at len(line_text). Attention spans the full sequence. Specifically, $\phi$ has shape `[batch, char_seq_length]` so we can get our single sample (i.e. batch of 0), and then look at the char sequence length to basically see where our attention is at. In code speak, here's what I'm doing:
+
+```
+        # char_seq includes null terminator at index len(line_text)
+        if phi is not None and t >= len(line_text) * 2:
+            char_idx = int(jnp.argmax(phi[0]))
+            sampled_eos = stroke[2] > 0.5
+
+            # we can stop when:
+            # 1. attention has reached the null terminator (char_idx == len(line_text)) AND we sampled EOS
+            # 2. attention weight on null terminator is dominant (> 0.5)
+            # 3. we're well past the text and sampled EOS multiple times
+            null_attention = float(phi[0][len(line_text)]) if len(phi[0]) > len(line_text) else 0.0
+
+            if char_idx == len(line_text) and sampled_eos:
+                # this hits most
+                break
+            elif null_attention > 0.5:
+                # attention strongly focused on null terminator
+                break
+            elif char_idx >= len(line_text) and t > len(line_text) * 10:
+                # failsafe: past text and generated way too much
+                break
+```
+
+Finally, on the visualization front, I'm generating everything with bias 0.75 and temperature 0.75. I'm not going to discuss those, but the original paper goes into more detail.
+
+---
+
+### Heart has its reasons
+
+{% include quote.html
+    text="The heart has its reasons which reason knows nothing of"
+    author="Blaise Pascal"
+    source="Pensées"
+%}
+
+One thing to note is that we are still constrained by line length. For example, if we try to specify this as a single line, we start to lose our attention and the context starts to fail. Part of this is that if we exceed the line length that we trained on (in terms of stroke sequences or input text length), then we start to flail.
+
+So note the discrepancy between these two when we introduce a line break:
+
+![heart-mdn-aggregate](/images/generative-handwriting/synth_outputs/heart_has_its_reason/mdn_aggregate.png){: .center-small .lightbox-image}
+
+vs
+
+![heart-oneliner-mdn-aggregate](/images/generative-handwriting/synth_outputs/heart_has_its_reason_single/mdn_aggregate.png){: .center-small .lightbox-image}
+
+You can see how the model is less trained given the higher deviations towards the end of the line. Note, these MDN heatmap graphs on the bottom are created by showing the three highest weighted $\pi$ components per timestamp and then aggregating them across all timestamps.
+
+Furthermore, the `eos` signals generally have the highest uncertainty and most spread out sigmas which makes sense given it's the highest variable point.
+
+---
+
+### Loved and lost
+
+{% include quote.html
+    text="Better to have loved and lost than never to have loved at all"
+    author="Lord Alfred Tennyson"
+    source="In Memoriam A. H. H."
+%}
+
+![better-to-have-loved-writing](/images/generative-handwriting/synth_outputs/loved_and_lost/writing_colored.gif){: .center-small .lightbox-image}
+
+![better-to-have-loved-mdn](/images/generative-handwriting/synth_outputs/loved_and_lost/writing_cleansed.png){: .basic-center .lightbox-image}
+
+---
+
+### It has to be symphonic
+
+{% include quote.html
+      text="It has to be symphonic"
+      author="Andrew Zimmern"
+      source="Takeaway (The Potash Twins ft. Andrew Zimmern)"
+  %}
+
+![symphonic-writing](/images/generative-handwriting/synth_outputs/symphonic/writing_colored.gif){: .basic-center .lightbox-image}
+
+![symphonic-sampling](/images/generative-handwriting/synth_outputs/symphonic/sampling.gif){: .center-small .lightbox-image}
+
+---
+
+### Is a model a lie?
+
+{% include quote.html
+      text="A model is a lie that helps you see the truth"
+      author="Howard Skipper"
+      source="requoted by Siddhartha Mukherjee in \"The Emperor of All Maladies\""
+  %}
+
+![model-lie-writing](/images/generative-handwriting/synth_outputs/model_lie/writing_cleansed.png){: .basic-center .lightbox-image}
+
+![model-lie-writing-colored](/images/generative-handwriting/synth_outputs/model_lie/writing_colored.gif){: .center-small .lightbox-image}
+
+![model-lie-mdn](/images/generative-handwriting/synth_outputs/model_lie/mdn_aggregate.png){: .center-small .lightbox-image}
+
+---
+
+### Fish folly
+
+{% include quote.html
+      text="Folly to love a fish. Or anyone who might leave us. But oh, what a gift."
+      author="Ann V. Klotz"
+      source="I Think on Thee, Dear Friend"
+  %}
+
+![fish-folly-attention](/images/generative-handwriting/synth_outputs/fish_folly/writing_cleansed.png){: .basic-center .lightbox-image}
+
+![fish-folly-attention](/images/generative-handwriting/synth_outputs/fish_folly/attention.png){: .center-small .lightbox-image}
+
 # Conclusion
 
-This - again - was an absolute bear of a project and took considerable effort and engineering.
+This - again - was a bit of a bear of a project. It was maybe not my best use of time, but it was a labor of love.
 
-I don't think I'll embark on a project of this nature in awhile, unless I can feel some more tangible external benefits of doing something like this. But enjoy! And feel free to pull the code and dive in yourself.
+I don't think I'll embark on a project of this nature in awhile (sadly). However, I hoped the reader has enjoyed. And feel free to pull the code and dive in yourself.
 
 When re-reading my old draft blog post, I liked the way I ended things. So here it is:
 

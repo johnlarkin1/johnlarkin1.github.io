@@ -1,0 +1,44 @@
+// Featured Quote Component
+// For prominent, centered quotes with attribution
+// Usage: {% include quote.html text="..." author="..." source="..." %}
+
+.featured-quote {
+  margin: 3rem 0;
+  padding: 2.5rem 1.5rem;
+  text-align: center;
+
+  &__text {
+    font-size: 1.5rem;
+    font-style: italic;
+    font-family: Georgia, 'Times New Roman', serif;
+    line-height: 1.6;
+    color: $dark-text;
+    margin: 0 0 1.5rem 0;
+
+    @media (max-width: 768px) {
+      font-size: 1.25rem;
+    }
+  }
+
+  &__attribution {
+    font-size: 0.95rem;
+    font-style: normal;
+    font-family: $font-stack;
+    color: rgba($dark-text, 0.8);
+    text-align: right;
+    margin: 0;
+
+    @media (max-width: 768px) {
+      font-size: 0.9rem;
+    }
+  }
+
+  &__author {
+    font-weight: 600;
+  }
+
+  &__source {
+    font-style: italic;
+    opacity: 0.9;
+  }
+}
