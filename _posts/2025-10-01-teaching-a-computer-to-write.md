@@ -1,13 +1,13 @@
 ---
 title: "Teaching a Computer How to Write"
 layout: post
-featured-video: tennis-scorigami
-featured-poster: tennis-scorigami
+featured-video: generative-handwriting
+featured-poster: generative-handwriting
 featured-gif: generative-handwriting
 mathjax: true
 pinned: true
 categories: [⭐️ Favorites, Algorithms, Dev, A.I., M.L.]
-summary: TODO
+summary: Exploring JAX, LSTMs, MDNs, and other TLAs.
 ---
 
 <div class="markdown-alert markdown-alert-disclaimer">
