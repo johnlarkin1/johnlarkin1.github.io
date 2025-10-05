@@ -4,12 +4,14 @@
 
 html {
   box-sizing: border-box;
+  overflow-x: hidden;
 }
 
 body {
   -webkit-overflow-scrolling: touch;
   background-color: $dark-bg;
   color: $dark-text;
+  overflow-x: hidden;
 }
 
 *,
@@ -461,4 +463,32 @@ ink:hover {
   background-color: #f4f4f4;
   padding: 10px;
   border-radius: 5px;
+}
+
+/**************************************/
+/******* MathJax Mobile Fix ***********/
+/**************************************/
+
+// Make all MathJax containers scrollable when content overflows
+mjx-container {
+  overflow-x: auto;
+  overflow-y: hidden;
+  max-width: 100%;
+
+  // Scrollbar styling
+  &::-webkit-scrollbar {
+    height: 6px;
+    background-color: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.3);
+    border-radius: 3px;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    &::-webkit-scrollbar-thumb {
+      background-color: rgba(255, 255, 255, 0.4);
+    }
+  }
 }
