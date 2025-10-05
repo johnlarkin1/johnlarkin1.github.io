@@ -68,12 +68,17 @@ Today, we're going to learn how to teach a computer to write. I don't mean gener
   - [Mixture Density Networks](#mixture-density-networks)
     - [Theory](#theory-2)
     - [Code](#code-2)
-  - [Attention Mechanism](#attention-mechanism)
+  - [Mixture Density Loss](#mixture-density-loss)
     - [Theory](#theory-3)
     - [Code](#code-3)
-  - [Stacked LSTM](#stacked-lstm)
+  - [Attention Mechanism](#attention-mechanism)
     - [Theory](#theory-4)
     - [Code](#code-4)
+  - [Stacked LSTM](#stacked-lstm)
+    - [Theory](#theory-5)
+    - [Code](#code-5)
+- [Tensorflow code here](#tensorflow-code-here)
+- [JAX code here](#jax-code-here)
   - [Final Result](#final-result)
 - [🏆 Results](#-results)
   - [Vast AI GPU Enabled Execution](#vast-ai-gpu-enabled-execution)
@@ -167,7 +172,9 @@ The new up and comer! I think it's largely a crowd favorite for it's speed. Docu
 
 <blockquote class="reddit-embed-bq" data-embed-theme="dark" data-embed-height="396"><a href="https://www.reddit.com/r/MachineLearning/comments/1b08qv6/comment/ks6u1e2/">Comment</a><br> by<a href="https://www.reddit.com/user/Few-Pomegranate4369/">u/Few-Pomegranate4369</a> from discussion<a href="https://www.reddit.com/r/MachineLearning/comments/1b08qv6/d_is_it_worth_switching_to_jax_from/"></a><br> in<a href="https://www.reddit.com/r/MachineLearning/">MachineLearning</a></blockquote><script async="" src="https://embed.reddit.com/widgets.js" charset="UTF-8"></script>
 
-Documentation is certainly worse and I hit numerous roadblocks where functions weren't actually pure and then the JIT compile portion basically failed on startup.
+<br>
+
+I hit numerous roadblocks where functions weren't actually pure and then the JIT compile portion basically failed on startup.
 
 ### Programming Paradigm
 
@@ -177,7 +184,7 @@ JAX and Pytorch are definitely the most like traditional Python imperative flow.
 
 We're using the [IAM Online Handwriting Database][iam-database]. Specifically, I'm looking at `data/lineStrokes-all.tar.gz`, which is XML data that looks like this:
 
-![data](/images/generative-handwriting/example_data.png){: .center-super-shrink }
+![data](/images/generative-handwriting/example_data.png){: .center-super-shrink .lightbox-image}
 
 There's also this note:
 
@@ -193,7 +200,7 @@ I am not going to dive into details as much as we did for our senior E90 thesis,
 
 I would highly encourage you to check out this website: <https://www.asimovinstitute.org/neural-network-zoo/>. I remember seeing it in college when working on this thesis and was stunned. If you're too lazy to click, check out the fun picture:
 
-![neural-network-zoo](/images/generative-handwriting/neural_network_zoo.png){: .center-shrink }
+![neural-network-zoo](/images/generative-handwriting/neural_network_zoo.png){: .center-shrink .lightbox-image}
 _Reference for the image.[^1]_{: .basic-center}
 
 We're going to explore some of the zoo in a bit more detail, specifically, focusing on [LSTMs][lstm].
@@ -318,7 +325,7 @@ _Reference for the image.[^3]_{: .basic-center}
 
 So let's better understand the structure above. There's a way more comprehensive walkthrough [here][colah]. I'd encourage you to check out that walkthrough.
 
-![lstm-viz](/images/generative-handwriting/single_lstm_module.png){: .center-shrink }
+![lstm-viz](/images/generative-handwriting/single_lstm_module.png){: .center-super-shrink }
 _Reference for the image.[^3]_{: .basic-center}
 
 The top line is key to the LSTM's ability to remember. It is called the cell state. We'll reference it as $C_t$.
@@ -344,7 +351,9 @@ _Reference for the image.[^3]_{: .basic-center}
 
 When very first starting this project, I kind of figured that I would be able to use some of my college code, but looking back. It's quite a mess and I don't think that's the way to go about it.
 
-I thought for awhile about how to structure this part. I, at first, was going to cover theory and code, but hopefully I've built the code out in a way that's easy to read (largely thanks to Tensorflow). So I'm going to walk through a couple of building blocks, and split each section into theory and code.
+I thought for awhile about how best to structure this part. Meaning the code, but also how to show this in my blog post. With all the buzz about JAX, I wanted to try that too, so I thought it'd be helpful to show a side be side translation of the tensorflow vs jax code. My hope is that we'll walk through the concepts and have a good understanding of the theory, and then the code will make a bit more sense. One note, is that I was a bit burnt of this project by the end so the JAX code I was trying to use [`optax` (link)][optax] and [`flax` (link)][flax] as much as possible to cut down on bulkiness of code.
+
+So we'll walk through the building blocks (in terms of code) and then show the code translations.
 
 ## LSTM Cell with Peephole Connections
 
@@ -354,72 +363,150 @@ The basic LSTM cell (`tf.keras.layers.LSTMCell`) does not actually have the noti
 
 According to the very functional code that [sjvasquez] wrote, I don't think we actually need it, but I figured it would be fun to implement regardless. Back in the old days, when Tensorflow would support add-ons, there was some work around this [here][lstm-peep], but that project was deprecated.
 
+That being said.... the JAX / Flax code also doesn't have LSTMs out of the gate with peepholes and so.... I just used the normal ones. The JAX model actually trained a bit better, but I think part of that was also just patience.
+
 ### Code
 
-The adjustment in code to the basic LSTM cell is pretty light, the code comments should be pretty descriptive.
+<!-- prettier-ignore-start -->
 
-```python
-    def call(self, inputs: tf.Tensor, state: Tuple[tf.Tensor, tf.Tensor]):
-        """
-        This is basically implementing Graves's equations on page 5
-        https://www.cs.toronto.edu/~graves/preprint.pdf
-        equations 5-11.
+<div class="code-toggle">
+  <div class="code-toggle__tabs">
+    <button class="code-toggle__tab code-toggle__tab--active" data-tab="tensorflow">TensorFlow</button>
+    <button class="code-toggle__tab" data-tab="jax">JAX</button>
+  </div>
+  <div class="code-toggle__content">
+    <div class="code-toggle__pane code-toggle__pane--active" data-pane="tensorflow">
+{% highlight python %}
 
-        From the paper,
-        * sigma is the logistic sigmoid function
-        * i -> input gate
-        * f -> forget gate
-        * o -> output gate
-        * c -> cell state
-        * W_{hi} - hidden-input gate matrix
-        * W_{xo} - input-output gate matrix
-        * W_{ci} - are diagonal
-          + so element m in each gate vector only receives input from
-          + element m of the cell vector
-        """
-        # Both of these are going to be shape (?, num_lstm_units)
-        h_tm1, c_tm1 = state
-        # Compute linear combinations for input, forget, and output gates, and cell candidate
-        # Basically the meat of eq, 7, 8, 9, 10
-        z = (
-            tf.matmul(inputs, self.kernel)
-            + tf.matmul(h_tm1, self.recurrent_kernel)
-            + self.bias
-        )
-        # Split the transformations into input, forget, cell, and output components
-        i, f, c_candidate, o = tf.split(z, num_or_size_splits=4, axis=1)
+def call(self, inputs: tf.Tensor, state: Tuple[tf.Tensor, tf.Tensor]):
+    """
+    This is basically implementing Graves's equations on page 5
+    https://www.cs.toronto.edu/~graves/preprint.pdf
+    equations 5-11.
 
-        if self.should_apply_peephole:
-            # Peephole connections before the activation functions
-            i += c_tm1 * self.peephole_weights[:, 0]
-            f += c_tm1 * self.peephole_weights[:, 1]
+    From the paper,
+    * sigma is the logistic sigmoid function
+    * i -> input gate
+    * f -> forget gate
+    * o -> output gate
+    * c -> cell state
+    * W_{hi} - hidden-input gate matrix
+    * W_{xo} - input-output gate matrix
+    * W_{ci} - are diagonal
+        + so element m in each gate vector only receives input from
+        + element m of the cell vector
+    """
 
-        # apply the activations - first step for eq. 7, eq. 8. eq. 10
-        i = tf.sigmoid(i)
-        f = tf.sigmoid(f)
-        o = tf.sigmoid(o)
+    # going to be shape (?, num_lstm_units)
+    h_tm1, c_tm1 = state
 
-        if self.should_clip_gradients:
-            # Per Graves, we need to apply gradient clipping to still fight off
-            # the exploding derivative issue. It's a bit weird
-            # to do it here maybe so that's why this bool defaults to off.
-            i = tf.clip_by_value(i, -self.clip_value, self.clip_value)
-            f = tf.clip_by_value(f, -self.clip_value, self.clip_value)
-            o = tf.clip_by_value(o, -self.clip_value, self.clip_value)
-            c_candidate = tf.clip_by_value(
-                c_candidate, -self.clip_value, self.clip_value
+    # basically the meat of eq, 7, 8, 9, 10
+    z = tf.matmul(inputs, self.kernel) + tf.matmul(h_tm1, self.recurrent_kernel) + self.bias
+    i_lin, f_lin, g_lin, o_lin = tf.split(z, num_or_size_splits=4, axis=1)
+
+    if self.should_apply_peephole:
+        pw_i = tf.expand_dims(self.peephole_weights[:, 0], axis=0)
+        pw_f = tf.expand_dims(self.peephole_weights[:, 1], axis=0)
+        i_lin = i_lin + c_tm1 * pw_i
+        f_lin = f_lin + c_tm1 * pw_f
+
+    # apply activation functions! see Olah's blog
+    i = tf.sigmoid(i_lin)
+    f = tf.sigmoid(f_lin)
+    g = tf.tanh(g_lin)
+    c = f * c_tm1 + i * g
+
+    if self.should_apply_peephole:
+        pw_o = tf.expand_dims(self.peephole_weights[:, 2], axis=0)
+        o_lin = o_lin + c * pw_o
+
+    o = tf.sigmoid(o_lin)
+
+    # final hidden state -> eq. 11
+    h = o * tf.tanh(c)
+    return h, [h, c]
+
+{% endhighlight %}
+</div>
+<div class="code-toggle__pane" data-pane="jax">
+{% highlight python %}
+
+class HandwritingModel(nnx.Module):
+    def __init__(
+        self,
+        config: ModelConfig,
+        rngs: nnx.Rngs,
+        synthesis_mode: bool = False,
+    ) -> None:
+        self.config = config
+        self.synthesis_mode = synthesis_mode
+
+        # rngs is basically a set of random keys / number generators
+        self.lstm_cells = self._build_lstm_stack(rngs)
+        if synthesis_mode:
+            # i mean we really only care about synthesis mode, but in
+            # this case we can make it explicit that if we have it then we should add our
+            # attention layer
+            self.attention_layer = nnx.Linear(
+                config.hidden_size + config.alphabet_size + 3, 3 * config.num_attention_gaussians, rngs=rngs
             )
 
-        c_candidate = tf.tanh(c_candidate)
-        c = f * c_tm1 + i * c_candidate
-        if self.should_apply_peephole:
-            # Adjusting the output gate with peephole connection after computing new cell state
-            o += c * self.peephole_weights[:, 2]
+        # mdn portion
+        self.mdn_layer = self._build_mdn_head(rngs)
 
-        # Compute final hidden state -> Equation 11
-        h = o * tf.tanh(c)
-        return h, [h, c]
-```
+    def _build_lstm_stack(self, rngs: nnx.Rngs):
+        cells = []
+        for i in range(self.config.num_layers):
+            if i == 0:
+                if self.synthesis_mode:
+                    # so if we're in synthesis mode, then we need to add the alphabet size
+                    # and the 3 dimensions of the input stroke
+                    # that's because our alphabet size is the number of characters in our alphabet
+                    # and the 3 dimensions of the input stroke are the x, y, and eos values
+                    in_size = self.config.alphabet_size + 3
+                else:
+                    in_size = 3
+            else:
+                # similar in both (just in synthesis we only care if we need to expand by the alphabet size)
+                in_size = self.config.hidden_size + 3
+                if self.synthesis_mode:
+                    in_size += self.config.alphabet_size
+
+            # ok... being lazy but this is just standard LSTM
+            cells.append(
+                {"linear": nnx.Linear(in_size + self.config.hidden_size, 4 * self.config.hidden_size, rngs=rngs)}
+            )
+        return cells
+
+    def lstm_cell(
+        self, x: jnp.ndarray, h: jnp.ndarray, c: jnp.ndarray, layer_idx: int
+    ) -> Tuple[jnp.ndarray, jnp.ndarray]:
+        # just think about this as grabbing the W and b for our matrix mults
+        linear = self.lstm_cells[layer_idx]["linear"]
+
+        combined = jnp.concatenate([x, h], axis=-1)
+        gates = linear(combined)
+
+        i, f, g, o = jnp.split(gates, 4, axis=-1)
+
+        # activations
+        i = nnx.sigmoid(i)
+        f = nnx.sigmoid(f)
+        g = nnx.tanh(g)
+        o = nnx.sigmoid(o)
+
+        # get new LSTM cell state
+        c_new = f * c + i * g
+        h_new = o * nnx.tanh(c_new)
+        return h_new, c_new
+
+{% endhighlight %}
+</div>
+
+  </div>
+</div>
+
+<!-- prettier-ignore-end -->
 
 ## Gaussian Mixture Models
 
@@ -513,316 +600,315 @@ $$
 
 Here's the corresponding code section for my mixture density network.
 
-<details>
-  <summary><b>FULL CODE HERE</b></summary>
-
 <!-- prettier-ignore-start -->
+
+<div class="code-toggle">
+  <div class="code-toggle__tabs">
+    <button class="code-toggle__tab code-toggle__tab--active" data-tab="tensorflow">TensorFlow</button>
+    <button class="code-toggle__tab" data-tab="jax">JAX</button>
+  </div>
+  <div class="code-toggle__content">
+    <div class="code-toggle__pane code-toggle__pane--active" data-pane="tensorflow">
 {% highlight python %}
-import tensorflow as tf
-import numpy as np
-
-from constants import NUM_MIXTURE_COMPONENTS_PER_COMPONENT
-
 
 class MixtureDensityLayer(tf.keras.layers.Layer):
-    def __init__(self, num_components, name="mdn", **kwargs):
+    def __init__(
+        self,
+        num_components,
+        name="mdn",
+        temperature=1.0,
+        enable_regularization=False,
+        sigma_reg_weight=0.01,
+        rho_reg_weight=0.01,
+        entropy_reg_weight=0.1,
+        **kwargs,
+    ):
         super(MixtureDensityLayer, self).__init__(name=name, **kwargs)
         self.num_components = num_components
-        # The number of parameters per mixture component: 2 means, 2 standard deviations, 1 correlation
-        # Plus 1 for the mixture weights and 1 for the end-of-stroke probability
+        # The number of parameters per mixture component: 2 means, 2 standard deviations, 1 correlation, 1 weight , 1 for eos
+        # so that's our constant num_mixture_components_per_component
         self.output_dim = num_components * NUM_MIXTURE_COMPONENTS_PER_COMPONENT + 1
-        self.name = name
+        self.mod_name = name
+        self.temperature = temperature
+        self.enable_regularization = enable_regularization
+        self.sigma_reg_weight = sigma_reg_weight
+        self.rho_reg_weight = rho_reg_weight
+        self.entropy_reg_weight = entropy_reg_weight
 
     def build(self, input_shape):
-        # Weights for mixture weights
-        self.batch_size = input_shape[0]
-        self.sequence_length = input_shape[1]
-        self.W_pi = self.add_weight(
-            name=f"{self.name}_W_pi",
-            shape=(input_shape[-1], self.num_components),
-            initializer="uniform",
-            trainable=True,
-        )
-        # Weights for means
-        self.W_mu = self.add_weight(
-            name=f"{self.name}_W_mu",
-            shape=(input_shape[-1], self.num_components * 2),
-            initializer="uniform",
-            trainable=True,
-        )
-        # Weights for standard deviations
-        self.W_sigma = self.add_weight(
-            name=f"{self.name}_W_sigma",
-            shape=(input_shape[-1], self.num_components * 2),
-            initializer=tf.keras.initializers.TruncatedNormal(mean=0.0, stddev=0.1),
-            trainable=True,
-        )
-        # Weights for correlation coefficients
-        self.W_rho = self.add_weight(
-            name=f"{self.name}_W_rho",
-            shape=(input_shape[-1], self.num_components),
-            initializer="uniform",
-            trainable=True,
-        )
-        # Weights for end-of-stroke probability
-        self.W_eos = self.add_weight(
-            name=f"{self.name}_W_eos",
-            shape=(input_shape[-1], 1),
-            initializer="uniform",
-            trainable=True,
-        )
-        # Bias for mixture weights
-        self.b_pi = self.add_weight(
-            name=f"{self.name}_b_pi",
-            shape=(self.num_components,),
-            initializer="zeros",
-            trainable=True,
-        )
-        # Bias for means
-        self.b_mu = self.add_weight(
-            name=f"{self.name}_b_mu",
-            shape=(self.num_components * 2,),
-            initializer="zeros",
-            trainable=True,
-        )
-        # Bias for standard deviations
-        self.b_sigma = self.add_weight(
-            name=f"{self.name}_b_sigma",
-            shape=(self.num_components * 2,),
-            initializer="zeros",
-            trainable=True,
-        )
-        # Bias for correlation coefficients
-        self.b_rho = self.add_weight(
-            name=f"{self.name}_b_rho",
-            shape=(self.num_components,),
-            initializer="zeros",
-            trainable=True,
-        )
-        # Bias for end-of-stroke probability
-        self.b_eos = self.add_weight(
-            name=f"{self.name}_b_eos", shape=(1,), initializer="zeros", trainable=True
-        )
+        graves_initializer = tf.keras.initializers.TruncatedNormal(mean=0.0, stddev=0.075)
 
-    def call(self, inputs):
-        eps = 1e-8
-        sigma_eps = 1e-4
+        self.input_units = input_shape[-1]
+        # weights
+        # lots of weight initialization here... could simplify here too
 
-        pi = tf.nn.softmax(tf.matmul(inputs, self.W_pi) + self.b_pi)
+        # biases
+        # lots of bias initialization here... could simplify this part by just doing a massive 
+        # and splitting... see the code if you're curious
+        super().build(input_shape)
 
-        mu = tf.matmul(inputs, self.W_mu) + self.b_mu
-        mu1, mu2 = tf.split(mu, num_or_size_splits=2, axis=2)
+    def call(self, inputs, training=None):
+        temperature = 1.0 if not training else self.temperature
 
-        sigma = tf.exp(tf.matmul(inputs, self.W_sigma) + self.b_sigma)
-        sigmas = tf.clip_by_value(sigma, sigma_eps, np.inf)
-        sigma1, sigma2 = tf.split(sigmas, num_or_size_splits=2, axis=2)
+        pi_logits = tf.matmul(inputs, self.W_pi) + self.b_pi
+        pi = tf.nn.softmax(pi_logits / temperature, axis=-1)  # [B, T, K]
+        # clipping here... I was getting cooked by NaN creep
+        pi = tf.clip_by_value(pi, 1e-6, 1.0)
 
-        rho = tf.tanh(tf.matmul(inputs, self.W_rho) + self.b_rho)
-        rho = tf.clip_by_value(rho, eps - 1.0, 1.0 - eps)
+        mu = tf.matmul(inputs, self.W_mu) + self.b_mu  # [B, T, 2K]
+        mu1, mu2 = tf.split(mu, 2, axis=2)
 
-        eos = tf.sigmoid(tf.matmul(inputs, self.W_eos) + self.b_eos)
-        eos = tf.reshape(eos, [-1, inputs.shape[1], 1])
+        log_sigma = tf.matmul(inputs, self.W_sigma) + self.b_sigma  # [B, T, 2K]
+        # again, this might be overkill but seems realistic for clipping
+        log_sigma = tf.clip_by_value(log_sigma, -5.0, 2.0)
+        sigma = tf.exp(log_sigma)
+        sigma1, sigma2 = tf.split(sigma, 2, axis=2)
 
-        outputs = tf.concat([pi, mu1, mu2, sigma1, sigma2, rho, eos], axis=2)
+        rho_raw = tf.matmul(inputs, self.W_rho) + self.b_rho
+        rho = tf.tanh(rho_raw) * 0.9
 
-        tf.debugging.assert_shapes(
-            [
-                (pi, (self.batch_size, self.sequence_length, self.num_components)),
-                (mu1, (self.batch_size, self.sequence_length, self.num_components)),
-                (mu2, (self.batch_size, self.sequence_length, self.num_components)),
-                (sigma1, (self.batch_size, self.sequence_length, self.num_components)),
-                (sigma2, (self.batch_size, self.sequence_length, self.num_components)),
-                (rho, (self.batch_size, self.sequence_length, self.num_components)),
-                (eos, (self.batch_size, self.sequence_length, 1)),
-                (outputs, (self.batch_size, self.sequence_length, self.output_dim)),
-            ]
-        )
+        eos_logit = tf.matmul(inputs, self.W_eos) + self.b_eos
+
+        return tf.concat([pi, mu1, mu2, sigma1, sigma2, rho, eos_logit], axis=2)
+
+{% endhighlight %}
+</div>
+<div class="code-toggle__pane" data-pane="jax">
+{% highlight python %}
+
+class HandwritingModel(nnx.Module):
+    def __init__(
+        self,
+        config: ModelConfig,
+        rngs: nnx.Rngs,
+        synthesis_mode: bool = False,
+    ) -> None:
+        self.config = config
+        self.synthesis_mode = synthesis_mode
+
+        # rngs is basically a set of random keys / number generators
+        self.lstm_cells = self._build_lstm_stack(rngs)
+        if synthesis_mode:
+            # i mean we really only care about synthesis mode, but in
+            # this case we can make it explicit that if we have it then we should add our
+            # attention layer
+            self.attention_layer = nnx.Linear(
+                config.hidden_size + config.alphabet_size + 3, 3 * config.num_attention_gaussians, rngs=rngs
+            )
+
+        # mdn portion
+        self.mdn_layer = self._build_mdn_head(rngs)
+
+    #....
+    
+    def __call__(
+        self,
+        inputs: jnp.ndarray,
+        char_seq: Optional[jnp.ndarray] = None,
+        char_lens: Optional[jnp.ndarray] = None,
+        initial_state: Optional[RNNState] = None,
+        return_state: bool = False,
+    ) -> jnp.ndarray:
+        batch_size, seq_len, _ = inputs.shape
+
+        if initial_state is None:
+            h = jnp.zeros((self.config.num_layers, batch_size, self.config.hidden_size), inputs.dtype)
+            c = jnp.zeros_like(h)
+            kappa = jnp.zeros((batch_size, self.config.num_attention_gaussians), inputs.dtype)
+            window = jnp.zeros((batch_size, self.config.alphabet_size), inputs.dtype)
+        else:
+            h, c = initial_state.hidden, initial_state.cell
+            kappa, window = initial_state.kappa, initial_state.window
+
+        def step(carry, x_t):
+            h, c, kappa, window = carry
+            h_layers = []
+            c_layers = []
+
+            # layer1
+            if self.synthesis_mode:
+                layer1_input = jnp.concatenate([window, x_t], axis=-1)
+            else:
+                layer1_input = x_t
+
+            h1, c1 = self.lstm_cell(layer1_input, h[0], c[0], 0)
+            h_layers.append(h1)
+            c_layers.append(c1)
+
+            # layer1 -> attention
+            if self.synthesis_mode and char_seq is not None and char_lens is not None:
+                window, kappa = self.compute_attention(h1, kappa, window, x_t, char_seq, char_lens)
+
+            # attention -> layer2 and layer3
+            for layer_idx in range(1, self.config.num_layers):
+                if self.synthesis_mode:
+                    layer_input = jnp.concatenate([x_t, h_layers[-1], window], axis=-1)
+                else:
+                    layer_input = jnp.concatenate([x_t, h_layers[-1]], axis=-1)
+
+                h_new, c_new = self.lstm_cell(layer_input, h[layer_idx], c[layer_idx], layer_idx)
+                h_layers.append(h_new)
+                c_layers.append(c_new)
+
+            h_new = jnp.stack(h_layers)
+            c_new = jnp.stack(c_layers)
+
+            # mdn output from final hidden state
+            mdn_out = self.mdn_layer(h_layers[-1])  # [B, 6M+1]
+
+            return (h_new, c_new, kappa, window), mdn_out
+
+        # this was the major unlock for JAX performance
+        # it allows us to vectorize the computation over the time dimension
+        # transpose inputs from [B, T, 3] to [T, B, 3] for scan
+        inputs_transposed = inputs.swapaxes(0, 1)
+        (h, c, kappa, window), outputs = jax.lax.scan(step, (h, c, kappa, window), inputs_transposed)
+
+        # transpose back
+        outputs = outputs.swapaxes(0, 1)
+
+        if return_state:
+            final_state = RNNState(hidden=h, cell=c, kappa=kappa, window=window)
+            return outputs, final_state
+
         return outputs
 
+{% endhighlight %}
+</div>
 
-@tf.keras.utils.register_keras_serializable()
-def mdn_loss(y_true, y_pred, stroke_lengths, num_components, eps=1e-8):
-    """Calculate the mixture density loss with masking for valid sequence lengths.
-
-    Args:
-    - y_true: The true next points in the sequence, with shape [batch_size, seq_length, 3].
-    - y_pred: The concatenated MDN outputs, with shape [batch_size, seq_length, num_components * 6 + 1].
-    - stroke_lengths: The actual lengths of each sequence in the batch, with shape [batch_size].
-    - num_components: The number of mixture components.
-
-    Returns:
-    - The calculated loss.
-    """
-
-    out_pi, out_mu1, out_mu2, out_sigma1, out_sigma2, out_rho, out_eos = tf.split(
-        y_pred,
-        [num_components] * NUM_MIXTURE_COMPONENTS_PER_COMPONENT + [1],
-        axis=2,
-    )
-
-    tf.debugging.assert_shapes(
-        [
-            (out_pi, (None, None, num_components)),
-            (out_mu1, (None, None, num_components)),
-            (out_mu2, (None, None, num_components)),
-            (out_sigma1, (None, None, num_components)),
-            (out_sigma2, (None, None, num_components)),
-            (out_rho, (None, None, num_components)),
-            (out_eos, (None, None, 1)),
-        ]
-    )
-    tf.debugging.assert_greater(
-        out_sigma1, 0.0, message="out_sigma1 has non-positive values"
-    )
-    tf.debugging.assert_greater(
-        out_sigma2, 0.0, message="out_sigma2 has non-positive values"
-    )
-    tf.debugging.assert_near(
-        tf.reduce_sum(out_pi, axis=-1),
-        tf.ones_like(tf.reduce_sum(out_pi, axis=-1)),
-        atol=1e-5,
-        message="out_pi is not close to 1.0",
-    )
-    x_data, y_data, eos_data = tf.split(y_true, [1, 1, 1], axis=-1)
-    norm = 1.0 / (
-        2 * np.pi * out_sigma1 * out_sigma2 * tf.sqrt(1 - tf.square(out_rho) + eps)
-    )
-    Z = (
-        tf.square((x_data - out_mu1) / (out_sigma1))
-        + tf.square((y_data - out_mu2) / (out_sigma2))
-        - (
-            2
-            * out_rho
-            * (x_data - out_mu1)
-            * (y_data - out_mu2)
-            / (out_sigma1 * out_sigma2)
-        )
-    )
-
-    exp = -Z / (2 * (1 - tf.square(out_rho)))
-    gaussian_likelihoods = tf.exp(exp) * norm
-    gmm_likelihood = tf.reduce_sum(out_pi * gaussian_likelihoods, axis=2)
-    gmm_likelihood = tf.clip_by_value(gmm_likelihood, eps, np.inf)
-
-    bernoulli_likelihood = tf.squeeze(
-        tf.where(tf.equal(tf.ones_like(eos_data), eos_data), out_eos, 1 - out_eos)
-    )
-    bernoulli_likelihood = tf.clip_by_value(bernoulli_likelihood, eps, 1.0 - eps)
-
-    nll = -1 * (tf.math.log(gmm_likelihood) + tf.math.log(bernoulli_likelihood))
-
-    # Create a mask for valid sequence lengths
-    if stroke_lengths is not None:
-        max_len = tf.shape(y_true)[1]
-        mask = tf.sequence_mask(stroke_lengths, maxlen=max_len, dtype=tf.float32)
-
-        # Apply the mask to the negative log-likelihood
-        masked_nll = nll * mask
-        masked_nll = tf.where(
-            tf.not_equal(mask, 0), masked_nll, tf.zeros_like(masked_nll)
-        )
-
-        # Calculate the loss, considering only the valid parts of each sequence
-        loss = tf.reduce_sum(masked_nll) / tf.reduce_sum(mask)
-        return loss
-    else:
-        return tf.reduce_sum(nll)
+  </div>
+</div>
 
 <!-- prettier-ignore-end -->
 
-{% endhighlight %}
+## Mixture Density Loss
 
-</details>
-<br/>
+### Theory
 
-That being said, I just want to explicitly highlight a couple of portions. We build the various parameters that we train, but then here's where we're doing the math above:
+I already covered the theory above, so I won't go into that here, but just figured it was easier to split out the code between network and calculating our loss. Note, there's some pretty aggressive clipping going on just given I had some pretty high instability with JAX. I think partially because of the implementation and clipping but loss would just go to 0 rather than the program crashing. To be clear, loss going to zero was not desired.
 
-```python
-        pi = tf.nn.softmax(tf.matmul(inputs, self.W_pi) + self.b_pi)
+### Code
 
-        mu = tf.matmul(inputs, self.W_mu) + self.b_mu
-        mu1, mu2 = tf.split(mu, num_or_size_splits=2, axis=2)
+<!-- prettier-ignore-start -->
 
-        sigma = tf.exp(tf.matmul(inputs, self.W_sigma) + self.b_sigma)
-        sigmas = tf.clip_by_value(sigma, sigma_eps, np.inf)
-        sigma1, sigma2 = tf.split(sigmas, num_or_size_splits=2, axis=2)
+<div class="code-toggle">
+  <div class="code-toggle__tabs">
+    <button class="code-toggle__tab code-toggle__tab--active" data-tab="tensorflow">TensorFlow</button>
+    <button class="code-toggle__tab" data-tab="jax">JAX</button>
+  </div>
+  <div class="code-toggle__content">
+    <div class="code-toggle__pane code-toggle__pane--active" data-pane="tensorflow">
+{% highlight python %}
 
-        rho = tf.tanh(tf.matmul(inputs, self.W_rho) + self.b_rho)
-        rho = tf.clip_by_value(rho, eps - 1.0, 1.0 - eps)
-
-        eos = tf.sigmoid(tf.matmul(inputs, self.W_eos) + self.b_eos)
-        eos = tf.reshape(eos, [-1, inputs.shape[1], 1])
-
-        outputs = tf.concat([pi, mu1, mu2, sigma1, sigma2, rho, eos], axis=2)
-```
-
-And then here is where we're computing the loss (similar to above):
-
-```python
 @tf.keras.utils.register_keras_serializable()
 def mdn_loss(y_true, y_pred, stroke_lengths, num_components, eps=1e-8):
-    """Calculate the mixture density loss with masking for valid sequence lengths.
-
-    Args:
-    - y_true: The true next points in the sequence, with shape [batch_size, seq_length, 3].
-    - y_pred: The concatenated MDN outputs, with shape [batch_size, seq_length, num_components * 6 + 1].
-    - stroke_lengths: The actual lengths of each sequence in the batch, with shape [batch_size].
-    - num_components: The number of mixture components.
-
-    Returns:
-    - The calculated loss.
     """
+    Mixture density negative log-likelihood computed fully in log-space.
 
-    out_pi, out_mu1, out_mu2, out_sigma1, out_sigma2, out_rho, out_eos = tf.split(
+    y_true: [B, T, 3]  -> (x, y, eos ∈ {0,1})
+    y_pred: [B, T, 6*K + 1] -> (pi, mu1, mu2, sigma1, sigma2, rho, eos_logit)
+
+    The log space change was because I was getting absolutely torched by the
+    gradients when using the normal space.
+    """
+    out_pi, mu1, mu2, sigma1, sigma2, rho, eos_logits = tf.split(
         y_pred,
-        [num_components] * NUM_MIXTURE_COMPONENTS_PER_COMPONENT + [1],
+        [num_components] * 6 + [1],
         axis=2,
     )
-    x_data, y_data, eos_data = tf.split(y_true, [1, 1, 1], axis=-1)
-    norm = 1.0 / (
-        2 * np.pi * out_sigma1 * out_sigma2 * tf.sqrt(1 - tf.square(out_rho) + eps)
-    )
-    Z = (
-        tf.square((x_data - out_mu1) / (out_sigma1))
-        + tf.square((y_data - out_mu2) / (out_sigma2))
-        - (
-            2
-            * out_rho
-            * (x_data - out_mu1)
-            * (y_data - out_mu2)
-            / (out_sigma1 * out_sigma2)
-        )
-    )
 
-    exp = -Z / (2 * (1 - tf.square(out_rho)))
-    gaussian_likelihoods = tf.exp(exp) * norm
-    gmm_likelihood = tf.reduce_sum(out_pi * gaussian_likelihoods, axis=2)
-    gmm_likelihood = tf.clip_by_value(gmm_likelihood, eps, np.inf)
+    x, y, eos_targets = tf.split(y_true, [1, 1, 1], axis=-1)
 
-    bernoulli_likelihood = tf.squeeze(
-        tf.where(tf.equal(tf.ones_like(eos_data), eos_data), out_eos, 1 - out_eos)
-    )
-    bernoulli_likelihood = tf.clip_by_value(bernoulli_likelihood, eps, 1.0 - eps)
+    sigma1 = tf.clip_by_value(sigma1, 1e-2, 10.0)
+    sigma2 = tf.clip_by_value(sigma2, 1e-2, 10.0)
+    rho = tf.clip_by_value(rho, -0.9, 0.9)
+    out_pi = tf.clip_by_value(out_pi, eps, 1.0)
 
-    nll = -1 * (tf.math.log(gmm_likelihood) + tf.math.log(bernoulli_likelihood))
+    log_2pi = tf.constant(np.log(2.0 * np.pi), dtype=y_pred.dtype)
+    one_minus_rho2 = tf.clip_by_value(1.0 - tf.square(rho), eps, 2.0)
+    log_one_minus_rho2 = tf.math.log(one_minus_rho2)
+    z1 = (x - mu1) / sigma1
+    z2 = (y - mu2) / sigma2
 
+    quad = tf.square(z1) + tf.square(z2) - 2.0 * rho * z1 * z2
+    quad = tf.clip_by_value(quad, 0.0, 100.0)
+    log_norm = -(log_2pi + tf.math.log(sigma1) + tf.math.log(sigma2) + 0.5 * log_one_minus_rho2)
+    log_gauss = log_norm - 0.5 * quad / one_minus_rho2  # [B, T, K]
+
+    # log mixture via log-sum-exp
+    log_pi = tf.math.log(out_pi)  # [B, T, K]
+    log_gmm = tf.reduce_logsumexp(log_pi + log_gauss, axis=-1)  # [B, T]
+
+    # bce (bernoulli cross entropy) to help out with stability
+    eos_nll = tf.nn.sigmoid_cross_entropy_with_logits(labels=eos_targets, logits=eos_logits)  # [B, T, 1]
+    eos_nll = tf.squeeze(eos_nll, axis=-1)  # [B, T]
+
+    nll = -log_gmm + eos_nll  # [B, T]
     if stroke_lengths is not None:
-        max_len = tf.shape(y_true)[1]
-        mask = tf.sequence_mask(stroke_lengths, maxlen=max_len, dtype=tf.float32)
+        mask = tf.sequence_mask(stroke_lengths, maxlen=tf.shape(y_true)[1], dtype=nll.dtype)
+        nll = nll * mask
+        denom = tf.maximum(tf.reduce_sum(mask), 1.0)
+        return tf.reduce_sum(nll) / denom
 
-        # Apply the mask to the negative log-likelihood
-        masked_nll = nll * mask
-        masked_nll = tf.where(
-            tf.not_equal(mask, 0), masked_nll, tf.zeros_like(masked_nll)
-        )
+    return tf.reduce_mean(nll)
 
-        # Calculate the loss, considering only the valid parts of each sequence
-        loss = tf.reduce_sum(masked_nll) / tf.reduce_sum(mask)
-        return loss
-    else:
-        return tf.reduce_sum(nll)
 
-```
+{% endhighlight %}
+</div>
+<div class="code-toggle__pane" data-pane="jax">
+{% highlight python %}
+
+def compute_loss(
+    predictions: jnp.ndarray,
+    targets: jnp.ndarray,
+    lengths: Optional[jnp.ndarray] = None,
+    num_mixtures: int = NUM_BIVARIATE_GAUSSIAN_MIXTURE_COMPONENTS,
+) -> jnp.ndarray:
+    nc = num_mixtures
+    pi, mu1, mu2, s1, s2, rho, eos_pred = jnp.split(predictions, [nc, 2 * nc, 3 * nc, 4 * nc, 5 * nc, 6 * nc], axis=-1)
+
+    pi = nnx.softmax(pi, axis=-1)
+    s1 = jnp.exp(jnp.clip(s1, -10, 3))
+    s2 = jnp.exp(jnp.clip(s2, -10, 3))
+    rho = jnp.clip(nnx.tanh(rho) * 0.95, -0.95, 0.95)
+    eos_pred = jnp.clip(nnx.sigmoid(eos_pred), 1e-8, 1 - 1e-8)
+
+    x, y, eos = jnp.split(targets, [1, 2], axis=-1)
+
+    # major change is we compute log probabilities with better numerical stability
+    rho_sq = jnp.clip(rho**2, 0, 0.9025)
+    one_minus_rho_sq = jnp.maximum(1 - rho_sq, 1e-6)
+    norm = -jnp.log(2 * jnp.pi) - jnp.log(s1) - jnp.log(s2) - 0.5 * jnp.log(one_minus_rho_sq)
+
+    z1 = (x - mu1) / jnp.maximum(s1, 1e-6)
+    z2 = (y - mu2) / jnp.maximum(s2, 1e-6)
+
+    exp_term = -0.5 / one_minus_rho_sq * (z1**2 + z2**2 - 2 * rho * z1 * z2)
+    exp_term = jnp.clip(exp_term, -50, 0)
+    log_probs = norm + exp_term
+    log_pi = jnp.log(jnp.maximum(pi, 1e-8))
+    log_mixture = jax.nn.logsumexp(log_pi + log_probs, axis=-1)
+
+    eos_loss = -jnp.sum(eos * jnp.log(eos_pred) + (1 - eos) * jnp.log(1 - eos_pred), axis=-1)
+
+    loss = -log_mixture + eos_loss
+    loss = jnp.where(jnp.isnan(loss) | jnp.isinf(loss), 0.0, loss)
+
+    if lengths is not None:
+        mask = jnp.arange(predictions.shape[1]) < lengths[:, None]
+        loss = jnp.where(mask, loss, 0.0)
+        total_loss = jnp.sum(loss) / jnp.maximum(jnp.sum(mask), 1)
+        return jnp.where(jnp.isnan(total_loss) | jnp.isinf(total_loss), 0.0, total_loss)
+
+    mean_loss = jnp.mean(loss)
+    return jnp.where(jnp.isnan(mean_loss) | jnp.isinf(mean_loss), 0.0, mean_loss)
+
+{% endhighlight %}
+</div>
+
+  </div>
+</div>
+<!-- prettier-ignore-end -->
 
 ## Attention Mechanism
 
@@ -851,7 +937,17 @@ The mathematical representation is here:
 
 ### Code
 
-```python
+<!-- prettier-ignore-start -->
+
+<div class="code-toggle">
+  <div class="code-toggle__tabs">
+    <button class="code-toggle__tab code-toggle__tab--active" data-tab="tensorflow">TensorFlow</button>
+    <button class="code-toggle__tab" data-tab="jax">JAX</button>
+  </div>
+  <div class="code-toggle__content">
+    <div class="code-toggle__pane code-toggle__pane--active" data-pane="tensorflow">
+{% highlight python %}
+
 @tf.keras.utils.register_keras_serializable()
 class AttentionMechanism(tf.keras.layers.Layer):
     """
@@ -860,78 +956,134 @@ class AttentionMechanism(tf.keras.layers.Layer):
     the original paper by Alex Graves. It uses a Gaussian
     window to focus on different parts of the character sequence
     at each time step.
+
+    See section: 5.0 / 5.1
     """
 
-    def __init__(self, num_gaussians, num_chars, name="attention", **kwargs):
+    def __init__(self, num_gaussians, num_chars, name="attention", debug=False, **kwargs) -> None:
         super(AttentionMechanism, self).__init__(**kwargs)
         self.num_gaussians = num_gaussians
         self.num_chars = num_chars
         self.name_mod = name
+        self.debug = debug
 
-    def build(self, input_shape):
-        self.dense_attention = tf.keras.layers.Dense(
-            units=3 * self.num_gaussians,
-            activation="softplus",
-            name=f"{self.name_mod}_dense",
-        )
-        super().build(input_shape)
+    def call(
+        self,
+        inputs,  # shape: [batch_size, num_gaussians, 3]
+        prev_kappa,  # shape: [batch_size, num_gaussians]
+        char_seq_one_hot,  # shape: [batch_size, char_len, num_chars]
+        sequence_lengths,  # shape: [batch_size]
+    ) -> tuple[tf.Tensor, tf.Tensor]:
+        raw = tf.matmul(inputs, self.attention_kernel) + self.attention_bias
+        alpha_hat, beta_hat, kappa_hat = tf.split(raw, 3, axis=1)  # shape: [batch_size, num_gaussians, 1]
 
-    def call(self, inputs, prev_kappa, char_seq_one_hot, sequence_lengths):
-        # Generate concatenated attention parameters - just utilizing
-        # the dense layer so that I don't have to manually define the matrix
-        attention_params = self.dense_attention(inputs)
-        alpha, beta, kappa_increment = tf.split(attention_params, 3, axis=1)
+        eps = tf.constant(1e-6, dtype=inputs.dtype)
+        scaling = 0.1  # Gentler activation
+        alpha = tf.nn.softplus(alpha_hat * scaling) + eps  # [B, G]
+        beta = tf.nn.softplus(beta_hat * scaling) + eps  # [B, G]
+        dkap = tf.nn.softplus(kappa_hat * scaling) + eps
 
-        # Normalize and clip kappa and beta...
-        alpha = tf.maximum(alpha, 1e-8)
-        beta = tf.maximum(beta, 1e-8)
-        kappa_increment = tf.maximum(kappa_increment, 1e-8)
+        alpha = tf.clip_by_value(alpha, 0.01, 10.0)
+        beta = tf.clip_by_value(beta, 0.01, 10.0)
+        dkap = tf.clip_by_value(dkap, 1e-5, 0.5)
 
-        kappa = prev_kappa + kappa_increment
+        kappa = prev_kappa + dkap
+        kappa = tf.clip_by_value(kappa, 0.0, 30.0)
+
         char_len = tf.shape(char_seq_one_hot)[1]
         batch_size = tf.shape(inputs)[0]
-        u = tf.cast(tf.range(0, char_len), tf.float32)  # Shape: [char_len]
-        u = tf.reshape(u, [1, 1, -1])  # Shape: [1, 1, char_len]
-        u = tf.tile(u, [batch_size, self.num_gaussians, 1])  # Shape: [batch_size, num_gaussians, char_len]
+        u = tf.cast(tf.range(1, char_len + 1), tf.float32)
+        u = tf.reshape(u, [1, 1, -1])  # shape: [1, 1, char_len]
+        u = tf.tile(u, [batch_size, self.num_gaussians, 1])  # shape: [batch_size, num_gaussians, char_len]
 
-        # gaussian window
-        alpha = tf.expand_dims(alpha, axis=-1)  # Shape: [batch_size, num_gaussians, 1]
-        beta = tf.expand_dims(beta, axis=-1)  # Shape: [batch_size, num_gaussians, 1]
-        kappa = tf.expand_dims(kappa, axis=-1)  # Shape: [batch_size, num_gaussians, 1]
+        alpha = tf.expand_dims(alpha, axis=-1)  # shape: [batch_size, num_gaussians, 1]
+        beta = tf.expand_dims(beta, axis=-1)  # shape: [batch_size, num_gaussians, 1]
+        kappa = tf.expand_dims(kappa, axis=-1)  # shape: [batch_size, num_gaussians, 1]
 
-        # phi - attention weights
-        phi = alpha * tf.exp(-beta * tf.square(kappa - u))  # Shape: [batch_size, num_gaussians, char_len]
-        phi = tf.reduce_sum(phi, axis=1)  # Sum over the gaussians: [batch_size, char_len]
+        exponent = -beta * tf.square(kappa - u)
+        exponent = tf.clip_by_value(exponent, -50.0, 0.0)
+        phi = alpha * tf.exp(exponent)  # shape: [batch_size, num_gaussians, char_len]
+        phi = tf.reduce_sum(phi, axis=1)  # Sum over gaussians: [B, L]
 
-        # sequence mask
         sequence_mask = tf.sequence_mask(sequence_lengths, maxlen=char_len, dtype=tf.float32)
-        phi = phi * sequence_mask  # Apply mask to attention weights
+        phi = phi * sequence_mask  # mask paddings
 
-        # normalize
-        phi_sum = tf.reduce_sum(phi, axis=1, keepdims=True) + 1e-8
-        phi = phi / phi_sum
+        phi = tf.where(tf.math.is_finite(phi), phi, tf.zeros_like(phi))
+        # we don't normalize here - Graves calls that out specifically!
+        # > Note that the window mixture is not normalised
+        # > and hence does not determine a probability distribution; however the window
+        # > weight φ(t,u) can be loosely interpreted as the network's belief that it is writ-
+        # > ing character cu at time t.
+        # still section 5.1
 
         # window vec
-        phi = tf.expand_dims(phi, axis=-1)  # Shape: [batch_size, char_len, 1]
-        w = tf.reduce_sum(phi * char_seq_one_hot, axis=1)  # Shape: [batch_size, num_chars]
+        phi = tf.expand_dims(phi, axis=-1)  # shape: [batch_size, char_len, 1]
+        w = tf.reduce_sum(phi * char_seq_one_hot, axis=1)  # shape: [batch_size, num_chars]
 
-        return w, kappa[:, :, 0]  # Return updated kappa
+        w = tf.where(tf.math.is_finite(w), w, tf.zeros_like(w))
+        return w, kappa[:, :, 0]
 
-    def get_config(self):
-        config = super().get_config()
-        config.update(
-            {
-                "num_gaussians": self.num_gaussians,
-                "num_chars": self.num_chars,
-                "name": self.name_mod,
-            }
-        )
-        return config
+{% endhighlight %}
+</div>
+<div class="code-toggle__pane" data-pane="jax">
+{% highlight python %}
 
-    @classmethod
-    def from_config(cls, config):
-        return cls(**config)
-```
+    def compute_attention(
+        self,
+        h: jnp.ndarray,  # [B, H]
+        prev_kappa: jnp.ndarray,  # [B, G]
+        window: jnp.ndarray,  # [B, A]
+        x: jnp.ndarray,  # [B, 3]
+        char_seq: jnp.ndarray,  # [B, U, A] one-hot
+        char_lens: jnp.ndarray,  # [B] lengths
+    ) -> Tuple[jnp.ndarray, jnp.ndarray]:
+        """Compute Gaussian window attention over character sequence."""
+
+        attention_input = jnp.concatenate([window, x, h], axis=-1)
+        params = self.attention_layer(attention_input)  # [B, 3G]
+        params = nnx.softplus(params)
+        alpha, beta, kappa_inc = jnp.split(params, 3, axis=-1)
+
+        # again... probably sliiiiightly overkill
+        alpha = jnp.maximum(alpha, 1e-4)
+        beta = jnp.maximum(beta, 1e-4)
+        kappa_inc = jnp.maximum(kappa_inc, 1e-4)
+
+        # ok this was a trick from svasquez - the dividing by 25.0
+        # is to help kappa learn given that 25 is roughly the average
+        # number of strokes per sequence
+        kappa = prev_kappa + kappa_inc / 25.0
+
+        U = char_seq.shape[1]
+        positions = jnp.arange(U, dtype=jnp.float32)[None, None, :]  # [1, 1, U]
+        kappa_exp = kappa[:, :, None]  # [B, G, 1]
+        alpha_exp = alpha[:, :, None]  # [B, G, 1]
+        beta_exp = beta[:, :, None]  # [B, G, 1]
+
+        # gaussian window
+        phi = alpha_exp * jnp.exp(-beta_exp * (kappa_exp - positions) ** 2)  # [B, G, U]
+        phi = jnp.sum(phi, axis=1)
+
+        # mask out positions beyond char_lens
+        mask = jnp.arange(U)[None, :] < char_lens[:, None]  # [B, U]
+        phi = jnp.where(mask, phi, 0.0)
+
+        # so Graves said that
+        phi = phi / (jnp.sum(phi, axis=-1, keepdims=True) + 1e-8)
+
+        # Apply to character sequence
+        # window: [B, A] = sum_u phi[b,u]*char_seq[b,u,:]
+        window_new = jnp.einsum("bu,bua->ba", phi, char_seq)
+
+        return window_new, kappa
+
+{% endhighlight %}
+</div>
+
+  </div>
+</div>
+
+<!-- prettier-ignore-end -->
 
 ## Stacked LSTM
 
@@ -958,7 +1110,37 @@ The one thing to note is that there is a dimensionality increase given we now ha
 
 This is where the various `cell` vs `layer` concept in Tensorflow was very nice.
 
-From our top level model, we have:
+You can see here how the parts all come together smoothly. The custom RNN cell takes the lstm_cells (which are stacked), and then can basically abstract out and operate on the individual time steps without having to worry about actually introducing another `for` loop. This is beneficial because of the batching and GPU win we can get when it eventually becomes time.
+
+For the actual `AttentionRNNCell`, this is what I'm talking about:
+
+<!-- prettier-ignore-start -->
+
+<div class="code-toggle">
+  <div class="code-toggle__tabs">
+    <button class="code-toggle__tab code-toggle__tab--active" data-tab="tensorflow">TensorFlow</button>
+    <button class="code-toggle__tab" data-tab="jax">JAX</button>
+  </div>
+  <div class="code-toggle__content">
+    <div class="code-toggle__pane code-toggle__pane--active" data-pane="tensorflow">
+{% highlight python %}
+
+# Tensorflow code here
+
+{% endhighlight %}
+</div>
+<div class="code-toggle__pane" data-pane="jax">
+{% highlight python %}
+
+# JAX code here
+
+{% endhighlight %}
+</div>
+
+  </div>
+</div>
+
+<!-- prettier-ignore-end -->
 
 ```python
 class DeepHandwritingSynthesisModel(tf.keras.Model):
@@ -989,10 +1171,6 @@ class DeepHandwritingSynthesisModel(tf.keras.Model):
         )
         self.mdn_layer = MixtureDensityLayer(num_mixture_components)
 ```
-
-You can see here how the parts all come together smoothly. The custom RNN cell takes the lstm_cells (which are stacked), and then can basically abstract out and operate on the individual time steps without having to worry about actually introducing another `for` loop. This is beneficial because of the batching and GPU win we can get when it eventually becomes time.
-
-For the actual `AttentionRNNCell`, this is what I'm talking about:
 
 ```python
 class AttentionRNNCell(tf.keras.layers.Layer):
@@ -1353,173 +1531,10 @@ So where does AI using AI come in? I wanted to validate that the shapes of my tr
 </details>
 
 <br/>
+
 ## Drawing Code
 
-The code to actually write, which I dubbed `Calligrapher` was relatively simple as it creates an initial data point and supplied user texts and then queries the model based on those two inputs to what the actual handwriting data should look like. More or less, that code is here:
-
-```python
-class Calligrapher:
-    def __init__(self, model_path: str, num_output_mixtures: int) -> None:
-        self.model_path = model_path
-        self.num_output_mixtures = num_output_mixtures
-        self.model, self.loaded = load_model_if_exists(
-            model_path,
-            custom_objects={
-                "mdn_loss": mdn_loss,
-                "AttentionMechanism": AttentionMechanism,
-                "AttentionRNNCell": AttentionRNNCell,
-                "MixtureDensityLayer": MixtureDensityLayer,
-                "DeepHandwritingSynthesisModel": DeepHandwritingSynthesisModel,
-            },
-        )
-        if not self.loaded:
-            raise ValueError(f"Model not loaded from {model_path}")
-
-    def sample_gaussian_2d(self, mu1, mu2, s1, s2, rho):
-        """
-        Sample a point from a 2D Gaussian.
-        """
-        cov = [[s1 * s1, rho * s1 * s2], [rho * s1 * s2, s2 * s2]]
-        x, y = np.random.multivariate_normal([mu1, mu2], cov)
-        return x, y
-
-    def adjust_parameters(self, pi_logits, mu1, mu2, sigma1, sigma2, rho, bias):
-        """
-        Adjust the parameters for biased sampling.
-        """
-        sigma1_adj = np.exp(np.log(sigma1) - bias)
-        sigma2_adj = np.exp(np.log(sigma2) - bias)
-        pi_adj = np.exp(np.log(pi_logits) * (1 + bias))
-        pi_adj /= np.sum(pi_adj, axis=-1, keepdims=True)
-        return pi_adj, mu1, mu2, sigma1_adj, sigma2_adj, rho
-
-    def encode_characters(self, lines, char_to_idx, max_length):
-        """
-        Encodes text lines to a format suitable for the model.
-        """
-        encoded_lines = np.zeros((len(lines), max_length), dtype=int)
-        for i, line in enumerate(lines):
-            encoded_line = [char_to_idx.get(char, 0) for char in line]
-            encoded_lines[i, : len(encoded_line)] = encoded_line[:max_length]
-        return encoded_lines
-
-    def sample(
-        self, lines: list[str], max_char_len=MAX_CHAR_LEN, bias=0.0, temperature=1.0
-    ):
-        """
-        Sample handwriting sequences with optional bias and temperature.
-        """
-
-        encoded_lines = np.array([encode_ascii(line) for line in lines])
-        batch_size = len(encoded_lines)
-        x_in = np.zeros((batch_size, max_char_len, 3), dtype=np.float32)
-        chars_seq_len = np.zeros([batch_size])
-        char_seq = np.zeros((len(lines), max_char_len), dtype=int)
-        for i, line in enumerate(encoded_lines):
-            char_seq[i, : len(line)] = line
-
-        # Get MDN outputs
-        mdn_outputs = self.model(x_in, char_seq, chars_seq_len)
-        pi_logits, mu1, mu2, sigma1, sigma2, rho, eos_logits = tf.split(
-            mdn_outputs, [self.num_output_mixtures] * 6 + [1], axis=-1
-        )
-        pi_logits /= temperature  # Apply temperature to soften pi distribution
-
-        if bias != 0.0:
-            pi, mu1, mu2, sigma1, sigma2, rho = self.adjust_parameters(
-                pi_logits.numpy(),
-                mu1.numpy(),
-                mu2.numpy(),
-                sigma1.numpy(),
-                sigma2.numpy(),
-                rho.numpy(),
-                bias,
-            )
-        else:
-            pi = tf.nn.softmax(pi_logits, axis=-1).numpy()
-
-        # Sample from the GMM
-        indices = [np.random.choice(20, p=pi[i]) for i in range(pi.shape[0])]
-        selected_mu1 = np.take_along_axis(
-            mu1, np.expand_dims(indices, axis=-1), axis=-1
-        )
-        selected_mu2 = np.take_along_axis(
-            mu2, np.expand_dims(indices, axis=-1), axis=-1
-        )
-        selected_sigma1 = np.take_along_axis(
-            sigma1, np.expand_dims(indices, axis=-1), axis=-1
-        )
-        selected_sigma2 = np.take_along_axis(
-            sigma2, np.expand_dims(indices, axis=-1), axis=-1
-        )
-        selected_rho = np.take_along_axis(
-            rho, np.expand_dims(indices, axis=-1), axis=-1
-        )
-
-        sampled_points = [
-            self.sample_gaussian_2d(
-                selected_mu1[i, 0],
-                selected_mu2[i, 0],
-                selected_sigma1[i, 0],
-                selected_sigma2[i, 0],
-                selected_rho[i, 0],
-            )
-            for i in range(pi.shape[0])
-        ]
-
-        # Sample eos with temperature applied
-        eos = tf.sigmoid(eos_logits / temperature).numpy()
-
-        return sampled_points, eos
-
-    def write(
-        self,
-        strokes: list[Tuple[np.ndarray, np.ndarray]],
-        lines: list[str],
-        filename: str = "output.svg",
-        bias=0.0,
-        temperature=1.0,
-        stroke_colors=None,
-        stroke_widths=None,
-    ):
-        """
-        Draws pseudo handwriting given lines of text and visualizes it as an SVG image.
-        """
-        stroke_colors = stroke_colors or ["black"] * len(lines)
-        stroke_widths = stroke_widths or [2] * len(lines)
-
-        # Generate sampled points for each line of text
-        strokes = self.sample(lines, bias=bias, temperature=temperature)
-
-        # Visualization
-        line_height = 60
-        view_width = 1000
-        view_height = line_height * (len(strokes) + 1)
-
-        dwg = svgwrite.Drawing(filename=filename, size=(view_width, view_height))
-        dwg.add(dwg.rect(insert=(0, 0), size=("100%", "100%"), fill="white"))
-
-        initial_y_offset = line_height
-        for sampled_points, color, width in zip(strokes, stroke_colors, stroke_widths):
-            prev_eos = 1.0
-            p = "M {},{}".format(0, initial_y_offset)
-            for x, y, eos in sampled_points:
-                command = "M" if prev_eos == 1.0 else "L"
-                p += " {} {},{}".format(command, x, -y + initial_y_offset)
-                prev_eos = eos
-            path = svgwrite.path.Path(p)
-            path = path.stroke(color=color, width=width, linecap="round").fill("none")
-            dwg.add(path)
-            initial_y_offset += line_height
-
-        dwg.save()
-
-
-if __name__ == "__main__":
-    texts = ["Better to have loved", "and lost", "than never loved at all"]
-    calligrapher = Calligrapher(model_load_path, num_output_mixtures=1)
-    calligrapher.write(texts, "output.svg")
-```
+This was largely autoregressively sampling from the model given various text input (at least for the synthesis model). I honestly just had Claude Code do most of the heavy lifty explaining the project and what I wanted to see `phi`s, kappa progression, mixture density gaussians lighting up, etc.
 
 ## Visualizations
 
@@ -1529,19 +1544,19 @@ Again, we used dummy data to start with to ensure our various components were le
 
 Here is the dummy data:
 
-![dummy_data](/images/generative-handwriting/viz/dummy_data.png){: .center-image}
+![dummy_data](/images/generative-handwriting/viz/dummy_data.png){: .center-shrink}
 
 Here is just our cascade of LSTMs learning on the loop-da-loop data and predicting on a single sequence. This is not optimized or utilizing the mixture density network.
 
-![handwriting_loop_lstm_simple](/images/generative-handwriting/viz/handwriting_loop_simplified.gif){: .center-image}
+![handwriting_loop_lstm_simple](/images/generative-handwriting/viz/handwriting_loop_simplified.gif){: .center-shrink }
 
-![handwriting_zig_lstm_simple](/images/generative-handwriting/viz/handwriting_zigzag_simplified.gif){: .center-image}
+![handwriting_zig_lstm_simple](/images/generative-handwriting/viz/handwriting_zigzag_simplified.gif){: .center-shrink }
 
 Here is our entire network and just sampling from the means (not showing the mixture densities) across the entire example datasets. One thing to note here if you can see how the LSTMs can still handle this type of larger contexts. Again, it pales in comparison to modern day transformer context, but still impressive.
 
-![handwriting_loop_lstm_simple](/images/generative-handwriting/viz/loop_epoch200_mixtures5.gif){: .center-image}
+![handwriting_loop_lstm_simple](/images/generative-handwriting/viz/loop_epoch200_mixtures5.gif){: .center-shrink }
 
-![handwriting_zig_lstm_simple](/images/generative-handwriting/viz/zigzag_epoch200_mixtures5.gif){: .center-image}
+![handwriting_zig_lstm_simple](/images/generative-handwriting/viz/zigzag_epoch200_mixtures5.gif){: .center-shrink }
 
 # Conclusion
 
@@ -1615,3 +1630,5 @@ When re-reading my old draft blog post, I liked the way I ended things. So here 
 [pytorch-rant]: https://neel04.github.io/my-website/blog/pytorch_rant/
 [stoch-grad-descent]: https://en.wikipedia.org/wiki/Stochastic_gradient_descent
 [understanding-lstms]: https://colah.github.io/posts/2015-08-Understanding-LSTMs/
+[optax]: https://github.com/google-deepmind/optax
+[flax]: https://github.com/google/flax
