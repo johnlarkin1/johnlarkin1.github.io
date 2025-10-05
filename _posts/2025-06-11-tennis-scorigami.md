@@ -2,6 +2,7 @@
 title: "Tennis Scorigami"
 layout: post
 featured-video: tennis-scorigami
+featured-poster: tennis-scorigami
 featured-gif: tennis-scorigami
 pinned: true
 categories: [⭐️ Favorites, Development, Friends]
