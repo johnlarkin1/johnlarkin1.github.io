@@ -13,6 +13,7 @@ $(document).ready(function () {
   initLightbox();
   initMermaid();
   initScrollIndicator();
+  initCodeToggle();
 });
 
 // Close modal if ESC is pressed
@@ -832,5 +833,27 @@ function initScrollIndicator() {
         600
       );
     }
+  });
+}
+
+/*-------------------------------------------------------------------------*/
+/* CODE TOGGLE FUNCTIONALITY */
+/* -----------------------------------------------------------------------*/
+
+function initCodeToggle() {
+  $(".code-toggle__tab").on("click", function () {
+    const $tab = $(this);
+    const $toggle = $tab.closest(".code-toggle");
+    const targetTab = $tab.data("tab");
+
+    // Update tab active states
+    $toggle.find(".code-toggle__tab").removeClass("code-toggle__tab--active");
+    $tab.addClass("code-toggle__tab--active");
+
+    // Update pane active states
+    $toggle.find(".code-toggle__pane").removeClass("code-toggle__pane--active");
+    $toggle
+      .find(`.code-toggle__pane[data-pane="${targetTab}"]`)
+      .addClass("code-toggle__pane--active");
   });
 }

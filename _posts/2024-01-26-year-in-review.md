@@ -2,7 +2,7 @@
 title: 2023 - A Year in Review
 layout: post
 featured-img: 2023-year
-categories: [Year in Review]
+categories: [🎉 Year in Review]
 summary: A year in NYC
 ---
 

@@ -3,7 +3,7 @@ title: Chrome Extension, Betting Analysis, and Kelly Criterion
 layout: post
 featured-img: miami-2023-sinner
 mathjax: true
-categories: [⭐️ Favorites, Development, Betting]
+categories: [⭐️ Favorites, Dev, Betting]
 summary: Want to tighten up your sports betting?
 favorite: true
 ---
@@ -25,9 +25,9 @@ First, a quick overview of what we'll be covering.
 - [Technical Discussion](#technical-discussion)
   - [Part 1: Getting the Data](#part-1-getting-the-data)
     - [Draftkings Difficulties](#draftkings-difficulties)
-      - [Approach A) Selenium + Beautiful Soup :x: :skull\_and\_crossbones: :x:](#approach-a-selenium--beautiful-soup-x-skull_and_crossbones-x)
-      - [Approach B) Download .html + Beautiful Soup :x: :skull\_and\_crossbones: :x:](#approach-b-download-html--beautiful-soup-x-skull_and_crossbones-x)
-      - [Approach B) Chrome Extension (winner) :white\_check\_mark: :partying\_face: :white\_check\_mark:](#approach-b-chrome-extension-winner-white_check_mark-partying_face-white_check_mark)
+      - [Approach A) Selenium + Beautiful Soup :x: :skull_and_crossbones: :x:](#approach-a-selenium--beautiful-soup-x-skull_and_crossbones-x)
+      - [Approach B) Download .html + Beautiful Soup :x: :skull_and_crossbones: :x:](#approach-b-download-html--beautiful-soup-x-skull_and_crossbones-x)
+      - [Approach B) Chrome Extension (winner) :white_check_mark: :partying_face: :white_check_mark:](#approach-b-chrome-extension-winner-white_check_mark-partying_face-white_check_mark)
   - [Part 2: Analyzing the Data](#part-2-analyzing-the-data)
     - [Graphics](#graphics)
     - [Technical Details](#technical-details)
@@ -103,17 +103,17 @@ For a little bit more background, most sites use American Odds. Now, there's bas
 I'm not going to give a full rundown of all of those, and how to convert between, but basically, some examples:
 
 - American odds
-  - `-150` would mean you have to outlay $150 to win $100
-  - `+150` would mean you have to outlay $100 to win $150
+  - `-150` would mean you have to outlay `$150` to win `$100`
+  - `+150` would mean you have to outlay `$100` to win `$150`
   - Basically meaning negative American odds indicates favorable events
 - Fractional odds
-  - `2 to 3` would mean you have to outlay $300 to win $200 (note that this is the same as -150 American)
-  - `3 to 2` would mean you have to outlay $200 to win $300
+  - `2 to 3` would mean you have to outlay `$300` to win `$200` (note that this is the same as -150 American)
+  - `3 to 2` would mean you have to outlay `$200` to win `$300`
 - Decimal odds
-  - `1.667` would mean if you bet $150 you'd win $100 (or in other words if you bet 100, you'd get 1.667)
-  - `2.500` would mean if you bet $100 you'd get $150 (basically subtracting off the $100 (or 1) that was bet)
+  - `1.667` would mean if you bet `$150` you'd win `$100` (or in other words if you bet 100, you'd get 1.667)
+  - `2.500` would mean if you bet `$100` you'd get `$150` (basically subtracting off the `$100` (or 1) that was bet)
 
-I personally find decimal the most confusing, but it's basically just normalized to $1.
+I personally find decimal the most confusing, but it's basically just normalized to `$1`.
 
 ## Kelly Criterion
 
@@ -131,7 +131,7 @@ $$
 
 where
 
-$$ f^{\*} $$ - fraction of bankroll to wager
+$$f^*$$ - fraction of bankroll to wager
 
 $$ p $$ - probability of a win
 
