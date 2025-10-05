@@ -1748,6 +1748,8 @@ Furthermore, the `eos` signals generally have the highest uncertainty and most s
 
 ### Fish folly
 
+Hadn't ever heard of this one but it's my best friend's favorite quote.
+
 {% include quote.html
       text="Folly to love a fish. Or anyone who might leave us. But oh, what a gift."
       author="Ann V. Klotz"
