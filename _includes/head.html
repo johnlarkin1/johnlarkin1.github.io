@@ -110,6 +110,20 @@
   />
   <meta name="theme-color" content="#ffffff" />
 
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+    // Default consent: collect measurement (analytics) only
+    gtag("consent", "default", {
+      analytics_storage: "granted",
+      ad_storage: "denied",
+      ad_user_data: "denied",
+      ad_personalization: "denied",
+    });
+  </script>
+
   {% if site.google_tag_manager %} {% include gtm.html %} {% endif %}
 
   <style class="inlineCSS">
