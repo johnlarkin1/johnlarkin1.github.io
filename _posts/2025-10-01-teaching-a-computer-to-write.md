@@ -10,25 +10,6 @@ categories: [⭐️ Favorites, Algorithms, Dev, A.I., M.L.]
 summary: Exploring JAX, LSTMs, MDNs, and other TLAs.
 ---
 
-<div class="markdown-alert markdown-alert-disclaimer">
-
-<p>This is a relatively long post! I would encourage you if you're trying to learn from 0 -> 1 to read the whole thing, but feel free to jump around as you so wish. I would say there's three main portions: concept, theory, and code.
-</p>
-
-<p>My purpose here was to build up from the basics and really understand the flow. I provide quite a couple of models so we can see the progression from a simple neural net to a basic LSTM to Peephole LSTM to a stacked cascade of Peephole LSTMs to Mixture Density Networks to Attention Mechanism to Attention RNN to the Handwriting Prediction Network to finally throwing it all together to the full Handwriting Synthesis Network that Graves originally wrote about.</p>
-
-<p>There's other things that maybe I'll discuss in the future like the need to pickle JAX models because if they're XLA compatible then you can't run inference on your CPU and issues like that. Another thing I didn't discuss really was temperature and bias for sampling. I also (sadly) didn't cover priming. However, I spent far more time on this than I should have. If you have any questions - as always - feel free to reach out if curious. </p>
-
-<p>Enjoy!</p>
-
-</div>
-
-<div class="markdown-alert markdown-alert-note">
-<p>One thing that I would highly recommend - if you're interested in the theory of LSTMs and why sigmoid vs tanh activations were chosen, I would really encourage reading Chris Olah's <b><a href="https://colah.github.io/posts/2015-08-Understanding-LSTMs/">Understanding LSTMs</a></b> blog post. It does a fantastic job.</p>
-</div>
-
-<br>
-
 # ✍️ Motivating Visualizations
 
 Today, we're going to learn how to teach a computer to write. I don't mean generating text (which would have been probably a better thing to study in college), I mean learning to write like a human learns how to write with a pen and paper. My results (eventually) were pretty good, here are some motivating visualizations.
@@ -54,6 +35,31 @@ Let's look at one. My family used to have this hung over our kitchen sink when I
 ![heart-sampling-gif](/images/generative-handwriting/synth_outputs/heart_has_its_reason/sampling.gif){: .basic-center .lightbox-image}
 
 Again, I'd recommend jumping down to here: [Synthesis Model Sampling](#synthesis-model-sampling). Arguably, the best part of this post. I'll discuss what all these visualizations mean in detail.
+
+---
+
+<br>
+
+<div class="markdown-alert markdown-alert-disclaimer">
+
+<p>This is a relatively long post! I would encourage you if you're trying to learn from 0 -> 1 to read the whole thing, but feel free to jump around as you so wish. I would say there's three main portions: concept, theory, and code.
+</p>
+
+<p>My purpose here was to build up from the basics and really understand the flow. I provide quite a couple of models so we can see the progression from a simple neural net to a basic LSTM to Peephole LSTM to a stacked cascade of Peephole LSTMs to Mixture Density Networks to Attention Mechanism to Attention RNN to the Handwriting Prediction Network to finally throwing it all together to the full Handwriting Synthesis Network that Graves originally wrote about.</p>
+
+<p>There's other things that maybe I'll discuss in the future like the need to pickle JAX models because if they're XLA compatible then you can't run inference on your CPU and issues like that. Another thing I didn't discuss really was temperature and bias for sampling. I also (sadly) didn't cover priming. However, I spent far more time on this than I should have. If you have any questions - as always - feel free to reach out if curious. </p>
+
+<p>Enjoy!</p>
+
+</div>
+
+<div class="markdown-alert markdown-alert-note">
+<p>One thing that I would highly recommend - if you're interested in the theory of LSTMs and why sigmoid vs tanh activations were chosen, I would really encourage reading Chris Olah's <b><a href="https://colah.github.io/posts/2015-08-Understanding-LSTMs/">Understanding LSTMs</a></b> blog post. It does a fantastic job.</p>
+</div>
+
+<br>
+
+---
 
 # Table of Contents
 
