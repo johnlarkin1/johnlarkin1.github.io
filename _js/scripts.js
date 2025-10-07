@@ -571,6 +571,16 @@ function closeLightbox() {
 /* -----------------------------------------------------------------------*/
 
 function initMermaid() {
+  // Check if there are any mermaid code blocks or elements on the page
+  const hasMermaidContent =
+    $('code.language-mermaid').length > 0 ||
+    $('.mermaid').length > 0;
+
+  if (!hasMermaidContent) {
+    // No Mermaid content found, skip initialization to avoid unnecessary polling
+    return;
+  }
+
   // Wait for Mermaid library to be available
   function waitForMermaid() {
     if (typeof window.mermaid !== "undefined") {
