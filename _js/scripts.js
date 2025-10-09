@@ -14,6 +14,8 @@ $(document).ready(function () {
   initMermaid();
   initScrollIndicator();
   initCodeToggle();
+  initNewBadges();
+  initPinnedCarousel();
 });
 
 // Close modal if ESC is pressed
@@ -573,8 +575,7 @@ function closeLightbox() {
 function initMermaid() {
   // Check if there are any mermaid code blocks or elements on the page
   const hasMermaidContent =
-    $('code.language-mermaid').length > 0 ||
-    $('.mermaid').length > 0;
+    $("code.language-mermaid").length > 0 || $(".mermaid").length > 0;
 
   if (!hasMermaidContent) {
     // No Mermaid content found, skip initialization to avoid unnecessary polling
@@ -791,7 +792,8 @@ function initScrollIndicator() {
 
     // Check if we're past the hero section
     const hero = $(".hero");
-    const heroHeight = hero.length > 0 ? hero.offset().top + hero.outerHeight() : 0;
+    const heroHeight =
+      hero.length > 0 ? hero.offset().top + hero.outerHeight() : 0;
 
     if (scrollTop + 200 > heroHeight) {
       $indicator.addClass("visible");
@@ -866,4 +868,129 @@ function initCodeToggle() {
       .find(`.code-toggle__pane[data-pane="${targetTab}"]`)
       .addClass("code-toggle__pane--active");
   });
+}
+
+/*-------------------------------------------------------------------------*/
+/* NEW BADGES FUNCTIONALITY */
+/* -----------------------------------------------------------------------*/
+
+function initNewBadges() {
+  const twoWeeksAgo = new Date();
+  twoWeeksAgo.setDate(twoWeeksAgo.getDate() - 14);
+
+  $(".post-card").each(function () {
+    const $card = $(this);
+    const dateStr = $card.data("date");
+
+    if (!dateStr) return;
+
+    const postDate = new Date(dateStr);
+
+    if (postDate >= twoWeeksAgo) {
+      $card.addClass("new");
+      const $placeholder = $card.find(".post-card__new-badge-placeholder");
+      if ($placeholder.length > 0) {
+        $placeholder.replaceWith(
+          '<span class="label post-card__new-badge">✨ NEW</span>'
+        );
+      }
+    }
+  });
+}
+
+/*-------------------------------------------------------------------------*/
+/* PINNED CAROUSEL FUNCTIONALITY */
+/* -----------------------------------------------------------------------*/
+
+function initPinnedCarousel() {
+  const $track = $("#pinned-carousel-track");
+  if ($track.length === 0) return;
+
+  const $leftArrow = $("#carousel-arrow-left");
+  const $rightArrow = $("#carousel-arrow-right");
+
+  // Update scroll fade indicators and arrow states
+  function updateScrollIndicators() {
+    const scrollLeft = $track.scrollLeft();
+    const scrollWidth = $track[0].scrollWidth;
+    const clientWidth = $track[0].clientWidth;
+    const maxScroll = scrollWidth - clientWidth;
+
+    // Update fade indicators
+    if (scrollLeft > 10) {
+      $track.addClass("has-scroll-left");
+    } else {
+      $track.removeClass("has-scroll-left");
+    }
+
+    if (scrollLeft < maxScroll - 10) {
+      $track.addClass("has-scroll-right");
+    } else {
+      $track.removeClass("has-scroll-right");
+    }
+
+    // Update arrow states
+    if ($leftArrow.length) {
+      if (scrollLeft <= 10) {
+        $leftArrow.prop("disabled", true);
+      } else {
+        $leftArrow.prop("disabled", false);
+      }
+    }
+
+    if ($rightArrow.length) {
+      if (scrollLeft >= maxScroll - 10) {
+        $rightArrow.prop("disabled", true);
+      } else {
+        $rightArrow.prop("disabled", false);
+      }
+    }
+  }
+
+  // Scroll carousel by a card width
+  function scrollCarousel(direction) {
+    const cardWidth = $track.find(".pinned-section__card").first().outerWidth(true);
+    const scrollAmount = cardWidth * 1.5; // Scroll 1.5 cards at a time
+    const currentScroll = $track.scrollLeft();
+
+    const newScroll = direction === "left"
+      ? currentScroll - scrollAmount
+      : currentScroll + scrollAmount;
+
+    $track.animate({ scrollLeft: newScroll }, 400, "swing");
+  }
+
+  // Arrow click handlers
+  $leftArrow.on("click", function () {
+    scrollCarousel("left");
+  });
+
+  $rightArrow.on("click", function () {
+    scrollCarousel("right");
+  });
+
+  // Mouse wheel horizontal scrolling
+  $track.on("wheel", function (e) {
+    // Prevent default vertical scroll
+    e.preventDefault();
+
+    // Get the scroll amount
+    const delta = e.originalEvent.deltaY || e.originalEvent.deltaX;
+
+    // Scroll horizontally
+    this.scrollLeft += delta;
+  });
+
+  // Update on scroll
+  $track.on("scroll", function () {
+    updateScrollIndicators();
+  });
+
+  // Update on window resize
+  $(window).on("resize", function () {
+    updateScrollIndicators();
+  });
+
+  // Initial check
+  updateScrollIndicators();
 }

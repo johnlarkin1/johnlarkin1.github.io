@@ -1,12 +1,14 @@
 <div
   class="post-card {% if post.favorite %}favorite{% endif %} {% if post.pinned %}pinned{% endif %}"
   data-year="{{ post.date | date: '%Y' }}"
+  data-date="{{ post.date | date: '%Y-%m-%d' }}"
   {% if post.pinned %}data-pinned="true"{% endif %}
   itemprop="blogPosts"
   itemscope=""
   itemtype="http://schema.org/BlogPosting"
 >
   <span class="post-card__label">
+    <span class="post-card__new-badge-placeholder" style="display: none;"></span>
     {% if post.pinned %}
     <span class="label post-card__pinned-badge">📌 PINNED</span>
     {% endif %}

@@ -58,18 +58,55 @@ layout: compress
         <a class="btn btn-sm btn-primary" data-filter=".travel">Travel</a>
         <a class="btn btn-sm btn-primary active" data-filter="*">All</a>
       </div> -->
+
+      {% assign pinned_posts = site.posts | where: "pinned", true %}
+
+      {% if pinned_posts.size > 0 %}
+      <!-- Pinned Posts Carousel Section -->
+      <section class="pinned-section" id="pinned-section">
+        <div class="container">
+          <div class="pinned-section__header">
+            <h2>
+              <span class="pin-icon">📌</span>
+              Pinned Posts
+            </h2>
+            <span class="pinned-count">({{ pinned_posts.size }} posts)</span>
+          </div>
+
+          <div class="pinned-section__carousel">
+            <button class="pinned-section__arrow pinned-section__arrow--left" id="carousel-arrow-left" aria-label="Scroll left">
+              ‹
+            </button>
+            <div class="pinned-section__track" id="pinned-carousel-track">
+              {% for post in pinned_posts %}
+              <div class="pinned-section__card">
+                {% include card.html %}
+              </div>
+              {% endfor %}
+            </div>
+            <button class="pinned-section__arrow pinned-section__arrow--right" id="carousel-arrow-right" aria-label="Scroll right">
+              ›
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section Divider -->
+      <div class="container">
+        <div class="section-divider"></div>
+      </div>
+      {% endif %}
+
+      <!-- Chronological Posts Section -->
       <section class="blog">
         <div class="container">
+          <div class="chronological-section__header">
+            <h2>All Posts</h2>
+            <p>Chronological order, newest first</p>
+          </div>
+
           <div class="post-list" itemscope="" itemtype="http://schema.org/Blog">
-
-            {% assign pinned_posts = site.posts | where: "pinned", true %}
-            {% assign regular_posts = site.posts | where_exp: "post", "post.pinned != true" %}
-
-            {% for post in pinned_posts %}
-              {% include card.html %}
-            {% endfor %}
-
-            {% for post in regular_posts %}
+            {% for post in site.posts %}
               {% include card.html %}
             {% endfor %}
 
