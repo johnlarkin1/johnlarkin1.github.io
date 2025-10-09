@@ -906,91 +906,58 @@ function initPinnedCarousel() {
   const $track = $("#pinned-carousel-track");
   if ($track.length === 0) return;
 
-  const $leftArrow = $("#carousel-arrow-left");
-  const $rightArrow = $("#carousel-arrow-right");
+  const trackEl = $track[0];
+  const $left  = $("#carousel-arrow-left");
+  const $right = $("#carousel-arrow-right");
 
-  // Update scroll fade indicators and arrow states
-  function updateScrollIndicators() {
-    const scrollLeft = $track.scrollLeft();
-    const scrollWidth = $track[0].scrollWidth;
-    const clientWidth = $track[0].clientWidth;
-    const maxScroll = scrollWidth - clientWidth;
+  // Prevent duplicate bindings if this is re-initialized
+  $left.off("click.pinned");
+  $right.off("click.pinned");
+  $track.off("scroll.pinned");
 
-    // Update fade indicators
-    if (scrollLeft > 10) {
-      $track.addClass("has-scroll-left");
+  // Helper to calculate max scroll distance
+  const maxScroll = () => Math.max(0, trackEl.scrollWidth - trackEl.clientWidth);
+
+  // Update UI state (arrow buttons, fade indicators)
+  let ticking = false;
+  function updateUI() {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(() => {
+      const sl = $track.scrollLeft();
+      const ms = maxScroll();
+
+      $track.toggleClass("has-scroll-left",  sl > 10);
+      $track.toggleClass("has-scroll-right", sl < ms - 10);
+      $left.prop("disabled",  sl <= 10);
+      $right.prop("disabled", sl >= ms - 10);
+
+      ticking = false;
+    });
+  }
+
+  // Arrow button click handler - scroll by 2 cards
+  function scrollByCards(dir = 1) {
+    const $card = $track.find(".pinned-section__card").first();
+    const cardW = $card.length ? Math.round($card.outerWidth(true)) : Math.round(trackEl.clientWidth * 0.8);
+    const delta = dir < 0 ? -(cardW * 2) : (cardW * 2);
+
+    if (trackEl.scrollBy) {
+      trackEl.scrollBy({ left: delta, behavior: "smooth" });
     } else {
-      $track.removeClass("has-scroll-left");
-    }
-
-    if (scrollLeft < maxScroll - 10) {
-      $track.addClass("has-scroll-right");
-    } else {
-      $track.removeClass("has-scroll-right");
-    }
-
-    // Update arrow states
-    if ($leftArrow.length) {
-      if (scrollLeft <= 10) {
-        $leftArrow.prop("disabled", true);
-      } else {
-        $leftArrow.prop("disabled", false);
-      }
-    }
-
-    if ($rightArrow.length) {
-      if (scrollLeft >= maxScroll - 10) {
-        $rightArrow.prop("disabled", true);
-      } else {
-        $rightArrow.prop("disabled", false);
-      }
+      const target = Math.max(0, Math.min(maxScroll(), $track.scrollLeft() + delta));
+      $track.animate({ scrollLeft: target }, 300);
     }
   }
 
-  // Scroll carousel by a card width
-  function scrollCarousel(direction) {
-    const cardWidth = $track.find(".pinned-section__card").first().outerWidth(true);
-    const scrollAmount = cardWidth * 1.5; // Scroll 1.5 cards at a time
-    const currentScroll = $track.scrollLeft();
+  // Bind arrow button clicks
+  $left.on("click.pinned",  (e) => { e.preventDefault(); scrollByCards(-1); });
+  $right.on("click.pinned", (e) => { e.preventDefault(); scrollByCards(+1); });
 
-    const newScroll = direction === "left"
-      ? currentScroll - scrollAmount
-      : currentScroll + scrollAmount;
+  // Update UI on scroll and resize
+  $track.on("scroll.pinned", updateUI);
+  $(window).on("resize.pinned", updateUI);
 
-    $track.animate({ scrollLeft: newScroll }, 400, "swing");
-  }
-
-  // Arrow click handlers
-  $leftArrow.on("click", function () {
-    scrollCarousel("left");
-  });
-
-  $rightArrow.on("click", function () {
-    scrollCarousel("right");
-  });
-
-  // Mouse wheel horizontal scrolling
-  $track.on("wheel", function (e) {
-    // Prevent default vertical scroll
-    e.preventDefault();
-
-    // Get the scroll amount
-    const delta = e.originalEvent.deltaY || e.originalEvent.deltaX;
-
-    // Scroll horizontally
-    this.scrollLeft += delta;
-  });
-
-  // Update on scroll
-  $track.on("scroll", function () {
-    updateScrollIndicators();
-  });
-
-  // Update on window resize
-  $(window).on("resize", function () {
-    updateScrollIndicators();
-  });
-
-  // Initial check
-  updateScrollIndicators();
+  // Initial state
+  updateUI();
 }
