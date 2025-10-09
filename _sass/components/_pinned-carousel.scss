@@ -1,0 +1,261 @@
+.pinned-section {
+  margin-bottom: 4rem;
+  padding: 2rem 0;
+  border-bottom: 2px solid rgba(88, 55, 245, 0.3);
+  background: linear-gradient(
+    to bottom,
+    rgba(88, 55, 245, 0.05) 0%,
+    transparent 100%
+  );
+
+  &__header {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    padding: 0 1.25rem;
+
+    @include breakpoint($md) {
+      padding: 0;
+    }
+
+    h2 {
+      margin: 0 0 0.25rem 0;
+      font-size: 1.75rem;
+      color: $dark-text;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+
+      .pin-icon {
+        color: #5837F5;
+        font-size: 1.5rem;
+      }
+    }
+
+    .pinned-count {
+      display: block;
+      font-size: 0.875rem;
+      color: rgba(255, 255, 255, 0.6);
+      font-weight: 400;
+    }
+  }
+
+  &__carousel {
+    position: relative;
+    overflow: visible;
+    padding: 0 1.25rem;
+
+    @include breakpoint($md) {
+      padding: 0 3rem; // Space for arrows
+    }
+  }
+
+  &__arrow {
+    display: none;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+    background: rgba(88, 55, 245, 0.9);
+    border: 2px solid rgba(88, 55, 245, 0.5);
+    color: white;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 1.25rem;
+    align-items: center;
+    justify-content: center;
+
+    @include breakpoint($md) {
+      display: flex;
+    }
+
+    &:hover:not(:disabled) {
+      background: rgba(88, 55, 245, 1);
+      box-shadow: 0 4px 12px rgba(88, 55, 245, 0.5);
+      transform: translateY(-50%) scale(1.1);
+    }
+
+    &:disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+      background: rgba(88, 55, 245, 0.3);
+    }
+
+    &--left {
+      left: 0;
+    }
+
+    &--right {
+      right: 0;
+    }
+  }
+
+  &__track {
+    display: flex;
+    gap: 1.5rem;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-behavior: smooth;
+    padding-bottom: 1rem;
+    // Smooth scrolling snap points
+    scroll-snap-type: x proximity;
+
+    // Hide scrollbar but keep functionality
+    scrollbar-width: thin;
+    scrollbar-color: rgba(88, 55, 245, 0.3) transparent;
+
+    &::-webkit-scrollbar {
+      height: 6px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: rgba(88, 55, 245, 0.3);
+      border-radius: 3px;
+
+      &:hover {
+        background: rgba(88, 55, 245, 0.5);
+      }
+    }
+
+    // Fade effect on edges to indicate scrollability
+    &::before,
+    &::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      bottom: 1rem;
+      width: 60px;
+      pointer-events: none;
+      z-index: 2;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    &::before {
+      left: 0;
+      background: linear-gradient(
+        to right,
+        $dark-card-bg 0%,
+        transparent 100%
+      );
+    }
+
+    &::after {
+      right: 0;
+      background: linear-gradient(
+        to left,
+        $dark-card-bg 0%,
+        transparent 100%
+      );
+    }
+
+    &.has-scroll-left::before {
+      opacity: 1;
+    }
+
+    &.has-scroll-right::after {
+      opacity: 1;
+    }
+  }
+
+  &__card {
+    flex: 0 0 auto;
+    width: 320px;
+    scroll-snap-align: start;
+
+    @include breakpoint($sm) {
+      width: 350px;
+    }
+
+    @include breakpoint($md) {
+      width: 380px;
+    }
+
+    // Override default card margins for carousel
+    .post-card {
+      margin-bottom: 0;
+      margin-right: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+
+      // Ensure card content fills the space
+      &__inner {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+      }
+
+      // Make summary text fill remaining space
+      p {
+        flex: 1;
+      }
+    }
+  }
+
+  // Mobile: show fewer cards at once
+  @media (max-width: 768px) {
+    &__track {
+      gap: 1rem;
+    }
+
+    &__card {
+      width: 280px;
+    }
+  }
+}
+
+// Separator between pinned and chronological sections
+.section-divider {
+  margin: 3rem auto 3rem;
+  max-width: 200px;
+  height: 2px;
+  background: linear-gradient(
+    to right,
+    transparent 0%,
+    rgba(255, 255, 255, 0.2) 50%,
+    transparent 100%
+  );
+  position: relative;
+
+  &::before {
+    content: '✦';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: $dark-card-bg;
+    padding: 0 1rem;
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 0.875rem;
+  }
+}
+
+// Chronological section header
+.chronological-section {
+  &__header {
+    text-align: center;
+    margin-bottom: 2rem;
+
+    h2 {
+      font-size: 1.5rem;
+      color: $dark-text;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    p {
+      font-size: 0.875rem;
+      color: rgba(255, 255, 255, 0.6);
+      margin: 0;
+    }
+  }
+}

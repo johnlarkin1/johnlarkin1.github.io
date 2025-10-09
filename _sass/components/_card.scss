@@ -85,6 +85,25 @@
     }
   }
 
+  &__new-badge {
+    background: linear-gradient(135deg, #00D9FF 0%, #0099FF 100%);
+    color: white!important;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-weight: bold;
+    font-size: 0.75rem;
+    display: inline-block;
+    box-shadow: 0 2px 8px rgba(0, 153, 255, 0.3);
+    animation: pulse-new 2s ease-in-out infinite;
+
+    &:focus,
+    &:hover {
+      color: white!important;
+      background: linear-gradient(135deg, #00F0FF 0%, #00AAFF 100%);
+      box-shadow: 0 4px 12px rgba(0, 153, 255, 0.5);
+    }
+  }
+
   &__inner {
     display: block;
     position: relative;
@@ -160,5 +179,56 @@
                   0 0 32px rgba(88, 55, 245, 0.45),
                   0 0 0 1px rgba(255, 255, 255, 0.05);
     }
+  }
+
+  &.new {
+    border: 2px solid #00D9FF;
+    position: relative;
+
+    &:hover {
+      background-color: rgba(0, 217, 255, 0.1);
+      transform: translateY(-4px) scale(1.01);
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.4),
+                  0 0 32px rgba(0, 217, 255, 0.35),
+                  0 0 0 1px rgba(255, 255, 255, 0.05);
+    }
+  }
+
+  // Combination: new AND pinned
+  &.new.pinned {
+    border: 2px solid;
+    border-image: linear-gradient(135deg, #5837F5 0%, #00D9FF 100%) 1;
+
+    &:hover {
+      background: linear-gradient(135deg, rgba(88, 55, 245, 0.1) 0%, rgba(0, 217, 255, 0.1) 100%);
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.4),
+                  0 0 32px rgba(88, 55, 245, 0.3),
+                  0 0 32px rgba(0, 217, 255, 0.3),
+                  0 0 0 1px rgba(255, 255, 255, 0.05);
+    }
+  }
+
+  // Combination: new AND favorite
+  &.new.favorite {
+    border: 2px solid;
+    border-image: linear-gradient(135deg, gold 0%, #00D9FF 100%) 1;
+
+    &:hover {
+      background: linear-gradient(135deg, rgba(255, 215, 0, 0.1) 0%, rgba(0, 217, 255, 0.1) 100%);
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.4),
+                  0 0 32px rgba(255, 215, 0, 0.3),
+                  0 0 32px rgba(0, 217, 255, 0.3),
+                  0 0 0 1px rgba(255, 255, 255, 0.05);
+    }
+  }
+}
+
+// Pulse animation for NEW badge
+@keyframes pulse-new {
+  0%, 100% {
+    box-shadow: 0 2px 8px rgba(0, 153, 255, 0.3);
+  }
+  50% {
+    box-shadow: 0 2px 12px rgba(0, 153, 255, 0.6);
   }
 }
