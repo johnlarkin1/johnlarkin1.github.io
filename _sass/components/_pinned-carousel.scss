@@ -43,11 +43,7 @@
   &__carousel {
     position: relative;
     overflow: visible;
-    padding: 0 1.25rem;
-
-    @include breakpoint($md) {
-      padding: 0 3rem; // Space for arrows
-    }
+    padding: 0;
   }
 
   &__arrow {
@@ -85,23 +81,34 @@
     }
 
     &--left {
-      left: 0;
+      left: -50px; // Position outside the track
     }
 
     &--right {
-      right: 0;
+      right: -50px; // Position outside the track
     }
   }
 
   &__track {
+    position: relative; // anchors ::before/::after fades
     display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap; // no wrapping: creates overflow-x
     gap: 1.5rem;
-    overflow-x: auto;
+    overflow-x: auto; // critical
     overflow-y: hidden;
+    max-width: 100%;
     scroll-behavior: smooth;
-    padding-bottom: 1rem;
-    // Smooth scrolling snap points
     scroll-snap-type: x proximity;
+    -webkit-overflow-scrolling: touch; // iOS momentum
+    overscroll-behavior-x: contain; // prevent parent stealing gesture
+    touch-action: pan-y pan-x; // allow both axes (helps on some browsers)
+    padding-bottom: 1rem;
+    padding-left: 0;
+    padding-right: 0;
+
+    // Ensure children don't expand their own intrinsic width unexpectedly
+    min-width: 0;
 
     // Hide scrollbar but keep functionality
     scrollbar-width: thin;
@@ -166,16 +173,24 @@
   }
 
   &__card {
-    flex: 0 0 auto;
+    flex: 0 0 auto; // never shrink, never grow
     width: 320px;
+    min-width: 320px; // belt & suspenders: guarantees overflow
     scroll-snap-align: start;
 
     @include breakpoint($sm) {
       width: 350px;
+      min-width: 350px;
     }
 
     @include breakpoint($md) {
       width: 380px;
+      min-width: 380px;
+    }
+
+    // if nested flex children exist, prevent "overflow by content" bugs
+    * {
+      min-width: 0;
     }
 
     // Override default card margins for carousel
@@ -209,6 +224,7 @@
 
     &__card {
       width: 280px;
+      min-width: 280px;
     }
   }
 }
