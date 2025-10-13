@@ -1,5 +1,5 @@
 ---
-title: "Disjoint Union Set"
+title: "Disjoint Set Union"
 layout: post
 featured-img: disjoint-set-union
 mathjax: true
@@ -8,7 +8,7 @@ categories: [Algorithms, Rust]
 summary: Looking at a data structure i wasn't familiar with until I got torched in an interview
 ---
 
-Recently, I did an interview. I got absolutely flamed and one of the reasons was I wasn't familiar with a Disjoint Union Set (and I certainly couldn't complete the C++ interview in time building this data structure naturally).
+Recently, I did an interview. I got absolutely flamed and one of the reasons was I wasn't familiar with a Disjoint Set Union (and I certainly couldn't complete the C++ interview in time building this data structure naturally).
 
 I figure I would go back to this and do a deeper dive because I wasn't as familiar with it.
 
@@ -36,7 +36,7 @@ I figure I would go back to this and do a deeper dive because I wasn't as famili
 
 ## What is a Disjoint Set?
 
-A _disjoint set_ or _union find_ or _disjoint union set_ are all the same data structure. It is a data structure that is optimized for handling various set operations and mainly focuses on two methods: `union` and `find` (hence one of the names).
+A _disjoint set_ or _union find_ or _disjoint set union_ are all the same data structure. It is a data structure that is optimized for handling various set operations and mainly focuses on two methods: `union` and `find` (hence one of the names).
 
 The whole goal is: **detecting if a member is in a set, and if sets are connected in a fast and performant manner**.
 
