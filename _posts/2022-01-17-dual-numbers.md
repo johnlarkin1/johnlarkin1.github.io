@@ -98,8 +98,8 @@ d_2 &= a_2 + b_2 \varepsilon \\
 &= \frac{(a_1 + b_1\varepsilon)(a_2 - b_2 \varepsilon)}{(a_2 + b_2 \varepsilon)(a_2 - b_2 \varepsilon)} \\
 &= \frac{a_1 a_2 + (a_2 b_1 - a_1 b_2)\varepsilon  - b_1 b_2 \varepsilon^2 }
 {a_2^2 + a_2 b_2 \varepsilon - a_2 b_2 \varepsilon - b_2^2 \varepsilon^2 } \\
-&= \frac{a_1 a_2 + (a_2 b_1 - a_1 b_2)\varepsilon  - \color{red}{b_1 b_2 \varepsilon^2 }}
-{a_2^2 + \color{red}{a_2 b_2 \varepsilon} - \color{red}{a_2 b_2 \varepsilon} - \color{red}{b_2^2 \varepsilon^2 }} \\
+&= \frac{a_1 a_2 + (a_2 b_1 - a_1 b_2)\varepsilon  - b_1 b_2 \varepsilon^2 }
+{a_2^2 + a_2 b_2 \varepsilon - a_2 b_2 \varepsilon - b_2^2 \varepsilon^2 } \\
 &= \frac{a_1 a_2 + (a_2 b_1 - a_1 b_2)\varepsilon} {a_2^2 } \\
 &= \frac{a_1}{a_2} + \frac{a_2 b_1 - a_1 b_2}{a_2^2} \varepsilon
 \end{align*}
@@ -115,11 +115,11 @@ $$
 \begin{align*}
 d^n &= (a + b \varepsilon)^n \\
 &= \binom{n}{0} a^n (b\varepsilon)^0 + \binom{n}{1}a^{n-1}b\varepsilon + \binom{n}{2}a^{n-2}(b\varepsilon)^2 + \binom{n}{3}a^{n-3}(b\varepsilon)^3 + \ldots \\
-&= \binom{n}{0}a^n (b\varepsilon)^0 + \binom{n}{1}a^{n-1}b\varepsilon + \color{red}{\binom{n}{2}a^{n-2}(b\varepsilon)^2} + \color{red}{\binom{n}{3}a^{n-3}(b\varepsilon)^3} + \color{red}{\ldots} \\
+&= \binom{n}{0}a^n (b\varepsilon)^0 + \binom{n}{1}a^{n-1}b\varepsilon + \binom{n}{2}a^{n-2}(b\varepsilon)^2 + \binom{n}{3}a^{n-3}(b\varepsilon)^3 + \ldots \\
 &= \binom{n}{0}a^n (b\varepsilon)^0 + \binom{n}{1}a^{n-1}b\varepsilon \\
 &= \frac{n!}{0!(n-0)!}a^n \cdot 1 + \frac{n!}{1!(n-1)!}a^{n-1}b\varepsilon \\
 &= \frac{n!}{n!}a^n + \frac{n \cdot (n-1)!}{(n-1)!}a^{n-1}b\varepsilon \\
-&= \color{red}{\frac{n!}{n!}}a^n + \frac{n \cdot \color{red}{(n-1)!}}{\color{red}{(n-1)!}}a^{n-1}b\varepsilon \\
+&= \frac{n!}{n!}a^n + \frac{n \cdot (n-1)!}{(n-1)!}a^{n-1}b\varepsilon \\
 &= a^n + na^{n-1}b\varepsilon \\
 \end{align*}
 $$
@@ -183,7 +183,7 @@ $$
 
 $$
 \begin{align*}
-f'(g(x))g'(x) &= \frac{2x^2\color{red}{\varepsilon}}{\color{red}{\varepsilon}}\frac{2x\color{red}{\varepsilon}}{\color{red}{\varepsilon}} \\
+f'(g(x))g'(x) &= \frac{2x^2\varepsilon}{\varepsilon}\frac{2x\varepsilon}{\varepsilon} \\
 f'(g(x))g'(x) &= 2x^2 \cdot 2x \\
 f'(g(x))g'(x) &= 4x^3
 \end{align*}
