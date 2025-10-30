@@ -2,6 +2,7 @@ window.jQuery = window.$ = require("jquery");
 require("velocity-animate/velocity.js");
 require("lazysizes");
 require("lazysizes/plugins/unveilhooks/ls.unveilhooks.js");
+require("./pyodide-runner.js");
 
 // Jquery & Velocity JS included in GULP
 $(document).ready(function () {
@@ -16,6 +17,11 @@ $(document).ready(function () {
   initCodeToggle();
   initNewBadges();
   initPinnedCarousel();
+
+  // Initialize Python runners if present
+  if ($(".interactive-python").length > 0) {
+    initPythonRunners();
+  }
 });
 
 // Close modal if ESC is pressed
