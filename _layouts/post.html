@@ -22,7 +22,11 @@ layout: compress
   {% if page.featured-img %}
   <div class="hero lazyload" data-bg="{{ site.url }}{{ site.baseurl }}/assets/img/posts/{{ page.featured-img }}.jpg">
   {% elsif page.featured-gif %}
+    {% if page.featured-gif contains "http" %}
+  <div class="hero lazyload" data-bg="{{ page.featured-gif }}">
+    {% else %}
   <div class="hero lazyload" data-bg="{{ site.url }}{{ site.baseurl }}/assets/gif/{{ page.featured-gif }}.gif">
+    {% endif %}
   {% else %}
   <div class="hero dark-bg">
   {% endif %}
@@ -166,6 +170,14 @@ layout: compress
   {% include mathjax.html %}
   {% if page.mermaid %}
   {% include mermaid.html %}
+  {% endif %}
+  {% if page.python-interactive %}
+  <!-- Prism.js for syntax highlighting -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+  <!-- Pyodide for Python execution -->
+  <script src="https://cdn.jsdelivr.net/pyodide/v0.29.0/full/pyodide.js"></script>
   {% endif %}
 </body>
 
