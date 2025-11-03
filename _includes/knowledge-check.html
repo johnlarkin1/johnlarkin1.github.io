@@ -1,0 +1,67 @@
+{%- comment -%}
+Usage:
+{% include knowledge-check.html
+     id="build-pipeline"
+     question="Which command runs the full build pipeline for this site?"
+     prompt="Choose the best answer."
+     options="npm run build|true|Runs Sass, JS bundling, image optimization, Jekyll, and critical CSS;;bundle exec jekyll serve --livereload|false|Convenience server only rebuilds pages;;npm run watch|false|File watchers skip minification and service worker refresh"
+     explanation="`npm run build` ensures assets and the service worker stay in sync before deploying."
+%}
+Options must be separated with `;;` and include `text|is_correct|optional feedback`.
+Pass a unique `id` if you use the same question more than once.
+{%- endcomment -%}
+
+{% assign base_id = include.id | default: include.question | default: "quiz" %}
+{% assign quiz_id = base_id | slugify: "latin" %}
+
+<div class="markdown-quiz" data-quiz-id="{{ quiz_id }}">
+  <span class="markdown-quiz__eyebrow">
+    {{ include.label | default: "Knowledge check" }}
+  </span>
+
+  {% if include.heading_tag %}
+    <{{ include.heading_tag }} class="markdown-quiz__question">{{ include.question | default: "What do you think?" }}</{{ include.heading_tag }}>
+  {% else %}
+    <h3 class="markdown-quiz__question">{{ include.question | default: "What do you think?" }}</h3>
+  {% endif %}
+
+  {% if include.prompt %}
+    <p class="markdown-quiz__prompt">{{ include.prompt }}</p>
+  {% endif %}
+
+  {% assign raw_options = include.options | default: "" | split: ";;" %}
+  <ol class="markdown-quiz__choices">
+    {% for raw_option in raw_options %}
+      {% assign option_parts = raw_option | split: "|" %}
+      {% assign option_text = option_parts[0] | strip %}
+      {% unless option_text == "" %}
+        {% assign option_correct = option_parts[1] | strip | default: "false" %}
+        {% assign option_feedback = option_parts[2] | strip | default: "" %}
+        {% assign input_id = quiz_id | append: "-choice-" | append: forloop.index %}
+        <li class="markdown-quiz__option" data-correct="{{ option_correct }}"{% if option_feedback != "" %} data-feedback="{{ option_feedback | escape }}"{% endif %}>
+          <label for="{{ input_id }}">
+            <input type="radio" name="{{ quiz_id }}" id="{{ input_id }}" value="{{ option_text | escape }}">
+            <span>{{ option_text }}</span>
+          </label>
+        </li>
+      {% endunless %}
+    {% endfor %}
+  </ol>
+
+  <div class="markdown-quiz__actions">
+    <button class="markdown-quiz__submit" type="button">
+      {{ include.submit_label | default: "Check answer" }}
+    </button>
+    <button class="markdown-quiz__reset" type="button">
+      {{ include.reset_label | default: "Try again" }}
+    </button>
+  </div>
+
+  <div class="markdown-quiz__feedback" role="status" aria-live="polite"></div>
+
+  {% if include.explanation %}
+    <div class="markdown-quiz__explanation" hidden>
+      {{ include.explanation }}
+    </div>
+  {% endif %}
+</div>

@@ -1,0 +1,284 @@
+.markdown-quiz {
+  position: relative;
+  margin: 2rem 0;
+  padding: 1.5rem 1.75rem;
+  background-color: $quiz-bg;
+  border: 1px solid $quiz-border;
+  border-left: .35rem solid $primary;
+  border-radius: .75rem;
+  box-shadow: 0 .75rem 2rem rgba($reverse, 0.05);
+  transition: border-color .2s ease, box-shadow .2s ease, transform .2s ease;
+
+  @media (prefers-color-scheme: dark) {
+    background-color: rgba(255, 255, 255, 0.04);
+    border-color: rgba(255, 255, 255, 0.12);
+    border-left-color: lighten($primary, 12%);
+    box-shadow: none;
+  }
+
+  &.is-correct {
+    border-left-color: $quiz-correct;
+  }
+
+  &.is-incorrect {
+    border-left-color: $quiz-incorrect;
+  }
+}
+
+.markdown-quiz__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+  margin-bottom: .5rem;
+  padding: .35rem .75rem;
+  font-size: .7rem;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: $primary;
+  background: rgba($primary, 0.12);
+  border-radius: 999px;
+
+  @media (prefers-color-scheme: dark) {
+    color: lighten($primary, 18%);
+    background: rgba(255, 255, 255, 0.06);
+  }
+}
+
+.markdown-quiz__question {
+  margin: 0 0 .75rem;
+  color: $heading-color;
+  font-size: 1.1rem;
+  line-height: 1.4;
+
+  @media (prefers-color-scheme: dark) {
+    color: #fff;
+  }
+}
+
+.markdown-quiz__prompt {
+  margin-bottom: 1rem;
+  color: $text-color;
+  font-size: .95rem;
+  line-height: 1.6;
+
+  @media (prefers-color-scheme: dark) {
+    color: rgba(255, 255, 255, 0.78);
+  }
+}
+
+.markdown-quiz__choices {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  counter-reset: quiz-choice;
+}
+
+.markdown-quiz__option {
+  position: relative;
+  counter-increment: quiz-choice;
+  margin-top: .9rem;
+  background: $quiz-option-bg;
+  border: 1px solid $quiz-option-border;
+  border-radius: .65rem;
+  transition: border-color .2s ease, box-shadow .2s ease, transform .2s ease, background-color .2s ease;
+
+  @media (prefers-color-scheme: dark) {
+    background: rgba(255, 255, 255, 0.03);
+    border-color: rgba(255, 255, 255, 0.08);
+  }
+
+  &:first-child {
+    margin-top: 0;
+  }
+
+  &:hover {
+    border-color: mix($primary, $reverse, 40%);
+    box-shadow: 0 .85rem 1.4rem rgba($primary, 0.12);
+    transform: translateY(-1px);
+
+    @media (prefers-color-scheme: dark) {
+      box-shadow: none;
+      background: rgba(255, 255, 255, 0.06);
+    }
+  }
+
+  &.is-selected {
+    border-color: $primary;
+    background: $quiz-option-hover;
+
+    @media (prefers-color-scheme: dark) {
+      background: rgba(255, 255, 255, 0.08);
+    }
+  }
+
+  &.is-answer {
+    border-color: $quiz-correct;
+    background: mix(#fff, $quiz-correct, 88%);
+    box-shadow: 0 .9rem 1.6rem rgba($quiz-correct, 0.18);
+
+    @media (prefers-color-scheme: dark) {
+      background: rgba($quiz-correct, 0.18);
+      box-shadow: none;
+    }
+  }
+
+  &.is-wrong {
+    border-color: $quiz-incorrect;
+    background: mix(#fff, $quiz-incorrect, 90%);
+
+    @media (prefers-color-scheme: dark) {
+      background: rgba($quiz-incorrect, 0.15);
+    }
+  }
+}
+
+.markdown-quiz__option label {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1rem 1.1rem;
+  cursor: pointer;
+  width: 100%;
+}
+
+.markdown-quiz__option label::before {
+  content: counter(quiz-choice, upper-alpha);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2rem;
+  height: 2rem;
+  margin-top: .1rem;
+  font-weight: 700;
+  color: $primary;
+  background: rgba($primary, 0.12);
+  border-radius: 50%;
+  flex-shrink: 0;
+
+  @media (prefers-color-scheme: dark) {
+    color: lighten($primary, 18%);
+    background: rgba(255, 255, 255, 0.08);
+  }
+}
+
+.markdown-quiz__option input[type="radio"] {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.markdown-quiz__option span {
+  display: block;
+  color: $text-color;
+  font-size: .95rem;
+  line-height: 1.6;
+
+  @media (prefers-color-scheme: dark) {
+    color: rgba(255, 255, 255, 0.86);
+  }
+}
+
+.markdown-quiz__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .75rem;
+  margin-top: 1.35rem;
+}
+
+.markdown-quiz__submit,
+.markdown-quiz__reset {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: .45rem;
+  padding: .8rem 1.35rem;
+  font-size: .8rem;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  border-radius: .5rem;
+  cursor: pointer;
+  border: 0;
+  transition: background-color .2s ease, color .2s ease, border-color .2s ease, transform .2s ease;
+}
+
+.markdown-quiz__submit {
+  color: #fff;
+  background: $primary;
+  box-shadow: 0 .7rem 1.8rem rgba($primary, 0.18);
+
+  &:hover {
+    background: darken($primary, 6%);
+    transform: translateY(-1px);
+  }
+
+  &:focus-visible {
+    outline: 3px solid rgba($primary, 0.3);
+    outline-offset: 3px;
+  }
+}
+
+.markdown-quiz__reset {
+  color: $reverse;
+  background: transparent;
+  border: 1px solid rgba($reverse, 0.25);
+
+  &:hover {
+    border-color: $reverse;
+    background: rgba($reverse, 0.05);
+  }
+
+  &:focus-visible {
+    outline: 3px solid rgba($reverse, 0.2);
+    outline-offset: 3px;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    color: rgba(255, 255, 255, 0.86);
+    border-color: rgba(255, 255, 255, 0.18);
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.08);
+    }
+  }
+}
+
+.markdown-quiz__feedback {
+  margin-top: 1.15rem;
+  font-size: .95rem;
+  font-weight: 600;
+  color: $reverse;
+  min-height: 1.3rem;
+
+  @media (prefers-color-scheme: dark) {
+    color: rgba(255, 255, 255, 0.92);
+  }
+}
+
+.markdown-quiz.is-correct .markdown-quiz__feedback {
+  color: $quiz-correct;
+}
+
+.markdown-quiz.is-incorrect .markdown-quiz__feedback {
+  color: $quiz-incorrect;
+}
+
+.markdown-quiz__explanation {
+  margin-top: 1rem;
+  padding: 1rem 1.1rem;
+  border-radius: .65rem;
+  background: rgba($reverse, 0.04);
+  font-size: .9rem;
+  line-height: 1.6;
+  color: $text-color;
+
+  @media (prefers-color-scheme: dark) {
+    background: rgba(255, 255, 255, 0.06);
+    color: rgba(255, 255, 255, 0.8);
+  }
+}
+
+.markdown-quiz__explanation[hidden] {
+  display: none;
+}

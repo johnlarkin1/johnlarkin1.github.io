@@ -1,13 +1,42 @@
 ---
-title: "Exploring Muon"
+title: "Understanding Muon"
 layout: post
-featured-img:
+featured-video: https://www.dropbox.com/scl/fi/ab5xnne68vyeh72bn0v0w/muon-overview.gif?rlkey=90svhpf5kxyr4kwsxygbcxm1d&st=s0pff4xs&raw=1
+featured-poster: https://www.dropbox.com/scl/fi/ab5xnne68vyeh72bn0v0w/muon-overview.gif?rlkey=90svhpf5kxyr4kwsxygbcxm1d&st=s0pff4xs&raw=1
+featured-gif: https://www.dropbox.com/scl/fi/ab5xnne68vyeh72bn0v0w/muon-overview.gif?rlkey=90svhpf5kxyr4kwsxygbcxm1d&st=s0pff4xs&raw=1
 mathjax: true
 pinned: false
 python-interactive: true
 categories: [Algorithms, A.I., M.L.]
-summary: Deep diving into one element of Karpathy's nanochat
+summary: Deep diving into one element of Karpathy's nanochat - a trending optimizer
 ---
+
+<div class="markdown-alert markdown-alert-note">
+<p>So while I tried to mainly focus on optimizers, this post kinda splayed out some. It was my first time trying <b><a href="https://pyodide.org/en/stable/">Pyodide</a></b> and incorporating that logic into my blog. It was my first time using <b><a href="https://docs.manim.community/en/stable/">manim</a></b>, which was exciting because I'm a big fan of the 3Blue1Brown channel. I also introduced quizzes (see AdamW section) for more interactivity. All of this is open source though, so if you have any questions, I'd be flattered if you emailed, but obviously you can just ask ChatGPT / Claude. 
+</p>
+</div>
+
+<br>
+
+# Motivating Visualization 
+
+<div class="video-container">
+  <div class="video-wrapper-dark">
+    <video 
+      src="https://www.dropbox.com/scl/fi/399366yvev1jq03cvmu5w/muon-overview.mp4?rlkey=w8sh3t2ucnvboo4l72apzfmdj&st=vvvy6k3s&raw=1"
+      muted
+      autoplay
+      loop
+      controls
+      style="width: 100%; height: auto;">
+    </video>
+  </div>
+</div>
+
+<div class="image-caption">Read on to understand the above visualization. My manim skills aren't fantastic so the timing of above could be improved.</div>
+<br>
+
+Today, we're going to try and understand as much of this animation as possible. We'll cover optimizers as a construct, look at an example, take a walk through history (again high level) and then we'll investigate Muon, which is a more recent optimizer that has been sweeping the community. Note, we will not cover Newton-Schulz iteration or approximation of the SVD calc, but I'm hoping to cover that in another blog post. 
 
 # Background
 
@@ -19,21 +48,47 @@ This post is going to try and take you as close from $0 \to 1$ as possible (one 
 
 # Table of Contents
 
+- [Motivating Visualization](#motivating-visualization)
 - [Background](#background)
 - [Table of Contents](#table-of-contents)
 - [(optional) Reading + Videos](#optional-reading--videos)
 - [1. Deep Learning](#1-deep-learning)
-- [Optimizers](#optimizers)
+- [Tour of Popular Optimizers](#tour-of-popular-optimizers)
   - [Loss Function](#loss-function)
     - [Visualization](#visualization)
   - [Stochastic Gradient Descent](#stochastic-gradient-descent)
   - [SGD with Momentum](#sgd-with-momentum)
     - [Computational Cost of Momentum](#computational-cost-of-momentum)
+    - [Variations](#variations)
   - [Adaptive Learning Rates (AdaGrad / RMSProp)](#adaptive-learning-rates-adagrad--rmsprop)
-    - [AdaGrad](#adagrad)
-    - [RMSProp](#rmsprop)
-  - [Bias Correction (meet Adam)](#bias-correction-meet-adam)
-  - [Weight Decay Coupling (the "W" in AdamW)](#weight-decay-coupling-the-w-in-adamw)
+    - [AdaGrad (2010)](#adagrad-2010)
+      - [Variations](#variations-1)
+    - [RMSProp (2012)](#rmsprop-2012)
+      - [Variations](#variations-2)
+  - [Bias Correction (finally meeting Adam Optimizer, 2015)](#bias-correction-finally-meeting-adam-optimizer-2015)
+    - [Comparison so Far](#comparison-so-far)
+    - [Plain English](#plain-english)
+    - [Viz](#viz)
+  - [Weight Decay Coupling (the "W" in AdamW, 2017)](#weight-decay-coupling-the-w-in-adamw-2017)
+    - [L2 Regularization](#l2-regularization)
+    - [Viz](#viz-1)
+- [----- params -----](#------params------)
+- [Adam / AdamW hyperparams](#adam--adamw-hyperparams)
+- [----- runs -----](#------runs------)
+- [----- viz -----](#------viz------)
+- [Muon (MomentUm Orthogonalized by Newton-Schulz) (2025)](#muon-momentum-orthogonalized-by-newton-schulz-2025)
+  - [Theory](#theory)
+    - [Odd Polynomial Matrix](#odd-polynomial-matrix)
+    - [Newton-Schulz Iteration](#newton-schulz-iteration)
+    - [Overview](#overview)
+  - [Implementation](#implementation)
+- [----- params -----](#------params-------1)
+- [Adam / AdamW hyperparams](#adam--adamw-hyperparams-1)
+- [----- runs -----](#------runs-------1)
+- [===== Muon (minimal integration; assumes your run\_muon\_muonshot handles shape) =====](#-muon-minimal-integration-assumes-your-run_muon_muonshot-handles-shape-)
+- [----- viz -----](#------viz-------1)
+- [Muon trace (minimal additional plotting)](#muon-trace-minimal-additional-plotting)
+- [Conclusion](#conclusion)
 
 # (optional) Reading + Videos
 
@@ -82,7 +137,7 @@ Here is a high level visualization of what's happening:
 
 Note, that $ \eta $ here is the learning rate.
 
-# Optimizers
+# Tour of Popular Optimizers
 
 Ok the canonical example with optimizers is that we're basically trying to find the lowest point in a valley. This is assuming our search space is $\mathbb{R}^3$ really but that's fine for now.
 
@@ -404,6 +459,11 @@ That `v` didn't exist before with standard SGD.
 
 This is a general tradeoff that we'll need to think about optimizer design. We need to be thinking about this on a massive magnitude of training and that each operation has significant impact leading to real $ signs.
 
+### Variations
+
+I won't go into these in detail, but as with everything, there are numerous variations. 
+
+* [Nesterov momentum (a.k.a NAG)][nag]
 
 ## Adaptive Learning Rates (AdaGrad / RMSProp)
 
@@ -411,7 +471,7 @@ Great, so momentum is going to help us smooth learning. The next area of improve
 
 This section is where the math starts to get a bit more interesting. 
 
-### AdaGrad
+### AdaGrad (2010)
 
 Adaptive gradient came first. [Here's the original paper][adagrad-paper] written in 2010 by John Duchi, Elad Hazan, and Yoram Singer.
 
@@ -446,7 +506,10 @@ I am not going to try and do a 3D visualization given those take me awhile to ge
 <pre><code class="language-python">
 import numpy as np
 import matplotlib.pyplot as plt
+from sympy import Matrix, pprint, init_printing
 from itertools import product
+from IPython.display import display
+init_printing(use_unicode=True)
 
 def styblinski_tang_fn(x: float, y: float) -> float:
     return 0.5 * ((x**4 - 16 * x**2 + 5 * x) + (y**4 - 16 * y**2 + 5 * y))
@@ -492,10 +555,18 @@ def run_adagrad(theta0, eta=0.40, eps=1e-8, steps=1200):
     theta = np.array(theta0, float)
     r = np.zeros_like(theta)         
     path = [theta.copy()]
-    for _ in range(steps):
+    for step in range(steps):
         g = styblinski_tang_grad(*theta)
         r = r + g * g
         lr = eta / (np.sqrt(r) + eps) # elementwise effective LR
+        if step % 100 == 0 and step < 600:
+            D = np.diag(r)
+            print(f"\nStep {step}:  Dt = diag(r_step)")
+            display(Matrix(D))
+        if step == steps - 1:
+            D = np.diag(r)
+            print(f"\nFinal Step {step}:  Dt = diag(r_step)")
+            display(Matrix(D))
         theta = theta - lr * g
         path.append(theta.copy())
     return np.array(path)
@@ -551,18 +622,1177 @@ plt.show()
 
 </div>
 
-So again
+#### Variations
 
-### RMSProp
+Arguably, RMSProp is a deviation of AdaGrad, but... i decided to split it out given how talked about RMSProp is. 
 
+However, similar to AdaGrad, there's also 
+
+* [AdaDelta][adadelta]
+  * basically does an exponential weighted average
+
+### RMSProp (2012)
+
+RMSProp, or Root Mean Square Propagation, allows the effective learning rate to increase or decrease. It cuts away from the effeective LR monotonically shrinking.
+
+Confusingly but importantly, RMSProp is identical to AdaDelta just withohut the running average for parameter updates. 
+
+The whole notion of RMSProp is that we keep an **exponential weighted moving average** (EMA) of recent gradients per parameter.
+
+We scale the raw gradient by the inverse root of that EMA. 
+
+In other words,
+
+$$ \begin{align}
+s_t &= \rho s_{t-1} + (1-\rho) g_t^2 \\
+\theta_{t+1} &= \theta_t - \eta \frac{g_t}{\sqrt{s_t} + \varepsilon}
+\end{align}$$
+
+Sometimes people use $\beta$ instead of $\rho$. But here is what these mean:
+
+* $s_t$ - accumulated moving average of squared gradients at time $t$
+* $\rho$ - the decay rate, typically between 0.9 and 0.99
+* $g(t)$ - still represents our gradient at time $t$
+
+And once again, for matrix math, similar to AdaGrad we can play a similar game with vectorizing it:
+
+$$ \theta_{t+1} = \theta_{t} - \eta \tilde{D}_t^{-\frac{1}{2}} g_t $$
+where 
+$$ \tilde{D}_t = \text{diag}(s_t + \varepsilon)$$
+
+So the total result is that we have large, consistently-steep coords get downscaled, and quiet coords get a healthier step. By using a moving window, step sizes don't vanish over time. 
+
+The EMA is meant to focus on recent gradients, and maintains steady effective learning rate while preventing premature decay. With AdaGrad, effective LR monotonically shrinks and can stall on long runs. 
 
 Again, I am not going to try and do a 3D visualization given those take me awhile to get to an acceptable place.
 
-## Bias Correction (meet Adam)
+<div class="interactive-python">
+<pre><code class="language-python">
+import numpy as np
+import matplotlib.pyplot as plt
+from itertools import product
+from sympy import Matrix
+from IPython.display import display
+
+def styblinski_tang_fn(x: float, y: float) -> float:
+    return 0.5 * ((x**4 - 16 * x**2 + 5 * x) + (y**4 - 16 * y**2 + 5 * y))
 
 
+def styblinski_tang_grad(x: float, y: float) -> np.ndarray:
+    dfx = 2 * x**3 - 16 * x + 2.5
+    dfy = 2 * y**3 - 16 * y + 2.5
+    return np.array([dfx, dfy], dtype=float)
 
-## Weight Decay Coupling (the "W" in AdamW)
+
+def stationary_points_and_global_min():
+    roots = np.roots([2.0, 0.0, -16.0, 2.5])
+    roots = np.real(roots[np.isreal(roots)])
+    minima_1d = [r for r in roots if (6 * r * r - 16) > 0]
+    mins2d = np.array(list(product(minima_1d, repeat=2)), dtype=float)
+    vals = np.array([styblinski_tang_fn(x, y) for x, y in mins2d])
+    gidx = np.argmin(vals)
+    return mins2d, mins2d[gidx], vals[gidx]
+
+
+def run_sgd(theta0, eta=0.02, steps=1200):
+    theta = np.array(theta0, float)
+    path = [theta.copy()]
+    for _ in range(steps):
+        theta -= eta * styblinski_tang_grad(*theta)
+        path.append(theta.copy())
+    return np.array(path)
+
+
+def run_momentum(theta0, eta=0.02, beta=0.90, steps=1200):
+    theta = np.array(theta0, float)
+    v = np.zeros_like(theta)
+    path = [theta.copy()]
+    for _ in range(steps):
+        g = styblinski_tang_grad(*theta)
+        v = beta * v - eta * g
+        theta = theta + v
+        path.append(theta.copy())
+    return np.array(path)
+
+
+def run_adagrad(theta0, eta=0.40, eps=1e-8, steps=1200):
+    theta = np.array(theta0, float)
+    r = np.zeros_like(theta)
+    path = [theta.copy()]
+    for _ in range(steps):
+        g = styblinski_tang_grad(*theta)
+        r = r + g * g
+        lr_eff = eta / (np.sqrt(r) + eps)
+        theta = theta - lr_eff * g
+        path.append(theta.copy())
+    return np.array(path)
+
+def run_rmsprop(theta0, eta=1e-2, rho=0.9, eps=1e-8, steps=1200):
+    """
+    s_t = rho * s_{t-1} + (1 - rho) * g_t^2
+    theta <- theta - eta * g_t / (sqrt(s_t) + eps)
+    """
+    theta = np.array(theta0, float)
+    s = np.zeros_like(theta)
+    path = [theta.copy()]
+    for step in range(steps):
+        g = styblinski_tang_grad(*theta)
+        s = rho * s + (1 - rho) * (g * g)
+        if step % 100 == 0 and step < 600:
+            S = np.diag(s)
+            print(f"\nStep {step}:  s_t (EMA of squared gradients)")
+            display(Matrix(S))
+        if step == steps - 1:
+            S = np.diag(s)
+            print(f"\nFinal Step {step}:  s_t (EMA of squared gradients)")
+            display(Matrix(S))
+        theta = theta - eta * g / (np.sqrt(s) + eps)
+        path.append(theta.copy())
+    return np.array(path)
+
+def run_rmsprop_centered(theta0, eta=1e-2, rho=0.9, eps=1e-8, steps=1200):
+    """
+    m_t = rho * m_{t-1} + (1 - rho) * g_t
+    s_t = rho * s_{t-1} + (1 - rho) * g_t^2
+    denom = sqrt(s_t - m_t^2) + eps   # variance-based
+    """
+    theta = np.array(theta0, float)
+    m = np.zeros_like(theta)
+    s = np.zeros_like(theta)
+    path = [theta.copy()]
+    for _ in range(steps):
+        g = styblinski_tang_grad(*theta)
+        m = rho * m + (1 - rho) * g
+        s = rho * s + (1 - rho) * (g * g)
+        denom = np.sqrt(np.maximum(s - m * m, 0.0)) + eps
+        theta = theta - eta * g / denom
+        path.append(theta.copy())
+    return np.array(path)
+
+
+theta_start = np.array([4.1, 4.5], dtype=float)
+steps = 1200
+
+eta_sgd = 0.02
+eta_mom, beta = 0.02, 0.90
+eta_adagrad = 0.40
+eta_rms, rho, eps = 1e-2, 0.9, 1e-8
+eta_rms_c = 1e-2
+
+sgd_path = run_sgd(theta_start, eta=eta_sgd, steps=steps)
+mom_path = run_momentum(theta_start, eta=eta_mom, beta=beta, steps=steps)
+ada_path = run_adagrad(theta_start, eta=eta_adagrad, steps=steps)
+rms_path = run_rmsprop(theta_start, eta=eta_rms, rho=rho, eps=eps, steps=steps)
+rmsc_path = run_rmsprop_centered(theta_start, eta=eta_rms_c, rho=rho, eps=eps, steps=steps)
+
+mins2d, gmin_pt, gmin_val = stationary_points_and_global_min()
+
+x = y = np.linspace(-5, 5, 400)
+X, Y = np.meshgrid(x, y)
+Z = styblinski_tang_fn(X, Y)
+
+plt.figure(figsize=(9, 8))
+cs = plt.contour(X, Y, Z, levels=50, alpha=0.85)
+plt.clabel(cs, inline=True, fmt="%.0f", fontsize=7)
+
+plt.plot(sgd_path[:, 0], sgd_path[:, 1], '.-', lw=1.2, ms=3, label='SGD')
+plt.plot(mom_path[:, 0], mom_path[:, 1], '.-', lw=1.2, ms=3, label=f'Momentum (β={beta})')
+plt.plot(ada_path[:, 0], ada_path[:, 1], '.-', lw=1.2, ms=3, label='AdaGrad')
+plt.plot(rms_path[:, 0], rms_path[:, 1], '.-', lw=1.2, ms=3, label=f'RMSProp (ρ={rho})')
+plt.plot(rmsc_path[:, 0], rmsc_path[:, 1], '.-', lw=1.2, ms=3, label='RMSProp (centered)')
+
+plt.scatter(sgd_path[0, 0], sgd_path[0, 1], s=80, label='Start', zorder=3)
+plt.scatter(sgd_path[-1, 0], sgd_path[-1, 1], s=60, label='SGD End', zorder=3)
+plt.scatter(mom_path[-1, 0], mom_path[-1, 1], s=60, label='Momentum End', zorder=3)
+plt.scatter(ada_path[-1, 0], ada_path[-1, 1], s=60, label='AdaGrad End', zorder=3)
+plt.scatter(rms_path[-1, 0], rms_path[-1, 1], s=60, label='RMSProp End', zorder=3)
+plt.scatter(rmsc_path[-1, 0], rmsc_path[-1, 1], s=60, label='RMSProp (centered) End', zorder=3)
+
+vals = np.array([styblinski_tang_fn(x0, y0) for x0, y0 in mins2d])
+mask = np.ones(len(mins2d), dtype=bool)
+mask[np.argmin(vals)] = False
+if np.any(mask):
+    plt.scatter(mins2d[mask, 0], mins2d[mask, 1],
+                marker='v', s=120, edgecolor='k', facecolor='white',
+                label='Local minima', zorder=4)
+plt.scatter(gmin_pt[0], gmin_pt[1], marker='*', s=220, edgecolor='k',
+            facecolor='gold', label=f'Global min ({gmin_pt[0]:.4f}, {gmin_pt[1]:.4f})\n f={gmin_val:.4f}', zorder=5)
+
+plt.title("SGD vs Momentum vs AdaGrad vs RMSProp (and Centered) on Styblinski–Tang")
+plt.xlabel("x")
+plt.ylabel("y")
+plt.legend(loc='lower right')
+plt.grid(alpha=0.3)
+plt.tight_layout()
+plt.show()
+</code></pre>
+
+</div>
+
+Again, the important code part is here:
+
+```python
+def run_rmsprop(theta0, eta=1e-2, rho=0.9, eps=1e-8, steps=1200):
+    """
+    s_t = rho * s_{t-1} + (1 - rho) * g_t^2
+    theta <- theta - eta * g_t / (sqrt(s_t) + eps)
+    """
+    theta = np.array(theta0, float)
+    s = np.zeros_like(theta)
+    path = [theta.copy()]
+    for step in range(steps):
+        g = styblinski_tang_grad(*theta)
+        s = rho * s + (1 - rho) * (g * g)
+        if step % 100 == 0 and step < 600:
+            S = np.diag(s)
+            print(f"\nStep {step}:  s_t (EMA of squared gradients)")
+            display(Matrix(S))
+        if step == steps - 1:
+            S = np.diag(s)
+            print(f"\nFinal Step {step}:  s_t (EMA of squared gradients)")
+            display(Matrix(S))
+        theta = theta - eta * g / (np.sqrt(s) + eps)
+        path.append(theta.copy())
+    return np.array(path)
+```
+
+#### Variations
+
+* RMSProp (centered)
+
+## Bias Correction (finally meeting Adam Optimizer, 2015)
+
+RMSProp is fantastic but still subject to getting caught in local minima. 
+
+Ok finally in 2015 people introduced [Adam][adam-paper]. This is basically marrying the momentum portions along with the utilization of the first two moments from RMSProp / AdaGrad. However, a key introduced is bias-correcting the EMAs because they start at zero and are biased early. Our update uses the **direction** $\hat{m}_t$ and the **scale** $\sqrt{\hat{v_t}}$.
+
+Mathematically, we now have:
+
+* **momentum** part (exp avg of raw gradients, our first moment (i.e. understanding magnitude of gradient updates)) $$ m_t = \beta_1 m_{t-1} + (1-\beta_1) g_t $$
+* **rms prop** part (exp avg of squared gradients, our second moment (i.e. understanding energy / dispersion of gradient updates)) $$ v_t = \beta_2 v_{t-1} + (1 - \beta_2) g_t^2 $$
+* **bias correction** part (new) - getting around the fact that both are starting from 0, so divde by $ 1 - \beta_i^t $ $$ \hat{m}_t = \frac{m_t}{1- \beta_1^t} \qquad \hat{v}_t = \frac{v_t}{1-\beta_2^t} $$
+
+with our final update being:
+
+$$ \theta_{t+1} = \theta_t - \eta \frac{\hat{m_t}}{\sqrt{\hat{v_t}}+\varepsilon} $$
+
+Again, same thing with the vectorization, we're always just modifying our $D$ matrix:
+
+$$ \theta_{t+1} = \theta_t - \eta D_{t}^{-\frac{1}{2}}\hat{m}_t, \quad D_t = \text{diag}(\hat{v}_t + \varepsilon) $$
+
+### Comparison so Far
+
+I had ChatGPT create this table which does a good job of understanding the nuances between:
+
+| Optimizer              | Tracks mean of gradients?                   | Tracks mean of squared gradients?             | Bias correction?         | Update uses                                                                      |
+| ---------------------- | ------------------------------------------- | --------------------------------------------- | ------------------------ | -------------------------------------------------------------------------------- |
+| **Momentum (Polyak)**  | ✅ $m_t = \beta m_{t-1} + (1-\beta) g_t$     | ❌                                             | ❌                        | $ \theta_{t+1} = \theta_t - \eta m_t $                                           |
+| **RMSProp (Hinton)**   | ❌                                           | ✅ $s_t = \rho s_{t-1} + (1-\rho) g_t^2$       | ❌                        | $ \theta_{t+1} = \theta_t - \eta \dfrac{g_t}{\sqrt{s_t}+\varepsilon} $           |
+| **Adam (Kingma & Ba)** | ✅ $m_t = \beta_1 m_{t-1} + (1-\beta_1) g_t$ | ✅ $v_t = \beta_2 v_{t-1} + (1-\beta_2) g_t^2$ | ✅ divides by (1-\beta^t) | $ \theta_{t+1} = \theta_t - \eta \dfrac{\hat m_t}{\sqrt{\hat v_t}+\varepsilon} $ |
+
+### Plain English
+
+My understanding in plain english in how each step affects this:
+
+* SGD - size of gradient is taken into account
+* SGD with momentum - adds smoothing with momentum (introduces $\hat{m}_t$)
+* RMSProp - adds scaling for recent average squared gradients vs older ones 
+* Adam - bias correction to fix underestimation at early timesteps
+
+### Viz
+<div class="interactive-python">
+<pre><code class="language-python">
+import numpy as np
+import matplotlib.pyplot as plt
+from itertools import product
+from sympy import Matrix
+from IPython.display import display
+
+def styblinski_tang_fn(x: float, y: float) -> float:
+    return 0.5 * ((x**4 - 16 * x**2 + 5 * x) + (y**4 - 16 * y**2 + 5 * y))
+
+
+def styblinski_tang_grad(x: float, y: float) -> np.ndarray:
+    dfx = 2 * x**3 - 16 * x + 2.5
+    dfy = 2 * y**3 - 16 * y + 2.5
+    return np.array([dfx, dfy], dtype=float)
+
+
+def stationary_points_and_global_min():
+    roots = np.roots([2.0, 0.0, -16.0, 2.5])
+    roots = np.real(roots[np.isreal(roots)])
+    minima_1d = [r for r in roots if (6 * r * r - 16) > 0]
+    mins2d = np.array(list(product(minima_1d, repeat=2)), dtype=float)
+    vals = np.array([styblinski_tang_fn(x, y) for x, y in mins2d])
+    gidx = np.argmin(vals)
+    return mins2d, mins2d[gidx], vals[gidx]
+
+
+def run_sgd(theta0, eta=0.02, steps=1200):
+    theta = np.array(theta0, float)
+    path = [theta.copy()]
+    for _ in range(steps):
+        theta -= eta * styblinski_tang_grad(*theta)
+        path.append(theta.copy())
+    return np.array(path)
+
+
+def run_momentum(theta0, eta=0.02, beta=0.90, steps=1200):
+    theta = np.array(theta0, float)
+    v = np.zeros_like(theta)
+    path = [theta.copy()]
+    for _ in range(steps):
+        g = styblinski_tang_grad(*theta)
+        v = beta * v - eta * g
+        theta = theta + v
+        path.append(theta.copy())
+    return np.array(path)
+
+
+def run_adagrad(theta0, eta=0.40, eps=1e-8, steps=1200):
+    theta = np.array(theta0, float)
+    r = np.zeros_like(theta)
+    path = [theta.copy()]
+    for _ in range(steps):
+        g = styblinski_tang_grad(*theta)
+        r = r + g * g
+        lr_eff = eta / (np.sqrt(r) + eps)
+        theta = theta - lr_eff * g
+        path.append(theta.copy())
+    return np.array(path)
+
+def run_rmsprop(theta0, eta=1e-2, rho=0.9, eps=1e-8, steps=1200):
+    """
+    s_t = rho * s_{t-1} + (1 - rho) * g_t^2
+    theta <- theta - eta * g_t / (sqrt(s_t) + eps)
+    """
+    theta = np.array(theta0, float)
+    s = np.zeros_like(theta)
+    path = [theta.copy()]
+    for step in range(steps):
+        g = styblinski_tang_grad(*theta)
+        s = rho * s + (1 - rho) * (g * g)
+        theta = theta - eta * g / (np.sqrt(s) + eps)
+        path.append(theta.copy())
+    return np.array(path)
+
+def run_rmsprop_centered(theta0, eta=1e-2, rho=0.9, eps=1e-8, steps=1200):
+    """
+    m_t = rho * m_{t-1} + (1 - rho) * g_t
+    s_t = rho * s_{t-1} + (1 - rho) * g_t^2
+    denom = sqrt(s_t - m_t^2) + eps   # variance-based
+    """
+    theta = np.array(theta0, float)
+    m = np.zeros_like(theta)
+    s = np.zeros_like(theta)
+    path = [theta.copy()]
+    for _ in range(steps):
+        g = styblinski_tang_grad(*theta)
+        m = rho * m + (1 - rho) * g
+        s = rho * s + (1 - rho) * (g * g)
+        denom = np.sqrt(np.maximum(s - m * m, 0.0)) + eps
+        theta = theta - eta * g / denom
+        path.append(theta.copy())
+    return np.array(path)
+
+def run_adam(theta0, eta=1e-2, beta1=0.9, beta2=0.999, eps=1e-8, steps=1200):
+    theta = np.array(theta0, float)
+    m = np.zeros_like(theta)
+    v = np.zeros_like(theta)
+    path = [theta.copy()]
+    for t in range(1, steps + 1):
+        g = styblinski_tang_grad(*theta)
+        m = beta1 * m + (1 - beta1) * g
+        v = beta2 * v + (1 - beta2) * (g * g)
+        m_hat = m / (1 - beta1**t)
+        v_hat = v / (1 - beta2**t)
+        theta = theta - eta * m_hat / (np.sqrt(v_hat) + eps)
+        path.append(theta.copy())
+    return np.array(path)
+
+theta_start = np.array([4.1, 4.5], dtype=float)
+steps = 1200
+
+eta_sgd = 0.02
+eta_mom, beta = 0.02, 0.90
+eta_adagrad = 0.40
+eta_rms, rho, eps = 1e-2, 0.9, 1e-8
+eta_rms_c = 1e-2
+
+sgd_path = run_sgd(theta_start, eta=eta_sgd, steps=steps)
+mom_path = run_momentum(theta_start, eta=eta_mom, beta=beta, steps=steps)
+ada_path = run_adagrad(theta_start, eta=eta_adagrad, steps=steps)
+rms_path = run_rmsprop(theta_start, eta=eta_rms, rho=rho, eps=eps, steps=steps)
+rmsc_path = run_rmsprop_centered(theta_start, eta=eta_rms_c, rho=rho, eps=eps, steps=steps)
+adam_path = run_adam(theta_start)
+mins2d, gmin_pt, gmin_val = stationary_points_and_global_min()
+
+x = y = np.linspace(-5, 5, 400)
+X, Y = np.meshgrid(x, y)
+Z = styblinski_tang_fn(X, Y)
+
+plt.figure(figsize=(9, 8))
+cs = plt.contour(X, Y, Z, levels=50, alpha=0.85)
+plt.clabel(cs, inline=True, fmt="%.0f", fontsize=7)
+
+plt.plot(sgd_path[:, 0], sgd_path[:, 1], '.-', lw=1.2, ms=3, label='SGD')
+plt.plot(mom_path[:, 0], mom_path[:, 1], '.-', lw=1.2, ms=3, label=f'Momentum (β={beta})')
+plt.plot(ada_path[:, 0], ada_path[:, 1], '.-', lw=1.2, ms=3, label='AdaGrad')
+plt.plot(rms_path[:, 0], rms_path[:, 1], '.-', lw=1.2, ms=3, label=f'RMSProp (ρ={rho})')
+plt.plot(rmsc_path[:, 0], rmsc_path[:, 1], '.-', lw=1.2, ms=3, label='RMSProp (centered)')
+plt.plot(adam_path[:, 0], adam_path[:, 1], '.-', lw=1.2, ms=3, label='Adam')
+
+plt.scatter(sgd_path[0, 0], sgd_path[0, 1], s=80, label='Start', zorder=3)
+plt.scatter(sgd_path[-1, 0], sgd_path[-1, 1], s=60, label='SGD End', zorder=3)
+plt.scatter(mom_path[-1, 0], mom_path[-1, 1], s=60, label='Momentum End', zorder=3)
+plt.scatter(ada_path[-1, 0], ada_path[-1, 1], s=60, label='AdaGrad End', zorder=3)
+plt.scatter(rms_path[-1, 0], rms_path[-1, 1], s=60, label='RMSProp End', zorder=3)
+plt.scatter(rmsc_path[-1, 0], rmsc_path[-1, 1], s=60, label='RMSProp (centered) End', zorder=3)
+plt.scatter(adam_path[-1, 0], adam_path[-1, 1], s=60, label='Adam End', zorder=3)
+
+vals = np.array([styblinski_tang_fn(x0, y0) for x0, y0 in mins2d])
+mask = np.ones(len(mins2d), dtype=bool)
+mask[np.argmin(vals)] = False
+if np.any(mask):
+    plt.scatter(mins2d[mask, 0], mins2d[mask, 1],
+                marker='v', s=120, edgecolor='k', facecolor='white',
+                label='Local minima', zorder=4)
+plt.scatter(gmin_pt[0], gmin_pt[1], marker='*', s=220, edgecolor='k',
+            facecolor='gold', label=f'Global min ({gmin_pt[0]:.4f}, {gmin_pt[1]:.4f})\n f={gmin_val:.4f}', zorder=5)
+
+plt.title("SGD vs Momentum vs AdaGrad vs RMSProp (and Centered) on Styblinski–Tang")
+plt.xlabel("x")
+plt.ylabel("y")
+plt.legend(loc='upper left')
+plt.grid(alpha=0.3)
+plt.tight_layout()
+plt.show()
+</code></pre>
+
+</div>
+
+## Weight Decay Coupling (the "W" in AdamW, 2017)
+
+A very slight distinction but this was a key change that led to better generalization. AdamW was utilized to train BERT, GPT, and others. Most modern frameworks (PyTorch, Tensorflow, JAX) now make it the default. 
+
+### L2 Regularization 
+
+Ok so before we get to AdamW cleanly, we have to discuss L2 regularization (also commonly noted as $\lambda \| \theta \| ^2 $). The idea with L2 regularization is that we have a penalty on our loss function so that the model doesn't overfit. Basically saying we want to minimize both the loss and the size of the weights.
+
+When you use Adam, you compute the gradient of your total loss. So basically from start to finish, walking through:
+
+$$ \begin{align}
+
+L_{total} ( \theta ) &= L_{data} (\theta) + \frac{\lambda}{2} \| \theta \|^2 \\
+
+\nabla_{\theta} L_{total} (\theta) &= \nabla_{\theta} L_{data} (\theta) + \lambda \theta
+
+\end{align} $$
+
+This means that every gradient update has two parts:
+
+1. a data term
+2. a regularization term
+
+And again, so $\lambda$ is the regularization strength - basically how much we want to penalize large weights.
+
+So now incorporating this into Adam. We normally compute the gradient of our total loss.
+
+$$ g_t = \nabla_{\theta} L_{total} (\theta_t) = \nabla_{\theta} L_{data} (\theta_t) + \lambda \theta_t $$
+
+But the downside is that the $+ \lambda \theta_t$ term becomes part of the gradient update.... That's an issue for us because Adam does its adaptive scaling magic:
+
+$$ \theta_{t+1} = \theta_{t} - \eta \frac{\hat{m}_t}{\sqrt{\hat{v}_t} + \varepsilon} $$
+
+but that adaptive scaling portion also now includes the $\lambda \theta_t$ portion meaning some weights get decayed more than others, all depending on their individual $v_t$ values. 
+
+{% include knowledge-check.html
+    id="adam-w-vs-adam-pt1"
+    question="Let's say we're not applying L2 regularization as part of our loss function, is AdamW going to be different at all from Adam?"
+    prompt="Select the answer"
+    options="No, L2 regularization is linked to AdamW so if it isn't in our loss function, then we don't need AdamW|false|that's not quite right! Both the loss function and the optimizer can have L2 regularization. Even if it's not explicitly in our loss function, having the L2 regularization in the AdamW optimzier can help to penalize large weights;;Yes, it can still be beneficial|true|Yes, there's almost multiple points of injection for L2 regularization, and having AdamW even if your loss function / training code doesn't have L2 regularization can still be beneficial."
+    explanation="L2 regulariziation is a larger concept and whether we include it in the loss function or as part of the optimizer are distinct concepts."
+%}
+
+Here's another one. And look at how we can call the AdamW optimizer in pytorch:
+
+```python
+optimizer = torch.optim.AdamW(model.parameters(), lr=learning_rate, weight_decay=this_is_equiv_to_lambda)
+```
+
+{% include knowledge-check.html
+    id="adam-w-vs-adam-pt2"
+    question="If I explicitly wanted to use Adam instead of AdamW, can I modify (and if so, how could I) the above pytorch code to get that?"
+    prompt="Select the answer"
+    options="trick question! you can't|false|Revisit the mathematical formulas above;;yes, there's another AdamW parameter in pytorch that enables vanilla Adam|false|Nope! No other parameters;;yes,we can change the weight_decay|true|exactly, if we drop our lambda to 0 then the math falls out and Adam is equiv to AdamW"
+    explanation="While subtle, lambda and the weight penalty factor has resulted in massive wins for the AdamW optimizer"
+%}
+
+### Viz
+
+<div class="interactive-python">
+<pre><code class="language-python">
+import numpy as np
+import matplotlib.pyplot as plt
+from itertools import product
+from sympy import Matrix
+from IPython.display import display
+
+def styblinski_tang_fn(x: float, y: float) -> float:
+    return 0.5 * ((x**4 - 16 * x**2 + 5 * x) + (y**4 - 16 * y**2 + 5 * y))
+
+def styblinski_tang_grad(x: float, y: float) -> np.ndarray:
+    dfx = 2 * x**3 - 16 * x + 2.5
+    dfy = 2 * y**3 - 16 * y + 2.5
+    return np.array([dfx, dfy], dtype=float)
+
+def stationary_points_and_global_min():
+    roots = np.roots([2.0, 0.0, -16.0, 2.5])
+    roots = np.real(roots[np.isreal(roots)])
+    minima_1d = [r for r in roots if (6 * r * r - 16) > 0]
+    mins2d = np.array(list(product(minima_1d, repeat=2)), dtype=float)
+    vals = np.array([styblinski_tang_fn(x, y) for x, y in mins2d])
+    gidx = np.argmin(vals)
+    return mins2d, mins2d[gidx], vals[gidx]
+
+def run_sgd(theta0, eta=0.02, steps=1200):
+    theta = np.array(theta0, float)
+    path = [theta.copy()]
+    for _ in range(steps):
+        theta -= eta * styblinski_tang_grad(*theta)
+        path.append(theta.copy())
+    return np.array(path)
+
+def run_momentum(theta0, eta=0.02, beta=0.90, steps=1200):
+    theta = np.array(theta0, float)
+    v = np.zeros_like(theta)
+    path = [theta.copy()]
+    for _ in range(steps):
+        g = styblinski_tang_grad(*theta)
+        v = beta * v - eta * g
+        theta = theta + v
+        path.append(theta.copy())
+    return np.array(path)
+
+def run_adagrad(theta0, eta=0.40, eps=1e-8, steps=1200):
+    theta = np.array(theta0, float)
+    r = np.zeros_like(theta)
+    path = [theta.copy()]
+    for _ in range(steps):
+        g = styblinski_tang_grad(*theta)
+        r = r + g * g
+        lr_eff = eta / (np.sqrt(r) + eps)
+        theta = theta - lr_eff * g
+        path.append(theta.copy())
+    return np.array(path)
+
+def run_rmsprop(theta0, eta=1e-2, rho=0.9, eps=1e-8, steps=1200):
+    """
+    s_t = rho * s_{t-1} + (1 - rho) * g_t^2
+    theta <- theta - eta * g_t / (sqrt(s_t) + eps)
+    """
+    theta = np.array(theta0, float)
+    s = np.zeros_like(theta)
+    path = [theta.copy()]
+    for step in range(steps):
+        g = styblinski_tang_grad(*theta)
+        s = rho * s + (1 - rho) * (g * g)
+        theta = theta - eta * g / (np.sqrt(s) + eps)
+        path.append(theta.copy())
+    return np.array(path)
+
+def run_rmsprop_centered(theta0, eta=1e-2, rho=0.9, eps=1e-8, steps=1200):
+    """
+    m_t = rho * m_{t-1} + (1 - rho) * g_t
+    s_t = rho * s_{t-1} + (1 - rho) * g_t^2
+    denom = sqrt(s_t - m_t^2) + eps   # variance-based
+    """
+    theta = np.array(theta0, float)
+    m = np.zeros_like(theta)
+    s = np.zeros_like(theta)
+    path = [theta.copy()]
+    for _ in range(steps):
+        g = styblinski_tang_grad(*theta)
+        m = rho * m + (1 - rho) * g
+        s = rho * s + (1 - rho) * (g * g)
+        denom = np.sqrt(np.maximum(s - m * m, 0.0)) + eps
+        theta = theta - eta * g / denom
+        path.append(theta.copy())
+    return np.array(path)
+
+def run_adam(theta0, eta=1e-2, beta1=0.9, beta2=0.999, eps=1e-8, steps=1200):
+    theta = np.array(theta0, float)
+    m = np.zeros_like(theta)
+    v = np.zeros_like(theta)
+    path = [theta.copy()]
+    for t in range(1, steps + 1):
+        g = styblinski_tang_grad(*theta)
+        m = beta1 * m + (1 - beta1) * g
+        v = beta2 * v + (1 - beta2) * (g * g)
+        m_hat = m / (1 - beta1**t)
+        v_hat = v / (1 - beta2**t)
+        theta = theta - eta * m_hat / (np.sqrt(v_hat) + eps)
+        path.append(theta.copy())
+    return np.array(path)
+
+def run_adamw(theta0, eta=1e-2, beta1=0.9, beta2=0.999, eps=1e-8, weight_decay=0.01, steps=1200):
+    """
+    AdamW: decoupled weight decay
+      theta <- theta - eta * ( m_hat / (sqrt(v_hat)+eps) )  # adaptive step
+      theta <- theta - eta * weight_decay * theta           # uniform shrink
+    Note: setting weight_decay=0.0 makes AdamW identical to Adam.
+    """
+    theta = np.array(theta0, float)
+    m = np.zeros_like(theta)
+    v = np.zeros_like(theta)
+    path = [theta.copy()]
+    for t in range(1, steps + 1):
+        g = styblinski_tang_grad(*theta)
+        m = beta1 * m + (1 - beta1) * g
+        v = beta2 * v + (1 - beta2) * (g * g)
+        m_hat = m / (1 - beta1**t)
+        v_hat = v / (1 - beta2**t)
+
+        # adaptive update
+        theta = theta - eta * (m_hat / (np.sqrt(v_hat) + eps))
+        # decoupled weight decay (uniform; not scaled by v_hat)
+        theta = theta - eta * weight_decay * theta
+
+        path.append(theta.copy())
+    return np.array(path)
+
+# ----- params -----
+theta_start = np.array([4.1, 4.5], dtype=float)
+steps = 1200
+
+eta_sgd = 0.02
+eta_mom, beta = 0.02, 0.90
+eta_adagrad = 0.40
+eta_rms, rho, eps = 1e-2, 0.9, 1e-8
+eta_rms_c = 1e-2
+
+# Adam / AdamW hyperparams
+eta_adam = 1e-2
+beta1, beta2 = 0.9, 0.999
+eps_adam = 1e-8
+wd = 1e-2     # try 0.0 (Adam-equivalent) vs 1e-3 vs 1e-2
+
+# ----- runs -----
+sgd_path  = run_sgd(theta_start, eta=eta_sgd, steps=steps)
+mom_path  = run_momentum(theta_start, eta=eta_mom, beta=beta, steps=steps)
+ada_path  = run_adagrad(theta_start, eta=eta_adagrad, steps=steps)
+rms_path  = run_rmsprop(theta_start, eta=eta_rms, rho=rho, eps=eps, steps=steps)
+rmsc_path = run_rmsprop_centered(theta_start, eta=eta_rms_c, rho=rho, eps=eps, steps=steps)
+adam_path = run_adam(theta_start, eta=eta_adam, beta1=beta1, beta2=beta2, eps=eps_adam, steps=steps)
+adamw_path = run_adamw(theta_start, eta=eta_adam, beta1=beta1, beta2=beta2, eps=eps_adam, weight_decay=wd, steps=steps)
+
+mins2d, gmin_pt, gmin_val = stationary_points_and_global_min()
+
+# ----- viz -----
+x = y = np.linspace(-5, 5, 400)
+X, Y = np.meshgrid(x, y)
+Z = styblinski_tang_fn(X, Y)
+
+plt.figure(figsize=(9, 8))
+cs = plt.contour(X, Y, Z, levels=50, alpha=0.85)
+plt.clabel(cs, inline=True, fmt="%.0f", fontsize=7)
+
+plt.plot(sgd_path[:, 0],   sgd_path[:, 1],   '.-', lw=1.2, ms=3, label='SGD')
+plt.plot(mom_path[:, 0],   mom_path[:, 1],   '.-', lw=1.2, ms=3, label=f'Momentum (β={beta})')
+plt.plot(ada_path[:, 0],   ada_path[:, 1],   '.-', lw=1.2, ms=3, label='AdaGrad')
+plt.plot(rms_path[:, 0],   rms_path[:, 1],   '.-', lw=1.2, ms=3, label=f'RMSProp (ρ={rho})')
+plt.plot(rmsc_path[:, 0],  rmsc_path[:, 1],  '.-', lw=1.2, ms=3, label='RMSProp (centered)')
+plt.plot(adam_path[:, 0],  adam_path[:, 1],  '.-', lw=1.2, ms=3, label='Adam')
+plt.plot(adamw_path[:, 0], adamw_path[:, 1], '.-', lw=1.2, ms=3, label=f'AdamW (wd={wd})')
+
+plt.scatter(sgd_path[0, 0], sgd_path[0, 1], s=80, label='Start', zorder=3)
+plt.scatter(sgd_path[-1, 0], sgd_path[-1, 1], s=60, label='SGD End', zorder=3)
+plt.scatter(mom_path[-1, 0], mom_path[-1, 1], s=60, label='Momentum End', zorder=3)
+plt.scatter(ada_path[-1, 0], ada_path[-1, 1], s=60, label='AdaGrad End', zorder=3)
+plt.scatter(rms_path[-1, 0], rms_path[-1, 1], s=60, label='RMSProp End', zorder=3)
+plt.scatter(rmsc_path[-1, 0], rmsc_path[-1, 1], s=60, label='RMSProp (centered) End', zorder=3)
+plt.scatter(adam_path[-1, 0], adam_path[-1, 1], s=60, label='Adam End', zorder=3)
+plt.scatter(adamw_path[-1, 0], adamw_path[-1, 1], s=60, label='AdamW End', zorder=3)
+
+plt.scatter(gmin_pt[0], gmin_pt[1], marker='*', s=220, edgecolor='k',
+            facecolor='gold', label=f'Global min ({gmin_pt[0]:.4f}, {gmin_pt[1]:.4f})\n f={gmin_val:.4f}', zorder=5)
+
+vals = np.array([styblinski_tang_fn(x0, y0) for x0, y0 in mins2d])
+mask = np.ones(len(mins2d), dtype=bool)
+mask[np.argmin(vals)] = False
+if np.any(mask):
+    plt.scatter(mins2d[mask, 0], mins2d[mask, 1],
+                marker='v', s=120, edgecolor='k', facecolor='white',
+                label='Local minima', zorder=4)
+
+plt.title("SGD, Momentum, AdaGrad, RMSProp (+centered), Adam, AdamW on Styblinski–Tang")
+plt.xlabel("x"); plt.ylabel("y")
+plt.legend(loc='upper left')
+plt.grid(alpha=0.3)
+plt.tight_layout()
+plt.show()
+</code></pre>
+
+</div>
+
+You'll note... before we get to Muon that this example is almost entirely contrived. While the Styblinski-Tang function is a good example of a loss function that would be easy to get caught in a local minima and is hard to find the global min, you'll note that just because in my contrived examples the `SGD with Momentum` optimizer is finding the global min does not mean that it generalizes well. Generally AdamW has been the defacto winner. 
+
+# Muon (MomentUm Orthogonalized by Newton-Schulz) (2025)
+
+Alright jeez, all of the above was a bit accidental, but I wanted to give you all a build up / very very quick run through of the various optimziers that have evolved. Again, the space is definitely iterative (pun intended), but these optimizers all build off of each other. Muon is no different. 
+
+## Theory 
+
+The idea is that we're still working with our momentum matrix. The momentum matrix can tend to become row-rank in practice, which means only a couple of directions dominate. 
+
+Muon tries to orthogonalize our momentum matrix. Rare directions are amplified by the orthogonalization. Again, recall from the [Little Book of Linear Algebra][linalg-book] that this means:
+
+$$ \text{Ortho}(M) = \text{argmin}_O \{ \| O - M \| f \} $$
+where $OO^T = I$ and $O^T O = I$
+
+Ok while this is hard... what do we turn to besides our good friend - the swiss army knife of linalg - SVD (singular value decomposiiton)
+
+$$ M = U S V^T $$
+
+So we would compute SVD and then we'd set the S matrix to be diag(1).
+
+However, once again SVD is computationally expensive so this 
+
+### Odd Polynomial Matrix
+
+Odd polynomial matrices are:
+
+$$ \rho (X) = aX + b(X X^T)X $$
+
+so we could do:
+
+$$ \rho (M) = aM + b(MM^T)M $$
+
+So let's go ahead and do some math where we substitute in $M$.
+
+$$
+\begin{aligned}
+\rho (M) &= aM + b(MM^T)M  \\
+\rho (M) &= (a + b(MM^T))M \\
+\rho (M) &= (a + b((USV^T)(VSU^T)))(USV^T) \\
+\rho (M) &= (a + b(USV^TVSU^T))(USV^T) \\ \\
+&\quad \text{because $V$ is orthonormal, $V^TV = I$} \\ \\
+\rho (M) &= (a + b(USSU^T))(USV^T) \\ \\
+&\quad \text{and $S$ is diagonal so $SS = S^2$} \\ \\
+\rho (M) &= (a + b(US^2U^T))(USV^T) \\
+\rho (M) &= a(USV^T) + b(US^2U^TUSV^T) \\ \\ 
+&\quad \text{because $U$ is orthonormal, $U^TU = I$} \\ \\
+\rho (M) &= a(USV^T) + b(US^2SV^T) \\
+\rho (M) &= a(USV^T) + b(US^3V^T) \\ \\
+&\quad \text{simplifying gives} \\ \\
+\rho (M) &= U(aS + bS^3)V^T
+\end{aligned}
+$$
+
+So... **applying an odd polynomial matrix function to M acts on the singular values in the same way as applying the function to each singular value function individually and then reconstructing the original matrix from the functions).
+
+This expands for odd polynomials so just take this for granted or derive it for yourself:
+
+$$\begin{align}
+\rho (M) &= aM + b(MM^T)M + c(MM^T)^2 M \\
+\vdots \\
+\rho (M) &= U(aS + bS^3 + cS^5)V^T \\
+\end{align}$$
+
+Again, we want S to be diag with 1s... So this now becomes an optimization problem within itself. We're trying to pick the coefficients of $a, b, c$ so that we get `S = np.eye(S.shape[0])`.
+
+So how do we pick out the best parameters that will help us do that.... 
+
+### Newton-Schulz Iteration
+
+Again, [this video][muon-video] is fantastic. However, this part was a little too abstracted. We'll turn back to `manim` here for some more helpful visualizations and understanding.
+
+~So I'm going to dive into the derivation here.~ Actually, it's very interesting and I'm going to cover in another blog post. I'll link it here. 
+
+For now, assume that we have these params:
+
+* $a = 3.4445$
+* $b = -4.7775$ 
+* $c = 2.0315$
+
+and those are going to be the params of our newton-schulz iteration that help us converge to what we consider is a valid $S$ for the singular values part of the SVD that has eigenvalues close-ish to 1. 
+
+### Overview
+
+So now we have:
+
+```
+for step in steps:
+    compute gradient 
+    compute momentum
+    normalize momentum matrix
+    orthogonalization
+    update parameters
+```
+
+Now there is also muon with a weight adjustement similar to what we did with AdamW. 
+
+So we have:
+
+$$
+\begin{align}
+G_t &\leftarrow \nabla L_t (\theta_{t-1}) \\
+M_t &\leftarrow \beta M_{t-1} + G_t \\
+M'_t &\leftarrow \frac{M_t}{\| M_t \|_F} \\
+O_t &\leftarrow \text{NewtonSchulz5}(M'_t) \\
+\theta_t &\leftarrow \theta_{t-1} - \alpha \left(0.2 \sqrt{\text{max}(n,m)} \cdot O_t + \lambda \theta_{t-1}\right)
+\end{align}
+$$
+
+
+## Implementation
+
+I actually want to introduce this section by looking at [PyTorch's documentation][pytorch-muon]. This was added recently, but let's look here:
+
+![muon-pytorch](/images/understanding-muon/muon-pytorch.png){: .center-small .lightbox-image}
+
+This should look super familiar to the code that we've been covering!! The only tricky part is the `AdjustLR` step which deviates slightly between what the video / I have above covers (which is Moonshot's implementation) vs Jordan Keller's original impl of $sqrt{\text{max}(1, \frac{B}{A})}$.
+
+There are a couple of tricky parts with implementing this:
+
+```python
+def newton_schulz_5(M_matrix, steps=5, eps=1e-7):
+    a, b, c = (3.4445, -4.7750, 2.0315) # from Keller Jordan
+    X = M_matrix.astype(np.float32, copy=False) # speed up in practice
+    
+    if X.shape[0] > X.shape[1]:
+        X = X.T
+
+    X = X / (np.linalg.norm(X) + eps) # frobenius norm by def
+    # so this is tricky but we're looking here
+    # \rho (M) &= aM + b(MM^T)M + c(MM^T)^2 M
+    for _ in range(steps):
+        A = X @ X.T
+        B = b * A + c * A @ A
+        X = a * X + B @ X
+    if X.shape[0] > X.shape[1]:
+        X = X.T
+    return X
+
+
+def run_muon_muonshot(theta0, eta=1e-2, beta=0.95, weight_decay=1e-2, steps=1200,
+             ns_steps=5, eps=1e-7, use_nesterov=True):
+    theta = np.array(theta0, float)
+    if theta.ndim == 1:
+        theta = theta[:, None]
+    elif theta.shape[0] == 1 and theta.shape[1] > 1:
+        theta = theta.T
+
+    def adjust_lr(A, B):
+        return 0.2 * np.sqrt(float(max(A, B)))
+
+    A, B = theta.shape
+    path = [theta.copy()]
+    B_momentum_buffer = np.zeros_like(theta)
+    for _ in range(steps):
+        g = styblinski_tang_grad(*theta)  
+        B_momentum_buffer = beta * B_momentum_buffer + g
+        # didn't cover nestorv but pytorch has it
+        M_eff = g + beta * B_momentum_buffer if use_nesterov else B_momentum_buffer
+        O = newton_schulz_5(M_eff, steps=ns_steps, eps=eps)
+        # decoupled weight decay (uniform shrink)
+        theta = theta - eta * (adjust_lr(A, B) * O + weight_decay * theta)
+        path.append(theta.copy())
+
+    return np.array(path)
+```
+
+Once again, here is visualization code:
+
+<div class="interactive-python">
+<pre><code class="language-python">
+import numpy as np
+import matplotlib.pyplot as plt
+from itertools import product
+from sympy import Matrix
+from IPython.display import display
+
+def styblinski_tang_fn(x: float, y: float) -> float:
+    return 0.5 * ((x**4 - 16 * x**2 + 5 * x) + (y**4 - 16 * y**2 + 5 * y))
+
+def styblinski_tang_grad(x: float, y: float) -> np.ndarray:
+    dfx = 2 * x**3 - 16 * x + 2.5
+    dfy = 2 * y**3 - 16 * y + 2.5
+    return np.array([dfx, dfy], dtype=float)
+
+def stationary_points_and_global_min():
+    roots = np.roots([2.0, 0.0, -16.0, 2.5])
+    roots = np.real(roots[np.isreal(roots)])
+    minima_1d = [r for r in roots if (6 * r * r - 16) > 0]
+    mins2d = np.array(list(product(minima_1d, repeat=2)), dtype=float)
+    vals = np.array([styblinski_tang_fn(x, y) for x, y in mins2d])
+    gidx = np.argmin(vals)
+    return mins2d, mins2d[gidx], vals[gidx]
+
+def run_sgd(theta0, eta=0.02, steps=1200):
+    theta = np.array(theta0, float)
+    path = [theta.copy()]
+    for _ in range(steps):
+        theta -= eta * styblinski_tang_grad(*theta)
+        path.append(theta.copy())
+    return np.array(path)
+
+def run_momentum(theta0, eta=0.02, beta=0.90, steps=1200):
+    theta = np.array(theta0, float)
+    v = np.zeros_like(theta)
+    path = [theta.copy()]
+    for _ in range(steps):
+        g = styblinski_tang_grad(*theta)
+        v = beta * v - eta * g
+        theta = theta + v
+        path.append(theta.copy())
+    return np.array(path)
+
+def run_adagrad(theta0, eta=0.40, eps=1e-8, steps=1200):
+    theta = np.array(theta0, float)
+    r = np.zeros_like(theta)
+    path = [theta.copy()]
+    for _ in range(steps):
+        g = styblinski_tang_grad(*theta)
+        r = r + g * g
+        lr_eff = eta / (np.sqrt(r) + eps)
+        theta = theta - lr_eff * g
+        path.append(theta.copy())
+    return np.array(path)
+
+def run_rmsprop(theta0, eta=1e-2, rho=0.9, eps=1e-8, steps=1200):
+    """
+    s_t = rho * s_{t-1} + (1 - rho) * g_t^2
+    theta <- theta - eta * g_t / (sqrt(s_t) + eps)
+    """
+    theta = np.array(theta0, float)
+    s = np.zeros_like(theta)
+    path = [theta.copy()]
+    for step in range(steps):
+        g = styblinski_tang_grad(*theta)
+        s = rho * s + (1 - rho) * (g * g)
+        theta = theta - eta * g / (np.sqrt(s) + eps)
+        path.append(theta.copy())
+    return np.array(path)
+
+def run_rmsprop_centered(theta0, eta=1e-2, rho=0.9, eps=1e-8, steps=1200):
+    """
+    m_t = rho * m_{t-1} + (1 - rho) * g_t
+    s_t = rho * s_{t-1} + (1 - rho) * g_t^2
+    denom = sqrt(s_t - m_t^2) + eps   # variance-based
+    """
+    theta = np.array(theta0, float)
+    m = np.zeros_like(theta)
+    s = np.zeros_like(theta)
+    path = [theta.copy()]
+    for _ in range(steps):
+        g = styblinski_tang_grad(*theta)
+        m = rho * m + (1 - rho) * g
+        s = rho * s + (1 - rho) * (g * g)
+        denom = np.sqrt(np.maximum(s - m * m, 0.0)) + eps
+        theta = theta - eta * g / denom
+        path.append(theta.copy())
+    return np.array(path)
+
+def run_adam(theta0, eta=1e-2, beta1=0.9, beta2=0.999, eps=1e-8, steps=1200):
+    theta = np.array(theta0, float)
+    m = np.zeros_like(theta)
+    v = np.zeros_like(theta)
+    path = [theta.copy()]
+    for t in range(1, steps + 1):
+        g = styblinski_tang_grad(*theta)
+        m = beta1 * m + (1 - beta1) * g
+        v = beta2 * v + (1 - beta2) * (g * g)
+        m_hat = m / (1 - beta1**t)
+        v_hat = v / (1 - beta2**t)
+        theta = theta - eta * m_hat / (np.sqrt(v_hat) + eps)
+        path.append(theta.copy())
+    return np.array(path)
+
+def run_adamw(theta0, eta=1e-2, beta1=0.9, beta2=0.999, eps=1e-8, weight_decay=0.01, steps=1200):
+    """
+    AdamW: decoupled weight decay
+      theta <- theta - eta * ( m_hat / (sqrt(v_hat)+eps) )  # adaptive step
+      theta <- theta - eta * weight_decay * theta           # uniform shrink
+    Note: setting weight_decay=0.0 makes AdamW identical to Adam.
+    """
+    theta = np.array(theta0, float)
+    m = np.zeros_like(theta)
+    v = np.zeros_like(theta)
+    path = [theta.copy()]
+    for t in range(1, steps + 1):
+        g = styblinski_tang_grad(*theta)
+        m = beta1 * m + (1 - beta1) * g
+        v = beta2 * v + (1 - beta2) * (g * g)
+        m_hat = m / (1 - beta1**t)
+        v_hat = v / (1 - beta2**t)
+
+        # adaptive update
+        theta = theta - eta * (m_hat / (np.sqrt(v_hat) + eps))
+        # decoupled weight decay (uniform; not scaled by v_hat)
+        theta = theta - eta * weight_decay * theta
+
+        path.append(theta.copy())
+    return np.array(path)
+
+def newton_schulz_5(M_matrix, steps=5, eps=1e-7):
+    # from Keller Jordan
+    a, b, c = (3.4445, -4.7750, 2.0315)
+
+    # speed up in practical
+    X = M_matrix.astype(np.float32, copy=False)
+
+    transposed = False
+    if X.shape[0] > X.shape[1]:
+        X = X.T
+        transposed = True
+
+    # frobenius norm
+    X = X / (np.linalg.norm(X) + eps)
+    
+    # so this is tricky but we're looking here
+    # \rho (M) &= aM + b(MM^T)M + c(MM^T)^2 M
+    for _ in range(steps):
+        A = X @ X.T
+        B = b * A + c * A @ A
+        X = a * X + B @ X
+
+    if transposed:
+        X = X.T
+    return X
+
+
+def run_muon_muonshot(theta0, eta=1e-2, beta=0.95, weight_decay=1e-2, steps=1200,
+             ns_steps=5, eps=1e-7, use_nesterov=True):
+
+    theta = np.array(theta0, float)
+    if theta.ndim == 1:
+        theta = theta[:, None]          # (n,) -> (n,1)
+    elif theta.shape[0] == 1 and theta.shape[1] > 1:
+        theta = theta.T                 # (1,n) -> (n,1)
+
+    def adjust_lr(A, B):
+        return 0.2 * np.sqrt(float(max(A, B)))
+
+    A, B = theta.shape
+
+    path = [theta.copy()]
+    B_momentum_buffer = np.zeros_like(theta)
+    for _ in range(steps):
+        g = styblinski_tang_grad(*theta)  
+        B_momentum_buffer = beta * B_momentum_buffer + g
+        # didn't cover nestorv but pytorch has it
+        M_eff = g + beta * B_momentum_buffer if use_nesterov else B_momentum_buffer
+        O = newton_schulz_5(M_eff, steps=ns_steps, eps=eps)
+        # decoupled weight decay (uniform shrink)
+        theta = theta - eta * (adjust_lr(A, B) * O + weight_decay * theta)
+        path.append(theta.copy())
+
+    return np.array(path)
+
+# ----- params -----
+theta_start = np.array([4.1, 4.5], dtype=float)
+steps = 1200
+
+eta_sgd = 0.02
+eta_mom, beta = 0.02, 0.90
+eta_adagrad = 0.40
+eta_rms, rho, eps = 1e-2, 0.9, 1e-8
+eta_rms_c = 1e-2
+
+# Adam / AdamW hyperparams
+eta_adam = 1e-2
+beta1, beta2 = 0.9, 0.999
+eps_adam = 1e-8
+wd = 1e-2     # try 0.0 (Adam-equivalent) vs 1e-3 vs 1e-2
+
+# ----- runs -----
+sgd_path  = run_sgd(theta_start, eta=eta_sgd, steps=steps)
+mom_path  = run_momentum(theta_start, eta=eta_mom, beta=beta, steps=steps)
+ada_path  = run_adagrad(theta_start, eta=eta_adagrad, steps=steps)
+rms_path  = run_rmsprop(theta_start, eta=eta_rms, rho=rho, eps=eps, steps=steps)
+rmsc_path = run_rmsprop_centered(theta_start, eta=eta_rms_c, rho=rho, eps=eps, steps=steps)
+adam_path = run_adam(theta_start, eta=eta_adam, beta1=beta1, beta2=beta2, eps=eps_adam, steps=steps)
+adamw_path = run_adamw(theta_start, eta=eta_adam, beta1=beta1, beta2=beta2, eps=eps_adam, weight_decay=wd, steps=steps)
+
+# ===== Muon (minimal integration; assumes your run_muon_muonshot handles shape) =====
+eta_muon = 1e-2
+beta_mu = 0.95
+wd_mu = 1e-2
+ns_steps = 5
+eps_ns = 1e-7
+use_nesterov = True
+
+muon_path_raw = run_muon_muonshot(
+    theta_start,
+    eta=eta_muon,
+    beta=beta_mu,
+    weight_decay=wd_mu,
+    steps=steps,
+    ns_steps=ns_steps,
+    eps=eps_ns,
+    use_nesterov=use_nesterov
+)
+muon_path = muon_path_raw.squeeze(-1) if muon_path_raw.ndim == 3 else muon_path_raw  # (T,2,1) -> (T,2)
+
+mins2d, gmin_pt, gmin_val = stationary_points_and_global_min()
+
+# ----- viz -----
+x = y = np.linspace(-5, 5, 400)
+X, Y = np.meshgrid(x, y)
+Z = styblinski_tang_fn(X, Y)
+
+plt.figure(figsize=(9, 8))
+cs = plt.contour(X, Y, Z, levels=50, alpha=0.85)
+plt.clabel(cs, inline=True, fmt="%.0f", fontsize=7)
+
+plt.plot(sgd_path[:, 0],   sgd_path[:, 1],   '.-', lw=1.2, ms=3, label='SGD')
+plt.plot(mom_path[:, 0],   mom_path[:, 1],   '.-', lw=1.2, ms=3, label=f'Momentum (β={beta})')
+plt.plot(ada_path[:, 0],   ada_path[:, 1],   '.-', lw=1.2, ms=3, label='AdaGrad')
+plt.plot(rms_path[:, 0],   rms_path[:, 1],   '.-', lw=1.2, ms=3, label=f'RMSProp (ρ={rho})')
+plt.plot(rmsc_path[:, 0],  rmsc_path[:, 1],  '.-', lw=1.2, ms=3, label='RMSProp (centered)')
+plt.plot(adam_path[:, 0],  adam_path[:, 1],  '.-', lw=1.2, ms=3, label='Adam')
+plt.plot(adamw_path[:, 0], adamw_path[:, 1], '.-', lw=1.2, ms=3, label=f'AdamW (wd={wd})')
+
+# Muon trace (minimal additional plotting)
+plt.plot(muon_path[:, 0],  muon_path[:, 1],  '.-', lw=1.4, ms=3, label=f'Muon (NS={ns_steps}, β={beta_mu})')
+plt.scatter(muon_path[-1, 0],  muon_path[-1, 1],  s=60, label='Muon End', zorder=3)
+
+plt.scatter(sgd_path[0, 0], sgd_path[0, 1], s=80, label='Start', zorder=3)
+plt.scatter(sgd_path[-1, 0], sgd_path[-1, 1], s=60, label='SGD End', zorder=3)
+plt.scatter(mom_path[-1, 0], mom_path[-1, 1], s=60, label='Momentum End', zorder=3)
+plt.scatter(ada_path[-1, 0], ada_path[-1, 1], s=60, label='AdaGrad End', zorder=3)
+plt.scatter(rms_path[-1, 0], rms_path[-1, 1], s=60, label='RMSProp End', zorder=3)
+plt.scatter(rmsc_path[-1, 0], rmsc_path[-1, 1], s=60, label='RMSProp (centered) End', zorder=3)
+plt.scatter(adam_path[-1, 0],  adam_path[-1, 1],  s=60, label='Adam End', zorder=3)
+plt.scatter(adamw_path[-1, 0], adamw_path[-1, 1], s=60, label='AdamW End', zorder=3)
+
+plt.scatter(gmin_pt[0], gmin_pt[1], marker='*', s=220, edgecolor='k',
+            facecolor='gold', label=f'Global min ({gmin_pt[0]:.4f}, {gmin_pt[1]:.4f})\n f={gmin_val:.4f}', zorder=5)
+
+vals = np.array([styblinski_tang_fn(x0, y0) for x0, y0 in mins2d])
+mask = np.ones(len(mins2d), dtype=bool)
+mask[np.argmin(vals)] = False
+if np.any(mask):
+    plt.scatter(mins2d[mask, 0], mins2d[mask, 1],
+                marker='v', s=120, edgecolor='k', facecolor='white',
+                label='Local minima', zorder=4)
+
+plt.title("SGD, Momentum, AdaGrad, RMSProp (+centered), Adam, AdamW, Muon on Styblinski–Tang")
+plt.xlabel("x"); plt.ylabel("y")
+plt.legend(loc='upper left')
+plt.grid(alpha=0.3)
+plt.tight_layout()
+plt.show()
+
+</code></pre>
+</div>
+
+# Conclusion
+
+Ok! I hope you have learned something. There is obviously a ton more I could write about here, but I think getting into actually writing the code and understanding the paths that we're taking and this very detailed stepthrough is helpful. Muon is very interesting and while it's still pretty hotly debated if it'll scale (despite Kimi being trained on it with 1T tokens), there will be more research that certainly goes into this area. 
+
+I'm hoping to dive more into the Newton-Schulz iteration and have some interesting visualizations there, but as always, this has burned more of my time that maybe I should have allocated.
 
 [comment]: <> (Bibliography)
 [nanochat]: https://github.com/karpathy/nanochat
@@ -575,3 +1805,8 @@ Again, I am not going to try and do a 3D visualization given those take me awhil
 [adagrad-paper]: https://www.jmlr.org/papers/volume12/duchi11a/duchi11a.pdf
 [styblinski-tang-fn]: https://www.sfu.ca/~ssurjano/stybtang.html
 [gen-handwriting]: {{ site.baseurl }}/2025/teaching-a-computer-to-write/
+[nag]: https://en.wikipedia.org/wiki/Stochastic_gradient_descent#Momentum
+[adadelta]: https://optimization.cbe.cornell.edu/index.php?title=AdaGrad#AdaDelta
+[rmsprop-pres]: https://www.cs.toronto.edu/~tijmen/csc321/slides/lecture_slides_lec6.pdf
+[adam-paper]: https://arxiv.org/abs/1412.6980
+[pytorch-muon]: https://docs.pytorch.org/docs/stable/generated/torch.optim.Muon.html

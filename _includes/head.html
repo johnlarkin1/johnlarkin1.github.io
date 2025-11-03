@@ -4,14 +4,24 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
   {% seo %} {% if page.featured-video %}
+  {% if page.featured-video contains "http" %}
+    {% assign video_url = page.featured-video %}
+  {% else %}
+    {% assign video_url = site.url | append: site.baseurl | append: "/assets/video/" | append: page.featured-video | append: ".mp4" %}
+  {% endif %}
+  {% if page.featured-poster contains "http" %}
+    {% assign poster_url = page.featured-poster %}
+  {% else %}
+    {% assign poster_url = site.url | append: site.baseurl | append: "/assets/img/posts/" | append: page.featured-poster | append: "_main.jpg" %}
+  {% endif %}
   <meta property="og:type" content="video.other" />
   <meta
     property="og:video"
-    content="{{ site.url }}{{ site.baseurl }}/assets/video/{{ page.featured-video }}.mp4"
+    content="{{ video_url }}"
   />
   <meta
     property="og:video:secure_url"
-    content="{{ site.url }}{{ site.baseurl }}/assets/video/{{ page.featured-video }}.mp4"
+    content="{{ video_url }}"
   />
   <meta property="og:video:type" content="video/mp4" />
   <meta property="og:video:width" content="1200" />
@@ -19,7 +29,7 @@
   <!-- poster used by iMessage and most unfurlers -->
   <meta
     property="og:image"
-    content="{{ site.url }}{{ site.baseurl }}/assets/img/posts/{{ page.featured-poster }}_main.jpg"
+    content="{{ poster_url }}"
   />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
@@ -27,24 +37,29 @@
   <meta name="twitter:card" content="summary_large_image" />
   <meta
     name="twitter:image"
-    content="{{ site.url }}{{ site.baseurl }}/assets/img/posts/{{ page.featured-poster }}_main.jpg"
+    content="{{ poster_url }}"
   />
   {% elsif page.featured-gif %}
+  {% if page.featured-gif contains "http" %}
+    {% assign gif_url = page.featured-gif %}
+  {% else %}
+    {% assign gif_url = site.url | append: site.baseurl | append: "/assets/gif/" | append: page.featured-gif | append: ".gif" %}
+  {% endif %}
   <meta property="og:type" content="video.other" />
   <meta
     property="og:video"
-    content="{{ site.url }}{{ site.baseurl }}/assets/gif/{{ page.featured-gif }}.gif"
+    content="{{ gif_url }}"
   />
   <meta
     property="og:video:secure_url"
-    content="{{ site.url }}{{ site.baseurl }}/assets/gif/{{ page.featured-gif }}.gif"
+    content="{{ gif_url }}"
   />
   <meta property="og:video:type" content="image/gif" />
   <meta property="og:video:width" content="1200" />
   <meta property="og:video:height" content="630" />
   <meta
     property="og:image"
-    content="{{ site.url }}{{ site.baseurl }}/assets/gif/{{ page.featured-gif }}.gif"
+    content="{{ gif_url }}"
   />
   <meta property="og:image:type" content="image/gif" />
   <meta property="og:image:width" content="1200" />
@@ -52,7 +67,7 @@
   <meta name="twitter:card" content="summary_large_image" />
   <meta
     name="twitter:image"
-    content="{{ site.url }}{{ site.baseurl }}/assets/gif/{{ page.featured-gif }}.gif"
+    content="{{ gif_url }}"
   />
   {% elsif page.featured-img %}
   <meta

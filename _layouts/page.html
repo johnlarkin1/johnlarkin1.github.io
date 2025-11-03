@@ -22,7 +22,11 @@ layout: compress
     {% if page.featured-img %}
     <div class="hero--med lazyload" data-bg="{{ site.url }}{{ site.baseurl }}/assets/img/posts/{{ page.featured-img }}.jpg">
     {% elsif page.featured-gif %}
+      {% if page.featured-gif contains "http" %}
+    <div class="hero--med lazyload" data-bg="{{ page.featured-gif }}">
+      {% else %}
     <div class="hero--med lazyload" data-bg="{{ site.url }}{{ site.baseurl }}/assets/gif/{{ page.featured-gif }}.gif">
+      {% endif %}
     {% else %}
     <div class="hero--med">
     {% endif %}

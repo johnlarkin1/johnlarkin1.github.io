@@ -18,12 +18,17 @@ async function initPyodide() {
     try {
       console.log("Loading Pyodide...");
       pyodide = await loadPyodide({
-        indexURL: "https://cdn.jsdelivr.net/pyodide/v0.25.0/full/",
+        indexURL: "https://cdn.jsdelivr.net/pyodide/v0.29.0/full/",
       });
+      await pyodide.loadPackage("micropip");
+      await pyodide.runPythonAsync(`
+        import micropip
+        await micropip.install("ipywidgets==8.1.*")
+      `);
 
       // Load common packages for ML/scientific computing
       console.log("Loading Python packages...");
-      await pyodide.loadPackage(["numpy", "matplotlib"]);
+      await pyodide.loadPackage(["numpy", "matplotlib", "sympy"]);
 
       // Setup matplotlib to work in web environment
       await pyodide.runPythonAsync(`
@@ -123,7 +128,10 @@ function createPythonRunner(container) {
     // Handle markdown code fences that Jekyll might have processed
     code = $container.text().trim();
     // Remove ```python and ``` if present
-    code = code.replace(/^```python\s*/i, '').replace(/```\s*$/, '').trim();
+    code = code
+      .replace(/^```python\s*/i, "")
+      .replace(/```\s*$/, "")
+      .trim();
   }
 
   // Create the UI structure
@@ -133,22 +141,26 @@ function createPythonRunner(container) {
   const $header = $('<div class="python-runner__header"></div>');
   const $collapseBtn = $(
     '<button class="python-runner__collapse-btn" type="button" aria-label="Toggle code visibility">' +
-    '<span class="collapse-icon">▼</span> Show Code' +
-    '</button>'
+      '<span class="collapse-icon">▼</span> Show Code' +
+      "</button>"
   );
   $header.append($collapseBtn);
 
   // Create collapsible code wrapper
   const $codeWrapper = $('<div class="python-runner__code"></div>');
   const $pre = $('<pre class="python-runner__pre"></pre>');
-  const $codeBlock = $('<code class="python-runner__code-block language-python"></code>');
+  const $codeBlock = $(
+    '<code class="python-runner__code-block language-python"></code>'
+  );
 
   // Add the code with syntax highlighting
   $codeBlock.text(code);
 
   // Apply syntax highlighting if Prism is available
   if (window.Prism) {
-    $codeBlock.html(window.Prism.highlight(code, window.Prism.languages.python, 'python'));
+    $codeBlock.html(
+      window.Prism.highlight(code, window.Prism.languages.python, "python")
+    );
   }
 
   $pre.append($codeBlock);
@@ -167,24 +179,26 @@ function createPythonRunner(container) {
   $controls.append($spinner);
 
   // Handle collapse/expand
-  $collapseBtn.on('click', function() {
+  $collapseBtn.on("click", function () {
     $codeWrapper.slideToggle(300);
-    const $icon = $(this).find('.collapse-icon');
-    const isCollapsed = !$codeWrapper.is(':visible');
+    const $icon = $(this).find(".collapse-icon");
+    const isCollapsed = !$codeWrapper.is(":visible");
 
     if (isCollapsed) {
-      $icon.text('▶');
+      $icon.text("▶");
       $(this).html('<span class="collapse-icon">▶</span> Show Code');
-      $wrapper.addClass('collapsed');
+      $wrapper.addClass("collapsed");
     } else {
-      $icon.text('▼');
+      $icon.text("▼");
       $(this).html('<span class="collapse-icon">▼</span> Hide Code');
-      $wrapper.removeClass('collapsed');
+      $wrapper.removeClass("collapsed");
     }
   });
 
   // Create output area
-  const $output = $('<div class="python-runner__output" style="display:none;"></div>');
+  const $output = $(
+    '<div class="python-runner__output" style="display:none;"></div>'
+  );
 
   // Assemble the components
   $wrapper.append($header);
@@ -195,7 +209,7 @@ function createPythonRunner(container) {
   // Start collapsed by default
   $codeWrapper.hide();
   $collapseBtn.html('<span class="collapse-icon">▶</span> Show Code');
-  $wrapper.addClass('collapsed');
+  $wrapper.addClass("collapsed");
 
   // Replace original container with new UI
   $container.replaceWith($wrapper);

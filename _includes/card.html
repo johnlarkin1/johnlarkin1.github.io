@@ -40,6 +40,20 @@
     </figure>
     {% elsif post.featured-gif %}
     <figure class="post-card__thumb">
+      {% if post.featured-gif contains "http" %}
+      <img
+        src="{{post.featured-gif}}"
+        data-srcset="{{post.featured-gif}}"
+        class="lazyload blur"
+        alt="{{post.title}}"
+      />
+      <noscript>
+        <img
+          src="{{post.featured-gif}}"
+          alt="{{ post.title }}"
+        />
+      </noscript>
+      {% else %}
       <img
         src="{{ site.url }}{{ site.baseurl }}/assets/gif/{{post.featured-gif}}.gif"
         data-srcset="{{ site.url }}{{ site.baseurl }}/assets/gif/{{post.featured-gif}}.gif"
@@ -52,6 +66,7 @@
           alt="{{ post.title }}"
         />
       </noscript>
+      {% endif %}
     </figure>
     {% else %}
     <figure class="post-card__thumb">
