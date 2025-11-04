@@ -5,7 +5,7 @@ featured-video: generative-handwriting
 featured-poster: generative-handwriting
 featured-gif: generative-handwriting
 mathjax: true
-pinned: true
+pinned: 1
 categories: [⭐️ Favorites, Algorithms, Dev, A.I., M.L.]
 summary: Exploring JAX, LSTMs, MDNs, and other TLAs.
 ---

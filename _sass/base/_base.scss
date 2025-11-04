@@ -436,27 +436,6 @@ ink:hover {
     }
   }
 
-  &.markdown-alert-tip {
-    border-left-color: $alert-tip;
-    &::before { background-image: url($alert-icon-tip); }
-  }
-
-  &.markdown-alert-important {
-    border-left-color: $alert-important;
-    &::before { background-image: url($alert-icon-important); }
-  }
-
-  &.markdown-alert-warning {
-    border-left-color: $alert-warning;
-    &::before { background-image: url($alert-icon-warning); }
-  }
-
-  &.markdown-alert-caution {
-    border-left-color: $alert-caution;
-    &::before { background-image: url($alert-icon-caution); }
-  }
-
-  
 }
 
 .collapsible-code-container {

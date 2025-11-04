@@ -30,7 +30,7 @@ layout: compress
       <!-- Scroll Progress Indicator -->
       <div class="scroll-indicator">
         <div class="scroll-indicator__track">
-          {% assign pinned_posts = site.posts | where: "pinned", true %}
+          {% assign pinned_posts = site.posts | where_exp: "post", "post.pinned" %}
           {% if pinned_posts.size > 0 %}
           <a href="#pinned-section" class="scroll-indicator__item" data-section="pinned">
             <span class="scroll-indicator__marker"></span>
@@ -38,7 +38,7 @@ layout: compress
           </a>
           {% endif %}
 
-          {% assign posts_by_year = site.posts | where_exp: "post", "post.pinned != true" | group_by_exp: "post", "post.date | date: '%Y'" %}
+          {% assign posts_by_year = site.posts | group_by_exp: "post", "post.date | date: '%Y'" %}
           {% for year_group in posts_by_year %}
           <a href="#year-{{ year_group.name }}" class="scroll-indicator__item" data-section="year-{{ year_group.name }}">
             <span class="scroll-indicator__marker"></span>
@@ -59,7 +59,7 @@ layout: compress
         <a class="btn btn-sm btn-primary active" data-filter="*">All</a>
       </div> -->
 
-      {% assign pinned_posts = site.posts | where: "pinned", true %}
+      {% assign pinned_posts = site.posts | where_exp: "post", "post.pinned" %}
 
       {% if pinned_posts.size > 0 %}
       <!-- Pinned Posts Carousel Section -->
@@ -78,10 +78,23 @@ layout: compress
               ‹
             </button>
             <div class="pinned-section__track" id="pinned-carousel-track">
-              {% for post in pinned_posts %}
-              <div class="pinned-section__card">
-                {% include card.html %}
-              </div>
+              {% comment %} Display pinned posts by rank (1-20), then any with pinned: true {% endcomment %}
+              {% for rank in (1..20) %}
+                {% for post in site.posts %}
+                  {% if post.pinned == rank %}
+                    <div class="pinned-section__card">
+                      {% include card.html %}
+                    </div>
+                  {% endif %}
+                {% endfor %}
+              {% endfor %}
+              {% comment %} Display posts with pinned: true (unranked) {% endcomment %}
+              {% for post in site.posts %}
+                {% if post.pinned == true %}
+                  <div class="pinned-section__card">
+                    {% include card.html %}
+                  </div>
+                {% endif %}
               {% endfor %}
             </div>
             <button class="pinned-section__arrow pinned-section__arrow--right" id="carousel-arrow-right" aria-label="Scroll right">
