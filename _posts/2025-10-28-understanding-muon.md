@@ -1,11 +1,11 @@
 ---
 title: "Understanding Muon"
 layout: post
-featured-video: https://www.dropbox.com/scl/fi/ab5xnne68vyeh72bn0v0w/muon-overview.gif?rlkey=90svhpf5kxyr4kwsxygbcxm1d&st=s0pff4xs&raw=1
-featured-poster: https://www.dropbox.com/scl/fi/ab5xnne68vyeh72bn0v0w/muon-overview.gif?rlkey=90svhpf5kxyr4kwsxygbcxm1d&st=s0pff4xs&raw=1
-featured-gif: https://www.dropbox.com/scl/fi/ab5xnne68vyeh72bn0v0w/muon-overview.gif?rlkey=90svhpf5kxyr4kwsxygbcxm1d&st=s0pff4xs&raw=1
+featured-video: https://www.dropbox.com/scl/fi/pbrvl6jw5cmo98m3cni83/muon-overview-simple-fast.mp4?rlkey=h5f9jujojjrv4bx7smjjnfxke&st=ozle1qpc&raw=1
+featured-poster: understanding-muon
+featured-gif: https://www.dropbox.com/scl/fi/o6vcqhrddhpgen2ydlz6t/muon-overview-simple-fast.gif?rlkey=o4gcbbcckpfb09wkfqb6q3o1g&st=recelk51&raw=1
 mathjax: true
-pinned: false
+pinned: 4
 python-interactive: true
 categories: [Algorithms, A.I., M.L.]
 summary: Deep diving into one element of Karpathy's nanochat - a trending optimizer
@@ -38,6 +38,10 @@ summary: Deep diving into one element of Karpathy's nanochat - a trending optimi
 
 Today, we're going to try and understand as much of this animation as possible. We'll cover optimizers as a construct, look at an example, take a walk through history (again high level) and then we'll investigate Muon, which is a more recent optimizer that has been sweeping the community. Note, we will not cover Newton-Schulz iteration or approximation of the SVD calc, but I'm hoping to cover that in another blog post. 
 
+<div class="markdown-alert markdown-alert-tip">
+<p>Also if you're curious the visualization code (which is a bit of a mess) is <b><a href="https://github.com/johnlarkin1/understanding-muon">here.</a></b></p>
+</div>
+
 # Background
 
 [`nanochat`][nanochat] just dropped a couple of weeks ago and one element that I was extremely interested in was [muon][muon-keller-jordan]. It's a pretty recent state of the art optimizer that has shown competitive performance in training speed challenges.
@@ -52,7 +56,7 @@ This post is going to try and take you as close from $0 \to 1$ as possible (one 
 - [Background](#background)
 - [Table of Contents](#table-of-contents)
 - [(optional) Reading + Videos](#optional-reading--videos)
-- [1. Deep Learning](#1-deep-learning)
+- [Deep Learning (simplified)](#deep-learning-simplified)
 - [Tour of Popular Optimizers](#tour-of-popular-optimizers)
   - [Loss Function](#loss-function)
     - [Visualization](#visualization)
@@ -72,22 +76,12 @@ This post is going to try and take you as close from $0 \to 1$ as possible (one 
   - [Weight Decay Coupling (the "W" in AdamW, 2017)](#weight-decay-coupling-the-w-in-adamw-2017)
     - [L2 Regularization](#l2-regularization)
     - [Viz](#viz-1)
-- [----- params -----](#------params------)
-- [Adam / AdamW hyperparams](#adam--adamw-hyperparams)
-- [----- runs -----](#------runs------)
-- [----- viz -----](#------viz------)
 - [Muon (MomentUm Orthogonalized by Newton-Schulz) (2025)](#muon-momentum-orthogonalized-by-newton-schulz-2025)
   - [Theory](#theory)
     - [Odd Polynomial Matrix](#odd-polynomial-matrix)
     - [Newton-Schulz Iteration](#newton-schulz-iteration)
     - [Overview](#overview)
   - [Implementation](#implementation)
-- [----- params -----](#------params-------1)
-- [Adam / AdamW hyperparams](#adam--adamw-hyperparams-1)
-- [----- runs -----](#------runs-------1)
-- [===== Muon (minimal integration; assumes your run\_muon\_muonshot handles shape) =====](#-muon-minimal-integration-assumes-your-run_muon_muonshot-handles-shape-)
-- [----- viz -----](#------viz-------1)
-- [Muon trace (minimal additional plotting)](#muon-trace-minimal-additional-plotting)
 - [Conclusion](#conclusion)
 
 # (optional) Reading + Videos
@@ -102,7 +96,7 @@ These are a couple of helpful resources for you all to get started. I would actu
   - [**Understanding Muon**][understanding-muon-laker] - _Laker Newhouse_
     - this series (after doing my own research and investigation) is hilariously written. lots of Matrix allusions
 
-# 1. Deep Learning
+# Deep Learning (simplified)
 
 I'm not going to take you from the very beginning, but the language of deep learning is basically just... linear algebra.
 
@@ -237,7 +231,6 @@ def styblinski_tang_grad(x: float, y: float) -> np.ndarray:
     dfy = 2 * y**3 - 16 * y + 2.5
     return np.array([dfx, dfy], dtype=float)
 
-"""learning params"""
 eta = 0.01
 steps = 80
 theta = np.array([3.5, -3.5], dtype=float)
@@ -1261,7 +1254,7 @@ def run_adamw(theta0, eta=1e-2, beta1=0.9, beta2=0.999, eps=1e-8, weight_decay=0
         path.append(theta.copy())
     return np.array(path)
 
-# ----- params -----
+"""----- params -----"""
 theta_start = np.array([4.1, 4.5], dtype=float)
 steps = 1200
 
@@ -1271,13 +1264,13 @@ eta_adagrad = 0.40
 eta_rms, rho, eps = 1e-2, 0.9, 1e-8
 eta_rms_c = 1e-2
 
-# Adam / AdamW hyperparams
+"""Adam / AdamW hyperparams"""
 eta_adam = 1e-2
 beta1, beta2 = 0.9, 0.999
 eps_adam = 1e-8
 wd = 1e-2     # try 0.0 (Adam-equivalent) vs 1e-3 vs 1e-2
 
-# ----- runs -----
+"""----- runs -----"""
 sgd_path  = run_sgd(theta_start, eta=eta_sgd, steps=steps)
 mom_path  = run_momentum(theta_start, eta=eta_mom, beta=beta, steps=steps)
 ada_path  = run_adagrad(theta_start, eta=eta_adagrad, steps=steps)
@@ -1288,7 +1281,7 @@ adamw_path = run_adamw(theta_start, eta=eta_adam, beta1=beta1, beta2=beta2, eps=
 
 mins2d, gmin_pt, gmin_val = stationary_points_and_global_min()
 
-# ----- viz -----
+"""----- viz -----"""
 x = y = np.linspace(-5, 5, 400)
 X, Y = np.meshgrid(x, y)
 Z = styblinski_tang_fn(X, Y)
@@ -1690,7 +1683,6 @@ def run_muon_muonshot(theta0, eta=1e-2, beta=0.95, weight_decay=1e-2, steps=1200
 
     return np.array(path)
 
-# ----- params -----
 theta_start = np.array([4.1, 4.5], dtype=float)
 steps = 1200
 
@@ -1700,13 +1692,11 @@ eta_adagrad = 0.40
 eta_rms, rho, eps = 1e-2, 0.9, 1e-8
 eta_rms_c = 1e-2
 
-# Adam / AdamW hyperparams
 eta_adam = 1e-2
 beta1, beta2 = 0.9, 0.999
 eps_adam = 1e-8
 wd = 1e-2     # try 0.0 (Adam-equivalent) vs 1e-3 vs 1e-2
 
-# ----- runs -----
 sgd_path  = run_sgd(theta_start, eta=eta_sgd, steps=steps)
 mom_path  = run_momentum(theta_start, eta=eta_mom, beta=beta, steps=steps)
 ada_path  = run_adagrad(theta_start, eta=eta_adagrad, steps=steps)
@@ -1715,7 +1705,6 @@ rmsc_path = run_rmsprop_centered(theta_start, eta=eta_rms_c, rho=rho, eps=eps, s
 adam_path = run_adam(theta_start, eta=eta_adam, beta1=beta1, beta2=beta2, eps=eps_adam, steps=steps)
 adamw_path = run_adamw(theta_start, eta=eta_adam, beta1=beta1, beta2=beta2, eps=eps_adam, weight_decay=wd, steps=steps)
 
-# ===== Muon (minimal integration; assumes your run_muon_muonshot handles shape) =====
 eta_muon = 1e-2
 beta_mu = 0.95
 wd_mu = 1e-2
@@ -1737,7 +1726,6 @@ muon_path = muon_path_raw.squeeze(-1) if muon_path_raw.ndim == 3 else muon_path_
 
 mins2d, gmin_pt, gmin_val = stationary_points_and_global_min()
 
-# ----- viz -----
 x = y = np.linspace(-5, 5, 400)
 X, Y = np.meshgrid(x, y)
 Z = styblinski_tang_fn(X, Y)
@@ -1754,7 +1742,6 @@ plt.plot(rmsc_path[:, 0],  rmsc_path[:, 1],  '.-', lw=1.2, ms=3, label='RMSProp 
 plt.plot(adam_path[:, 0],  adam_path[:, 1],  '.-', lw=1.2, ms=3, label='Adam')
 plt.plot(adamw_path[:, 0], adamw_path[:, 1], '.-', lw=1.2, ms=3, label=f'AdamW (wd={wd})')
 
-# Muon trace (minimal additional plotting)
 plt.plot(muon_path[:, 0],  muon_path[:, 1],  '.-', lw=1.4, ms=3, label=f'Muon (NS={ns_steps}, β={beta_mu})')
 plt.scatter(muon_path[-1, 0],  muon_path[-1, 1],  s=60, label='Muon End', zorder=3)
 
@@ -1794,6 +1781,8 @@ Ok! I hope you have learned something. There is obviously a ton more I could wri
 
 I'm hoping to dive more into the Newton-Schulz iteration and have some interesting visualizations there, but as always, this has burned more of my time that maybe I should have allocated.
 
+Once again, [visualization code is here too][viz-code] if you need.
+
 [comment]: <> (Bibliography)
 [nanochat]: https://github.com/karpathy/nanochat
 [muon-keller-jordan]: https://kellerjordan.github.io/posts/muon/
@@ -1810,3 +1799,4 @@ I'm hoping to dive more into the Newton-Schulz iteration and have some interesti
 [rmsprop-pres]: https://www.cs.toronto.edu/~tijmen/csc321/slides/lecture_slides_lec6.pdf
 [adam-paper]: https://arxiv.org/abs/1412.6980
 [pytorch-muon]: https://docs.pytorch.org/docs/stable/generated/torch.optim.Muon.html
+[viz-code]: https://github.com/johnlarkin1/understanding-muon
