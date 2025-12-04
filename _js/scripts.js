@@ -6,6 +6,9 @@ require("./pyodide-runner.js");
 
 // Jquery & Velocity JS included in GULP
 $(document).ready(function () {
+  // Reveal header once DOM is ready (prevents FOUC)
+  $(".header").css("opacity", "1");
+
   toggleMobileNav();
   ShowHideNav();
   formCheck();

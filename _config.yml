@@ -21,6 +21,11 @@ navigation: # Navigation links
   - {name: 'Categories', link: '/categories'}
   - {name: 'Contact', link: '/contact'}
 
+projects: # Projects dropdown links (external)
+  - {name: 'Tennis Scorigami', link: 'https://www.tennis-scorigami.com/'}
+  - {name: 'Scrollz', link: 'https://www.scrollz.co/'}
+  - {name: 'Walk in the Parquet', link: 'https://www.walkintheparquet.com/'}
+
 tagline: >
   My personal coding blog and thought journal.
 
