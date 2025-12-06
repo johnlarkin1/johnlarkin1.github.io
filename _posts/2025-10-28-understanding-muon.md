@@ -5,7 +5,7 @@ featured-video: https://www.dropbox.com/scl/fi/pbrvl6jw5cmo98m3cni83/muon-overvi
 featured-poster: understanding-muon
 featured-gif: https://www.dropbox.com/scl/fi/o6vcqhrddhpgen2ydlz6t/muon-overview-simple-fast.gif?rlkey=o4gcbbcckpfb09wkfqb6q3o1g&st=recelk51&raw=1
 mathjax: true
-pinned: 4
+pinned: 5
 python-interactive: true
 categories: [Algorithms, A.I., M.L.]
 summary: Deep diving into one element of Karpathy's nanochat - a trending optimizer
