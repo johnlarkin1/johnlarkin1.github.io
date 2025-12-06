@@ -3,7 +3,6 @@ title: "Disjoint Set Union"
 layout: post
 featured-img: disjoint-set-union
 mathjax: true
-pinned: false
 categories: [Algorithms, Rust]
 summary: Looking at a data structure i wasn't familiar with until I got torched in an interview
 ---

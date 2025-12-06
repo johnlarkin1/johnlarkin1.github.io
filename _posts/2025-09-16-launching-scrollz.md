@@ -2,7 +2,7 @@
 title: "Launching Scrollz"
 layout: post
 featured-img: scrollz-preview
-pinned: true
+pinned: 4
 categories: [Scrollz]
 summary: "If you're sick of an inbox cluttered with newsletters, Scrollz might be for you"
 favorite: false
