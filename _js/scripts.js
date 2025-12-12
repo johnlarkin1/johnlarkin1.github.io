@@ -22,6 +22,7 @@ $(document).ready(function () {
   initNewBadges();
   initPinnedCarousel();
   initContactHub();
+  initSearch();
 
   // Initialize Python runners if present
   if ($(".interactive-python").length > 0) {
@@ -35,6 +36,7 @@ $(document).keyup(function (e) {
     removeModal();
     closeLightbox();
     closeContactHub();
+    closeSearch();
   }
 });
 
@@ -1264,4 +1266,95 @@ function trapFocus(element) {
   element._trapFocusCleanup = function () {
     element.removeEventListener("keydown", handleTabKey);
   };
+}
+
+/*-------------------------------------------------------------------------*/
+/* SEARCH MODAL */
+/*-------------------------------------------------------------------------*/
+
+function initSearch() {
+  var $modal = $(".search-modal");
+  var $trigger = $(".js-search-trigger");
+  var $close = $(".js-search-close");
+
+  if ($modal.length === 0) return;
+
+  // Click trigger to open
+  $trigger.on("click", function (e) {
+    e.preventDefault();
+    openSearch();
+  });
+
+  // Click close button or overlay to close
+  $close.on("click", function (e) {
+    e.preventDefault();
+    closeSearch();
+  });
+
+  // Keyboard shortcut: Cmd+K (Mac) / Ctrl+K (Win/Linux)
+  $(document).on("keydown", function (e) {
+    // Check for Cmd+K or Ctrl+K
+    if ((e.metaKey || e.ctrlKey) && e.key === "k") {
+      e.preventDefault();
+      if ($modal.hasClass("is-active")) {
+        closeSearch();
+      } else {
+        openSearch();
+      }
+    }
+  });
+}
+
+function openSearch() {
+  var $modal = $(".search-modal");
+  if ($modal.length === 0 || $modal.hasClass("is-active")) return;
+
+  // Prevent body scroll
+  $("body").addClass("search-modal--open");
+
+  // Show modal
+  $modal.addClass("is-active");
+
+  // Initialize Pagefind UI on first open (lazy load)
+  if (!window.pagefindInitialized && typeof PagefindUI !== "undefined") {
+    new PagefindUI({
+      element: "#pagefind-container",
+      showSubResults: true,
+      showImages: false,
+      excerptLength: 20
+    });
+    window.pagefindInitialized = true;
+  }
+
+  // Focus search input after animation
+  setTimeout(function () {
+    var input = $modal.find(".pagefind-ui__search-input")[0];
+    if (input) {
+      input.focus();
+    }
+  }, 150);
+
+  // Trap focus within modal
+  trapFocus($modal[0]);
+}
+
+function closeSearch() {
+  var $modal = $(".search-modal");
+  if (!$modal.hasClass("is-active")) return;
+
+  // Add closing animation class
+  $modal.addClass("is-closing");
+
+  // Restore body scroll
+  $("body").removeClass("search-modal--open");
+
+  // Remove classes after animation
+  setTimeout(function () {
+    $modal.removeClass("is-active is-closing");
+
+    // Clean up focus trap
+    if ($modal[0]._trapFocusCleanup) {
+      $modal[0]._trapFocusCleanup();
+    }
+  }, 250);
 }

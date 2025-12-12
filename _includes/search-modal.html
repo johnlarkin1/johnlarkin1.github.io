@@ -1,0 +1,42 @@
+<!-- Search Modal -->
+<div
+  class="search-modal"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="search-modal-title"
+>
+  <div class="search-modal__overlay js-search-close"></div>
+
+  <div class="search-modal__container">
+    <div class="search-modal__header">
+      <h2 id="search-modal-title" class="search-modal__title">Search</h2>
+      <div class="search-modal__shortcut">
+        <kbd class="search-modal__kbd">esc</kbd>
+        <span>to close</span>
+      </div>
+      <button
+        class="search-modal__close js-search-close"
+        aria-label="Close search"
+      >
+        <svg
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+
+    <div class="search-modal__content">
+      <!-- Pagefind UI mounts here -->
+      <div id="pagefind-container"></div>
+    </div>
+  </div>
+</div>
