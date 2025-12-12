@@ -20,15 +20,15 @@ layout: compress
     {% include header.html %}
 
     {% if page.featured-img %}
-    <div class="hero--med lazyload" data-bg="{{ site.url }}{{ site.baseurl }}/assets/img/posts/{{ page.featured-img }}.jpg">
+    <div class="hero lazyload" data-bg="{{ site.url }}{{ site.baseurl }}/assets/img/posts/{{ page.featured-img }}.jpg">
     {% elsif page.featured-gif %}
       {% if page.featured-gif contains "http" %}
-    <div class="hero--med lazyload" data-bg="{{ page.featured-gif }}">
+    <div class="hero lazyload" data-bg="{{ page.featured-gif }}">
       {% else %}
-    <div class="hero--med lazyload" data-bg="{{ site.url }}{{ site.baseurl }}/assets/gif/{{ page.featured-gif }}.gif">
+    <div class="hero lazyload" data-bg="{{ site.url }}{{ site.baseurl }}/assets/gif/{{ page.featured-gif }}.gif">
       {% endif %}
     {% else %}
-    <div class="hero--med">
+    <div class="hero">
     {% endif %}
       <div class="hero__wrap">
         <h1 class="hero__title">{{ page.title }}</h1>

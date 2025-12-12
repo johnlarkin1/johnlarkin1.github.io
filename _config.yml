@@ -17,8 +17,8 @@ social:
 # THEME SETTINGS
 navigation: # Navigation links
   - {name: 'Home', link: '/'}
-  - {name: 'About', link: '/about'}
   - {name: 'Categories', link: '/categories'}
+  - {name: 'About', link: '/about'}
   - {name: 'Contact', link: '/contact'}
 
 projects: # Projects dropdown links (external)

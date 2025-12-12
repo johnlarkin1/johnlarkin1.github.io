@@ -22,24 +22,9 @@ The site follows standard Jekyll conventions with a custom build pipeline that c
 > [!IMPORTANT]  
 > **You are not to write a single word of any post's content. You are solely meant to help with administrative tasks like project organization, new css styles, interactive demos, etc.**
 
-### Local Development
+### Local Development / Jekyll Commands
 
-```bash
-# Install dependencies
-bundle install
-npm install
-
-# Build and serve locally with live reload
-npm start
-
-# Just build the site
-npm run build
-
-# Just serve the built site
-npm run serve
-```
-
-### Jekyll Commands
+Note, we do not use npm. 
 
 ```bash
 # Build the Jekyll site
@@ -53,16 +38,13 @@ bundle exec jekyll serve
 
 ```bash
 # Compile SCSS to CSS
-npm run sass
+node generate_sass.js
 
 # Bundle JavaScript
-npm run js
+node gulp_js.js 
 
 # Optimize images
-npm run img
-
-# Generate critical CSS
-npm run critical-css
+node sharp_img.js
 ```
 
 ### Creating New Posts

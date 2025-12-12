@@ -1,0 +1,543 @@
+// Contact Hub Modal
+// A dramatic, animated contact modal with form and social links
+
+// Brand colors for social links
+$contact-email-color: #EA4335;
+$contact-x-color: #000000;
+$contact-linkedin-color: #0A66C2;
+$contact-github-color: #6e5494;
+$contact-accent: #5837F5;
+
+// Animation timing
+$contact-ease: cubic-bezier(0.25, 1, 0.33, 1);
+$contact-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+
+// Keyframe animations
+@keyframes contactHubFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes contactHubSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes contactHubPop {
+  0% {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  70% {
+    transform: scale(1.05);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes contactHubPulse {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba($contact-accent, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 0 8px rgba($contact-accent, 0);
+  }
+}
+
+@keyframes contactHubLine {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+// Main container - hidden by default
+.contact-hub {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 9999;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+
+  &.is-active {
+    display: flex;
+  }
+
+  // Animated overlay
+  &__overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(10, 10, 10, 0.92);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    opacity: 0;
+    transition: opacity 0.4s $contact-ease;
+    cursor: pointer;
+
+    .contact-hub.is-active & {
+      animation: contactHubFadeIn 0.4s $contact-ease forwards;
+    }
+
+    .contact-hub.is-closing & {
+      opacity: 0;
+    }
+  }
+
+  // Main container
+  &__container {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 900px;
+    max-height: 90vh;
+    overflow-y: auto;
+    background: linear-gradient(145deg, #1e1e1e 0%, #161616 100%);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 20px;
+    box-shadow:
+      0 25px 50px -12px rgba(0, 0, 0, 0.5),
+      0 0 0 1px rgba(255, 255, 255, 0.05),
+      inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    opacity: 0;
+    transform: translateY(30px) scale(0.96);
+
+    .contact-hub.is-active & {
+      animation: contactHubSlideUp 0.5s $contact-ease 0.1s forwards;
+    }
+
+    .contact-hub.is-closing & {
+      opacity: 0;
+      transform: translateY(30px) scale(0.96);
+      transition: all 0.3s $contact-ease;
+    }
+  }
+
+  // Close button
+  &__close {
+    position: absolute;
+    top: 1.25rem;
+    right: 1.25rem;
+    z-index: 10;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    color: rgba(255, 255, 255, 0.6);
+    cursor: pointer;
+    transition: all 0.25s $contact-ease;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+      transform: scale(1.05);
+    }
+
+    &:active {
+      transform: scale(0.95);
+    }
+
+    svg {
+      width: 20px;
+      height: 20px;
+    }
+  }
+
+  // Content layout
+  &__content {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    padding: 3rem 2rem 2.5rem;
+
+    @media (min-width: $md) {
+      grid-template-columns: 1.2fr 1fr;
+      gap: 3rem;
+      padding: 3.5rem;
+    }
+  }
+
+  // Form section
+  &__form-section {
+    opacity: 0;
+
+    .contact-hub.is-active & {
+      animation: contactHubSlideUp 0.5s $contact-ease 0.2s forwards;
+    }
+  }
+
+  &__title {
+    font-size: 2rem;
+    font-weight: 600;
+    color: #fff;
+    margin: 0 0 0.5rem;
+    letter-spacing: -0.02em;
+
+    @media (min-width: $md) {
+      font-size: 2.25rem;
+    }
+  }
+
+  &__subtitle {
+    font-size: 1rem;
+    color: rgba(255, 255, 255, 0.5);
+    margin: 0 0 2rem;
+    line-height: 1.5;
+  }
+
+  // Form styling
+  &__form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.75rem;
+  }
+
+  &__field {
+    position: relative;
+
+    input,
+    textarea {
+      width: 100%;
+      padding: 1.25rem 0 0.75rem;
+      font-size: 1rem;
+      font-family: inherit;
+      color: #fff;
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 0;
+      outline: none;
+      transition: border-color 0.3s $contact-ease;
+      -webkit-appearance: none;
+
+      &:focus {
+        border-color: $contact-accent;
+      }
+
+      &:focus ~ label,
+      &:not(:placeholder-shown) ~ label {
+        transform: translateY(-1.5rem) scale(0.8);
+        color: $contact-accent;
+      }
+
+      &:focus ~ .contact-hub__field-line {
+        transform: scaleX(1);
+      }
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+
+    label {
+      position: absolute;
+      left: 0;
+      top: 1rem;
+      font-size: 1rem;
+      color: rgba(255, 255, 255, 0.4);
+      pointer-events: none;
+      transform-origin: left center;
+      transition: all 0.3s $contact-ease;
+    }
+  }
+
+  &__field-line {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, $contact-accent, lighten($contact-accent, 15%));
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.4s $contact-ease;
+  }
+
+  // Submit button
+  &__submit {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    margin-top: 0.5rem;
+    padding: 1rem 2rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    font-family: inherit;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #fff;
+    background: linear-gradient(135deg, $contact-accent 0%, darken($contact-accent, 10%) 100%);
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s $contact-ease;
+    box-shadow: 0 4px 15px rgba($contact-accent, 0.3);
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba($contact-accent, 0.4);
+    }
+
+    &:active {
+      transform: translateY(0);
+    }
+
+    &-icon {
+      display: flex;
+      transition: transform 0.3s $contact-ease;
+
+      svg {
+        width: 18px;
+        height: 18px;
+      }
+    }
+
+    &:hover &-icon {
+      transform: translateX(3px) translateY(-2px);
+    }
+  }
+
+  // Social links section
+  &__social-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.04);
+    opacity: 0;
+
+    .contact-hub.is-active & {
+      animation: contactHubSlideUp 0.5s $contact-ease 0.25s forwards;
+    }
+
+    @media (min-width: $md) {
+      padding: 2rem;
+    }
+  }
+
+  &__social-title {
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: rgba(255, 255, 255, 0.4);
+    margin: 0 0 1.5rem;
+  }
+
+  &__social-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    width: 100%;
+    max-width: 280px;
+  }
+
+  // Social link buttons
+  &__social-link {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1.25rem 1rem;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 16px;
+    text-decoration: none;
+    transition: all 0.35s $contact-ease;
+    opacity: 0;
+
+    // Staggered entrance
+    .contact-hub.is-active & {
+      animation: contactHubPop 0.4s $contact-bounce forwards;
+    }
+
+    &:nth-child(1) { .contact-hub.is-active & { animation-delay: 0.35s; } }
+    &:nth-child(2) { .contact-hub.is-active & { animation-delay: 0.45s; } }
+    &:nth-child(3) { .contact-hub.is-active & { animation-delay: 0.55s; } }
+    &:nth-child(4) { .contact-hub.is-active & { animation-delay: 0.65s; } }
+
+    &:hover {
+      transform: translateY(-4px) scale(1.02);
+      background: rgba(255, 255, 255, 0.06);
+    }
+
+    // Brand color hover states
+    &--email:hover {
+      border-color: rgba($contact-email-color, 0.5);
+      box-shadow:
+        0 8px 30px rgba($contact-email-color, 0.2),
+        0 0 0 1px rgba($contact-email-color, 0.3);
+
+      .contact-hub__social-icon {
+        color: $contact-email-color;
+      }
+    }
+
+    &--x:hover {
+      border-color: rgba(255, 255, 255, 0.3);
+      box-shadow:
+        0 8px 30px rgba(255, 255, 255, 0.1),
+        0 0 0 1px rgba(255, 255, 255, 0.2);
+      background: rgba(255, 255, 255, 0.08);
+
+      .contact-hub__social-icon {
+        color: #fff;
+      }
+    }
+
+    &--linkedin:hover {
+      border-color: rgba($contact-linkedin-color, 0.5);
+      box-shadow:
+        0 8px 30px rgba($contact-linkedin-color, 0.2),
+        0 0 0 1px rgba($contact-linkedin-color, 0.3);
+
+      .contact-hub__social-icon {
+        color: $contact-linkedin-color;
+      }
+    }
+
+    &--github:hover {
+      border-color: rgba($contact-github-color, 0.5);
+      box-shadow:
+        0 8px 30px rgba($contact-github-color, 0.2),
+        0 0 0 1px rgba($contact-github-color, 0.3);
+
+      .contact-hub__social-icon {
+        color: $contact-github-color;
+      }
+    }
+  }
+
+  &__social-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 56px;
+    height: 56px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 14px;
+    color: rgba(255, 255, 255, 0.7);
+    transition: all 0.35s $contact-ease;
+
+    svg {
+      transition: transform 0.35s $contact-ease;
+    }
+
+    .contact-hub__social-link:hover & svg {
+      transform: scale(1.1);
+    }
+  }
+
+  &__social-label {
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.6);
+    transition: color 0.3s $contact-ease;
+
+    .contact-hub__social-link:hover & {
+      color: #fff;
+    }
+  }
+
+  &__social-hint {
+    margin-top: 1.5rem;
+    text-align: center;
+
+    p {
+      font-size: 0.8125rem;
+      color: rgba(255, 255, 255, 0.35);
+      margin: 0;
+      line-height: 1.5;
+    }
+  }
+}
+
+
+// Reduced motion support
+@media (prefers-reduced-motion: reduce) {
+  .contact-hub {
+    &__overlay,
+    &__container,
+    &__form-section,
+    &__social-section,
+    &__social-link,
+    &__submit,
+    &__field-line {
+      animation: none !important;
+      transition: none !important;
+      opacity: 1 !important;
+      transform: none !important;
+    }
+  }
+}
+
+// Form validation states
+.contact-hub__field {
+  &.is-error {
+    input,
+    textarea {
+      border-color: $error;
+    }
+
+    label {
+      color: $error;
+    }
+
+    .contact-hub__field-line {
+      background: $error;
+      transform: scaleX(1);
+    }
+  }
+
+  &.is-success {
+    input,
+    textarea {
+      border-color: $success;
+    }
+  }
+}
+
+// Success state after form submission
+.contact-hub__form.is-submitted {
+  .contact-hub__submit {
+    background: linear-gradient(135deg, $success 0%, darken($success, 10%) 100%);
+    box-shadow: 0 4px 15px rgba($success, 0.3);
+    pointer-events: none;
+  }
+
+  .contact-hub__submit-text {
+    &::after {
+      content: ' - Sent!';
+    }
+  }
+}

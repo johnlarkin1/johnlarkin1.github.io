@@ -1,6 +1,7 @@
 ---
 layout: page
 title: Categories
+featured-img: namibia
 permalink: /categories/
 ---
 
