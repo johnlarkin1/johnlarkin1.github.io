@@ -21,6 +21,7 @@ $(document).ready(function () {
   initKnowledgeChecks();
   initNewBadges();
   initPinnedCarousel();
+  initContactHub();
 
   // Initialize Python runners if present
   if ($(".interactive-python").length > 0) {
@@ -33,6 +34,7 @@ $(document).keyup(function (e) {
   if (e.keyCode === 27) {
     removeModal();
     closeLightbox();
+    closeContactHub();
   }
 });
 
@@ -1093,4 +1095,144 @@ function initPinnedCarousel() {
 
   // Initial state
   updateUI();
+}
+
+/*-------------------------------------------------------------------------*/
+/* CONTACT HUB MODAL */
+/* -----------------------------------------------------------------------*/
+
+function initContactHub() {
+  const $hub = $(".contact-hub");
+  const $trigger = $(".js-contact-trigger");
+  const $close = $(".js-contact-hub-close");
+
+  if ($hub.length === 0) return;
+
+  // Open contact hub
+  $trigger.on("click", function (e) {
+    e.preventDefault();
+    openContactHub();
+  });
+
+  // Close contact hub
+  $close.on("click", function (e) {
+    e.preventDefault();
+    closeContactHub();
+  });
+
+  // Form validation for contact hub
+  initContactHubForm();
+}
+
+function openContactHub() {
+  const $hub = $(".contact-hub");
+  if ($hub.length === 0) return;
+
+  // Prevent body scroll
+  $("body").css("overflow", "hidden");
+
+  // Show and animate
+  $hub.addClass("is-active");
+
+  // Focus the first input after animation
+  setTimeout(function () {
+    $hub.find("input, textarea").first().focus();
+  }, 600);
+
+  // Set up focus trapping
+  trapFocus($hub[0]);
+}
+
+function closeContactHub() {
+  const $hub = $(".contact-hub");
+  if (!$hub.hasClass("is-active")) return;
+
+  // Add closing class for exit animation
+  $hub.addClass("is-closing");
+
+  // Wait for animation then hide
+  setTimeout(function () {
+    $hub.removeClass("is-active is-closing");
+    $("body").css("overflow", "");
+
+    // Return focus to trigger button
+    $(".js-contact-trigger").first().focus();
+  }, 300);
+}
+
+function initContactHubForm() {
+  const $form = $("#contactHubForm");
+  if ($form.length === 0) return;
+
+  $form.on("submit", function (e) {
+    const $fields = $form.find(".contact-hub__field");
+    let hasError = false;
+
+    // Clear previous errors
+    $fields.removeClass("is-error");
+
+    // Validate required fields
+    $fields.each(function () {
+      const $field = $(this);
+      const $input = $field.find("input, textarea");
+
+      if ($input.prop("required") && !$input.val().trim()) {
+        $field.addClass("is-error");
+        hasError = true;
+      }
+
+      // Validate email format
+      if ($input.attr("type") === "email" && $input.val().trim()) {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test($input.val().trim())) {
+          $field.addClass("is-error");
+          hasError = true;
+        }
+      }
+    });
+
+    if (hasError) {
+      e.preventDefault();
+      // Focus first error field
+      $fields.filter(".is-error").first().find("input, textarea").focus();
+    }
+  });
+
+  // Clear error on input
+  $form.find("input, textarea").on("input", function () {
+    $(this).closest(".contact-hub__field").removeClass("is-error");
+  });
+}
+
+// Focus trap utility for accessibility
+function trapFocus(element) {
+  const focusableElements = element.querySelectorAll(
+    'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+  );
+  const firstFocusable = focusableElements[0];
+  const lastFocusable = focusableElements[focusableElements.length - 1];
+
+  function handleTabKey(e) {
+    if (e.key !== "Tab") return;
+
+    if (e.shiftKey) {
+      if (document.activeElement === firstFocusable) {
+        e.preventDefault();
+        lastFocusable.focus();
+      }
+    } else {
+      if (document.activeElement === lastFocusable) {
+        e.preventDefault();
+        firstFocusable.focus();
+      }
+    }
+  }
+
+  // Add listener
+  element.addEventListener("keydown", handleTabKey);
+
+  // Store cleanup function
+  element._trapFocusCleanup = function () {
+    element.removeEventListener("keydown", handleTabKey);
+  };
 }

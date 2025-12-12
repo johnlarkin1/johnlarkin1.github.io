@@ -76,6 +76,19 @@
   color: $dark-text;
   padding: .938rem 0;
   border-top: 1px solid $dark-border;
+
+  // Reset button styles when Contact is a button
+  &[type="button"],
+  &:is(button) {
+    background: none;
+    border: none;
+    border-top: 1px solid $dark-border;
+    font-family: inherit;
+    font-size: inherit;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+  }
 }
 
 // Projects Dropdown - Mobile Styles
@@ -208,6 +221,18 @@
     padding: .938rem 1rem;
     border: 0;
     height: 100%;
+
+    // Reset button styles for desktop
+    &[type="button"],
+    &:is(button) {
+      background: none;
+      border: none;
+      font-family: inherit;
+      font-size: inherit;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+    }
 
     &::after {
       content: "";

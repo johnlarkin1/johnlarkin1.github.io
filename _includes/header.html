@@ -9,9 +9,15 @@
       <nav class="header__links">
         <div class="container header__links-wrapper">
           {% for item in site.navigation %}
+            {% if item.name == 'Contact' %}
+            <button class="header__link contact-trigger js-contact-trigger" type="button" aria-haspopup="dialog">
+              <span>{{ item.name }}</span>
+            </button>
+            {% else %}
             <a class="header__link" href="{{ item.link | relative_url }}" itemprop="url">
               <span itemprop="name">{{ item.name }}</span>
             </a>
+            {% endif %}
             {% if forloop.first %}
             <div class="header__dropdown">
               <span class="header__link header__dropdown-trigger">
@@ -43,3 +49,5 @@
     </div>
   </div>
 </header>
+
+{% include contact-hub.html %}
