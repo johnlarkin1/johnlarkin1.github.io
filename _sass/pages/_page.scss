@@ -5,7 +5,7 @@
   position: relative;
   background-color: #dde5ea;
   background-repeat: no-repeat;
-  background-position: 50%;
+  background-position: center 40%;
   background-size: cover;
 
   @include breakpoint($lg) {
@@ -21,7 +21,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(52, 56, 81, .8);
+    background: rgba(26, 26, 26, 0.55);
   }
 }
 
@@ -72,6 +72,32 @@
     width: 100%;
     height: 100%;
     background: rgba(52, 56, 81, .8);
+  }
+}
+
+// Clickable hero for lightbox
+.hero--clickable {
+  cursor: pointer;
+
+  &::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0);
+    transition: background 0.3s ease;
+    pointer-events: none;
+  }
+
+  &:hover::after {
+    background: rgba(0, 0, 0, 0.1);
+  }
+
+  &:focus {
+    outline: 2px solid rgba(255, 255, 255, 0.5);
+    outline-offset: -2px;
   }
 }
 

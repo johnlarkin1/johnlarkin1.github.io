@@ -20,13 +20,27 @@ layout: compress
     {% include header.html %}
 
     {% if page.featured-img %}
-    <div class="hero lazyload" data-bg="{{ site.url }}{{ site.baseurl }}/assets/img/posts/{{ page.featured-img }}.jpg">
+      {% assign hero_img_url = site.url | append: site.baseurl | append: "/assets/img/posts/" | append: page.featured-img | append: ".jpg" %}
+    <div class="hero hero--clickable lazyload"
+         data-bg="{{ hero_img_url }}"
+         data-lightbox-src="{{ hero_img_url }}"
+         data-lightbox-caption="{{ page.featured-img-caption | default: page.title }}"
+         role="button"
+         tabindex="0"
+         aria-label="View full image">
     {% elsif page.featured-gif %}
       {% if page.featured-gif contains "http" %}
-    <div class="hero lazyload" data-bg="{{ page.featured-gif }}">
+        {% assign hero_img_url = page.featured-gif %}
       {% else %}
-    <div class="hero lazyload" data-bg="{{ site.url }}{{ site.baseurl }}/assets/gif/{{ page.featured-gif }}.gif">
+        {% assign hero_img_url = site.url | append: site.baseurl | append: "/assets/gif/" | append: page.featured-gif | append: ".gif" %}
       {% endif %}
+    <div class="hero hero--clickable lazyload"
+         data-bg="{{ hero_img_url }}"
+         data-lightbox-src="{{ hero_img_url }}"
+         data-lightbox-caption="{{ page.featured-img-caption | default: page.title }}"
+         role="button"
+         tabindex="0"
+         aria-label="View full image">
     {% else %}
     <div class="hero">
     {% endif %}

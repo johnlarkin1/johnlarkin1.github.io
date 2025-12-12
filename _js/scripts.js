@@ -544,6 +544,27 @@ function initLightbox() {
     openLightbox(this);
   });
 
+  // Click handler for hero images
+  $(document).on("click", ".hero--clickable", function (e) {
+    // Don't trigger if clicking on a link inside the hero
+    if ($(e.target).closest("a").length) return;
+
+    const src = $(this).data("lightbox-src");
+    const caption = $(this).data("lightbox-caption") || "";
+
+    if (src) {
+      openHeroLightbox(src, caption);
+    }
+  });
+
+  // Keyboard support for hero lightbox
+  $(document).on("keydown", ".hero--clickable", function (e) {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      $(this).trigger("click");
+    }
+  });
+
   // Close lightbox handlers
   $("#lightbox-close").click(closeLightbox);
   $("#lightbox-overlay").click(function (e) {
@@ -578,6 +599,14 @@ function closeLightbox() {
     $("#lightbox-image").attr("src", "");
     $("#lightbox-caption").text("");
   });
+}
+
+function openHeroLightbox(src, caption) {
+  $("#lightbox-image").attr("src", src).attr("alt", caption);
+  $("#lightbox-caption").text(caption);
+
+  $("body").css("overflow", "hidden");
+  $(".lightbox-overlay").css("display", "flex").hide().fadeIn(300);
 }
 
 /*-------------------------------------------------------------------------*/
