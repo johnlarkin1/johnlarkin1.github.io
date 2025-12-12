@@ -37,6 +37,7 @@ $(document).keyup(function (e) {
     closeLightbox();
     closeContactHub();
     closeSearch();
+    closeShortcuts();
   }
 });
 
@@ -1358,3 +1359,143 @@ function closeSearch() {
     }
   }, 250);
 }
+
+/*-------------------------------------------------------------------------*/
+/* KEYBOARD NAVIGATION (Vim/GitHub style: g + key)                         */
+/*-------------------------------------------------------------------------*/
+
+function initKeyboardNav() {
+  var gKeyPressed = false;
+  var gKeyTimeout = null;
+
+  $(document).on("keydown", function (e) {
+    // Ignore if user is typing in an input/textarea
+    var tag = e.target.tagName.toLowerCase();
+    if (tag === "input" || tag === "textarea" || e.target.isContentEditable) {
+      return;
+    }
+
+    // Ignore if any modifier keys are held (except shift)
+    if (e.metaKey || e.ctrlKey || e.altKey) {
+      return;
+    }
+
+    var key = e.key.toLowerCase();
+
+    // First key: 'g' starts the sequence
+    if (key === "g" && !gKeyPressed) {
+      gKeyPressed = true;
+
+      // Reset after 1.5 seconds if no second key
+      clearTimeout(gKeyTimeout);
+      gKeyTimeout = setTimeout(function () {
+        gKeyPressed = false;
+      }, 1500);
+
+      return;
+    }
+
+    // Second key: execute action if 'g' was pressed
+    if (gKeyPressed) {
+      gKeyPressed = false;
+      clearTimeout(gKeyTimeout);
+
+      switch (key) {
+        case "h": // g h → Home
+          e.preventDefault();
+          window.location.href = "/";
+          break;
+
+        case "c": // g c → Categories
+          e.preventDefault();
+          window.location.href = "/categories/";
+          break;
+
+        case "a": // g a → About
+          e.preventDefault();
+          window.location.href = "/about/";
+          break;
+
+        case "o": // g o → Open contact modal
+          e.preventDefault();
+          openContactHub();
+          break;
+
+        case "s": // g s → Open search
+          e.preventDefault();
+          openSearch();
+          break;
+      }
+    }
+
+    // Standalone shortcuts (no 'g' prefix needed)
+    if (!gKeyPressed) {
+      // '/' opens search (common pattern)
+      if (key === "/" && !$(".search-modal").hasClass("is-active")) {
+        e.preventDefault();
+        openSearch();
+      }
+
+      // '?' opens shortcuts help
+      if ((key === "?" || (e.shiftKey && key === "/")) && !$(".shortcuts-modal").hasClass("is-active")) {
+        e.preventDefault();
+        openShortcuts();
+      }
+    }
+  });
+}
+
+/*-------------------------------------------------------------------------*/
+/* SHORTCUTS MODAL                                                         */
+/*-------------------------------------------------------------------------*/
+
+function initShortcuts() {
+  var $modal = $(".shortcuts-modal");
+  var $trigger = $(".js-shortcuts-trigger");
+  var $close = $(".js-shortcuts-close");
+
+  if ($modal.length === 0) return;
+
+  // Click trigger to open
+  $trigger.on("click", function (e) {
+    e.preventDefault();
+    openShortcuts();
+  });
+
+  // Click close button or overlay to close
+  $close.on("click", function (e) {
+    e.preventDefault();
+    closeShortcuts();
+  });
+}
+
+function openShortcuts() {
+  var $modal = $(".shortcuts-modal");
+  if ($modal.length === 0 || $modal.hasClass("is-active")) return;
+
+  // Close other modals first
+  closeSearch();
+  closeContactHub();
+
+  $("body").addClass("shortcuts-modal--open");
+  $modal.addClass("is-active");
+}
+
+function closeShortcuts() {
+  var $modal = $(".shortcuts-modal");
+  if (!$modal.hasClass("is-active")) return;
+
+  $modal.addClass("is-closing");
+  $("body").removeClass("shortcuts-modal--open");
+
+  setTimeout(function () {
+    $modal.removeClass("is-active is-closing");
+  }, 200);
+}
+
+// Add to initialization
+$(document).ready(function () {
+  // ... existing code runs first via the other ready block
+  initKeyboardNav();
+  initShortcuts();
+});

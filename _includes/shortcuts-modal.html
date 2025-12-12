@@ -1,0 +1,105 @@
+<!-- Keyboard Shortcuts Modal -->
+<div
+  class="shortcuts-modal"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="shortcuts-modal-title"
+>
+  <div class="shortcuts-modal__overlay js-shortcuts-close"></div>
+
+  <div class="shortcuts-modal__container">
+    <div class="shortcuts-modal__header">
+      <h2 id="shortcuts-modal-title" class="shortcuts-modal__title">Keyboard Shortcuts</h2>
+      <button
+        class="shortcuts-modal__close js-shortcuts-close"
+        aria-label="Close shortcuts"
+      >
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+
+    <div class="shortcuts-modal__content">
+      <!-- Navigation -->
+      <div class="shortcuts-modal__section">
+        <h3 class="shortcuts-modal__section-title">Navigation</h3>
+        <ul class="shortcuts-modal__list">
+          <li class="shortcuts-modal__item">
+            <span class="shortcuts-modal__keys">
+              <kbd>g</kbd><kbd>h</kbd>
+            </span>
+            <span class="shortcuts-modal__desc">Go to Home</span>
+          </li>
+          <li class="shortcuts-modal__item">
+            <span class="shortcuts-modal__keys">
+              <kbd>g</kbd><kbd>c</kbd>
+            </span>
+            <span class="shortcuts-modal__desc">Go to Categories</span>
+          </li>
+          <li class="shortcuts-modal__item">
+            <span class="shortcuts-modal__keys">
+              <kbd>g</kbd><kbd>a</kbd>
+            </span>
+            <span class="shortcuts-modal__desc">Go to About</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Actions -->
+      <div class="shortcuts-modal__section">
+        <h3 class="shortcuts-modal__section-title">Actions</h3>
+        <ul class="shortcuts-modal__list">
+          <li class="shortcuts-modal__item">
+            <span class="shortcuts-modal__keys">
+              <kbd>&#8984;</kbd><kbd>k</kbd>
+            </span>
+            <span class="shortcuts-modal__desc">Open search</span>
+          </li>
+          <li class="shortcuts-modal__item">
+            <span class="shortcuts-modal__keys">
+              <kbd>/</kbd>
+            </span>
+            <span class="shortcuts-modal__desc">Open search</span>
+          </li>
+          <li class="shortcuts-modal__item">
+            <span class="shortcuts-modal__keys">
+              <kbd>g</kbd><kbd>s</kbd>
+            </span>
+            <span class="shortcuts-modal__desc">Open search</span>
+          </li>
+          <li class="shortcuts-modal__item">
+            <span class="shortcuts-modal__keys">
+              <kbd>g</kbd><kbd>o</kbd>
+            </span>
+            <span class="shortcuts-modal__desc">Open contact</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- General -->
+      <div class="shortcuts-modal__section">
+        <h3 class="shortcuts-modal__section-title">General</h3>
+        <ul class="shortcuts-modal__list">
+          <li class="shortcuts-modal__item">
+            <span class="shortcuts-modal__keys">
+              <kbd>?</kbd>
+            </span>
+            <span class="shortcuts-modal__desc">Show shortcuts</span>
+          </li>
+          <li class="shortcuts-modal__item">
+            <span class="shortcuts-modal__keys">
+              <kbd>esc</kbd>
+            </span>
+            <span class="shortcuts-modal__desc">Close modal</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="shortcuts-modal__footer">
+      <span class="shortcuts-modal__hint">Press <kbd>g</kbd> then a letter within 1.5s</span>
+    </div>
+  </div>
+</div>
