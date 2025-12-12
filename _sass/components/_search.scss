@@ -1,0 +1,556 @@
+// Search Modal - Command Palette Style
+// A refined, powerful search interface inspired by Raycast/Linear
+
+// Custom properties for the search component
+$search-bg: #0d0d0d;
+$search-surface: #161616;
+$search-surface-hover: #1a1a1a;
+$search-border: rgba(255, 255, 255, 0.08);
+$search-border-focus: rgba(39, 124, 234, 0.5);
+$search-text: #e8e8e8;
+$search-text-muted: rgba(255, 255, 255, 0.45);
+$search-accent: #3b9eff;
+$search-accent-glow: rgba(59, 158, 255, 0.15);
+$search-highlight: rgba(59, 158, 255, 0.25);
+
+// Animation timing
+$search-ease: cubic-bezier(0.16, 1, 0.3, 1);
+$search-ease-out: cubic-bezier(0, 0, 0.2, 1);
+
+// Keyframes
+@keyframes searchModalIn {
+  from {
+    opacity: 0;
+    transform: scale(0.96) translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes searchOverlayIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes searchShimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+// Search trigger button in header
+.search-trigger {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  padding: 0.5rem 0.875rem !important;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s $search-ease;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.12);
+    transform: translateY(-1px);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+
+  &__icon {
+    display: flex;
+    align-items: center;
+    color: rgba(255, 255, 255, 0.6);
+    transition: color 0.2s;
+
+    .search-trigger:hover & {
+      color: rgba(255, 255, 255, 0.9);
+    }
+  }
+
+  &__shortcut {
+    display: none;
+
+    @media (min-width: $md) {
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
+
+    kbd {
+      font-family: "SF Mono", "JetBrains Mono", monospace;
+      font-size: 0.6875rem;
+      font-weight: 500;
+      letter-spacing: 0.02em;
+      color: rgba(255, 255, 255, 0.4);
+      background: rgba(255, 255, 255, 0.06);
+      padding: 0.2rem 0.45rem;
+      border-radius: 5px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+  }
+}
+
+// Main modal
+.search-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  display: none;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 12vh 1.25rem 2rem;
+
+  @media (min-width: $md) {
+    padding-top: 15vh;
+  }
+
+  &.is-active {
+    display: flex;
+  }
+
+  // Overlay with subtle noise texture
+  &__overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    opacity: 0;
+    cursor: pointer;
+
+    .search-modal.is-active & {
+      animation: searchOverlayIn 0.25s $search-ease-out forwards;
+    }
+
+    .search-modal.is-closing & {
+      opacity: 0;
+      transition: opacity 0.15s ease-out;
+    }
+  }
+
+  // Container
+  &__container {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 580px;
+    background: $search-bg;
+    border: 1px solid $search-border;
+    border-radius: 16px;
+    box-shadow:
+      0 0 0 1px rgba(255, 255, 255, 0.03) inset,
+      0 24px 48px -12px rgba(0, 0, 0, 0.6),
+      0 0 80px -20px rgba(59, 158, 255, 0.15);
+    opacity: 0;
+    overflow: hidden;
+
+    .search-modal.is-active & {
+      animation: searchModalIn 0.3s $search-ease 0.05s forwards;
+    }
+
+    .search-modal.is-closing & {
+      opacity: 0;
+      transform: scale(0.96) translateY(-10px);
+      transition: all 0.15s ease-out;
+    }
+  }
+
+  // Header
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 1.25rem;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.03) 0%, transparent 100%);
+    border-bottom: 1px solid $search-border;
+  }
+
+  &__title {
+    font-family: "SF Mono", "JetBrains Mono", monospace;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: $search-text-muted;
+    margin: 0;
+  }
+
+  &__shortcut {
+    display: none;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.75rem;
+    color: $search-text-muted;
+
+    @media (min-width: $sm) {
+      display: flex;
+    }
+  }
+
+  &__kbd {
+    font-family: "SF Mono", "JetBrains Mono", monospace;
+    font-size: 0.625rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: rgba(255, 255, 255, 0.5);
+    background: rgba(255, 255, 255, 0.06);
+    padding: 0.25rem 0.5rem;
+    border-radius: 5px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  // Close button
+  &__close {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    color: $search-text-muted;
+    cursor: pointer;
+    transition: all 0.15s ease;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.06);
+      border-color: $search-border;
+      color: $search-text;
+    }
+
+    svg {
+      width: 16px;
+      height: 16px;
+    }
+  }
+
+  // Content
+  &__content {
+    max-height: 55vh;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+
+    // Custom scrollbar
+    &::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 3px;
+
+      &:hover {
+        background: rgba(255, 255, 255, 0.15);
+      }
+    }
+  }
+}
+
+// Body lock
+body.search-modal--open {
+  overflow: hidden;
+}
+
+// =============================================================================
+// PAGEFIND UI OVERRIDES - The magic happens here
+// =============================================================================
+
+#pagefind-container {
+  --pagefind-ui-scale: 0.9;
+  --pagefind-ui-primary: #{$search-accent};
+  --pagefind-ui-text: #{$search-text};
+  --pagefind-ui-background: transparent;
+  --pagefind-ui-border: #{$search-border};
+  --pagefind-ui-tag: rgba(255, 255, 255, 0.06);
+  --pagefind-ui-border-width: 1px;
+  --pagefind-ui-border-radius: 10px;
+  --pagefind-ui-image-border-radius: 8px;
+  --pagefind-ui-font: system-ui, -apple-system, sans-serif;
+}
+
+// Search form container
+.pagefind-ui__form {
+  position: relative;
+  padding: 0;
+  background: transparent;
+
+  &::before {
+    display: none;
+  }
+}
+
+// Search input wrapper
+.pagefind-ui__search-input-wrapper {
+  position: relative;
+}
+
+// The search input - this is the star
+.pagefind-ui__search-input {
+  width: 100% !important;
+  padding: 1.125rem 3.5rem 1.125rem 1.25rem !important;
+  font-family: system-ui, -apple-system, sans-serif !important;
+  font-size: 1.0625rem !important;
+  font-weight: 400 !important;
+  line-height: 1.4 !important;
+  color: $search-text !important;
+  background: $search-surface !important;
+  border: none !important;
+  border-bottom: 1px solid $search-border !important;
+  border-radius: 0 !important;
+  outline: none !important;
+  transition: all 0.2s ease !important;
+  caret-color: $search-accent;
+
+  &:focus {
+    background: rgba(255, 255, 255, 0.04) !important;
+    border-bottom-color: $search-accent !important;
+    box-shadow: 0 1px 0 0 $search-accent !important;
+  }
+
+  &::placeholder {
+    color: $search-text-muted !important;
+    opacity: 1 !important;
+  }
+}
+
+// Clear button
+.pagefind-ui__search-clear {
+  position: absolute !important;
+  right: 1rem !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  width: 28px !important;
+  height: 28px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  background: rgba(255, 255, 255, 0.06) !important;
+  border: none !important;
+  border-radius: 6px !important;
+  color: $search-text-muted !important;
+  font-size: 0.75rem !important;
+  cursor: pointer !important;
+  transition: all 0.15s ease !important;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.1) !important;
+    color: $search-text !important;
+  }
+}
+
+// Hide the default search icon
+.pagefind-ui__form::before,
+.pagefind-ui__search-input-wrapper::before {
+  display: none !important;
+}
+
+// Results area
+.pagefind-ui__results-area {
+  margin-top: 0 !important;
+}
+
+// Message (no results / searching)
+.pagefind-ui__message {
+  padding: 2rem 1.25rem !important;
+  font-size: 0.875rem !important;
+  color: $search-text-muted !important;
+  text-align: center !important;
+}
+
+// Results container
+.pagefind-ui__results {
+  padding: 0.75rem !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 0.375rem !important;
+}
+
+// Individual result
+.pagefind-ui__result {
+  position: relative;
+  padding: 0.875rem 1rem !important;
+  background: transparent !important;
+  border: 1px solid transparent !important;
+  border-radius: 10px !important;
+  transition: all 0.15s ease !important;
+  cursor: pointer;
+
+  &:hover {
+    background: $search-surface-hover !important;
+    border-color: $search-border !important;
+  }
+
+  // Remove default nested padding
+  &-nested {
+    margin-top: 0.625rem !important;
+    padding-top: 0.625rem !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.04) !important;
+  }
+}
+
+// Result link (title)
+.pagefind-ui__result-link {
+  display: block !important;
+  font-size: 0.9375rem !important;
+  font-weight: 500 !important;
+  line-height: 1.4 !important;
+  color: $search-text !important;
+  text-decoration: none !important;
+  transition: color 0.15s ease !important;
+
+  .pagefind-ui__result:hover & {
+    color: $search-accent !important;
+  }
+}
+
+// Result title container
+.pagefind-ui__result-title {
+  margin-bottom: 0.375rem !important;
+}
+
+// Result excerpt
+.pagefind-ui__result-excerpt {
+  font-size: 0.8125rem !important;
+  line-height: 1.55 !important;
+  color: $search-text-muted !important;
+  display: -webkit-box !important;
+  -webkit-line-clamp: 2 !important;
+  -webkit-box-orient: vertical !important;
+  overflow: hidden !important;
+}
+
+// Highlight matches - the accent pop
+mark.pagefind-ui__result-highlight {
+  background: $search-highlight !important;
+  color: #fff !important;
+  padding: 0.1em 0.25em !important;
+  margin: 0 0.05em !important;
+  border-radius: 4px !important;
+  font-weight: 500 !important;
+  box-decoration-break: clone !important;
+  -webkit-box-decoration-break: clone !important;
+}
+
+// Sub-results arrow
+.pagefind-ui__result-nested .pagefind-ui__result-link::before {
+  content: "↳" !important;
+  margin-right: 0.5rem !important;
+  color: $search-text-muted !important;
+  font-weight: 400 !important;
+}
+
+// Loading state
+.pagefind-ui__loading {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 2.5rem 1.25rem !important;
+  color: $search-text-muted !important;
+
+  &::after {
+    content: "" !important;
+    width: 20px !important;
+    height: 20px !important;
+    margin-left: 0.75rem !important;
+    border: 2px solid $search-border !important;
+    border-top-color: $search-accent !important;
+    border-radius: 50% !important;
+    animation: spin 0.8s linear infinite !important;
+  }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+// "Load more" button
+.pagefind-ui__button {
+  display: block !important;
+  width: calc(100% - 1.5rem) !important;
+  margin: 0.5rem auto 0.75rem !important;
+  padding: 0.75rem 1.25rem !important;
+  font-family: inherit !important;
+  font-size: 0.8125rem !important;
+  font-weight: 500 !important;
+  color: $search-text-muted !important;
+  background: $search-surface !important;
+  border: 1px solid $search-border !important;
+  border-radius: 8px !important;
+  cursor: pointer !important;
+  transition: all 0.15s ease !important;
+
+  &:hover {
+    background: $search-surface-hover !important;
+    border-color: rgba(255, 255, 255, 0.12) !important;
+    color: $search-text !important;
+  }
+}
+
+// Result count message
+.pagefind-ui__results-area > p:first-child {
+  padding: 0.75rem 1.25rem 0.5rem !important;
+  font-family: "SF Mono", "JetBrains Mono", monospace !important;
+  font-size: 0.6875rem !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.05em !important;
+  text-transform: uppercase !important;
+  color: $search-text-muted !important;
+}
+
+// Hide images in results (cleaner look)
+.pagefind-ui__result-image {
+  display: none !important;
+}
+
+// Tags
+.pagefind-ui__result-tags {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 0.375rem !important;
+  margin-top: 0.5rem !important;
+}
+
+.pagefind-ui__result-tag {
+  font-family: "SF Mono", "JetBrains Mono", monospace !important;
+  font-size: 0.625rem !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.03em !important;
+  text-transform: uppercase !important;
+  color: $search-accent !important;
+  background: $search-accent-glow !important;
+  padding: 0.25rem 0.5rem !important;
+  border-radius: 4px !important;
+}
+
+// Reduced motion
+@media (prefers-reduced-motion: reduce) {
+  .search-modal {
+    &__overlay,
+    &__container {
+      animation: none !important;
+      opacity: 1 !important;
+      transform: none !important;
+    }
+  }
+
+  .pagefind-ui__loading::after {
+    animation: none !important;
+  }
+}
+
+// Focus visible for keyboard navigation
+.pagefind-ui__result:focus-visible {
+  outline: 2px solid $search-accent !important;
+  outline-offset: 2px !important;
+}
