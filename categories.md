@@ -2,6 +2,7 @@
 layout: page
 title: Categories
 featured-img: namibia
+featured-img-caption: Floating over the Namib Desert in May 2024 with my BIL, sis, and Dad. First hot air balloon ride!
 permalink: /categories/
 ---
 

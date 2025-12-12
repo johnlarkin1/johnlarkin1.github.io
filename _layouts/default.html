@@ -19,7 +19,14 @@ layout: compress
 
     {% include header.html %}
 
-    <div class="hero lazyload" data-bg="{{ site.url }}{{ site.baseurl }}/assets/img/{{ site.hero_img }}">
+    {% assign home_hero_url = site.url | append: site.baseurl | append: "/assets/img/" | append: site.hero_img %}
+    <div class="hero hero--clickable lazyload"
+         data-bg="{{ home_hero_url }}"
+         data-lightbox-src="{{ home_hero_url }}"
+         data-lightbox-caption="{{ site.hero_caption | default: "Mount Everest, nope I haven't been here. It's just a relic of me picking this while I was in college. The other ones I (or probably my BIL) took (but we were together)." }}"
+         role="button"
+         tabindex="0"
+         aria-label="View full image">
       <div class="hero__wrap">
         <h1 class="hero__title">{{ site.title | escape }}</h1>
         <p class="hero__meta">{{ site.tagline }}</p>

@@ -2,6 +2,7 @@
 layout: page
 title: About
 featured-img: switzerland
+featured-img-caption: This was a favorite of mine from a mother-son trip from 2024 to Switzerland. Specifically, this was in the Burnese Alps trekking from Murren to Bundalp.
 permalink: /about/
 ---
 
