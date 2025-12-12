@@ -6,5 +6,7 @@
 #
 layout: default
 title: Larkin's Coding Blog
+featured-video: generative-handwriting
+featured-poster: generative-handwriting
 featured-gif: generative-handwriting
 ---
