@@ -23,10 +23,16 @@
             {% if item.name == 'Contact' %}
             <button class="header__link contact-trigger js-contact-trigger" type="button" aria-haspopup="dialog">
               <span>{{ item.name }}</span>
+              {% comment %}<kbd class="header__kbd">go</kbd>{% endcomment %}
             </button>
             {% else %}
             <a class="header__link" href="{{ item.link | relative_url }}" itemprop="url">
               <span itemprop="name">{{ item.name }}</span>
+              {% comment %}
+              {% if item.name == 'Home' %}<kbd class="header__kbd">gh</kbd>{% endif %}
+              {% if item.name == 'Categories' %}<kbd class="header__kbd">gc</kbd>{% endif %}
+              {% if item.name == 'About' %}<kbd class="header__kbd">ga</kbd>{% endif %}
+              {% endcomment %}
             </a>
             {% endif %}
             {% if forloop.first %}
@@ -50,6 +56,11 @@
             </div>
             {% endif %}
           {% endfor %}
+
+          <!-- Shortcuts help trigger -->
+          <button class="header__link shortcuts-trigger js-shortcuts-trigger" type="button" aria-haspopup="dialog" aria-label="Keyboard shortcuts">
+            <span>?</span>
+          </button>
         </div>
       </nav>
       <div class="header__toggle">
@@ -63,3 +74,4 @@
 
 {% include contact-hub.html %}
 {% include search-modal.html %}
+{% include shortcuts-modal.html %}
