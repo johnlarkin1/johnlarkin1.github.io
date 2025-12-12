@@ -334,3 +334,29 @@
     }
   }
 }
+
+// Keyboard shortcut badges in nav
+.header__kbd {
+  display: none;
+
+  @media (min-width: $lg) {
+    display: inline-flex;
+    align-items: center;
+    margin-left: 0.5rem;
+    padding: 0.15rem 0.4rem;
+    font-family: "SF Mono", "JetBrains Mono", monospace;
+    font-size: 0.625rem;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    color: rgba(255, 255, 255, 0.35);
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 4px;
+    transition: all 0.2s ease;
+
+    .header__link:hover & {
+      color: rgba(255, 255, 255, 0.6);
+      background: rgba(255, 255, 255, 0.1);
+    }
+  }
+}
