@@ -1,12 +1,21 @@
 // General
 body {
   background-color: $dark-bg;
+  // Subtle radial gradient for depth
+  background-image: radial-gradient(
+    ellipse at 50% 0%,
+    rgba($accent-primary, 0.03) 0%,
+    transparent 50%
+  );
+  background-attachment: fixed;
   font-family: $font-stack;
-  font-size: 1.1rem;
-  line-height: 1.5;
+  font-size: 1.125rem;
+  line-height: 1.65;
+  letter-spacing: -0.01em;
   color: $dark-text;
   -webkit-font-smoothing: antialiased;
   -webkit-text-size-adjust: 100%;
+  font-feature-settings: "kern" 1, "liga" 1;
 }
 
 ::selection {
@@ -27,17 +36,51 @@ h3,
 h4,
 h5,
 h6 {
+  font-family: $font-heading;
   color: $dark-heading;
   margin-top: 0;
-  margin-bottom: .5rem;
+  margin-bottom: 0.5rem;
+  letter-spacing: -0.02em;
+  font-weight: 600;
 }
 
-//reset link
+h1 {
+  font-size: 2.5rem;
+  letter-spacing: -0.03em;
+  line-height: 1.2;
+}
+
+h2 {
+  font-size: 1.875rem;
+  letter-spacing: -0.025em;
+  line-height: 1.25;
+}
+
+h3 {
+  font-size: 1.5rem;
+  line-height: 1.3;
+}
+
+// Modern link styling with animated underline
 a {
   color: $dark-link;
   text-decoration: none;
-  transition: all .2s linear;
-  border-bottom: 1px dashed $dark-link;
+  position: relative;
+  transition: color 0.2s ease;
+
+  // Animated gradient underline
+  &::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -2px;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, $accent-primary, $accent-primary-light);
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+  }
 
   &:active,
   &:focus {
@@ -46,8 +89,22 @@ a {
 
   &:hover,
   &:focus {
-    color: lighten($dark-link, 10%);
-    border-bottom: 1px solid lighten($dark-link, 10%);
+    color: $dark-link-hover;
+
+    &::after {
+      transform: scaleX(1);
+      transform-origin: left;
+    }
+  }
+}
+
+// Clean link variant (no underline animation) for nav, cards, buttons
+a.link--clean,
+.nav a,
+.card a,
+.btn {
+  &::after {
+    display: none;
   }
 }
 

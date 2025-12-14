@@ -1,11 +1,14 @@
 .post-content {
-  max-width: 75rem;
+  max-width: 52rem;
   margin: 0 auto;
   padding-top: 2.5em;
-  // overflow-x: auto;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
 
   @include breakpoint($md) {
     padding-top: 5em;
+    padding-left: 2rem;
+    padding-right: 2rem;
   }
 
 

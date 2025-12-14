@@ -6,12 +6,12 @@ $search-bg: #0d0d0d;
 $search-surface: #161616;
 $search-surface-hover: #1a1a1a;
 $search-border: rgba(255, 255, 255, 0.08);
-$search-border-focus: rgba(39, 124, 234, 0.5);
+$search-border-focus: rgba($accent-primary, 0.5);
 $search-text: #e8e8e8;
 $search-text-muted: rgba(255, 255, 255, 0.45);
-$search-accent: #3b9eff;
-$search-accent-glow: rgba(59, 158, 255, 0.15);
-$search-highlight: rgba(59, 158, 255, 0.25);
+$search-accent: $accent-primary;
+$search-accent-glow: $accent-primary-glow;
+$search-highlight: rgba($accent-primary, 0.25);
 
 // Animation timing
 $search-ease: cubic-bezier(0.16, 1, 0.3, 1);

@@ -42,6 +42,12 @@ $quiz-incorrect: $error;
 
 
 $font-stack: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Hiragino Sans GB", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
+$font-heading: 'Inter', -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", system-ui, sans-serif;
+
+// Unified accent system (promoted from pinned badge purple)
+$accent-primary: #5837F5;
+$accent-primary-light: #7C5DFA;
+$accent-primary-glow: rgba(88, 55, 245, 0.15);
 
 $spacing-unit: 30px;
 
@@ -64,7 +70,8 @@ $code-border-color: #e1e4e8 !default;
 $dark-bg: #1a1a1a !default;
 $dark-text: #e4e4e4 !default;
 $dark-heading: #ffffff !default;
-$dark-link: #68a4f1 !default;
+$dark-link: #A78BFA !default;
+$dark-link-hover: #C4B5FD !default;
 $dark-border: #333333 !default;
 $dark-code-bg: #0d1117 !default;
 $dark-code-text: #e6e6e6 !default;

@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>John Larkin - Software Engineer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --accent: #06b6d4;
+            --bg: #0f172a;
+            --bg-card: #1e293b;
+            --bg-card-hover: #334155;
+            --text: #f1f5f9;
+            --text-muted: #94a3b8;
+            --border: #334155;
+            --gradient: linear-gradient(135deg, #2563eb 0%, #06b6d4 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 80px 0 60px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle, rgba(37, 99, 235, 0.15) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero .title {
+            font-size: 1.5rem;
+            color: var(--text-muted);
+            margin-bottom: 20px;
+            font-weight: 400;
+        }
+
+        .hero .location {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--accent);
+            font-size: 1rem;
+        }
+
+        .hero-links {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            margin-top: 24px;
+            flex-wrap: wrap;
+        }
+
+        .hero-links a {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            background: var(--bg-card);
+            color: var(--text);
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+            border: 1px solid var(--border);
+        }
+
+        .hero-links a:hover {
+            background: var(--bg-card-hover);
+            border-color: var(--primary);
+        }
+
+        /* Section Styles */
+        section {
+            padding: 60px 0;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+
+        .section-header h2 {
+            font-size: 1.75rem;
+            font-weight: 600;
+        }
+
+        .section-header .line {
+            flex: 1;
+            height: 1px;
+            background: var(--border);
+        }
+
+        /* Work Experience */
+        .timeline {
+            position: relative;
+            padding-left: 32px;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 6px;
+            top: 8px;
+            bottom: 8px;
+            width: 2px;
+            background: var(--border);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 32px;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -32px;
+            top: 8px;
+            width: 14px;
+            height: 14px;
+            background: var(--bg);
+            border: 3px solid var(--primary);
+            border-radius: 50%;
+        }
+
+        .timeline-item.current::before {
+            background: var(--primary);
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.3);
+        }
+
+        .job-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+
+        .job-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .company {
+            color: var(--accent);
+        }
+
+        .job-meta {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .job-tech {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 12px 0;
+        }
+
+        .tech-tag {
+            padding: 4px 10px;
+            background: rgba(37, 99, 235, 0.15);
+            color: var(--primary);
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .job-highlights {
+            list-style: none;
+        }
+
+        .job-highlights li {
+            position: relative;
+            padding-left: 20px;
+            margin-bottom: 8px;
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        .job-highlights li::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            color: var(--primary);
+        }
+
+        /* Projects Grid */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: 24px;
+        }
+
+        .project-card {
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 24px;
+            border: 1px solid var(--border);
+            transition: all 0.3s;
+        }
+
+        .project-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .project-card h3 {
+            font-size: 1.2rem;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .project-card h3 a {
+            color: var(--text);
+            text-decoration: none;
+        }
+
+        .project-card h3 a:hover {
+            color: var(--accent);
+        }
+
+        .project-badge {
+            font-size: 0.65rem;
+            padding: 2px 8px;
+            background: var(--gradient);
+            border-radius: 12px;
+            font-weight: 500;
+        }
+
+        .project-card p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 16px;
+        }
+
+        .project-links {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .project-links a {
+            font-size: 0.8rem;
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        .project-links a:hover {
+            text-decoration: underline;
+        }
+
+        /* Volunteer & Leadership */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 24px;
+            border: 1px solid var(--border);
+        }
+
+        .card h3 {
+            font-size: 1.1rem;
+            margin-bottom: 4px;
+            color: var(--text);
+        }
+
+        .card .subtitle {
+            color: var(--accent);
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+        }
+
+        .card p {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        /* Skills Section */
+        .skills-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 24px;
+        }
+
+        .skill-category {
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 24px;
+            border: 1px solid var(--border);
+        }
+
+        .skill-category h3 {
+            font-size: 1rem;
+            margin-bottom: 16px;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .skill-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .skill-tag {
+            padding: 6px 12px;
+            background: rgba(6, 182, 212, 0.1);
+            color: var(--text);
+            border-radius: 6px;
+            font-size: 0.85rem;
+            border: 1px solid rgba(6, 182, 212, 0.2);
+        }
+
+        /* Education & Awards */
+        .edu-card {
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 32px;
+            border: 1px solid var(--border);
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 32px;
+        }
+
+        @media (max-width: 768px) {
+            .edu-card {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .edu-section h3 {
+            font-size: 1.1rem;
+            margin-bottom: 16px;
+            color: var(--accent);
+        }
+
+        .edu-section ul {
+            list-style: none;
+        }
+
+        .edu-section li {
+            padding: 8px 0;
+            border-bottom: 1px solid var(--border);
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .edu-section li:last-child {
+            border-bottom: none;
+        }
+
+        /* Interests */
+        .interests-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .interest-card {
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid var(--border);
+        }
+
+        .interest-card h3 {
+            font-size: 1rem;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .interest-card ul {
+            list-style: none;
+        }
+
+        .interest-card li {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            padding: 4px 0;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 40px 0;
+            border-top: 1px solid var(--border);
+            margin-top: 40px;
+        }
+
+        footer p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        footer a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        /* Responsive */
+        @media (max-width: 640px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero Section -->
+    <header class="hero">
+        <div class="container">
+            <h1>John Larkin</h1>
+            <p class="title">Staff Software Engineer</p>
+            <p class="location">
+                <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10zm0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"/>
+                </svg>
+                Brooklyn, NY
+            </p>
+            <div class="hero-links">
+                <a href="https://johnlarkin1.github.io" target="_blank">
+                    <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm7.5-6.923c-.67.204-1.335.82-1.887 1.855A7.97 7.97 0 0 0 5.145 4H7.5V1.077zM4.09 4a9.267 9.267 0 0 1 .64-1.539 6.7 6.7 0 0 1 .597-.933A7.025 7.025 0 0 0 2.255 4H4.09zm-.582 3.5c.03-.877.138-1.718.312-2.5H1.674a6.958 6.958 0 0 0-.656 2.5h2.49zM4.847 5a12.5 12.5 0 0 0-.338 2.5H7.5V5H4.847zM8.5 5v2.5h2.99a12.495 12.495 0 0 0-.337-2.5H8.5zM4.51 8.5a12.5 12.5 0 0 0 .337 2.5H7.5V8.5H4.51zm3.99 0V11h2.653c.187-.765.306-1.608.338-2.5H8.5zM5.145 12c.138.386.295.744.468 1.068.552 1.035 1.218 1.65 1.887 1.855V12H5.145zm.182 2.472a6.696 6.696 0 0 1-.597-.933A9.268 9.268 0 0 1 4.09 12H2.255a7.024 7.024 0 0 0 3.072 2.472zM3.82 11a13.652 13.652 0 0 1-.312-2.5h-2.49c.062.89.291 1.733.656 2.5H3.82zm6.853 3.472A7.024 7.024 0 0 0 13.745 12H11.91a9.27 9.27 0 0 1-.64 1.539 6.688 6.688 0 0 1-.597.933zM8.5 12v2.923c.67-.204 1.335-.82 1.887-1.855.173-.324.33-.682.468-1.068H8.5zm3.68-1h2.146c.365-.767.594-1.61.656-2.5h-2.49a13.65 13.65 0 0 1-.312 2.5zm2.802-3.5a6.959 6.959 0 0 0-.656-2.5H12.18c.174.782.282 1.623.312 2.5h2.49zM11.27 2.461c.247.464.462.98.64 1.539h1.835a7.024 7.024 0 0 0-3.072-2.472c.218.284.418.598.597.933zM10.855 4a7.966 7.966 0 0 0-.468-1.068C9.835 1.897 9.17 1.282 8.5 1.077V4h2.355z"/></svg>
+                    Blog
+                </a>
+                <a href="https://github.com/johnlarkin1" target="_blank">
+                    <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>
+                    GitHub
+                </a>
+                <a href="mailto:john@johnjlarkin.com">
+                    <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M.05 3.555A2 2 0 0 1 2 2h12a2 2 0 0 1 1.95 1.555L8 8.414.05 3.555ZM0 4.697v7.104l5.803-3.558L0 4.697ZM6.761 8.83l-6.57 4.027A2 2 0 0 0 2 14h12a2 2 0 0 0 1.808-1.144l-6.57-4.027L8 9.586l-1.239-.757Zm3.436-.586L16 11.801V4.697l-5.803 3.546Z"/></svg>
+                    Email
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Work Experience -->
+        <section>
+            <div class="section-header">
+                <h2>Work Experience</h2>
+                <div class="line"></div>
+            </div>
+            <div class="timeline">
+                <div class="timeline-item current">
+                    <div class="job-header">
+                        <div>
+                            <div class="job-title">Staff Software Engineer <span class="company">@ MOJO</span></div>
+                        </div>
+                        <div class="job-meta">Aug 2025 – Present · NYC (Remote)</div>
+                    </div>
+                    <div class="job-tech">
+                        <span class="tech-tag">Python</span>
+                        <span class="tech-tag">C++</span>
+                        <span class="tech-tag">Go</span>
+                        <span class="tech-tag">Terraform</span>
+                    </div>
+                    <ul class="job-highlights">
+                        <li>Led repricing solution for executed parlays for top client (8-figure deal)</li>
+                        <li>Reduced pod memory usage by 5×, enabling migration from m-class to c-class instances</li>
+                        <li>Increased FastAPI worker density, improving RPS per dollar</li>
+                        <li>Oversaw team of 4 engineers on B2B initiatives</li>
+                    </ul>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="job-header">
+                        <div>
+                            <div class="job-title">Senior Software Engineer <span class="company">@ MOJO</span></div>
+                        </div>
+                        <div class="job-meta">Apr 2024 – Aug 2025 · NYC (Remote)</div>
+                    </div>
+                    <div class="job-tech">
+                        <span class="tech-tag">Python</span>
+                        <span class="tech-tag">C++</span>
+                        <span class="tech-tag">Go</span>
+                        <span class="tech-tag">FastAPI</span>
+                    </div>
+                    <ul class="job-highlights">
+                        <li>Designed FastAPI parlay pricing service with copula-based correlation pricing</li>
+                        <li>Built high-performance C++ simulation aggregator for NFL/NBA models</li>
+                        <li>End-to-end owner of EKS heartbeat sidecar service</li>
+                        <li>Led tooling improvements: Poetry migration, Ruff/MyPy adoption, CI/CD standardization</li>
+                    </ul>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="job-header">
+                        <div>
+                            <div class="job-title">Software Engineer <span class="company">@ Dropbox</span></div>
+                        </div>
+                        <div class="job-meta">Oct 2021 – Apr 2024 · SF, NYC (Remote)</div>
+                    </div>
+                    <div class="job-tech">
+                        <span class="tech-tag">Python</span>
+                        <span class="tech-tag">TypeScript</span>
+                        <span class="tech-tag">React</span>
+                        <span class="tech-tag">Rust</span>
+                    </div>
+                    <ul class="job-highlights">
+                        <li>Built Version Comparison and TLDW features using OpenAI transcription</li>
+                        <li>Lead engineer for FSS Group Sharing and Replay quota counting</li>
+                        <li>Led migration of 5M users to new sync engine</li>
+                        <li>Mentored interns and delivered workshop to 55 incoming interns</li>
+                    </ul>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="job-header">
+                        <div>
+                            <div class="job-title">Field Engineer <span class="company">@ Ab Initio</span></div>
+                        </div>
+                        <div class="job-meta">May 2019 – Oct 2021 · Chicago, IL</div>
+                    </div>
+                    <div class="job-tech">
+                        <span class="tech-tag">Python</span>
+                        <span class="tech-tag">C#</span>
+                        <span class="tech-tag">AWS</span>
+                        <span class="tech-tag">SQL</span>
+                    </div>
+                    <ul class="job-highlights">
+                        <li>Built high-volume, low-latency data processing systems</li>
+                        <li>Won healthcare contract via optimized .NET ETL pipeline</li>
+                        <li>Led Tanzu Kubernetes Grid cloud migration POC at multinational bank</li>
+                    </ul>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="job-header">
+                        <div>
+                            <div class="job-title">Software Engineer <span class="company">@ Belvedere Trading</span></div>
+                        </div>
+                        <div class="job-meta">Aug 2017 – Apr 2019 · Chicago, IL</div>
+                    </div>
+                    <div class="job-tech">
+                        <span class="tech-tag">C#</span>
+                        <span class="tech-tag">C++</span>
+                        <span class="tech-tag">Python</span>
+                        <span class="tech-tag">React</span>
+                    </div>
+                    <ul class="job-highlights">
+                        <li>Built reconciliation system between clearing and trading platforms</li>
+                        <li>Implemented Greek visualization frontend</li>
+                        <li>Helped build FIX execution gateway for OSE</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Projects -->
+        <section>
+            <div class="section-header">
+                <h2>Projects</h2>
+                <div class="line"></div>
+            </div>
+            <div class="projects-grid">
+                <div class="project-card">
+                    <h3>
+                        <a href="https://scrollz.co" target="_blank">Scrollz</a>
+                        <span class="project-badge">ACTIVE</span>
+                    </h3>
+                    <p>Mobile app for managing newsletters with better search, note-taking, and social features. Includes web platform with automated email ingestion via Amazon SES.</p>
+                    <div class="job-tech">
+                        <span class="tech-tag">Next.js</span>
+                        <span class="tech-tag">Supabase</span>
+                        <span class="tech-tag">OpenAI</span>
+                        <span class="tech-tag">AWS</span>
+                    </div>
+                    <div class="project-links">
+                        <a href="https://apps.apple.com/us/app/scrollz-app/id6745718779" target="_blank">App Store</a>
+                        <a href="https://johnlarkin1.github.io/2025/launching-scrollz/" target="_blank">Blog Post</a>
+                    </div>
+                </div>
+
+                <div class="project-card">
+                    <h3>
+                        <a href="https://tennis-scorigami.com" target="_blank">Tennis Scorigami</a>
+                        <span class="project-badge">ACTIVE</span>
+                    </h3>
+                    <p>Data visualization exploring unscored tennis match combinations with 125k+ nodes, analyzing 750k+ sets across 57 years of tennis data.</p>
+                    <div class="job-tech">
+                        <span class="tech-tag">Next.js</span>
+                        <span class="tech-tag">React</span>
+                        <span class="tech-tag">Neon</span>
+                        <span class="tech-tag">Python</span>
+                    </div>
+                    <div class="project-links">
+                        <a href="https://tennis-scorigami.com" target="_blank">Live Site</a>
+                        <a href="https://johnlarkin1.github.io/2025/tennis-scorigami/" target="_blank">Blog Post</a>
+                    </div>
+                </div>
+
+                <div class="project-card">
+                    <h3>
+                        <a href="https://walkintheparquet.com" target="_blank">Walk in the Parquet</a>
+                        <span class="project-badge">ACTIVE</span>
+                    </h3>
+                    <p>Lightweight desktop app for visualizing and querying Parquet files on macOS. Built with Tauri for native performance.</p>
+                    <div class="job-tech">
+                        <span class="tech-tag">Tauri</span>
+                        <span class="tech-tag">Rust</span>
+                        <span class="tech-tag">DuckDB</span>
+                        <span class="tech-tag">Next.js</span>
+                    </div>
+                    <div class="project-links">
+                        <a href="https://walkintheparquet.com" target="_blank">Website</a>
+                        <a href="https://johnlarkin1.github.io/2025/walk-in-the-parquet/" target="_blank">Blog Post</a>
+                    </div>
+                </div>
+
+                <div class="project-card">
+                    <h3><a href="https://johnlarkin1.github.io/2025/teaching-a-computer-to-write/" target="_blank">Teaching a Computer How to Write</a></h3>
+                    <p>ML exploration teaching a computer to synthesize handwriting using attention mechanisms, LSTMs, and MDNs.</p>
+                    <div class="job-tech">
+                        <span class="tech-tag">Python</span>
+                        <span class="tech-tag">JAX</span>
+                        <span class="tech-tag">LSTMs</span>
+                        <span class="tech-tag">MDNs</span>
+                    </div>
+                    <div class="project-links">
+                        <a href="https://johnlarkin1.github.io/2025/teaching-a-computer-to-write/" target="_blank">Blog Post</a>
+                    </div>
+                </div>
+
+                <div class="project-card">
+                    <h3><a href="https://github.com/johnlarkin1/understanding-muon" target="_blank">Understanding Muon</a></h3>
+                    <p>Deep dive into the Muon optimizer with interactive visualizations and Karpathy's nanochat implementation.</p>
+                    <div class="job-tech">
+                        <span class="tech-tag">Python</span>
+                        <span class="tech-tag">Manim</span>
+                        <span class="tech-tag">Pyodide</span>
+                    </div>
+                    <div class="project-links">
+                        <a href="https://github.com/johnlarkin1/understanding-muon" target="_blank">GitHub</a>
+                        <a href="https://johnlarkin1.github.io/2025/understanding-muon/" target="_blank">Blog Post</a>
+                    </div>
+                </div>
+
+                <div class="project-card">
+                    <h3><a href="https://ion-trap-visualizer-prrb.vercel.app/" target="_blank">Quantum Ion Trap Visualizer</a></h3>
+                    <p>Interactive web app visualizing Paul trap physics for quantum computing education.</p>
+                    <div class="job-tech">
+                        <span class="tech-tag">Vite</span>
+                        <span class="tech-tag">React</span>
+                        <span class="tech-tag">TypeScript</span>
+                    </div>
+                    <div class="project-links">
+                        <a href="https://ion-trap-visualizer-prrb.vercel.app/" target="_blank">Live Demo</a>
+                        <a href="https://johnlarkin1.github.io/2025/quantum-explore/" target="_blank">Blog Post</a>
+                    </div>
+                </div>
+
+                <div class="project-card">
+                    <h3><a href="https://github.com/johnlarkin1/word-hunt-solver" target="_blank">WordHunt Solver</a></h3>
+                    <p>AI-powered solver for iOS WordHunt using computer vision, OCR, and automation.</p>
+                    <div class="job-tech">
+                        <span class="tech-tag">Python</span>
+                        <span class="tech-tag">OpenCV</span>
+                        <span class="tech-tag">Pytesseract</span>
+                        <span class="tech-tag">OpenAI</span>
+                    </div>
+                    <div class="project-links">
+                        <a href="https://github.com/johnlarkin1/word-hunt-solver" target="_blank">GitHub</a>
+                        <a href="https://johnlarkin1.github.io/2025/wordhunt-solver/" target="_blank">Blog Post</a>
+                    </div>
+                </div>
+
+                <div class="project-card">
+                    <h3><a href="https://chromewebstore.google.com/detail/github-pr-title-formatter/pdjmmincfaficadbaemdifkbaioiihob" target="_blank">GitHub PR Formatter</a></h3>
+                    <p>Chrome Extension that formats GitHub PR unfurls in Slack to show only titles for cleaner conversations.</p>
+                    <div class="job-tech">
+                        <span class="tech-tag">JavaScript</span>
+                        <span class="tech-tag">Chrome API</span>
+                    </div>
+                    <div class="project-links">
+                        <a href="https://chromewebstore.google.com/detail/github-pr-title-formatter/pdjmmincfaficadbaemdifkbaioiihob" target="_blank">Chrome Store</a>
+                        <a href="https://github.com/johnlarkin1/github-pr-formatter" target="_blank">GitHub</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Volunteer & Leadership -->
+        <section>
+            <div class="section-header">
+                <h2>Volunteer & Leadership</h2>
+                <div class="line"></div>
+            </div>
+            <div class="cards-grid">
+                <div class="card">
+                    <h3>Sierra Adventure Leader</h3>
+                    <div class="subtitle">Overland Summers · 2017</div>
+                    <p>Led three 2-week adventure trips for 10-12 5th and 6th graders in the Tahoe and High Sierra area. Managed budgets, planned routes, and taught survival skills.</p>
+                </div>
+                <div class="card">
+                    <h3>Senior Resident Assistant</h3>
+                    <div class="subtitle">Swarthmore College</div>
+                    <p>Served as Senior RA, fostering community and supporting student wellbeing in residential life.</p>
+                </div>
+                <div class="card">
+                    <h3>Tennis Team Captain</h3>
+                    <div class="subtitle">Swarthmore College · #1 Singles</div>
+                    <p>Led the varsity tennis team as captain while competing as the #1 singles player.</p>
+                </div>
+                <div class="card">
+                    <h3>City Hope Volunteer</h3>
+                    <div class="subtitle">San Francisco · 2022</div>
+                    <p>Supported housing-insecure individuals in the Tenderloin neighborhood.</p>
+                </div>
+                <div class="card">
+                    <h3>Programming Instructor</h3>
+                    <div class="subtitle">Chicago Boys & Girls Club · 2018-2019</div>
+                    <p>Taught introductory programming concepts to children ages 9-14.</p>
+                </div>
+                <div class="card">
+                    <h3>Tennis Coach</h3>
+                    <div class="subtitle">NFHS Accredited · Tennis on the Lake (Chicago)</div>
+                    <p>NFHS accredited interscholastic coach. Coached youth tennis in Chicago.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Skills -->
+        <section>
+            <div class="section-header">
+                <h2>Skills</h2>
+                <div class="line"></div>
+            </div>
+            <div class="skills-container">
+                <div class="skill-category">
+                    <h3>Languages</h3>
+                    <div class="skill-tags">
+                        <span class="skill-tag">Python</span>
+                        <span class="skill-tag">TypeScript</span>
+                        <span class="skill-tag">Go</span>
+                        <span class="skill-tag">C++</span>
+                        <span class="skill-tag">C#</span>
+                        <span class="skill-tag">Rust</span>
+                        <span class="skill-tag">Swift</span>
+                        <span class="skill-tag">SQL</span>
+                    </div>
+                </div>
+                <div class="skill-category">
+                    <h3>Frameworks & Libraries</h3>
+                    <div class="skill-tags">
+                        <span class="skill-tag">FastAPI</span>
+                        <span class="skill-tag">React</span>
+                        <span class="skill-tag">Next.js</span>
+                        <span class="skill-tag">Tauri</span>
+                        <span class="skill-tag">NumPy</span>
+                        <span class="skill-tag">Pandas</span>
+                        <span class="skill-tag">JAX</span>
+                    </div>
+                </div>
+                <div class="skill-category">
+                    <h3>Infrastructure</h3>
+                    <div class="skill-tags">
+                        <span class="skill-tag">AWS</span>
+                        <span class="skill-tag">Kubernetes</span>
+                        <span class="skill-tag">Docker</span>
+                        <span class="skill-tag">Terraform</span>
+                        <span class="skill-tag">PostgreSQL</span>
+                        <span class="skill-tag">ScyllaDB</span>
+                    </div>
+                </div>
+                <div class="skill-category">
+                    <h3>Domains</h3>
+                    <div class="skill-tags">
+                        <span class="skill-tag">Distributed Systems</span>
+                        <span class="skill-tag">Low Latency</span>
+                        <span class="skill-tag">Trading Systems</span>
+                        <span class="skill-tag">ML/AI</span>
+                        <span class="skill-tag">Data Visualization</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Education & Awards -->
+        <section>
+            <div class="section-header">
+                <h2>Education & Awards</h2>
+                <div class="line"></div>
+            </div>
+            <div class="edu-card">
+                <div class="edu-section">
+                    <h3>Education</h3>
+                    <ul>
+                        <li><strong>Swarthmore College</strong> — B.S. Engineering (Computer Engineering)</li>
+                        <li>Minor in Chemistry</li>
+                        <li>GPA: 3.82 (Major: 3.88)</li>
+                        <li>Graduated May 2017</li>
+                    </ul>
+                </div>
+                <div class="edu-section">
+                    <h3>Awards & Honors</h3>
+                    <ul>
+                        <li>CoSIDA Academic All-District (2016)</li>
+                        <li>Philadelphia Inquirer Academic All-Area (2016)</li>
+                        <li>All-Centennial Conference First Team (2015, 2016)</li>
+                        <li>Sigma Xi · Tau Beta Pi</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Interests -->
+        <section>
+            <div class="section-header">
+                <h2>Interests</h2>
+                <div class="line"></div>
+            </div>
+            <div class="interests-grid">
+                <div class="interest-card">
+                    <h3>🎾 Tennis</h3>
+                    <ul>
+                        <li>4-year varsity (high school & college)</li>
+                        <li>NFHS Accredited Coach</li>
+                        <li>Tennis on the Lake Coach</li>
+                    </ul>
+                </div>
+                <div class="interest-card">
+                    <h3>🏔️ Mountains</h3>
+                    <ul>
+                        <li>Mt. Kilimanjaro (2013)</li>
+                        <li>Mt. Rainier (2011)</li>
+                    </ul>
+                </div>
+                <div class="interest-card">
+                    <h3>🏊 Endurance</h3>
+                    <ul>
+                        <li>St. George 70.3 (2024)</li>
+                        <li>Steelhead 70.3 (2023)</li>
+                        <li>Indian Wells 70.3 (2021)</li>
+                        <li>Chicago Marathon (2017)</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>Built with care · <a href="https://johnlarkin1.github.io" target="_blank">johnlarkin1.github.io</a></p>
+        </div>
+    </footer>
+</body>
+</html>
