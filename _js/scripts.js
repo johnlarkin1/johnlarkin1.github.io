@@ -47,6 +47,10 @@ $(window).resize(function () {
   $(".header__links").removeClass("js--open");
   $(".header__links").removeAttr("style"); // If mobile nav was collapsed, make sure it's show on DESK
   $(".header__overlay").remove(); // Remove mobile navigation overlay in case it was opened
+  // Reset accordion state on resize
+  if (typeof resetMobileAccordion === "function") {
+    resetMobileAccordion();
+  }
 });
 
 /*-------------------------------------------------------------------------*/
@@ -69,6 +73,41 @@ function toggleMobileNav() {
       hideMobileNav();
     }
   });
+
+  // Initialize mobile accordion for Projects dropdown
+  initMobileAccordion();
+}
+
+/*-------------------------------------------------------------------------*/
+/* MOBILE ACCORDION (Projects Dropdown) */
+/* -----------------------------------------------------------------------*/
+
+function initMobileAccordion() {
+  var $trigger = $(".header__dropdown-trigger");
+  var lgBreakpoint = 992; // Matches $lg SCSS variable
+
+  $trigger.on("click", function (e) {
+    // Only handle accordion on mobile (below $lg breakpoint)
+    if ($(window).width() < lgBreakpoint) {
+      e.preventDefault();
+      e.stopPropagation();
+
+      var $dropdown = $(this).closest(".header__dropdown");
+      var isOpen = $dropdown.hasClass("is-open");
+
+      // Toggle accordion state
+      $dropdown.toggleClass("is-open", !isOpen);
+
+      // Update aria-expanded for accessibility
+      $(this).attr("aria-expanded", !isOpen);
+    }
+  });
+}
+
+function resetMobileAccordion() {
+  // Reset accordion state when closing menu or resizing
+  $(".header__dropdown").removeClass("is-open");
+  $(".header__dropdown-trigger").attr("aria-expanded", "false");
 }
 
 function openMobileNav() {
@@ -80,12 +119,19 @@ function openMobileNav() {
     begin: function () {
       $(".header__toggle").addClass("--open");
       $("body").append("<div class='header__overlay'></div>");
+      // Add animating class for staggered reveal
+      $(this).addClass("js--animating");
     },
     progress: function () {
       $(".header__overlay").addClass("--open");
     },
     complete: function () {
       $(this).addClass("js--open");
+      // Remove animating class after animations complete (500ms buffer)
+      var $links = $(this);
+      setTimeout(function() {
+        $links.removeClass("js--animating");
+      }, 500);
     },
   });
 }
@@ -99,12 +145,14 @@ function hideMobileNav() {
     visibility: "hidden",
     begin: function () {
       $(".header__toggle").removeClass("--open");
+      // Reset accordion when menu closes
+      resetMobileAccordion();
     },
     progress: function () {
       $(".header__overlay").removeClass("--open");
     },
     complete: function () {
-      $(this).removeClass("js--open");
+      $(this).removeClass("js--open js--animating");
       $(".header__toggle, .header__overlay").removeClass("--open");
     },
   });
