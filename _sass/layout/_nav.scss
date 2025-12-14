@@ -1,3 +1,17 @@
+// ============================================
+// Mobile Menu Staggered Reveal Animation
+// ============================================
+@keyframes menuItemReveal {
+  from {
+    opacity: 0;
+    transform: translateY(-12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 .header {
   background-color: $dark-bg;
   color: $dark-text;
@@ -70,30 +84,74 @@
   width: 100%;
   height: auto;
   background: $dark-bg;
+
+  // Staggered reveal - only during initial opening animation
+  // Uses a separate class to avoid re-triggering on accordion toggle
+  &.js--animating {
+    .header__link,
+    .header__dropdown {
+      opacity: 0;
+      animation: menuItemReveal 0.35s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+
+      // Staggered delays for each menu item
+      @for $i from 1 through 8 {
+        &:nth-child(#{$i}) {
+          animation-delay: #{0.03 + ($i * 0.05)}s;
+        }
+      }
+    }
+  }
 }
 
 .header__link {
   color: $dark-text;
-  padding: .938rem 0;
-  border-top: 1px solid $dark-border;
+  padding: 1rem 0;
+  border-top: 1px solid rgba($dark-border, 0.6);
+  font-size: 1.05rem;
+  letter-spacing: 0.01em;
+  transition: background-color 0.15s ease;
+
+  // First item has no top border
+  &:first-child {
+    border-top: none;
+  }
+
+  // Subtle active/tap state for mobile
+  &:active {
+    background-color: rgba(255, 255, 255, 0.04);
+  }
 
   // Reset button styles when Contact is a button
   &[type="button"],
   &:is(button) {
     background: none;
     border: none;
-    border-top: 1px solid $dark-border;
+    border-top: 1px solid rgba($dark-border, 0.6);
     font-family: inherit;
-    font-size: inherit;
+    font-size: 1.05rem;
     cursor: pointer;
     display: flex;
     align-items: center;
+    width: 100%;
+    text-align: left;
   }
 }
 
-// Projects Dropdown - Mobile Styles
+// Projects Dropdown - Mobile Styles (Collapsible Accordion)
 .header__dropdown {
-  border-top: 1px solid $dark-border;
+  border-top: 1px solid rgba($dark-border, 0.6);
+
+  // Accordion open state
+  &.is-open {
+    .header__dropdown-chevron {
+      transform: rotate(180deg);
+    }
+
+    .header__dropdown-menu {
+      max-height: 250px;
+      opacity: 1;
+    }
+  }
 }
 
 .header__dropdown-trigger {
@@ -101,16 +159,38 @@
   align-items: center;
   gap: 0.5rem;
   cursor: pointer;
+  padding: 1rem 0;
+  width: 100%;
+  font-size: 1.05rem;
+  letter-spacing: 0.01em;
+  transition: background-color 0.15s ease;
+  color: $dark-text;
+  // Reset button styles
+  background: none;
+  border: none;
+  font-family: inherit;
+  text-align: left;
+
+  &:active {
+    background-color: rgba(255, 255, 255, 0.04);
+  }
 }
 
 .header__dropdown-chevron {
-  transition: transform 0.2s ease-in-out;
+  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+  margin-left: auto;
 }
 
 .header__dropdown-menu {
   display: flex;
   flex-direction: column;
   padding-left: 1rem;
+  // Collapsed by default on mobile
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: max-height 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+              opacity 0.25s ease;
 }
 
 .header__dropdown-item {
@@ -118,19 +198,30 @@
   align-items: center;
   justify-content: space-between;
   color: $dark-text;
-  padding: 0.75rem 0;
-  border-top: 1px solid $dark-border;
-  font-size: 0.9rem;
+  padding: 0.85rem 0;
+  border-top: 1px solid rgba($dark-border, 0.4);
+  font-size: 0.95rem;
+  transition: color 0.15s ease, background-color 0.15s ease;
 
-  &:hover {
+  &:first-child {
+    border-top: none;
+  }
+
+  &:active {
+    background-color: rgba(255, 255, 255, 0.04);
     color: $link-color;
   }
 }
 
 .header__external-icon {
-  opacity: 0.6;
+  opacity: 0.5;
   flex-shrink: 0;
   margin-left: 0.5rem;
+  transition: opacity 0.15s ease;
+
+  .header__dropdown-item:active & {
+    opacity: 0.8;
+  }
 }
 
 .header__toggle {
@@ -183,13 +274,15 @@
   width: 0;
   height: 0;
   opacity: 0;
-  background-color: rgba(0, 0 , 0, .75);
+  background-color: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
   z-index: 2;
-  transition: opacity 1s ease 0.1s;
+  transition: opacity 0.4s ease;
 
   &.--open {
     width: 100%;
-    height: 120%;
+    height: 100%;
     opacity: 1;
   }
 }
@@ -307,6 +400,9 @@
   }
 
   .header__dropdown-menu {
+    // Reset mobile accordion styles for desktop
+    max-height: none;
+    overflow: visible;
     position: absolute;
     top: 100%;
     left: 0;

@@ -37,13 +37,13 @@
             {% endif %}
             {% if forloop.first %}
             <div class="header__dropdown">
-              <span class="header__link header__dropdown-trigger">
+              <button class="header__link header__dropdown-trigger" type="button" aria-expanded="false" aria-controls="projects-menu">
                 Projects
-                <svg class="header__dropdown-chevron" width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <svg class="header__dropdown-chevron" width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                   <path d="M1 1L5 5L9 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
-              </span>
-              <div class="header__dropdown-menu">
+              </button>
+              <div class="header__dropdown-menu" id="projects-menu">
                 {% for project in site.projects %}
                 <a class="header__dropdown-item" href="{{ project.link }}" target="_blank" rel="noopener noreferrer">
                   {{ project.name }}

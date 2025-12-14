@@ -41,24 +41,30 @@ $search-ease-out: cubic-bezier(0, 0, 0.2, 1);
 
 // Search trigger button in header
 .search-trigger {
+  // Mobile: full-width menu item style
   display: flex;
   align-items: center;
-  gap: 0.625rem;
-  padding: 0.5rem 0.875rem !important;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 10px;
+  gap: 0.75rem;
+  width: 100%;
+  padding: 0.875rem 0 !important;
+  background: transparent;
+  border: none;
+  border-radius: 0;
   cursor: pointer;
-  transition: all 0.2s $search-ease;
-
-  &:hover {
-    background: rgba(255, 255, 255, 0.08);
-    border-color: rgba(255, 255, 255, 0.12);
-    transform: translateY(-1px);
-  }
+  transition: background-color 0.15s ease;
+  color: $dark-text;
+  font-size: 1.05rem;
 
   &:active {
-    transform: translateY(0);
+    background-color: rgba(255, 255, 255, 0.04);
+  }
+
+  // Add "Search" text on mobile via pseudo-element
+  &::before {
+    content: "Search";
+    font-family: inherit;
+    font-size: 1.05rem;
+    letter-spacing: 0.01em;
   }
 
   &__icon {
@@ -66,31 +72,62 @@ $search-ease-out: cubic-bezier(0, 0, 0.2, 1);
     align-items: center;
     color: rgba(255, 255, 255, 0.6);
     transition: color 0.2s;
-
-    .search-trigger:hover & {
-      color: rgba(255, 255, 255, 0.9);
-    }
+    order: -1; // Icon before text
   }
 
   &__shortcut {
     display: none;
+  }
 
-    @media (min-width: $md) {
+  // Desktop: compact pill button style
+  @media (min-width: $lg) {
+    width: auto;
+    gap: 0.625rem;
+    padding: 0.5rem 0.875rem !important;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 10px;
+    font-size: inherit;
+
+    &::before {
+      display: none; // Hide "Search" text on desktop
+    }
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba(255, 255, 255, 0.12);
+      transform: translateY(-1px);
+    }
+
+    &:active {
+      transform: translateY(0);
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    &__icon {
+      order: 0;
+
+      .search-trigger:hover & {
+        color: rgba(255, 255, 255, 0.9);
+      }
+    }
+
+    &__shortcut {
       display: flex;
       align-items: center;
       gap: 0.25rem;
-    }
 
-    kbd {
-      font-family: "SF Mono", "JetBrains Mono", monospace;
-      font-size: 0.6875rem;
-      font-weight: 500;
-      letter-spacing: 0.02em;
-      color: rgba(255, 255, 255, 0.4);
-      background: rgba(255, 255, 255, 0.06);
-      padding: 0.2rem 0.45rem;
-      border-radius: 5px;
-      border: 1px solid rgba(255, 255, 255, 0.08);
+      kbd {
+        font-family: "SF Mono", "JetBrains Mono", monospace;
+        font-size: 0.6875rem;
+        font-weight: 500;
+        letter-spacing: 0.02em;
+        color: rgba(255, 255, 255, 0.4);
+        background: rgba(255, 255, 255, 0.06);
+        padding: 0.2rem 0.45rem;
+        border-radius: 5px;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+      }
     }
   }
 }

@@ -12,7 +12,8 @@
       "Bash(npm run:*)",
       "Read(//Users/johnlarkin/Desktop/Screenshots/**)",
       "Bash(npx sass:*)",
-      "Bash(npx postcss:*)"
+      "Bash(npx postcss:*)",
+      "Skill(document-skills:frontend-design)"
     ],
     "deny": []
   }
