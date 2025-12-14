@@ -26,6 +26,16 @@ projects: # Projects dropdown links (external)
   - {name: 'Scrollz', link: 'https://www.scrollz.co/'}
   - {name: 'Walk in the Parquet', link: 'https://www.walkintheparquet.com/'}
 
+about_links: # About dropdown links
+  - name: 'General'
+    link: '/about/'
+  - name: 'Interactive'
+    items:
+      - name: 'Timeline Explorer'
+        link: '/assets/html/larkin-mcp/john-larkin-timeline.html'
+      - name: 'Full Profile'
+        link: '/assets/html/larkin-mcp/john-larkin-profile.html'
+
 tagline: >
   My personal coding blog and thought journal.
 

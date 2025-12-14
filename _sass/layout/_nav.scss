@@ -224,6 +224,35 @@
   }
 }
 
+// Nested dropdown submenu (for About > Timeline)
+.header__dropdown-submenu {
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid rgba($dark-border, 0.4);
+  padding-top: 0.5rem;
+  margin-top: 0.25rem;
+
+  &:first-child {
+    border-top: none;
+    padding-top: 0;
+    margin-top: 0;
+  }
+}
+
+.header__dropdown-label {
+  color: rgba($dark-text, 0.5);
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 0.5rem 0;
+}
+
+.header__dropdown-item--nested {
+  padding-left: 0.75rem;
+  font-size: 0.9rem;
+}
+
 .header__toggle {
   display: flex;
   flex-direction: column;
@@ -428,6 +457,28 @@
       background: rgba($link-color, 0.1);
       color: $link-color;
     }
+  }
+
+  // Desktop nested submenu styles
+  .header__dropdown-submenu {
+    border-top: 1px solid rgba($dark-border, 0.3);
+    margin: 0.25rem 0;
+    padding: 0.25rem 0;
+
+    &:first-child {
+      border-top: none;
+      margin-top: 0;
+      padding-top: 0;
+    }
+  }
+
+  .header__dropdown-label {
+    padding: 0.5rem 1rem 0.25rem;
+  }
+
+  .header__dropdown-item--nested {
+    padding-left: 1.5rem;
+    font-size: 0.875rem;
   }
 }
 

@@ -1,0 +1,1534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>John Larkin — Career Timeline</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@300;400;500&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0a0a0b;
+            --bg-secondary: #111113;
+            --bg-tertiary: #1a1a1d;
+            --text-primary: #fafafa;
+            --text-secondary: #a1a1a6;
+            --text-muted: #636366;
+            --accent-work: #ff6b35;
+            --accent-project: #00d4aa;
+            --accent-education: #7c3aed;
+            --accent-tennis: #fbbf24;
+            --accent-community: #a78bfa;
+            --border: #2a2a2d;
+            --glow-work: rgba(255, 107, 53, 0.15);
+            --glow-project: rgba(0, 212, 170, 0.15);
+            --glow-tennis: rgba(251, 191, 36, 0.15);
+            --glow-community: rgba(167, 139, 250, 0.15);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'JetBrains Mono', monospace;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Noise texture overlay */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+            opacity: 0.03;
+            pointer-events: none;
+            z-index: 1000;
+        }
+
+        /* Header */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: 1.5rem 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: linear-gradient(to bottom, var(--bg-primary) 0%, transparent 100%);
+            z-index: 100;
+        }
+
+        .logo {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: 1.25rem;
+            letter-spacing: -0.02em;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--text-primary);
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 6rem 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle, rgba(255, 107, 53, 0.08) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .hero-title {
+            font-family: 'Instrument Serif', serif;
+            font-size: clamp(3rem, 12vw, 10rem);
+            font-weight: 400;
+            letter-spacing: -0.03em;
+            line-height: 0.9;
+            text-align: center;
+            margin-bottom: 2rem;
+            opacity: 0;
+            animation: fadeUp 1s ease forwards;
+        }
+
+        .hero-title em {
+            font-style: italic;
+            color: var(--accent-work);
+        }
+
+        .hero-subtitle {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            opacity: 0;
+            animation: fadeUp 1s ease 0.2s forwards;
+        }
+
+        .hero-meta {
+            display: flex;
+            gap: 3rem;
+            margin-top: 4rem;
+            opacity: 0;
+            animation: fadeUp 1s ease 0.4s forwards;
+        }
+
+        .hero-stat {
+            text-align: center;
+        }
+
+        .hero-stat-value {
+            font-family: 'Syne', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .hero-stat-label {
+            font-size: 0.625rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            margin-top: 0.25rem;
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 3rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            opacity: 0;
+            animation: fadeUp 1s ease 0.6s forwards, bounce 2s ease-in-out 1.6s infinite;
+        }
+
+        .scroll-indicator span {
+            font-size: 0.625rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+        }
+
+        .scroll-indicator svg {
+            width: 24px;
+            height: 24px;
+            stroke: var(--text-muted);
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(10px); }
+        }
+
+        /* Timeline Container */
+        .timeline-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 4rem 2rem 8rem;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            margin-bottom: 4rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .section-number {
+            font-family: 'Syne', sans-serif;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--border);
+            border-radius: 2rem;
+        }
+
+        .section-title {
+            font-family: 'Instrument Serif', serif;
+            font-size: 2.5rem;
+            font-weight: 400;
+            letter-spacing: -0.02em;
+        }
+
+        /* Filter Controls */
+        .filters {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 0.75rem 1.5rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-radius: 2rem;
+        }
+
+        .filter-btn:hover {
+            border-color: var(--text-secondary);
+        }
+
+        .filter-btn.active {
+            background: var(--text-primary);
+            color: var(--bg-primary);
+            border-color: var(--text-primary);
+        }
+
+        .filter-btn.work.active {
+            background: var(--accent-work);
+            border-color: var(--accent-work);
+        }
+
+        .filter-btn.project.active {
+            background: var(--accent-project);
+            border-color: var(--accent-project);
+        }
+
+        .filter-btn.tennis.active {
+            background: var(--accent-tennis);
+            border-color: var(--accent-tennis);
+            color: var(--bg-primary);
+        }
+
+        .filter-btn.community.active {
+            background: var(--accent-community);
+            border-color: var(--accent-community);
+            color: var(--bg-primary);
+        }
+
+        /* Timeline */
+        .timeline {
+            position: relative;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 1px;
+            background: linear-gradient(to bottom, transparent, var(--border) 5%, var(--border) 95%, transparent);
+            transform: translateX(-50%);
+        }
+
+        .timeline-year-marker {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            margin: 3rem 0;
+        }
+
+        .timeline-year {
+            font-family: 'Syne', sans-serif;
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            background: var(--bg-primary);
+            padding: 0.75rem 2rem;
+            border: 1px solid var(--border);
+            border-radius: 2rem;
+            z-index: 10;
+        }
+
+        .timeline-item {
+            position: relative;
+            display: grid;
+            grid-template-columns: 1fr 60px 1fr;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .timeline-item.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .timeline-item.hidden {
+            display: none;
+        }
+
+        .timeline-item.work .timeline-content {
+            grid-column: 1;
+            text-align: right;
+        }
+
+        .timeline-item.work .timeline-dot-container {
+            grid-column: 2;
+        }
+
+        .timeline-item.work .timeline-spacer {
+            grid-column: 3;
+        }
+
+        .timeline-item.project .timeline-spacer {
+            grid-column: 1;
+        }
+
+        .timeline-item.project .timeline-dot-container {
+            grid-column: 2;
+        }
+
+        .timeline-item.project .timeline-content {
+            grid-column: 3;
+            text-align: left;
+        }
+
+        .timeline-item.tennis .timeline-spacer {
+            grid-column: 1;
+        }
+
+        .timeline-item.tennis .timeline-dot-container {
+            grid-column: 2;
+        }
+
+        .timeline-item.tennis .timeline-content {
+            grid-column: 3;
+            text-align: left;
+        }
+
+        .timeline-item.community .timeline-spacer {
+            grid-column: 1;
+        }
+
+        .timeline-item.community .timeline-dot-container {
+            grid-column: 2;
+        }
+
+        .timeline-item.community .timeline-content {
+            grid-column: 3;
+            text-align: left;
+        }
+
+        .timeline-dot-container {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding-top: 1.5rem;
+        }
+
+        .timeline-dot {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            border: 2px solid var(--border);
+            background: var(--bg-primary);
+            position: relative;
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+
+        .timeline-item.work .timeline-dot {
+            border-color: var(--accent-work);
+        }
+
+        .timeline-item.project .timeline-dot {
+            border-color: var(--accent-project);
+        }
+
+        .timeline-item.tennis .timeline-dot {
+            border-color: var(--accent-tennis);
+        }
+
+        .timeline-item.community .timeline-dot {
+            border-color: var(--accent-community);
+        }
+
+        .timeline-item:hover .timeline-dot {
+            transform: scale(1.3);
+        }
+
+        .timeline-item.work:hover .timeline-dot {
+            background: var(--accent-work);
+            box-shadow: 0 0 20px var(--accent-work);
+        }
+
+        .timeline-item.project:hover .timeline-dot {
+            background: var(--accent-project);
+            box-shadow: 0 0 20px var(--accent-project);
+        }
+
+        .timeline-item.tennis:hover .timeline-dot {
+            background: var(--accent-tennis);
+            box-shadow: 0 0 20px var(--accent-tennis);
+        }
+
+        .timeline-item.community:hover .timeline-dot {
+            background: var(--accent-community);
+            box-shadow: 0 0 20px var(--accent-community);
+        }
+
+        .timeline-content {
+            padding: 1.5rem;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .timeline-content:hover {
+            background: var(--bg-tertiary);
+            border-color: var(--text-muted);
+            transform: translateY(-4px);
+        }
+
+        .timeline-item.work .timeline-content:hover {
+            box-shadow: 0 10px 40px var(--glow-work);
+        }
+
+        .timeline-item.project .timeline-content:hover {
+            box-shadow: 0 10px 40px var(--glow-project);
+        }
+
+        .timeline-item.tennis .timeline-content:hover {
+            box-shadow: 0 10px 40px var(--glow-tennis);
+        }
+
+        .timeline-item.community .timeline-content:hover {
+            box-shadow: 0 10px 40px var(--glow-community);
+        }
+
+        .timeline-date {
+            font-size: 0.625rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-title {
+            font-family: 'Syne', sans-serif;
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+            letter-spacing: -0.01em;
+        }
+
+        .timeline-item.work .timeline-title {
+            color: var(--accent-work);
+        }
+
+        .timeline-item.project .timeline-title {
+            color: var(--accent-project);
+        }
+
+        .timeline-item.tennis .timeline-title {
+            color: var(--accent-tennis);
+        }
+
+        .timeline-item.community .timeline-title {
+            color: var(--accent-community);
+        }
+
+        .timeline-company {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.75rem;
+        }
+
+        .timeline-description {
+            font-size: 0.8125rem;
+            color: var(--text-secondary);
+            line-height: 1.7;
+            margin-bottom: 1rem;
+        }
+
+        .timeline-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .timeline-item.work .timeline-tags {
+            justify-content: flex-end;
+        }
+
+        .timeline-tag {
+            font-size: 0.625rem;
+            padding: 0.35rem 0.75rem;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .timeline-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            font-size: 0.75rem;
+            color: var(--accent-project);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .timeline-link:hover {
+            color: var(--text-primary);
+        }
+
+        .timeline-link svg {
+            width: 14px;
+            height: 14px;
+        }
+
+        /* Detail Modal */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.9);
+            width: 90%;
+            max-width: 700px;
+            max-height: 80vh;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 3rem;
+            z-index: 1001;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            overflow-y: auto;
+        }
+
+        .modal.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            width: 40px;
+            height: 40px;
+            border: 1px solid var(--border);
+            border-radius: 50%;
+            background: transparent;
+            color: var(--text-secondary);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .modal-close:hover {
+            border-color: var(--text-primary);
+            color: var(--text-primary);
+        }
+
+        .modal-type {
+            font-size: 0.625rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            padding: 0.5rem 1rem;
+            border-radius: 2rem;
+            display: inline-block;
+            margin-bottom: 1rem;
+        }
+
+        .modal-type.work {
+            background: var(--glow-work);
+            color: var(--accent-work);
+        }
+
+        .modal-type.project {
+            background: var(--glow-project);
+            color: var(--accent-project);
+        }
+
+        .modal-type.tennis {
+            background: var(--glow-tennis);
+            color: var(--accent-tennis);
+        }
+
+        .modal-type.community {
+            background: var(--glow-community);
+            color: var(--accent-community);
+        }
+
+        .modal-title {
+            font-family: 'Instrument Serif', serif;
+            font-size: 2.5rem;
+            font-weight: 400;
+            letter-spacing: -0.02em;
+            margin-bottom: 0.5rem;
+        }
+
+        .modal-subtitle {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-section {
+            margin-top: 2rem;
+        }
+
+        .modal-section-title {
+            font-family: 'Syne', sans-serif;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-muted);
+            margin-bottom: 0.75rem;
+        }
+
+        .modal-description {
+            font-size: 0.9375rem;
+            color: var(--text-secondary);
+            line-height: 1.8;
+        }
+
+        .modal-description li {
+            margin-bottom: 0.5rem;
+        }
+
+        .modal-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .modal-tag {
+            font-size: 0.75rem;
+            padding: 0.5rem 1rem;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            border-radius: 2rem;
+            color: var(--text-secondary);
+        }
+
+        .modal-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .modal-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            border-radius: 2rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.75rem;
+            transition: all 0.3s ease;
+        }
+
+        .modal-link:hover {
+            border-color: var(--text-primary);
+            color: var(--text-primary);
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 4rem 2rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .footer-text {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .footer-link {
+            color: var(--accent-work);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-link:hover {
+            color: var(--text-primary);
+        }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            .timeline::before {
+                left: 30px;
+            }
+
+            .timeline-item {
+                grid-template-columns: 60px 1fr;
+            }
+
+            .timeline-item.work .timeline-content,
+            .timeline-item.project .timeline-content,
+            .timeline-item.tennis .timeline-content,
+            .timeline-item.community .timeline-content {
+                grid-column: 2;
+                text-align: left;
+            }
+
+            .timeline-item.work .timeline-dot-container,
+            .timeline-item.project .timeline-dot-container,
+            .timeline-item.tennis .timeline-dot-container,
+            .timeline-item.community .timeline-dot-container {
+                grid-column: 1;
+            }
+
+            .timeline-item.work .timeline-spacer,
+            .timeline-item.project .timeline-spacer,
+            .timeline-item.tennis .timeline-spacer,
+            .timeline-item.community .timeline-spacer {
+                display: none;
+            }
+
+            .timeline-item.work .timeline-tags {
+                justify-content: flex-start;
+            }
+
+            .hero-meta {
+                flex-direction: column;
+                gap: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="logo">JL</div>
+        <nav class="nav-links">
+            <a href="https://johnlarkin1.github.io" target="_blank">Blog</a>
+            <a href="https://github.com/johnlarkin1" target="_blank">GitHub</a>
+            <a href="mailto:john@johnjlarkin.com">Contact</a>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <h1 class="hero-title">John <em>Larkin</em></h1>
+        <p class="hero-subtitle">Staff Software Engineer · Brooklyn, NY</p>
+        <div class="hero-meta">
+            <div class="hero-stat">
+                <div class="hero-stat-value">8+</div>
+                <div class="hero-stat-label">Years Experience</div>
+            </div>
+            <div class="hero-stat">
+                <div class="hero-stat-value">5</div>
+                <div class="hero-stat-label">Companies</div>
+            </div>
+            <div class="hero-stat">
+                <div class="hero-stat-value">15+</div>
+                <div class="hero-stat-label">Projects</div>
+            </div>
+            <div class="hero-stat">
+                <div class="hero-stat-value">4</div>
+                <div class="hero-stat-label">Varsity Seasons</div>
+            </div>
+        </div>
+        <div class="scroll-indicator">
+            <span>Scroll to explore</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 5v14M19 12l-7 7-7-7"/>
+            </svg>
+        </div>
+    </section>
+
+    <main class="timeline-container">
+        <div class="section-header">
+            <span class="section-number">01</span>
+            <h2 class="section-title">Career Timeline</h2>
+        </div>
+
+        <div class="filters">
+            <button class="filter-btn active" data-filter="all">All</button>
+            <button class="filter-btn work" data-filter="work">Work Experience</button>
+            <button class="filter-btn project" data-filter="project">Projects</button>
+            <button class="filter-btn tennis" data-filter="tennis">Tennis</button>
+            <button class="filter-btn community" data-filter="community">Community</button>
+        </div>
+
+        <div class="timeline" id="timeline">
+            <!-- 2025 -->
+            <div class="timeline-year-marker">
+                <div class="timeline-year">2025</div>
+            </div>
+
+            <div class="timeline-item work" data-type="work" data-title="Staff Software Engineer" data-company="MOJO" data-date="August 2025 – Present" data-tech="Python, C++, Go, Terraform" data-description="Led repricing solution for executed parlays for top client (8-figure deal). Reduced pod memory usage by 5×, enabling migration from m-class to c-class instances. Increased FastAPI worker density, improving RPS per dollar. Oversaw team of 4 engineers on B2B initiatives.">
+                <div class="timeline-content">
+                    <div class="timeline-date">Aug 2025 — Present</div>
+                    <h3 class="timeline-title">Staff Software Engineer</h3>
+                    <p class="timeline-company">MOJO</p>
+                    <p class="timeline-description">Leading B2B initiatives, 5× memory optimization, team leadership</p>
+                    <div class="timeline-tags">
+                        <span class="timeline-tag">Python</span>
+                        <span class="timeline-tag">Go</span>
+                        <span class="timeline-tag">C++</span>
+                    </div>
+                </div>
+                <div class="timeline-dot-container"><div class="timeline-dot"></div></div>
+                <div class="timeline-spacer"></div>
+            </div>
+
+            <div class="timeline-item project" data-type="project" data-title="Understanding Muon" data-date="2025" data-tech="Python, Manim, Pyodide" data-description="Deep dive into the Muon optimizer with interactive visualizations and Karpathy's nanochat implementation." data-url="https://github.com/johnlarkin1/understanding-muon" data-blog="https://johnlarkin1.github.io/2025/understanding-muon/">
+                <div class="timeline-spacer"></div>
+                <div class="timeline-dot-container"><div class="timeline-dot"></div></div>
+                <div class="timeline-content">
+                    <div class="timeline-date">2025</div>
+                    <h3 class="timeline-title">Understanding Muon</h3>
+                    <p class="timeline-description">Deep dive into the Muon optimizer with interactive visualizations</p>
+                    <div class="timeline-tags">
+                        <span class="timeline-tag">Python</span>
+                        <span class="timeline-tag">Manim</span>
+                    </div>
+                    <a href="https://johnlarkin1.github.io/2025/understanding-muon/" target="_blank" class="timeline-link">
+                        Read blog post
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M7 17L17 7M17 7H7M17 7V17"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+
+            <div class="timeline-item project" data-type="project" data-title="WordHunt Solver" data-date="2025" data-tech="Python, OpenCV, Pytesseract, PyAutoGUI, OpenAI" data-description="AI-powered solver for iOS WordHunt using computer vision and automation." data-url="https://github.com/johnlarkin1/word-hunt-solver" data-blog="https://johnlarkin1.github.io/2025/wordhunt-solver/">
+                <div class="timeline-spacer"></div>
+                <div class="timeline-dot-container"><div class="timeline-dot"></div></div>
+                <div class="timeline-content">
+                    <div class="timeline-date">2025</div>
+                    <h3 class="timeline-title">WordHunt Solver</h3>
+                    <p class="timeline-description">AI-powered solver using computer vision and automation</p>
+                    <div class="timeline-tags">
+                        <span class="timeline-tag">Python</span>
+                        <span class="timeline-tag">OpenCV</span>
+                        <span class="timeline-tag">OpenAI</span>
+                    </div>
+                    <a href="https://johnlarkin1.github.io/2025/wordhunt-solver/" target="_blank" class="timeline-link">
+                        Read blog post
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M7 17L17 7M17 7H7M17 7V17"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+
+            <div class="timeline-item project" data-type="project" data-title="Walk in the Parquet" data-date="2025" data-tech="Tauri (Rust), Next.js, TypeScript, DuckDB" data-description="Lightweight desktop app for visualizing and querying Parquet files on macOS. Available on macOS App Store." data-url="https://walkintheparquet.com" data-blog="https://johnlarkin1.github.io/2025/walk-in-the-parquet/">
+                <div class="timeline-spacer"></div>
+                <div class="timeline-dot-container"><div class="timeline-dot"></div></div>
+                <div class="timeline-content">
+                    <div class="timeline-date">2025</div>
+                    <h3 class="timeline-title">Walk in the Parquet</h3>
+                    <p class="timeline-description">Desktop app for Parquet file visualization on macOS</p>
+                    <div class="timeline-tags">
+                        <span class="timeline-tag">Rust</span>
+                        <span class="timeline-tag">Tauri</span>
+                        <span class="timeline-tag">DuckDB</span>
+                    </div>
+                    <a href="https://walkintheparquet.com" target="_blank" class="timeline-link">
+                        Visit site
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M7 17L17 7M17 7H7M17 7V17"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+
+            <div class="timeline-item project" data-type="project" data-title="Tennis Scorigami" data-date="Nov 2024 — Present" data-tech="Next.js, TypeScript/React, Tailwind, Neon, Python" data-description="Data visualization project exploring unscored tennis match combinations with 125k+ nodes, analyzing over 750k+ sets, almost ~500k unique sequences, and 57 years of tennis data." data-url="https://tennis-scorigami.com" data-blog="https://johnlarkin1.github.io/2025/tennis-scorigami/">
+                <div class="timeline-spacer"></div>
+                <div class="timeline-dot-container"><div class="timeline-dot"></div></div>
+                <div class="timeline-content">
+                    <div class="timeline-date">Nov 2024 — Present</div>
+                    <h3 class="timeline-title">Tennis Scorigami</h3>
+                    <p class="timeline-description">Exploring 750k+ tennis sets across 57 years of data</p>
+                    <div class="timeline-tags">
+                        <span class="timeline-tag">Next.js</span>
+                        <span class="timeline-tag">TypeScript</span>
+                        <span class="timeline-tag">Python</span>
+                    </div>
+                    <a href="https://tennis-scorigami.com" target="_blank" class="timeline-link">
+                        Visit site
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M7 17L17 7M17 7H7M17 7V17"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+
+            <!-- 2024 -->
+            <div class="timeline-year-marker">
+                <div class="timeline-year">2024</div>
+            </div>
+
+            <div class="timeline-item work" data-type="work" data-title="Senior Software Engineer" data-company="MOJO" data-date="April 2024 – August 2025" data-tech="Python, C++, Go, Terraform" data-description="Designed FastAPI parlay pricing service (same-game & cross-game). Reduced S3 transfer via Parquet. Implemented copula-based correlation pricing. Built high-performance C++ simulation aggregator for NFL/NBA models. End-to-end owner of EKS heartbeat sidecar service.">
+                <div class="timeline-content">
+                    <div class="timeline-date">Apr 2024 — Aug 2025</div>
+                    <h3 class="timeline-title">Senior Software Engineer</h3>
+                    <p class="timeline-company">MOJO</p>
+                    <p class="timeline-description">FastAPI parlay pricing, C++ simulation aggregator, copula correlations</p>
+                    <div class="timeline-tags">
+                        <span class="timeline-tag">Python</span>
+                        <span class="timeline-tag">C++</span>
+                        <span class="timeline-tag">FastAPI</span>
+                    </div>
+                </div>
+                <div class="timeline-dot-container"><div class="timeline-dot"></div></div>
+                <div class="timeline-spacer"></div>
+            </div>
+
+            <div class="timeline-item project" data-type="project" data-title="Book BrAIn" data-date="2024" data-tech="Python, FastAPI, Langchain, Qdrant, React, TypeScript, OpenAI" data-description="RAG-based system for generating literary essays analyzing themes across books." data-blog="https://johnlarkin1.github.io/2024/book-brain/">
+                <div class="timeline-spacer"></div>
+                <div class="timeline-dot-container"><div class="timeline-dot"></div></div>
+                <div class="timeline-content">
+                    <div class="timeline-date">2024</div>
+                    <h3 class="timeline-title">Book BrAIn</h3>
+                    <p class="timeline-description">RAG-based literary essay generator</p>
+                    <div class="timeline-tags">
+                        <span class="timeline-tag">Python</span>
+                        <span class="timeline-tag">Langchain</span>
+                        <span class="timeline-tag">React</span>
+                    </div>
+                    <a href="https://johnlarkin1.github.io/2024/book-brain/" target="_blank" class="timeline-link">
+                        Read blog post
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M7 17L17 7M17 7H7M17 7V17"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+
+            <div class="timeline-item project" data-type="project" data-title="GitHub PR Formatter" data-date="2024" data-tech="JavaScript, Chrome Extension API" data-description="Chrome Extension that formats GitHub PR unfurls in Slack to show only titles." data-url="https://chromewebstore.google.com/detail/github-pr-title-formatter/pdjmmincfaficadbaemdifkbaioiihob" data-blog="https://johnlarkin1.github.io/2024/github-pr-formatter/">
+                <div class="timeline-spacer"></div>
+                <div class="timeline-dot-container"><div class="timeline-dot"></div></div>
+                <div class="timeline-content">
+                    <div class="timeline-date">2024</div>
+                    <h3 class="timeline-title">GitHub PR Formatter</h3>
+                    <p class="timeline-description">Chrome Extension for Slack PR unfurl formatting</p>
+                    <div class="timeline-tags">
+                        <span class="timeline-tag">JavaScript</span>
+                        <span class="timeline-tag">Chrome API</span>
+                    </div>
+                    <a href="https://chromewebstore.google.com/detail/github-pr-title-formatter/pdjmmincfaficadbaemdifkbaioiihob" target="_blank" class="timeline-link">
+                        Chrome Store
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M7 17L17 7M17 7H7M17 7V17"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+
+            <!-- 2023 -->
+            <div class="timeline-year-marker">
+                <div class="timeline-year">2023</div>
+            </div>
+
+            <div class="timeline-item project" data-type="project" data-title="Scrollz" data-date="Sep 2023 — Present" data-tech="Next.js, TypeScript, Supabase, Python, OpenAI, AWS" data-description="Mobile app for managing newsletters with better search, note-taking, and social features. Also a web platform." data-url="https://scrollz.co" data-blog="https://johnlarkin1.github.io/2025/launching-scrollz/">
+                <div class="timeline-spacer"></div>
+                <div class="timeline-dot-container"><div class="timeline-dot"></div></div>
+                <div class="timeline-content">
+                    <div class="timeline-date">Sep 2023 — Present</div>
+                    <h3 class="timeline-title">Scrollz</h3>
+                    <p class="timeline-description">Newsletter management app with search & social features</p>
+                    <div class="timeline-tags">
+                        <span class="timeline-tag">Next.js</span>
+                        <span class="timeline-tag">Supabase</span>
+                        <span class="timeline-tag">AWS</span>
+                    </div>
+                    <a href="https://scrollz.co" target="_blank" class="timeline-link">
+                        Visit site
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M7 17L17 7M17 7H7M17 7V17"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+
+            <div class="timeline-item project" data-type="project" data-title="DraftKings Betting Analysis" data-date="2023" data-tech="JavaScript, Python, Pandas, Matplotlib" data-description="Chrome Extension to scrape DraftKings betting history and Python analysis tools using Kelly Criterion for optimal bet sizing." data-url="https://github.com/johnlarkin1/draftkings-betting" data-blog="https://johnlarkin1.github.io/2023/chrome-betting-kelly/">
+                <div class="timeline-spacer"></div>
+                <div class="timeline-dot-container"><div class="timeline-dot"></div></div>
+                <div class="timeline-content">
+                    <div class="timeline-date">2023</div>
+                    <h3 class="timeline-title">DraftKings Betting Analysis</h3>
+                    <p class="timeline-description">Kelly Criterion betting optimization tools</p>
+                    <div class="timeline-tags">
+                        <span class="timeline-tag">Python</span>
+                        <span class="timeline-tag">Chrome Ext</span>
+                    </div>
+                    <a href="https://johnlarkin1.github.io/2023/chrome-betting-kelly/" target="_blank" class="timeline-link">
+                        Read blog post
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M7 17L17 7M17 7H7M17 7V17"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+
+            <!-- 2022 -->
+            <div class="timeline-year-marker">
+                <div class="timeline-year">2022</div>
+            </div>
+
+            <div class="timeline-item community" data-type="community" data-title="City Hope Volunteer" data-company="City Hope" data-date="March 2022 – December 2022" data-tech="Volunteer, Outreach, Community Service" data-description="Volunteered with City Hope in San Francisco's Tenderloin district. Supported housing-insecure individuals through direct outreach and assistance programs. Provided meals, supplies, and compassionate support to community members experiencing homelessness. Engaged with diverse populations facing complex challenges including addiction and mental health.">
+                <div class="timeline-spacer"></div>
+                <div class="timeline-dot-container"><div class="timeline-dot"></div></div>
+                <div class="timeline-content">
+                    <div class="timeline-date">Mar 2022 — Dec 2022</div>
+                    <h3 class="timeline-title">City Hope Volunteer</h3>
+                    <p class="timeline-company">San Francisco, CA</p>
+                    <p class="timeline-description">Supporting housing-insecure individuals in the Tenderloin</p>
+                    <div class="timeline-tags">
+                        <span class="timeline-tag">Volunteer</span>
+                        <span class="timeline-tag">Outreach</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="timeline-item project" data-type="project" data-title="Porvata & SPAR Integration" data-date="2022" data-tech="Python, Shopify API, GraphQL, AWS EC2, Google Pub/Sub" data-description="Backend integration connecting Porvata (ecommerce furniture) with SPAR assembly services via Shopify webhooks." data-blog="https://johnlarkin1.github.io/2022/porvata-spar/">
+                <div class="timeline-spacer"></div>
+                <div class="timeline-dot-container"><div class="timeline-dot"></div></div>
+                <div class="timeline-content">
+                    <div class="timeline-date">2022</div>
+                    <h3 class="timeline-title">Porvata & SPAR Integration</h3>
+                    <p class="timeline-description">Shopify webhook backend integration</p>
+                    <div class="timeline-tags">
+                        <span class="timeline-tag">Python</span>
+                        <span class="timeline-tag">GraphQL</span>
+                        <span class="timeline-tag">AWS</span>
+                    </div>
+                    <a href="https://johnlarkin1.github.io/2022/porvata-spar/" target="_blank" class="timeline-link">
+                        Read blog post
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M7 17L17 7M17 7H7M17 7V17"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+
+            <div class="timeline-item project" data-type="project" data-title="Dual Numbers" data-date="2022" data-tech="Python" data-description="Implementation of dual numbers for automatic differentiation, inspired by Matt Zucker's Numerical Methods class at Swarthmore." data-url="https://github.com/johnlarkin1/duals" data-blog="https://johnlarkin1.github.io/2022/dual-numbers/">
+                <div class="timeline-spacer"></div>
+                <div class="timeline-dot-container"><div class="timeline-dot"></div></div>
+                <div class="timeline-content">
+                    <div class="timeline-date">2022</div>
+                    <h3 class="timeline-title">Dual Numbers</h3>
+                    <p class="timeline-description">Automatic differentiation implementation</p>
+                    <div class="timeline-tags">
+                        <span class="timeline-tag">Python</span>
+                        <span class="timeline-tag">Math</span>
+                    </div>
+                    <a href="https://johnlarkin1.github.io/2022/dual-numbers/" target="_blank" class="timeline-link">
+                        Read blog post
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M7 17L17 7M17 7H7M17 7V17"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+
+            <!-- 2021 -->
+            <div class="timeline-year-marker">
+                <div class="timeline-year">2021</div>
+            </div>
+
+            <div class="timeline-item work" data-type="work" data-title="Software Engineer" data-company="Dropbox" data-date="October 2021 – April 2024" data-tech="Python, TypeScript/React, Rust" data-description="Dropbox Replay: Built Version Comparison and TLDW features using OpenAI transcription. Lead engineer for FSS Group Sharing and quota counting. Dropbox Backup: Full-stack lead for local & external drive backup. Led migration of 5M users to new sync engine. Mentored interns.">
+                <div class="timeline-content">
+                    <div class="timeline-date">Oct 2021 — Apr 2024</div>
+                    <h3 class="timeline-title">Software Engineer</h3>
+                    <p class="timeline-company">Dropbox</p>
+                    <p class="timeline-description">Replay, Backup, FSS Group Sharing, 5M user migration</p>
+                    <div class="timeline-tags">
+                        <span class="timeline-tag">Python</span>
+                        <span class="timeline-tag">TypeScript</span>
+                        <span class="timeline-tag">Rust</span>
+                    </div>
+                </div>
+                <div class="timeline-dot-container"><div class="timeline-dot"></div></div>
+                <div class="timeline-spacer"></div>
+            </div>
+
+            <!-- 2019 -->
+            <div class="timeline-year-marker">
+                <div class="timeline-year">2019</div>
+            </div>
+
+            <div class="timeline-item community" data-type="community" data-title="Boys & Girls Club Volunteer" data-company="Chicago Boys & Girls Club" data-date="August 2018 – June 2019" data-tech="Teaching, Programming Education, Youth Mentorship" data-description="Volunteered teaching introductory programming to children ages 9-14 at the Chicago Boys & Girls Club. Designed engaging curriculum to introduce coding fundamentals. Helped bridge the digital divide by providing technology education access to underserved youth. Mentored students and fostered interest in STEM careers.">
+                <div class="timeline-spacer"></div>
+                <div class="timeline-dot-container"><div class="timeline-dot"></div></div>
+                <div class="timeline-content">
+                    <div class="timeline-date">Aug 2018 — Jun 2019</div>
+                    <h3 class="timeline-title">Boys & Girls Club Volunteer</h3>
+                    <p class="timeline-company">Chicago, IL</p>
+                    <p class="timeline-description">Teaching programming to children ages 9-14</p>
+                    <div class="timeline-tags">
+                        <span class="timeline-tag">Teaching</span>
+                        <span class="timeline-tag">Youth</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="timeline-item work" data-type="work" data-title="Field Engineer" data-company="Ab Initio" data-date="May 2019 – October 2021" data-tech="Python, C#, DML, AWS, SQL" data-description="Built high-volume, low-latency data processing systems. Won healthcare contract via optimized .NET ETL pipeline. Led Tanzu Kubernetes Grid cloud migration POC at multinational bank. Built Hadoop ingestion pipelines with data quality and cleansing.">
+                <div class="timeline-content">
+                    <div class="timeline-date">May 2019 — Oct 2021</div>
+                    <h3 class="timeline-title">Field Engineer</h3>
+                    <p class="timeline-company">Ab Initio</p>
+                    <p class="timeline-description">High-volume data processing, Kubernetes migrations</p>
+                    <div class="timeline-tags">
+                        <span class="timeline-tag">Python</span>
+                        <span class="timeline-tag">C#</span>
+                        <span class="timeline-tag">AWS</span>
+                    </div>
+                </div>
+                <div class="timeline-dot-container"><div class="timeline-dot"></div></div>
+                <div class="timeline-spacer"></div>
+            </div>
+
+            <!-- 2017 -->
+            <div class="timeline-year-marker">
+                <div class="timeline-year">2017</div>
+            </div>
+
+            <div class="timeline-item community" data-type="community" data-title="Sierra Adventure Leader" data-company="Overland Summers" data-date="Summer 2017" data-tech="Leadership, Outdoor Education, Wilderness Safety" data-description="Led groups of teenagers on multi-week wilderness expeditions through the Sierra Nevada mountains. Responsible for group safety, navigation, and outdoor skills instruction. Facilitated team-building activities and personal growth experiences. Managed logistics including trip planning, equipment, and emergency protocols.">
+                <div class="timeline-spacer"></div>
+                <div class="timeline-dot-container"><div class="timeline-dot"></div></div>
+                <div class="timeline-content">
+                    <div class="timeline-date">Summer 2017</div>
+                    <h3 class="timeline-title">Sierra Adventure Leader</h3>
+                    <p class="timeline-company">Overland Summers</p>
+                    <p class="timeline-description">Leading wilderness expeditions for teenagers</p>
+                    <div class="timeline-tags">
+                        <span class="timeline-tag">Leadership</span>
+                        <span class="timeline-tag">Outdoors</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="timeline-item community" data-type="community" data-title="Senior Resident Assistant" data-company="Swarthmore College" data-date="2016-2017" data-tech="Leadership, Community Building, Crisis Response" data-description="Served as Senior Resident Assistant at Swarthmore College. Oversaw residential community of students, providing peer support and guidance. Coordinated programming and events to build community. Responded to student crises and emergencies. Served as liaison between students and administration. Mentored incoming RAs.">
+                <div class="timeline-spacer"></div>
+                <div class="timeline-dot-container"><div class="timeline-dot"></div></div>
+                <div class="timeline-content">
+                    <div class="timeline-date">2016 — 2017</div>
+                    <h3 class="timeline-title">Senior Resident Assistant</h3>
+                    <p class="timeline-company">Swarthmore College</p>
+                    <p class="timeline-description">Overseeing residential community & peer support</p>
+                    <div class="timeline-tags">
+                        <span class="timeline-tag">Leadership</span>
+                        <span class="timeline-tag">Mentorship</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="timeline-item work" data-type="work" data-title="Software Engineer" data-company="Belvedere Trading" data-date="August 2017 – April 2019" data-tech="C#, C++, Python, React" data-description="Built reconciliation system between clearing and trading platforms. Implemented Greek visualization frontend. Helped build FIX execution gateway for OSE. Member of recruiting team and hackathon committee.">
+                <div class="timeline-content">
+                    <div class="timeline-date">Aug 2017 — Apr 2019</div>
+                    <h3 class="timeline-title">Software Engineer</h3>
+                    <p class="timeline-company">Belvedere Trading</p>
+                    <p class="timeline-description">Trading reconciliation, Greek visualization, FIX gateway</p>
+                    <div class="timeline-tags">
+                        <span class="timeline-tag">C#</span>
+                        <span class="timeline-tag">C++</span>
+                        <span class="timeline-tag">React</span>
+                    </div>
+                </div>
+                <div class="timeline-dot-container"><div class="timeline-dot"></div></div>
+                <div class="timeline-spacer"></div>
+            </div>
+
+            <div class="timeline-item work education" data-type="work" data-title="B.S. Engineering" data-company="Swarthmore College" data-date="May 2017" data-tech="Computer Engineering focus, Chemistry minor" data-description="B.S. in Engineering with Computer Engineering focus. Cumulative GPA: 3.82, Major GPA: 3.88. Minor in Chemistry. Tennis Team Captain, #1 Singles. Senior RA. CoSIDA Academic All-District, All-Centennial Conference First Team.">
+                <div class="timeline-content">
+                    <div class="timeline-date">Graduated May 2017</div>
+                    <h3 class="timeline-title">B.S. Engineering</h3>
+                    <p class="timeline-company">Swarthmore College</p>
+                    <p class="timeline-description">Computer Engineering focus · 3.82 GPA · Tennis Captain</p>
+                    <div class="timeline-tags">
+                        <span class="timeline-tag">Engineering</span>
+                        <span class="timeline-tag">Chemistry</span>
+                    </div>
+                </div>
+                <div class="timeline-dot-container"><div class="timeline-dot"></div></div>
+                <div class="timeline-spacer"></div>
+            </div>
+
+            <div class="timeline-item tennis" data-type="tennis" data-title="Senior Season" data-company="Swarthmore College Tennis" data-date="2016-2017" data-tech="#2 Singles, #3 Doubles" data-description="Final collegiate season playing #2 singles and #3 doubles with partner Blake Oetting. Singles record: 14-8 including wins over ranked opponents from Christopher Newport (#28), Redlands (#18), Mary Washington (#16), and Johns Hopkins (#17). Doubles record: 13-11 with wins over #6 Claremont-Mudd-Scripps and #18 Redlands. Conference semifinalist.">
+                <div class="timeline-spacer"></div>
+                <div class="timeline-dot-container"><div class="timeline-dot"></div></div>
+                <div class="timeline-content">
+                    <div class="timeline-date">2016 — 2017</div>
+                    <h3 class="timeline-title">Senior Season</h3>
+                    <p class="timeline-company">Swarthmore Tennis</p>
+                    <p class="timeline-description">14-8 singles · Wins over #16, #17, #18, #28 ranked opponents</p>
+                    <div class="timeline-tags">
+                        <span class="timeline-tag">#2 Singles</span>
+                        <span class="timeline-tag">#3 Doubles</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2016 -->
+            <div class="timeline-year-marker">
+                <div class="timeline-year">2016</div>
+            </div>
+
+            <div class="timeline-item tennis" data-type="tennis" data-title="All-Conference First Team" data-company="Swarthmore College Tennis" data-date="2015-2016" data-tech="#2 Singles, #3 Doubles, All-Conference" data-description="Breakout junior season with major honors. CoSIDA Academic All-District IV Men's At-Large First Team. All-Conference First Team (Singles). ITA Scholar-Athlete. Philadelphia Inquirer Academic All-Area. Two-time Conference Player of the Week (5/2, 4/4). Singles record: 18-5 including signature wins over #21 Johns Hopkins (7-5, 6-3) and #18 Whitman (7-5, 1-6, 11-9 tiebreak). Doubles record: 18-1 with Blake Oetting. Conference finalist.">
+                <div class="timeline-spacer"></div>
+                <div class="timeline-dot-container"><div class="timeline-dot"></div></div>
+                <div class="timeline-content">
+                    <div class="timeline-date">2015 — 2016</div>
+                    <h3 class="timeline-title">All-Conference First Team</h3>
+                    <p class="timeline-company">Swarthmore Tennis</p>
+                    <p class="timeline-description">18-5 singles · 18-1 doubles · CoSIDA Academic All-District</p>
+                    <div class="timeline-tags">
+                        <span class="timeline-tag">All-Conference</span>
+                        <span class="timeline-tag">ITA Scholar</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="timeline-item project" data-type="project" data-title="Personal Blog" data-date="Oct 2016 — Present" data-tech="Jekyll, HTML" data-description="Personal blog and portfolio covering topics from machine learning to triathlon training." data-url="https://johnlarkin1.github.io">
+                <div class="timeline-spacer"></div>
+                <div class="timeline-dot-container"><div class="timeline-dot"></div></div>
+                <div class="timeline-content">
+                    <div class="timeline-date">Oct 2016 — Present</div>
+                    <h3 class="timeline-title">Personal Blog</h3>
+                    <p class="timeline-description">Blog & portfolio: ML, engineering, triathlons</p>
+                    <div class="timeline-tags">
+                        <span class="timeline-tag">Jekyll</span>
+                        <span class="timeline-tag">Writing</span>
+                    </div>
+                    <a href="https://johnlarkin1.github.io" target="_blank" class="timeline-link">
+                        Visit blog
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M7 17L17 7M17 7H7M17 7V17"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+
+            <!-- 2015 -->
+            <div class="timeline-year-marker">
+                <div class="timeline-year">2015</div>
+            </div>
+
+            <div class="timeline-item tennis" data-type="tennis" data-title="All-Conference First Team" data-company="Swarthmore College Tennis" data-date="2014-2015" data-tech="#1 Singles, #3 Doubles, All-Conference" data-description="Sophomore season playing #1 singles. All-Conference First Team (Singles). Two-time Conference Player of the Week (4/6, 3/2). Singles record: 13-5 including wins over #30 NYU (3-6, 7-5, 6-4), #25 DePauw (7-6, 6-1). Notable wins over #9 Kenyon (6-4, 4-6, 1-6 close match), #6 Johns Hopkins. Doubles record with Blake Oetting: 13-4. Conference semifinalist.">
+                <div class="timeline-spacer"></div>
+                <div class="timeline-dot-container"><div class="timeline-dot"></div></div>
+                <div class="timeline-content">
+                    <div class="timeline-date">2014 — 2015</div>
+                    <h3 class="timeline-title">All-Conference First Team</h3>
+                    <p class="timeline-company">Swarthmore Tennis</p>
+                    <p class="timeline-description">#1 Singles · 13-5 record · 2x Player of the Week</p>
+                    <div class="timeline-tags">
+                        <span class="timeline-tag">#1 Singles</span>
+                        <span class="timeline-tag">All-Conference</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2014 -->
+            <div class="timeline-year-marker">
+                <div class="timeline-year">2014</div>
+            </div>
+
+            <div class="timeline-item tennis" data-type="tennis" data-title="Freshman Season" data-company="Swarthmore College Tennis" data-date="2013-2014" data-tech="#3-4 Singles, #3 Doubles" data-description="Strong freshman debut playing #3-4 singles. ITA Regional Tournament finalist (lost 6-2, 4-6, 1-10 in super tiebreaker to Johns Hopkins). Singles record: 14-7 including wins over #17 Mary Washington (7-5, 6-2), #6 Johns Hopkins (6-3, 6-2), #14 Haverford (6-3, 7-6), #9 Kenyon (6-3, 6-3). Beat ranked opponents from multiple nationally-ranked teams. Immediate impact as freshman contributor.">
+                <div class="timeline-spacer"></div>
+                <div class="timeline-dot-container"><div class="timeline-dot"></div></div>
+                <div class="timeline-content">
+                    <div class="timeline-date">2013 — 2014</div>
+                    <h3 class="timeline-title">Freshman Season</h3>
+                    <p class="timeline-company">Swarthmore Tennis</p>
+                    <p class="timeline-description">14-7 singles · ITA Regional Finalist · Beat 4 ranked opponents</p>
+                    <div class="timeline-tags">
+                        <span class="timeline-tag">#3 Singles</span>
+                        <span class="timeline-tag">Freshman</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p class="footer-text">
+            Built with care · <a href="https://johnlarkin1.github.io" class="footer-link" target="_blank">johnlarkin1.github.io</a>
+        </p>
+    </footer>
+
+    <!-- Modal -->
+    <div class="modal-overlay" id="modalOverlay"></div>
+    <div class="modal" id="modal">
+        <button class="modal-close" id="modalClose">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M18 6L6 18M6 6l12 12"/>
+            </svg>
+        </button>
+        <span class="modal-type" id="modalType"></span>
+        <h2 class="modal-title" id="modalTitle"></h2>
+        <p class="modal-subtitle" id="modalSubtitle"></p>
+
+        <div class="modal-section">
+            <h3 class="modal-section-title">About</h3>
+            <div class="modal-description" id="modalDescription"></div>
+        </div>
+
+        <div class="modal-section">
+            <h3 class="modal-section-title" id="modalTagsTitle">Technologies</h3>
+            <div class="modal-tags" id="modalTags"></div>
+        </div>
+
+        <div class="modal-links" id="modalLinks"></div>
+    </div>
+
+    <script>
+        // Intersection Observer for scroll animations
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+        document.querySelectorAll('.timeline-item').forEach(item => {
+            observer.observe(item);
+        });
+
+        // Filter functionality
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const timelineItems = document.querySelectorAll('.timeline-item');
+        const yearMarkers = document.querySelectorAll('.timeline-year-marker');
+
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const filter = btn.dataset.filter;
+
+                filterBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+
+                timelineItems.forEach(item => {
+                    const itemType = item.dataset.type;
+                    if (filter === 'all' || itemType === filter) {
+                        item.classList.remove('hidden');
+                        setTimeout(() => item.classList.add('visible'), 50);
+                    } else {
+                        item.classList.add('hidden');
+                        item.classList.remove('visible');
+                    }
+                });
+
+                // Check year markers visibility
+                yearMarkers.forEach(marker => {
+                    const nextItems = [];
+                    let sibling = marker.nextElementSibling;
+                    while (sibling && !sibling.classList.contains('timeline-year-marker')) {
+                        if (sibling.classList.contains('timeline-item')) {
+                            nextItems.push(sibling);
+                        }
+                        sibling = sibling.nextElementSibling;
+                    }
+                    const hasVisibleItems = nextItems.some(item => !item.classList.contains('hidden'));
+                    marker.style.display = hasVisibleItems ? 'flex' : 'none';
+                });
+            });
+        });
+
+        // Modal functionality
+        const modal = document.getElementById('modal');
+        const modalOverlay = document.getElementById('modalOverlay');
+        const modalClose = document.getElementById('modalClose');
+
+        document.querySelectorAll('.timeline-content').forEach(content => {
+            content.addEventListener('click', (e) => {
+                if (e.target.closest('.timeline-link')) return;
+
+                const item = content.closest('.timeline-item');
+                const type = item.dataset.type;
+                const title = item.dataset.title;
+                const company = item.dataset.company || '';
+                const date = item.dataset.date;
+                const tech = item.dataset.tech;
+                const description = item.dataset.description;
+                const url = item.dataset.url;
+                const blog = item.dataset.blog;
+
+                const typeLabels = { work: 'Work Experience', project: 'Project', tennis: 'Collegiate Tennis', community: 'Community & Leadership' };
+                document.getElementById('modalType').textContent = typeLabels[type] || type;
+                document.getElementById('modalType').className = `modal-type ${type}`;
+                document.getElementById('modalTitle').textContent = title;
+                document.getElementById('modalSubtitle').textContent = company ? `${company} · ${date}` : date;
+                document.getElementById('modalDescription').innerHTML = description.split('. ').map(s => s.trim()).filter(s => s).map(s => `<li>${s}${s.endsWith('.') ? '' : '.'}</li>`).join('');
+
+                const tagsTitle = document.getElementById('modalTagsTitle');
+                const tagsTitles = { tennis: 'Position & Honors', community: 'Role & Impact' };
+                tagsTitle.textContent = tagsTitles[type] || 'Technologies';
+
+                const tagsContainer = document.getElementById('modalTags');
+                tagsContainer.innerHTML = tech.split(', ').map(t => `<span class="modal-tag">${t}</span>`).join('');
+
+                const linksContainer = document.getElementById('modalLinks');
+                linksContainer.innerHTML = '';
+                if (url) {
+                    linksContainer.innerHTML += `<a href="${url}" target="_blank" class="modal-link">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/>
+                        </svg>
+                        Visit
+                    </a>`;
+                }
+                if (blog) {
+                    linksContainer.innerHTML += `<a href="${blog}" target="_blank" class="modal-link">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20M4 19.5A2.5 2.5 0 0 0 6.5 22H20V4H6.5A2.5 2.5 0 0 0 4 6.5v13Z"/>
+                        </svg>
+                        Blog Post
+                    </a>`;
+                }
+
+                modal.classList.add('active');
+                modalOverlay.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            });
+        });
+
+        function closeModal() {
+            modal.classList.remove('active');
+            modalOverlay.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        modalClose.addEventListener('click', closeModal);
+        modalOverlay.addEventListener('click', closeModal);
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeModal();
+        });
+
+        // Smooth scroll for scroll indicator
+        document.querySelector('.scroll-indicator').addEventListener('click', () => {
+            document.querySelector('.timeline-container').scrollIntoView({ behavior: 'smooth' });
+        });
+    </script>
+</body>
+</html>

@@ -465,3 +465,27 @@
     height: 30px;
   }
 }
+
+/* see the MCP larkin-mcp post for more details */
+/* iframe is 1120x630, scaled 0.75 = 840x472.5 visible */
+.mcp-demo-iframe-wrapper {
+  display: block;
+  width: 840px; /* 1120 * 0.75 */
+  height: 473px; /* 630 * 0.75 */
+  margin: 0 auto;
+  overflow: hidden;
+  position: relative;
+}
+.mcp-demo-iframe-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1120px;
+  height: 630px;
+  border: none;
+  transform: scale(0.75);
+  transform-origin: 0 0;
+  overflow: hidden;
+  box-shadow: 0 2px 16px 0 rgba(20,32,60,0.07);
+  border-radius: 10px;
+}

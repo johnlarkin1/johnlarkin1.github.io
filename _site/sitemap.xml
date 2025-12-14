@@ -201,6 +201,10 @@
 <lastmod>2025-10-28T00:00:00-04:00</lastmod>
 </url>
 <url>
+<loc>http://localhost:4000/2025/larkin-mcp/</loc>
+<lastmod>2025-12-14T00:00:00-05:00</lastmod>
+</url>
+<url>
 <loc>http://localhost:4000/about/</loc>
 </url>
 <url>
@@ -214,6 +218,14 @@
 </url>
 <url>
 <loc>http://localhost:4000/links/</loc>
+</url>
+<url>
+<loc>http://localhost:4000/assets/html/larkin-mcp/john-larkin-profile.html</loc>
+<lastmod>2025-12-14T15:13:03-05:00</lastmod>
+</url>
+<url>
+<loc>http://localhost:4000/assets/html/larkin-mcp/john-larkin-timeline.html</loc>
+<lastmod>2025-12-18T07:52:22-05:00</lastmod>
 </url>
 <url>
 <loc>http://localhost:4000/images/hac/Hierarchical-clustering-cheatsheet.pdf</loc>
