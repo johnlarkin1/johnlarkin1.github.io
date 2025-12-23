@@ -70,18 +70,52 @@ mark {
   color: $heading-color;
 }
 
+// Inline code - Notion-style with distinctive red color
+// Target inline code specifically (not inside pre blocks)
 code {
   padding: 0.2em 0.4em;
   font-family: $code-font;
   font-size: 0.85em;
-  color: $code-text-color;
-  background-color: $code-bg-color;
+  color: $inline-code-text;
+  background-color: $inline-code-bg;
   border-radius: 4px;
-  
+  font-weight: 500;
+
   @media (prefers-color-scheme: dark) {
-    color: $dark-code-text;
-    background-color: $dark-code-bg;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: $dark-inline-code-text;
+    background-color: $dark-inline-code-bg;
+  }
+}
+
+// Jekyll/Rouge adds highlighter-rouge to inline code
+// Make sure these get the Notion-style treatment
+code.highlighter-rouge {
+  color: $inline-code-text;
+  background-color: $inline-code-bg;
+  padding: 0.2em 0.4em;
+  border-radius: 4px;
+  font-weight: 500;
+
+  @media (prefers-color-scheme: dark) {
+    color: $dark-inline-code-text;
+    background-color: $dark-inline-code-bg;
+  }
+}
+
+// Override Prism.js styles for inline code
+// Prism uses code[class*=language-] - we need higher specificity
+// Target inline code with both highlighter-rouge and language-* classes
+code.highlighter-rouge[class*="language-"] {
+  color: $inline-code-text;
+  background-color: $inline-code-bg;
+  padding: 0.2em 0.4em;
+  border-radius: 4px;
+  font-weight: 500;
+  text-shadow: none;
+
+  @media (prefers-color-scheme: dark) {
+    color: $dark-inline-code-text;
+    background-color: $dark-inline-code-bg;
   }
 }
 
@@ -118,13 +152,19 @@ pre {
     }
   }
 
+  // Reset inline code styling for code blocks
   > code {
     padding: 0;
     margin: 0;
     font-size: inherit;
-    color: inherit;
+    color: $code-text-color;
     background: transparent;
     border: 0;
+    font-weight: normal;
+
+    @media (prefers-color-scheme: dark) {
+      color: $dark-code-text;
+    }
   }
 }
 

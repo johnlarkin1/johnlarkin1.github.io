@@ -61,6 +61,12 @@ $code-block-bg: darken($code-bg-color, 2%) !default;
 $code-font-family: "JetBrains Mono", Consolas, "Liberation Mono", Menlo, monospace !default;
 $code-border-color: #e1e4e8 !default;
 
+// Inline code - Notion-style distinctive colors
+$inline-code-text: #eb5757 !default;           // Red/pink like Notion
+$inline-code-bg: rgba(135, 131, 120, 0.15) !default;  // Subtle warm gray
+$dark-inline-code-text: #eb5757 !default;      // Same red in dark mode
+$dark-inline-code-bg: rgba(135, 131, 120, 0.15) !default;  // Subtle background
+
 $dark-bg: #1a1a1a !default;
 $dark-text: #e4e4e4 !default;
 $dark-heading: #ffffff !default;
