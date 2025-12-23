@@ -125,6 +125,76 @@ summary: Setting up a personalized MCP server. Feel free to install and interact
     padding: 1rem 1.25rem;
   }
 }
+
+/* Template card */
+.template-card-wrapper {
+  display: flex;
+  justify-content: center;
+  margin: 0.75rem auto 1.5rem;
+}
+
+.template-card {
+  --template-color: #a78bfa;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.65rem 1.1rem;
+  border-radius: 8px;
+  text-decoration: none;
+  background: rgba(167, 139, 250, 0.08);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.template-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 8px;
+  padding: 1px;
+  background: linear-gradient(135deg, var(--template-color) 0%, transparent 50%, var(--template-color) 100%);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0.4;
+  transition: opacity 0.3s ease;
+}
+
+.template-card:hover::before {
+  opacity: 1;
+}
+
+.template-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px -6px rgba(167, 139, 250, 0.3);
+}
+
+.template-card .template-icon {
+  font-size: 1.1rem;
+}
+
+.template-card .template-text {
+  font-family: 'SF Mono', 'Fira Code', 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--template-color);
+  letter-spacing: 0.02em;
+}
+
+.template-card .template-arrow {
+  font-size: 0.85rem;
+  color: var(--template-color);
+  opacity: 0.6;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.template-card:hover .template-arrow {
+  opacity: 1;
+  transform: translateX(2px);
+}
 </style>
 
 <div class="larkin-mcp-registry">
@@ -144,8 +214,18 @@ summary: Setting up a personalized MCP server. Feel free to install and interact
     <span class="registry-name">crates.io</span>
   </a>
 </div>
-<div class="image-caption">Check out any of the links above for the various published packages.</div>
-</br>
+
+<div class="image-caption">Check out any of the links above for the various published packages. Note, Claude did the css here.</div>
+<br/>
+<div class="template-card-wrapper">
+  <a href="https://github.com/johnlarkin1/yourname-mcp" target="_blank" rel="noopener" class="template-card">
+    <span class="template-icon">📋</span>
+    <span class="template-text">yourname-mcp template</span>
+    <span class="template-arrow">→</span>
+  </a>
+</div>
+
+<br/>
 
 I'm working on a much bigger project, but honestly, needed to take a break from that. It has been a grind. I have burned many early mornings on that.
 
@@ -162,7 +242,8 @@ So as a break, I have wanted to explore building my own MCP server and templatiz
   - [Personalized Study Guide](#personalized-study-guide)
 - [Context](#context)
 - [Why?](#why)
-- [MCP](#mcp)
+- [`yourname-mcp`](#yourname-mcp)
+  - [Demo](#demo)
   - [Security](#security)
   - [Rust](#rust)
 - [Conclusion](#conclusion)
@@ -263,9 +344,30 @@ Yeah so this was something my PM girlfriend asked me almost immediately. Why do 
 1. I thought it would be a useful thing to templatize and set up some infrastructure so less technical users could `git clone <repo> && ./run-install.sh` and that would ask them a couple of questions, analyze their resume, convert it into markdown, they could write some markdown to provide more context, and then boom, they could also publish it and others could use it if they wanted.
 1. As stated previously, I needed a break from my other project.
 
-Ok so that's enough of that. I hope that explains the motivation.
+And if you're thinking like _well, what about Claude memory or ChatGPT memory?_, I'm really not a fan of that. I don't think Simon Willison is either. And I don't trust it to not sycophant it up or pull information that perhaps I don't want for the questions I'm asking.
 
-# MCP
+Hopefully, that's enough rationale for personal motivation.
+
+# `yourname-mcp`
+
+This is hopefully your template of interest. The point is that this has enough scaffolding that you can run the install script, populate a couple markdown files, upload to PYPI and then you're off and running. There will be more info in the actuall repo [here][yourname-mcp].
+
+## Demo
+
+Here is a demo showcasing the functionality:
+
+<div class="video-container">
+  <div class="video-wrapper-dark">
+    <video 
+      src="https://www.dropbox.com/scl/fi/v7ljkkxf3p8d24vk8wlpk/yourname-mcp-demo-lg.mp4?rlkey=95ha9lg6gpwngufkdvq9l2t0q&st=dlhyft2u&raw=1"
+      muted
+      autoplay
+      loop
+      controls
+      style="width: 100%; height: auto;">
+    </video>
+  </div>
+</div>
 
 ## Security
 
@@ -293,10 +395,11 @@ Rust was my favorite to implement, although the code structure is perhaps not as
 
 # Conclusion
 
-If you like this, or think it will be useful, please check out the basically templated repo `yourname-mcp` where the install script will walk you through
+If you like this, or think it will be useful, please check out the basically templated repo `yourname-mcp` where the `README.md` will walk you through what you need to do! Always feel free to email or leave comments if need be.
 
 [comment]: <> (Bibliography)
 [npm-attack-1]: https://semgrep.dev/blog/2025/chalk-debug-and-color-on-npm-compromised-in-new-supply-chain-attack/
 [npm-attack-2]: https://securitylabs.datadoghq.com/articles/shai-hulud-2.0-npm-worm/
 [npm-attack-3]: https://www.crowdstrike.com/en-us/blog/crowdstrike-falcon-prevents-npm-package-supply-chain-attacks/?utm_source=chatgpt.com
 [cargo-binstall]: https://crates.io/crates/cargo-binstall
+[yourname-mcp]: https://github.com/johnlarkin1/yourname-mcp
