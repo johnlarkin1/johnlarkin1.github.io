@@ -468,10 +468,12 @@
 
 /* see the MCP larkin-mcp post for more details */
 /* iframe is 1120x630, scaled 0.75 = 840x472.5 visible */
+/* aspect-ratio matches iframe: 1120/630 = 16/9 */
 .mcp-demo-iframe-wrapper {
   display: block;
   width: 840px; /* 1120 * 0.75 */
-  height: 473px; /* 630 * 0.75 */
+  max-width: 100%;
+  aspect-ratio: 1120 / 630;
   margin: 0 auto;
   overflow: hidden;
   position: relative;
@@ -488,4 +490,49 @@
   overflow: hidden;
   box-shadow: 0 2px 16px 0 rgba(20,32,60,0.07);
   border-radius: 10px;
+}
+
+/* Responsive iframe scaling for tablets and mobile */
+@media (max-width: 900px) {
+  .mcp-demo-iframe-wrapper {
+    /* scale(0.55): 1120*0.55=616, 630*0.55=346 */
+    width: 616px;
+    height: 347px;
+  }
+  .mcp-demo-iframe-container {
+    transform: scale(0.55);
+  }
+}
+
+@media (max-width: 650px) {
+  .mcp-demo-iframe-wrapper {
+    /* scale(0.42): 1120*0.42=470, 630*0.42=265 */
+    width: 470px;
+    height: 265px;
+  }
+  .mcp-demo-iframe-container {
+    transform: scale(0.42);
+  }
+}
+
+@media (max-width: 500px) {
+  .mcp-demo-iframe-wrapper {
+    /* scale(0.32): 1120*0.32=358, 630*0.32=202 */
+    width: 358px;
+    height: 202px;
+  }
+  .mcp-demo-iframe-container {
+    transform: scale(0.32);
+  }
+}
+
+@media (max-width: 380px) {
+  .mcp-demo-iframe-wrapper {
+    /* scale(0.28): 1120*0.28=314, 630*0.28=176 */
+    width: 314px;
+    height: 176px;
+  }
+  .mcp-demo-iframe-container {
+    transform: scale(0.28);
+  }
 }
