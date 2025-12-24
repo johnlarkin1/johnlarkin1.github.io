@@ -250,7 +250,7 @@ So as a break, I have wanted to explore building my own MCP server and templatiz
 
 # Motivation
 
-Again, to motivate, and hopefully get some `stars` on the templated version, and hopefully to actually provide utility to some people, I'll try to provide some motivating example. Here are some things you can do inside any platform that supports MCP.
+To provide some motivation (and perhaps earn a few stars on the template repo), here are practical examples of what you can do with this specific MCP server.
 
 ## Personal Insights
 
