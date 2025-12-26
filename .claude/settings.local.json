@@ -13,7 +13,9 @@
       "Read(//Users/johnlarkin/Desktop/Screenshots/**)",
       "Bash(npx sass:*)",
       "Bash(npx postcss:*)",
-      "Skill(document-skills:frontend-design)"
+      "Skill(document-skills:frontend-design)",
+      "Bash(wc:*)",
+      "WebSearch"
     ],
     "deny": []
   }
