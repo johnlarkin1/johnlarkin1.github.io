@@ -35,11 +35,33 @@
 <div class="search-modal__container">
 <div class="search-modal__header">
 <h2 id="search-modal-title" class="search-modal__title">Search</h2>
+<!-- Search Mode Toggle --><div class="search-mode-toggle" role="radiogroup" aria-label="Search mode"> <button class="search-mode-toggle__btn" role="radio" aria-checked="false" data-mode="keyword"> <svg class="search-mode-toggle__icon" width="14" height="14" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h7"></path> </svg> Keyword </button> <button class="search-mode-toggle__btn search-mode-toggle__btn--active" role="radio" aria-checked="true" data-mode="hybrid"> <svg class="search-mode-toggle__icon" width="14" height="14" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v18M3 12h18M7.5 7.5l9 9M16.5 7.5l-9 9"></path> </svg> Hybrid </button> <button class="search-mode-toggle__btn" role="radio" aria-checked="false" data-mode="semantic"> <svg class="search-mode-toggle__icon" width="14" height="14" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"> <circle cx="12" cy="12" r="3"></circle><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"></path> </svg> Semantic </button>
+</div>
 <div class="search-modal__shortcut"> <kbd class="search-modal__kbd">esc</kbd> <span>to close</span>
 </div>
 <button class="search-modal__close js-search-close" aria-label="Close search"> <svg width="24" height="24" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line> </svg> </button>
 </div>
-<div class="search-modal__content"> <!-- Pagefind UI mounts here --><div id="pagefind-container"></div>
+<div class="search-modal__content"> <!-- Pagefind UI (keyword mode) --><div id="pagefind-container" class="search-content" style="display: none;"></div>
+<!-- Vector Search UI (semantic mode) --><div id="vector-search-container" class="search-content" style="display: none;"> <!-- Loading state --><div class="vector-search__loading" style="display: none;">
+<div class="vector-search__loading-spinner"></div>
+<p class="vector-search__loading-message">Initializing semantic search...</p>
+<div class="vector-search__loading-bar"><div class="vector-search__loading-progress"></div></div>
+</div>
+<!-- Search input --><div class="vector-search__input-wrapper"> <input type="text" class="vector-search__input" placeholder="Search by meaning..." aria-label="Semantic search query">
+</div>
+<!-- Results --><div class="vector-search__results"></div>
+<!-- Empty state --><div class="vector-search__empty" style="display: none;"><p>No matching results found. Try rephrasing your query.</p></div>
+</div>
+<!-- Hybrid Search UI (keyword + semantic combined) --><div id="hybrid-search-container" class="search-content search-content--active"> <!-- Loading state --><div class="hybrid-search__loading" style="display: none;">
+<div class="vector-search__loading-spinner"></div>
+<p class="vector-search__loading-message">Initializing hybrid search...</p>
+<div class="vector-search__loading-bar"><div class="vector-search__loading-progress"></div></div>
+</div>
+<!-- Search input --><div class="vector-search__input-wrapper"> <input type="text" class="hybrid-search__input" placeholder="Search by keyword + meaning..." aria-label="Hybrid search query">
+</div>
+<!-- Results --><div class="hybrid-search__results"></div>
+<!-- Empty state --><div class="hybrid-search__empty" style="display: none;"><p>No matching results found. Try different search terms.</p></div>
+</div>
 </div>
 </div>
 </div><!-- Keyboard Shortcuts Modal --><div class="shortcuts-modal" data-pagefind-ignore="all" role="dialog" aria-modal="true" aria-labelledby="shortcuts-modal-title">

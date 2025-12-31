@@ -15,7 +15,8 @@
       "Bash(npx postcss:*)",
       "Skill(document-skills:frontend-design)",
       "Bash(wc:*)",
-      "WebSearch"
+      "WebSearch",
+      "Bash(cat:*)"
     ],
     "deny": []
   }

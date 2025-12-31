@@ -1,4 +1,4 @@
-name: Deploy Jekyll with Pagefind
+name: Deploy Jekyll with Pagefind and Vector Search
 
 on:
   push:
@@ -31,6 +31,10 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
+          cache: 'npm'
+
+      - name: Install Node dependencies
+        run: npm ci
 
       - name: Setup Pages
         id: pages
@@ -43,6 +47,9 @@ jobs:
 
       - name: Build Pagefind search index
         run: npx pagefind --site _site
+
+      - name: Generate vector search embeddings
+        run: node _scripts/generate-embeddings.js
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
