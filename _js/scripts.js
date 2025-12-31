@@ -1322,7 +1322,7 @@ function trapFocus(element) {
 /* SEARCH MODAL (Enhanced with Vector Search)                              */
 /*-------------------------------------------------------------------------*/
 
-var searchMode = "keyword"; // 'keyword', 'semantic', or 'hybrid'
+var searchMode = "hybrid"; // 'keyword', 'semantic', or 'hybrid'
 var vectorSearchDebounceTimer = null;
 var hybridSearchDebounceTimer = null;
 

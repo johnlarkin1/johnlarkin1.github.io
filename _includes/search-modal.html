@@ -15,9 +15,9 @@
       <!-- Search Mode Toggle -->
       <div class="search-mode-toggle" role="radiogroup" aria-label="Search mode">
         <button
-          class="search-mode-toggle__btn search-mode-toggle__btn--active"
+          class="search-mode-toggle__btn"
           role="radio"
-          aria-checked="true"
+          aria-checked="false"
           data-mode="keyword"
         >
           <svg class="search-mode-toggle__icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -26,9 +26,9 @@
           Keyword
         </button>
         <button
-          class="search-mode-toggle__btn"
+          class="search-mode-toggle__btn search-mode-toggle__btn--active"
           role="radio"
-          aria-checked="false"
+          aria-checked="true"
           data-mode="hybrid"
         >
           <svg class="search-mode-toggle__icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -76,7 +76,7 @@
 
     <div class="search-modal__content">
       <!-- Pagefind UI (keyword mode) -->
-      <div id="pagefind-container" class="search-content search-content--active"></div>
+      <div id="pagefind-container" class="search-content" style="display: none;"></div>
 
       <!-- Vector Search UI (semantic mode) -->
       <div id="vector-search-container" class="search-content" style="display: none;">
@@ -109,7 +109,7 @@
       </div>
 
       <!-- Hybrid Search UI (keyword + semantic combined) -->
-      <div id="hybrid-search-container" class="search-content" style="display: none;">
+      <div id="hybrid-search-container" class="search-content search-content--active">
         <!-- Loading state -->
         <div class="hybrid-search__loading" style="display: none;">
           <div class="vector-search__loading-spinner"></div>
