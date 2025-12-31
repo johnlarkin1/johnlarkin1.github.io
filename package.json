@@ -5,6 +5,7 @@
   "main": "gulpfile.js",
   "type": "module",
   "dependencies": {
+    "@huggingface/transformers": "^3.8.1",
     "autoprefixer": "*",
     "clean-css": "^5.3.3",
     "cp": "^0.2.0",
@@ -13,6 +14,10 @@
     "dist": "*",
     "fg-loadcss": "*",
     "fs-extra": "^11.2.0",
+    "glob": "^10.3.0",
+    "gray-matter": "^4.0.3",
+    "gulp-sourcemaps": "^3.0.0",
+    "gulp-uglify": "^3.0.2",
     "html-minifier": "^4.0.0",
     "imagemin-cli": "^7.0.0",
     "jquery": "*",
@@ -66,13 +71,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/janczizikow/sleek.git"
+    "url": "git+https://github.com/johnlarkin1/johnlarkin1.github.io.git"
   },
   "keywords": [],
-  "author": "Jan Czizikow",
+  "author": "John Larkin <john@johnjlarkin.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/janczizikow/sleek/issues"
+    "url": "https://github.com/johnlarkin1/johnlarkin1.github.io/issues"
   },
-  "homepage": "https://github.com/janczizikow/sleek#readme"
+  "homepage": "https://github.com/johnlarkin1/johnlarkin1.github.io#readme"
 }
