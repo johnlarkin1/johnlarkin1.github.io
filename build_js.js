@@ -11,6 +11,9 @@ import { dirname } from 'path';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
+// Check for --no-serve flag
+const noServe = process.argv.includes('--no-serve');
+
 const src = {
   js: '_js/scripts.js',
 };
@@ -50,14 +53,15 @@ function bundleJS() {
       } else {
         console.log('Bundle created successfully');
       }
-    });
 
-    // Optionally, setup browserSync for live reloading
-    browserSync.init({
-      server: path.join(__dirname, './_site'),
+      // Only start browserSync if --no-serve flag is not present
+      if (!noServe) {
+        browserSync.init({
+          server: path.join(__dirname, './_site'),
+        });
+        browserSync.reload();
+      }
     });
-
-    browserSync.reload();
   });
 }
 
