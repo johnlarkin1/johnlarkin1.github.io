@@ -8,6 +8,7 @@ categories: Guides
 
 From [adam-p/markdown-here](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet)
 
+<!--
 ##### Table of Contents
 [Headers](#headers)
 [Emphasis](#emphasis)
@@ -21,6 +22,7 @@ From [adam-p/markdown-here](https://github.com/adam-p/markdown-here/wiki/Markdow
 [Horizontal Rule](#hr)
 [Line Breaks](#lines)
 [Youtube videos](#videos)
+-->
 
 <a name="headers"/>
 ## Headers

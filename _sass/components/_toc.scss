@@ -1,0 +1,106 @@
+// Table of Contents - Collapsible component (matches peer's aesthetic)
+.toc {
+  margin: 1.5rem 0 2rem;
+  border-radius: 6px;
+  background: #1a1a1a;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  overflow: hidden;
+}
+
+.toc__toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0.875rem 1rem;
+  background: transparent;
+  border: none;
+  color: #fff;
+  font-family: inherit;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.03);
+  }
+
+  &[aria-expanded="true"] {
+    .toc__chevron { transform: rotate(180deg); }
+  }
+}
+
+.toc__icon { display: none; } // Hide icon, just use text
+.toc__title { text-align: left; }
+.toc__chevron {
+  flex-shrink: 0;
+  transition: transform 0.2s ease;
+  opacity: 0.7;
+}
+
+.toc__nav {
+  display: none;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+
+  &.is-open {
+    display: block;
+    max-height: 70vh;
+    overflow-y: auto;
+  }
+
+  // Scrollbar styling
+  &::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 2px;
+  }
+}
+
+.toc__list {
+  list-style: none;
+  margin: 0;
+  padding: 0.5rem 1rem 1rem;
+}
+
+.toc__item {
+  margin: 0;
+}
+
+.toc__link {
+  display: block;
+  padding: 0.35rem 0;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.875rem;
+  line-height: 1.5;
+  border: none;
+  transition: color 0.15s ease;
+
+  &:hover {
+    color: #fff;
+    border-bottom: none;
+  }
+
+  &.is-active {
+    color: $primary;
+  }
+}
+
+// Nested levels (h1, h2, h3, h4) - indent based on level
+.toc__item--h1 .toc__link { padding-left: 0; font-weight: 500; }
+.toc__item--h2 .toc__link { padding-left: 0.75rem; }
+.toc__item--h3 .toc__link { padding-left: 1.5rem; }
+.toc__item--h4 .toc__link { padding-left: 2.25rem; font-size: 0.8125rem; }
+
+// Reduced motion preference
+@media (prefers-reduced-motion: reduce) {
+  .toc__nav,
+  .toc__chevron {
+    transition: none;
+  }
+}

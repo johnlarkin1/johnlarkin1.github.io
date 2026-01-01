@@ -8,6 +8,7 @@ categories: [Advent of Code, Dev]
 summary: Slogging through Advent of Code 2024
 ---
 
+<!--
 # Table of Contents
 
 - [Table of Contents](#table-of-contents)
@@ -32,6 +33,7 @@ summary: Slogging through Advent of Code 2024
 - [Code](#code)
   - [Solutions](#solutions)
   - [Closing Thoughts](#closing-thoughts)
+-->
 
 # Introduction
 

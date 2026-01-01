@@ -45,6 +45,22 @@ $font-stack: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica N
 
 $spacing-unit: 30px;
 
+// Typography Scale
+$font-size-base: 1rem !default;
+$font-size-sm: 0.9375rem !default;
+
+$h1-font-size: 2rem !default;
+$h2-font-size: 1.5rem !default;
+$h3-font-size: 1.25rem !default;
+$h4-font-size: 1.125rem !default;
+$h5-font-size: 1rem !default;
+$h6-font-size: 0.875rem !default;
+
+$h1-font-size-mobile: 1.625rem !default;
+$h2-font-size-mobile: 1.25rem !default;
+$h3-font-size-mobile: 1.125rem !default;
+$h4-font-size-mobile: 1rem !default;
+
 // Breakpoints
 $xs: 0;
 $sm: 36em; //576px
@@ -67,7 +83,7 @@ $inline-code-bg: rgba(135, 131, 120, 0.15) !default;  // Subtle warm gray
 $dark-inline-code-text: #eb5757 !default;      // Same red in dark mode
 $dark-inline-code-bg: rgba(135, 131, 120, 0.15) !default;  // Subtle background
 
-$dark-bg: #1a1a1a !default;
+$dark-bg: #121212 !default;
 $dark-text: #e4e4e4 !default;
 $dark-heading: #ffffff !default;
 $dark-link: #68a4f1 !default;

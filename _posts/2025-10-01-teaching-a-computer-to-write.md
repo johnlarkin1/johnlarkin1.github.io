@@ -61,6 +61,7 @@ Again, I'd recommend jumping down to here: [Synthesis Model Sampling](#synthesis
 
 ---
 
+<!--
 # Table of Contents
 
 - [✍️ Motivating Visualizations](#️-motivating-visualizations)
@@ -122,6 +123,7 @@ Again, I'd recommend jumping down to here: [Synthesis Model Sampling](#synthesis
     - [Is a model a lie?](#is-a-model-a-lie)
     - [Fish folly](#fish-folly)
 - [Conclusion](#conclusion)
+-->
 
 # 🥅 Motivation
 

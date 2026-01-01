@@ -50,6 +50,7 @@ First of all, if you are not familiar with some of this, you should start with K
 
 This post is going to try and take you as close from $0 \to 1$ as possible (one huge benefit of running through the book + lab linked above is my latex got way better. Not going to help me land a job at Anthropic but c'est la vie).
 
+<!--
 # Table of Contents
 
 - [Motivating Visualization](#motivating-visualization)
@@ -83,6 +84,7 @@ This post is going to try and take you as close from $0 \to 1$ as possible (one 
     - [Overview](#overview)
   - [Implementation](#implementation)
 - [Conclusion](#conclusion)
+-->
 
 # (optional) Reading + Videos
 

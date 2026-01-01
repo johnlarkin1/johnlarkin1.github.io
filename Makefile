@@ -10,7 +10,7 @@ build-img:
 
 # build js
 build-js:
-	node gulp_js.js
+	node build_js.js --no-serve
 
 # the whole kit and kabootle
 jekyll:
