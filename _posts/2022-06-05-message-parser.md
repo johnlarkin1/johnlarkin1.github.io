@@ -17,6 +17,7 @@ However, a pretty simple workaround is utilizing the sqlite3 database that's pop
 
 <span style="color:blue">Note, if you're just interested in code, you can skip all this and check out <a href="https://github.com/johnlarkin1/imessage-cli">this repo</a>.</span>
 
+<!--
 # Table of Contents
 
 - [Background](#background)
@@ -46,6 +47,7 @@ However, a pretty simple workaround is utilizing the sqlite3 database that's pop
     - [Total Number of Distinct Convos](#total-number-of-distinct-convos)
       - [Examples](#examples-4)
 - [Conclusion](#conclusion)
+-->
 
 # Introduction
 

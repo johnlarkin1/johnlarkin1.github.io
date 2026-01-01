@@ -9,6 +9,7 @@ favorite: true
 pinned: 6
 ---
 
+<!--
 # Table of Contents
 
 - [Table of Contents](#table-of-contents)
@@ -52,6 +53,7 @@ pinned: 6
     - [Deeper Understanding and New Technical Skills](#deeper-understanding-and-new-technical-skills)
   - [Next Steps 🪜](#next-steps-)
   - [Dendrogram Visualization](#dendrogram-visualization)
+-->
 
 # Motivation
 

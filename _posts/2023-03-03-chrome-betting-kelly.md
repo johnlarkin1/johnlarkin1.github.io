@@ -10,6 +10,7 @@ favorite: true
 
 Much to the knowledge of my friends (and to the chagrin of my mother), I do fancy a good tennis bet every now and then. And this blog is going to unpack some of that.
 
+<!--
 # Table of Contents
 
 First, a quick overview of what we'll be covering.
@@ -35,6 +36,7 @@ First, a quick overview of what we'll be covering.
     - [An Example](#an-example)
 - [Analysis Results](#analysis-results)
 - [Conclusion](#conclusion)
+-->
 
 # Introduction
 

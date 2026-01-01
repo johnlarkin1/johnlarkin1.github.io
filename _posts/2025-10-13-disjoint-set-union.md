@@ -11,6 +11,7 @@ Recently, I did an interview. I got absolutely flamed and one of the reasons was
 
 I figure I would go back to this and do a deeper dive because I wasn't as familiar with it.
 
+<!--
 # Table of Contents
 
 - [Table of Contents](#table-of-contents)
@@ -30,6 +31,7 @@ I figure I would go back to this and do a deeper dive because I wasn't as famili
   - [Path Compression](#path-compression)
   - [Union by Rank](#union-by-rank)
 - [Rust Implementation](#rust-implementation)
+-->
 
 # Theory
 

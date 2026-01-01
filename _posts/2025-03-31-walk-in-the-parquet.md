@@ -30,6 +30,7 @@ There's more information (i.e. lame marketing) here: [walkintheparquet.com](http
 <p>Also! If you have feature requests or issues, you can head over to the Canny board for this project and leave some notes. There's a link at the bottom of the main website (/ iframe above), or you can go <a href="https://walk-in-the-parquet.canny.io/">here</a>. Obviously feel free to email me too!</p>
 </div>
 
+<!--
 # Table of Contents
 
 - [Table of Contents](#table-of-contents)
@@ -45,6 +46,7 @@ There's more information (i.e. lame marketing) here: [walkintheparquet.com](http
     - [App Store Annoyance](#app-store-annoyance)
 - [Conclusion](#conclusion)
   - [Kudos](#kudos)
+-->
 
 # Driving Motivation
 

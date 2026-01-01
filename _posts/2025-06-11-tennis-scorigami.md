@@ -116,6 +116,7 @@ If you haven't yet checked out the main site, feel free to here:
 }
 </style>
 
+<!--
 # Table of Contents
 
 - [Table of Contents](#table-of-contents)
@@ -138,6 +139,7 @@ If you haven't yet checked out the main site, feel free to here:
 - [Other Fun Visualizations](#other-fun-visualizations)
   - [Player Rank History](#player-rank-history)
 - [Conclusion](#conclusion)
+-->
 
 # Motivation
 

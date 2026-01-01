@@ -12,6 +12,7 @@ My girlfriend constantly beats me in [WordHunt][wordhunt]. It's borderline insan
 
 This string of losses plus the fact that I recently got asked about a [trie] structure in an interview recently, led me to build out a solver for the popular game [WordHunt][wordhunt].
 
+<!--
 # Table of Contents
 
 - [Table of Contents](#table-of-contents)
@@ -30,6 +31,7 @@ This string of losses plus the fact that I recently got asked about a [trie] str
     - [🤖 Combined Flow with OpenAI LLM Fallback](#-combined-flow-with-openai-llm-fallback)
   - [Solver Logic](#solver-logic)
 - [Conclusion](#conclusion)
+-->
 
 # Motivation
 

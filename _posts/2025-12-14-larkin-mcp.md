@@ -231,6 +231,7 @@ I'm working on a much bigger project, but honestly, needed to take a break from 
 
 So as a break, I have wanted to explore building my own MCP server and templatizing this to make it easier for others to install and set this up as well. This is not going to be a long post, but I'm hoping the repos speak for themselves, and this provides ample motivation.
 
+<!--
 # Table of Contents
 
 - [Table of Contents](#table-of-contents)
@@ -247,6 +248,7 @@ So as a break, I have wanted to explore building my own MCP server and templatiz
   - [Security](#security)
   - [Rust](#rust)
 - [Conclusion](#conclusion)
+-->
 
 # Motivation
 

@@ -19,6 +19,7 @@ favorite: true
 
 </div>
 
+<!--
 # Table of Contents
 
 - [Table of Contents](#table-of-contents)
@@ -54,6 +55,7 @@ favorite: true
   - [DWave](#dwave)
 - [Miscellaneous](#miscellaneous)
 - [Conclusion](#conclusion)
+-->
 
 # Motivation
 

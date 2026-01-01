@@ -25,6 +25,7 @@ As an aside, and this is more biased obviously, but I've seen how hard both Nick
 
 So let's dive in.
 
+<!--
 # Table of Contents
 
 - [Background](#background)
@@ -54,6 +55,7 @@ So let's dive in.
     - [Logging](#logging)
     - [Linting and GitHooks](#linting-and-githooks)
 - [Conclusion](#conclusion)
+-->
 
 # Introduction
 

@@ -7,6 +7,7 @@ summary: Automating book reports. An exploration into chunking, qdrant, and embe
 favorite: true
 ---
 
+<!--
 # Table of Contents
 
 - [Table of Contents](#table-of-contents)
@@ -40,6 +41,7 @@ favorite: true
     - [Outside of the LLMs themselves, what other tools should you use in this process? Vector DBs, indexers, RAG tooling, etc?](#outside-of-the-llms-themselves-what-other-tools-should-you-use-in-this-process-vector-dbs-indexers-rag-tooling-etc)
 - [Conclusion](#conclusion)
 - [Next Steps](#next-steps)
+-->
 
 # Motivation
 
