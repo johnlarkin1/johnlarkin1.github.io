@@ -16,7 +16,8 @@
       "Skill(document-skills:frontend-design)",
       "Bash(wc:*)",
       "WebSearch",
-      "Bash(cat:*)"
+      "Bash(cat:*)",
+      "Bash(gh pr view:*)"
     ],
     "deny": []
   }
