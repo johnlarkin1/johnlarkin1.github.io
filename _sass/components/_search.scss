@@ -771,6 +771,7 @@ mark.pagefind-ui__result-highlight {
     max-height: 420px;
     overflow-y: auto;
     overflow-x: hidden;
+    overscroll-behavior: contain;
 
     // Refined scrollbar
     &::-webkit-scrollbar {
@@ -1035,6 +1036,7 @@ mark.pagefind-ui__result-highlight {
     max-height: 420px;
     overflow-y: auto;
     overflow-x: hidden;
+    overscroll-behavior: contain;
 
     // Match scrollbar styling
     &::-webkit-scrollbar {
@@ -1100,5 +1102,31 @@ mark.pagefind-ui__result-highlight {
     justify-content: center;
     padding: 3rem 1.5rem;
     gap: 1rem;
+  }
+
+  // Status badge for model loading/fallback
+  &__status {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 0.75rem;
+    margin: 0 0.5rem 0.5rem;
+    font-family: "SF Mono", "JetBrains Mono", monospace;
+    font-size: 0.6875rem;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    color: rgba(255, 180, 50, 0.9);
+    background: rgba(255, 180, 50, 0.1);
+    border-radius: 6px;
+  }
+
+  &__status-spinner {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border: 1.5px solid rgba(255, 180, 50, 0.3);
+    border-top-color: rgba(255, 180, 50, 0.9);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
   }
 }
