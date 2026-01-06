@@ -1,4 +1,4 @@
-.PHONY: build-css build-img build-js build serve serve-static clean jekyll pagefind
+.PHONY: build-css build-img build-js build serve serve-static clean jekyll pagefind embeddings search
 
 # i need to update this
 build-css:
@@ -20,12 +20,20 @@ jekyll:
 pagefind:
 	npx pagefind --site _site
 
+# semantic search embeddings (req: _site is built)
+embeddings:
+	node _scripts/generate-embeddings.js
+
+# generate all search indexes (pagefind + semantic)
+search: pagefind embeddings
+	@echo "Search indexes generated!"
+
 # quick build
-build-quick: jekyll pagefind
+build-quick: jekyll search
 	@echo "Build complete! _site/ ready for deployment"
 
 # full build
-build-full: build-css build-img build-js jekyll pagefind
+build-full: build-css build-img build-js jekyll search
 	@echo "Build complete! _site/ ready for deployment"
 
 # local dev server (rebuilds, no search)
