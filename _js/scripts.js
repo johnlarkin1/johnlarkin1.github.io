@@ -1664,36 +1664,41 @@ function renderVectorResults(results) {
 }
 
 function initHybridSearch() {
+  var $status = $(".hybrid-search__status");
+  var $inputWrapper = $(".hybrid-search__input").closest(".vector-search__input-wrapper");
+  var $loading = $(".hybrid-search__loading");
+
   if (window.VectorSearch.isAvailable()) {
-    // Already initialized, focus input
-    $(".hybrid-search__loading").hide();
-    $(".hybrid-search__input").closest(".vector-search__input-wrapper").show();
+    // Model ready - hide loading/status, show input
+    $loading.hide();
+    $inputWrapper.show();
+    $status.hide();
     $(".hybrid-search__input").focus();
     return;
   }
 
-  if (window.VectorSearch.isLoading()) {
-    return; // Already loading
-  }
-
-  // Show loading state
-  $(".hybrid-search__loading").show();
-  $(".hybrid-search__input").closest(".vector-search__input-wrapper").hide();
+  // Always show input immediately (allow keyword-only search while model loads)
+  $loading.hide();
+  $inputWrapper.show();
   $(".hybrid-search__results").empty();
   $(".hybrid-search__empty").hide();
+  $(".hybrid-search__input").focus();
+
+  // Show status badge indicating model is loading
+  $status.html('<span class="hybrid-search__status-spinner"></span> Loading semantic model...').show();
+
+  if (window.VectorSearch.isLoading()) {
+    return; // Already loading, status badge is showing
+  }
 
   // Initialize with progress callback
   window.VectorSearch.initialize(function (info) {
-    $(".hybrid-search__loading .vector-search__loading-message").text(info.message);
-    $(".hybrid-search__loading .vector-search__loading-progress").css("width", info.progress + "%");
-
     if (info.stage === "ready") {
-      $(".hybrid-search__loading").hide();
-      $(".hybrid-search__input").closest(".vector-search__input-wrapper").show();
-      $(".hybrid-search__input").focus();
+      // Model ready - hide status badge
+      $status.hide();
     } else if (info.stage === "error") {
-      $(".hybrid-search__loading .vector-search__loading-message").text("Failed to load: " + info.message);
-      $(".hybrid-search__loading .vector-search__loading-spinner").hide();
+      // Model failed - show keyword-only status
+      $status.html('Keyword only (semantic unavailable)').show();
     }
   });
 }
@@ -1950,15 +1955,15 @@ function openSearch() {
     window.pagefindInitialized = true;
   }
 
-  // Focus appropriate input based on mode
+  // Initialize and focus appropriate input based on mode
   setTimeout(function () {
     if (searchMode === "keyword") {
       var input = $modal.find(".pagefind-ui__search-input")[0];
       if (input) input.focus();
     } else if (searchMode === "semantic") {
-      $(".vector-search__input").focus();
+      initVectorSearch();
     } else if (searchMode === "hybrid") {
-      $(".hybrid-search__input").focus();
+      initHybridSearch();
     }
   }, 150);
 
