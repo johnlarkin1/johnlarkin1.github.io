@@ -1,0 +1,102 @@
+# John Larkin's Blog
+
+> Personal engineering blog exploring algorithms, AI/ML, and technical topics. 9 years of posts (2016-2025) from an engineer with experience at Dropbox, Ab Initio, Belvedere Trading, and Mojo. Site: https://johnlarkin1.github.io
+
+## Main Pages
+
+- [About](https://johnlarkin1.github.io/about/): Author background, work history, and philosophy on AI/ML
+- [Categories](https://johnlarkin1.github.io/categories/): Browse all posts organized by topic
+- [Contact](https://johnlarkin1.github.io/contact/): Contact form
+
+## Projects
+
+- [Tennis Scorigami](https://www.tennis-scorigami.com/): Tennis statistics analysis - exploring unscored tennis scores
+- [Scrollz](https://www.scrollz.co/): iOS/Android app for managing newsletter subscriptions
+- [Walk in the Parquet](https://www.walkintheparquet.com/): Desktop app to visualize, query, and analyze Parquet files
+
+## Blog Posts
+
+### AI/ML & LLMs
+
+- [Teaching a Computer How to Write](https://johnlarkin1.github.io/2025/teaching-a-computer-to-write/): Exploring JAX, LSTMs, MDNs, and generative handwriting
+- [Understanding Muon](https://johnlarkin1.github.io/2025/understanding-muon/): Deep diving into optimizers from Karpathy's nanochat
+- [larkin-mcp](https://johnlarkin1.github.io/2025/larkin-mcp/): Setting up a personalized MCP server
+- [Book BrAin](https://johnlarkin1.github.io/2024/book-brain/): Automating book reports with RAG, chunking, qdrant, and embeddings
+- [Into the Arena: Hierarchical Agglomerative Clustering](https://johnlarkin1.github.io/2024/into-the-arena/): Exploring a popular method of cluster analysis
+- [GMMs, MDNs, LSTMs, and Generative Handwriting](https://johnlarkin1.github.io/2017/generative-handwriting/): Deep learning for handwriting generation
+
+### Algorithms & Data Structures
+
+- [Disjoint Set Union](https://johnlarkin1.github.io/2025/disjoint-set-union/): Deep dive into union-find data structure in Rust
+- [Finally Winning WordHunt](https://johnlarkin1.github.io/2025/wordhunt-solver/): Building a solver using trie data structures
+- [Advent of Code 2024](https://johnlarkin1.github.io/2024/advent-of-code/): Solutions and walkthroughs for Advent of Code 2024
+- [Euclidean Algorithm](https://johnlarkin1.github.io/2017/euclidean-algo/): Computing the greatest common divisor
+- [Sieve of Eratosthenes](https://johnlarkin1.github.io/2017/simple-sieve-of-eratosthenes/): Classic algorithm for finding prime numbers
+- [Backtracking Sudoku Solver](https://johnlarkin1.github.io/2016/sudoku-solver/): Solving sudokus with backtracking
+- [Localization with a Particle Filter](https://johnlarkin1.github.io/2016/particle-filter/): Using particle filters for robot localization
+
+### Mathematics & Physics
+
+- [Dual Numbers and Automatic Differentiation](https://johnlarkin1.github.io/2022/dual-numbers/): Exploring dual numbers for automatic differentiation
+- [Exploring Quantum: A Trapped Ion Approach](https://johnlarkin1.github.io/2025/quantum-explore/): Introduction to quantum computing concepts
+- [Natural Number Representation](https://johnlarkin1.github.io/2016/three-square-theorem/): What numbers can't be represented as the sum of three squares?
+
+### Development & Projects
+
+- [Tennis Scorigami](https://johnlarkin1.github.io/2025/tennis-scorigami/): Technical deep dive into building the Tennis Scorigami project
+- [Walk in the Parquet](https://johnlarkin1.github.io/2025/walk-in-the-parquet/): Building a Tauri desktop app for Parquet files
+- [Launching Scrollz](https://johnlarkin1.github.io/2025/launching-scrollz/): Newsletter management iOS/Android app launch
+- [Consider this a 302](https://johnlarkin1.github.io/2025/amandas-portfolio/): Building a portfolio website with NextJS
+- [Scylla-Go-Round](https://johnlarkin1.github.io/2024/scylla-go-round/): Convert Cassandra/Scylla DB types to static Go types
+- [A Better Way to Reference PRs](https://johnlarkin1.github.io/2024/github-pr-formatter/): Chrome Extension for GitHub PR formatting
+- [The Hunger Games: NYC Edition](https://johnlarkin1.github.io/2024/hunger-games/): Automation for NYC restaurant reservations
+- [Chrome Extension, Betting Analysis, and Kelly Criterion](https://johnlarkin1.github.io/2023/chrome-betting-kelly/): Sports betting analysis and Chrome extension
+- [Encrypted Blog Posts](https://johnlarkin1.github.io/2023/encrypted-posts/): Implementing password-protected blog posts
+- [iMessage Parsing and Analysis](https://johnlarkin1.github.io/2022/message-parser/): CLI tool for iMessage analysis
+- [Porvata and SPAR Integration](https://johnlarkin1.github.io/2022/porvata-spar/): E-commerce integration project
+- [The Blog Reborn](https://johnlarkin1.github.io/2022/blog-revamp/): Blog redesign and theme update
+- [Invisible Ink](https://johnlarkin1.github.io/2022/invisible-ink/): Adding invisible ink effect to the blog
+- [CryptoCraze - Google Sheets Price Update](https://johnlarkin1.github.io/2018/crypto-google-sheets-update/): Crypto price tracking in Google Sheets
+- [CryptoCraze - Text Notifications](https://johnlarkin1.github.io/2017/crypto-notifications/): Cryptocurrency text notification system
+
+### Databases
+
+- [S101: ScyllaDB Essentials](https://johnlarkin1.github.io/2024/scylla-s101/): Learning ScyllaDB fundamentals
+
+### Education & Courses
+
+- [Udemy - Complete JavaScript Course 2021](https://johnlarkin1.github.io/2021/complete-js-course/): JavaScript skills and web dev exploration
+- [Stanford's CS193 - Developing Apps for iOS](https://johnlarkin1.github.io/2021/developing-ios-apps/): SwiftUI and iOS app development
+- [Udemy - Learning Rust](https://johnlarkin1.github.io/2022/learning-rust/): Learning the Rust programming language
+- [Ruby on Rails Introduction](https://johnlarkin1.github.io/2018/ror-intro/): Coursera class on Ruby on Rails
+- [Computational Neuroscience](https://johnlarkin1.github.io/2017/comp-neuro/): Coursera class on computational neuroscience
+
+### Finance
+
+- [Exploring your Options](https://johnlarkin1.github.io/2018/intro-to-options/): Introduction to financial options with examples
+
+### Reflections & Travel
+
+- [Adventures of San Francisco](https://johnlarkin1.github.io/2022/end-of-sf/): Farewell to San Francisco
+- [Nice, Barca, Paris + French Open](https://johnlarkin1.github.io/2022/france-trip/): Travel adventures and French Open experience
+- [A Note on Swarthmore](https://johnlarkin1.github.io/2017/the-break/): Reflections on college experience
+- [Self Selecting Terrorists](https://johnlarkin1.github.io/2016/self-selecting-terrorists/): Political science analysis on counter-terrorism
+
+### Year in Review
+
+- [2024 Year in Review](https://johnlarkin1.github.io/2025/year-in-review/): Reflections on 2024
+- [2023 Year in Review](https://johnlarkin1.github.io/2024/year-in-review/): Reflections on 2023
+- [2022 Year in Review](https://johnlarkin1.github.io/2023/year-in-review/): Reflections on 2022
+- [2021 Year in Review](https://johnlarkin1.github.io/2022/year-in-review/): Reflections on 2021
+- [2020 Year in Review](https://johnlarkin1.github.io/2021/year-in-review/): Reflections on the pandemic year
+- [2019 Year in Review](https://johnlarkin1.github.io/2020/year-in-review/): Reflections on 2019
+- [2018 Year in Review](https://johnlarkin1.github.io/2018/year-in-review/): Reflections on 2018
+
+## Optional
+
+- [Creating what you're looking at](https://johnlarkin1.github.io/2016/setting-up-blog/): How this Jekyll blog was created
+- [Emacs or VIM?!](https://johnlarkin1.github.io/2016/helpful-vim-commands/): Vim tips, tricks, and shortcuts
+
+---
+
+To find navigation and other pages in this documentation, fetch the llms.txt file at: https://johnlarkin1.github.io/llms.txt
