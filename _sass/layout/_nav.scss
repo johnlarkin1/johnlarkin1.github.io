@@ -133,6 +133,34 @@
   margin-left: 0.5rem;
 }
 
+// Dropdown divider
+.header__dropdown-divider {
+  height: 1px;
+  background: $dark-border;
+  margin: 0.5rem 0;
+}
+
+// Button variant for dropdown items (used for GH Repos trigger)
+.header__dropdown-item--button {
+  width: 100%;
+  background: none;
+  border: none;
+  font-family: inherit;
+  font-size: inherit;
+  cursor: pointer;
+  text-align: left;
+
+  .header__dropdown-icon {
+    opacity: 0.6;
+    margin-left: auto;
+    flex-shrink: 0;
+  }
+
+  &:hover .header__dropdown-icon {
+    opacity: 1;
+  }
+}
+
 .header__toggle {
   display: flex;
   flex-direction: column;
@@ -332,6 +360,11 @@
       background: rgba($link-color, 0.1);
       color: $link-color;
     }
+  }
+
+  // Desktop dropdown divider
+  .header__dropdown-divider {
+    margin: 0.375rem 0.75rem;
   }
 
 }
