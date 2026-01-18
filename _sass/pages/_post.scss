@@ -128,11 +128,13 @@
   }
 }
 
-.video-wrapper iframe {
+.video-wrapper iframe,
+.video-wrapper-dark iframe {
   aspect-ratio: 16/9;
   width: 100%;
   height: auto;
   display: block;
+  border-radius: 4px;
 }
 
 .video-caption {
