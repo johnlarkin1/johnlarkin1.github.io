@@ -60,7 +60,7 @@ There's not too much of an introduction here. This was a challenge that I saw an
 <div class="video-container">
   <div class="video-wrapper">
     <iframe 
-      src="https://capture.dropbox.com/embed/02Z71CsHbZWe7eJn?source=copy-embed"
+      src="https://www.dropbox.com/scl/fi/f9n32ucg0h2rvu5878u8x/Book-BrAin-Public-Demo-pt1.mp4?rlkey=uujw04f7uvz2fkd6iptyumqy7&st=gqewzon7&raw=1"
       frameborder="0"
       allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
       allowfullscreen>
@@ -70,9 +70,9 @@ There's not too much of an introduction here. This was a challenge that I saw an
 </div>
 
 <div class="video-container">
-  <div class="video-wrapper">
+  <div class="video-wrapper-dark">
     <iframe 
-      src="https://capture.dropbox.com/embed/v1RcDLBFm8y4uua0?source=copy-embed"
+      src="https://www.dropbox.com/scl/fi/o9q4cnkg9vp0fmw1il8pz/Book-BrAin-Public-Demo-pt2.mp4?rlkey=os7jpxxmqzy43th7eq1beo03i&st=nx3w4g11&raw=1"
       frameborder="0"
       allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
       allowfullscreen>
