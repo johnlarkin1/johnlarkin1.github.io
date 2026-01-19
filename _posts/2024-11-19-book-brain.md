@@ -58,7 +58,7 @@ I was hoping that AI wouldn't replace humor, but honestly this ^ isn't half bad.
 There's not too much of an introduction here. This was a challenge that I saw and I thought it would be fun to put aside a couple of hours and attack this. I actually am going to default to these videos as a summary, in case you don't want to do that much reading.
 
 <div class="video-container">
-  <div class="video-wrapper">
+  <div class="video-wrapper-dark">
     <iframe 
       src="https://www.dropbox.com/scl/fi/f9n32ucg0h2rvu5878u8x/Book-BrAin-Public-Demo-pt1.mp4?rlkey=uujw04f7uvz2fkd6iptyumqy7&st=gqewzon7&raw=1"
       frameborder="0"
