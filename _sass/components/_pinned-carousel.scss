@@ -256,29 +256,27 @@
 }
 
 // Chronological section header
-.chronological-section {
-  &__header {
-    text-align: center;
-    margin-bottom: 2rem;
+.chronological-section__header {
+  text-align: center;
+  margin-bottom: 2rem;
 
-    h2 {
-      font-size: 1.5rem;
-      color: $dark-text;
-      font-weight: 600;
-      margin-bottom: 0.5rem;
-    }
+  h2 {
+    font-size: 1.5rem;
+    color: $dark-text;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
 
-    p {
-      font-size: 0.875rem;
-      color: rgba(255, 255, 255, 0.6);
-      margin: 0;
-    }
+  p {
+    font-size: 0.875rem;
+    color: rgba(255, 255, 255, 0.6);
+    margin: 0;
+  }
 
-    .post-count {
-      display: block;
-      font-size: 0.875rem;
-      color: rgba(255, 255, 255, 0.6);
-      font-weight: 400;
-    }
+  .post-count {
+    display: block;
+    font-size: 0.875rem;
+    color: rgba(255, 255, 255, 0.6);
+    font-weight: 400;
   }
 }
