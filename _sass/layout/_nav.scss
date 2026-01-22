@@ -57,15 +57,16 @@
 .header__inner {
   display: flex;
   align-items: center;
-  height: 4.25em;
+  height: 5.25em;
   justify-content: space-between;
+  padding-top: 0.5rem;
 }
 
 .header__links {
   padding-bottom: .5rem;
   display: none;
   position: absolute;
-  top: 3.75em;
+  top: 4.75em;
   left: 0;
   width: 100%;
   height: auto;
@@ -94,6 +95,17 @@
 // Projects Dropdown - Mobile Styles
 .header__dropdown {
   border-top: 1px solid $dark-border;
+
+  // When open, show the menu and rotate chevron
+  &.is-open {
+    .header__dropdown-menu {
+      display: flex;
+    }
+
+    .header__dropdown-chevron {
+      transform: rotate(180deg);
+    }
+  }
 }
 
 .header__dropdown-trigger {
@@ -101,6 +113,8 @@
   align-items: center;
   gap: 0.5rem;
   cursor: pointer;
+  width: 100%;
+  padding: .938rem 0;
 }
 
 .header__dropdown-chevron {
@@ -108,7 +122,7 @@
 }
 
 .header__dropdown-menu {
-  display: flex;
+  display: none; // Hidden by default on mobile
   flex-direction: column;
   padding-left: 1rem;
 }
@@ -162,6 +176,11 @@
   &:hover .header__dropdown-icon {
     opacity: 1;
   }
+}
+
+// Hide desktop shortcuts trigger on mobile (it's in the hamburger menu on mobile)
+.header__inner > .shortcuts-trigger {
+  display: none;
 }
 
 .header__toggle {
@@ -225,7 +244,182 @@
   }
 }
 
+/*-------------------------------------------------------------------------*/
+/* MOBILE PROFILE SECTION (in hamburger menu) */
+/* -----------------------------------------------------------------------*/
+
+.header__mobile-profile {
+  border-top: 1px solid $dark-border;
+  margin-top: 0.5rem;
+  padding-top: 1rem;
+}
+
+.header__mobile-profile-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0 0 1rem 0;
+}
+
+.header__mobile-profile-avatar {
+  width: 48px;
+  height: 48px;
+  flex-shrink: 0;
+
+  img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+}
+
+.header__mobile-profile-info {
+  h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: $dark-heading;
+    margin: 0 0 0.125rem 0;
+  }
+
+  p {
+    font-size: 0.8125rem;
+    color: $dark-text;
+    margin: 0;
+    opacity: 0.8;
+  }
+}
+
+.header__mobile-profile-links {
+  padding: 0.5rem 0;
+  border-top: 1px solid $dark-border;
+}
+
+.header__mobile-profile-link {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 0;
+  color: $dark-text;
+  text-decoration: none;
+  border-top: 1px solid $dark-border;
+
+  &:first-child {
+    border-top: none;
+  }
+
+  &:hover {
+    color: $link-color;
+  }
+
+  svg {
+    width: 18px;
+    height: 18px;
+    opacity: 0.7;
+    flex-shrink: 0;
+  }
+
+  &:hover svg {
+    opacity: 1;
+  }
+}
+
+.header__mobile-profile-socials {
+  display: flex;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 1rem 0;
+  border-top: 1px solid $dark-border;
+
+  a {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.06);
+    color: $dark-text;
+    text-decoration: none;
+    transition: all 0.2s ease;
+
+    svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    &:hover {
+      background: rgba($link-color, 0.15);
+      color: $link-color;
+    }
+  }
+}
+
+.header__mobile-profile-cta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.875rem 1.5rem;
+  margin-top: 0.5rem;
+  background: linear-gradient(135deg, $link-color, darken($link-color, 10%));
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba($link-color, 0.4);
+  }
+}
+
 @media (min-width: $lg) {
+  // Hide mobile profile section on desktop
+  .header__mobile-profile {
+    display: none;
+  }
+  .header__inner {
+    justify-content: flex-start; // Override space-between for desktop
+  }
+
+  // Shortcuts trigger positioned after profile on desktop
+  .header__inner > .shortcuts-trigger {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 0.5rem;
+    padding: 0.5rem 0.75rem;
+    height: auto;
+    color: $dark-text;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 6px;
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.2);
+      color: $dark-heading;
+    }
+
+    &::after {
+      display: none; // Remove the underline effect from .header__link
+    }
+  }
+
   .header__toggle {
     display: none;
     visibility: hidden;
@@ -237,7 +431,7 @@
     display: flex;
     flex-direction: column;
     visibility: visible;
-    width: auto;
+    margin-left: auto; // Push nav to the right
     height: 100%;
   }
 
@@ -245,6 +439,9 @@
     display: flex;
     height: 100%;
     padding: 0;
+    margin-left: auto; // Push to the right
+    margin-right: 0;
+    max-width: none; // Override container's max-width
   }
 
   .header__link {
@@ -297,7 +494,9 @@
     height: 100%;
     border: 0;
 
-    &:hover {
+    // Support both hover and focus-within for touch devices (iPad Pro, touchscreen laptops)
+    &:hover,
+    &:focus-within {
       .header__dropdown-menu {
         opacity: 1;
         visibility: visible;
@@ -338,6 +537,8 @@
   }
 
   .header__dropdown-menu {
+    display: flex; // Override mobile display: none
+    flex-direction: column;
     position: absolute;
     top: 100%;
     left: 0;
@@ -395,5 +596,449 @@
       color: rgba(255, 255, 255, 0.6);
       background: rgba(255, 255, 255, 0.1);
     }
+  }
+}
+
+/*-------------------------------------------------------------------------*/
+/* PROFILE DROPDOWN */
+/* -----------------------------------------------------------------------*/
+
+// Profile dropdown - Mobile styles (default)
+// Hidden on mobile - profile content is in hamburger menu instead
+.header__profile {
+  display: none;
+}
+
+.header__profile-trigger {
+  width: 44px; // Increased from 36px for better mobile touch target
+  height: 44px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  cursor: pointer;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  // Ensure touch events work properly on mobile
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+
+  &::before {
+    content: "";
+    position: absolute;
+    inset: -3px;
+    border-radius: 50%;
+    border: 2px solid transparent;
+    transition: border-color 0.2s ease-in-out;
+  }
+
+  &:hover::before,
+  &:focus::before,
+  &:active::before {
+    border-color: $link-color;
+  }
+
+  &:focus {
+    outline: none;
+  }
+}
+
+.header__profile-img {
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  min-height: 44px;
+  border-radius: 50%;
+  object-fit: cover;
+  aspect-ratio: 1 / 1;
+  display: block;
+}
+
+.header__profile-fallback {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, $link-color, darken($link-color, 15%));
+  color: #fff;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+// Show fallback when image fails
+.header__profile-trigger.has-fallback {
+  .header__profile-img {
+    display: none;
+  }
+  .header__profile-fallback {
+    display: flex;
+  }
+}
+
+// Profile dropdown menu - Mobile (accordion style)
+.header__profile-menu {
+  display: none;
+  position: fixed;
+  top: 4.75em;
+  left: 0;
+  right: 0;
+  background: $dark-bg;
+  border-top: 1px solid $dark-border;
+  padding: 0;
+  z-index: 100;
+  max-height: calc(100vh - 4.75em);
+  overflow-y: auto;
+}
+
+// Mobile accordion open state
+.header__profile.is-open {
+  .header__profile-menu {
+    display: block;
+  }
+}
+
+// Profile header section
+.header__profile-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.25rem 1rem;
+  border-bottom: 1px solid $dark-border;
+}
+
+.header__profile-avatar-wrapper {
+  width: 56px;
+  height: 56px;
+  min-width: 56px;
+  min-height: 56px;
+  flex-shrink: 0;
+  flex-grow: 0;
+  position: relative;
+}
+
+.header__profile-avatar {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  object-fit: cover;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.header__profile-avatar-fallback {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, $link-color, darken($link-color, 15%));
+  color: #fff;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  font-weight: 600;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.header__profile-avatar-wrapper.has-fallback {
+  .header__profile-avatar {
+    display: none;
+  }
+  .header__profile-avatar-fallback {
+    display: flex;
+  }
+}
+
+.header__profile-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.header__profile-name {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: $dark-heading;
+  margin: 0 0 0.25rem 0;
+  line-height: 1.2;
+}
+
+.header__profile-tagline {
+  font-size: 0.875rem;
+  color: $dark-text;
+  margin: 0;
+  opacity: 0.8;
+}
+
+// About links section
+.header__profile-links {
+  padding: 0.5rem 0;
+}
+
+.header__profile-link {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.875rem 1rem;
+  color: $dark-text;
+  text-decoration: none;
+  transition: background-color 0.15s ease, color 0.15s ease;
+
+  &:hover {
+    background: rgba($link-color, 0.1);
+    color: $link-color;
+  }
+
+  svg {
+    width: 18px;
+    height: 18px;
+    opacity: 0.7;
+    flex-shrink: 0;
+  }
+
+  &:hover svg {
+    opacity: 1;
+  }
+}
+
+// Social icons section
+.header__profile-socials {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 1rem;
+  border-top: 1px solid $dark-border;
+  border-bottom: 1px solid $dark-border;
+}
+
+.header__profile-social {
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.06);
+  color: $dark-text;
+  text-decoration: none;
+  transition: all 0.2s ease;
+
+  svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  &:hover {
+    background: rgba($link-color, 0.15);
+    color: $link-color;
+    transform: translateY(-2px);
+  }
+
+  // Specific colors for social icons
+  &--github:hover {
+    background: rgba(#fff, 0.1);
+    color: #fff;
+  }
+
+  &--linkedin:hover {
+    background: rgba(#0A66C2, 0.15);
+    color: #0A66C2;
+  }
+
+  &--email:hover {
+    background: rgba($link-color, 0.15);
+    color: $link-color;
+  }
+
+  &--twitter:hover {
+    background: rgba(#1DA1F2, 0.15);
+    color: #1DA1F2;
+  }
+
+  &--youtube:hover {
+    background: rgba(#FF0000, 0.15);
+    color: #FF0000;
+  }
+}
+
+// CTA button section
+.header__profile-cta {
+  padding: 1rem;
+}
+
+.header__profile-cta-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.875rem 1.5rem;
+  background: linear-gradient(135deg, $link-color, darken($link-color, 10%));
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba($link-color, 0.4);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+}
+
+// Divider inside profile menu
+.header__profile-divider {
+  height: 1px;
+  background: $dark-border;
+  margin: 0;
+}
+
+// Desktop styles
+@media (min-width: $lg) {
+  .header__profile {
+    display: block; // Show on desktop (hidden on mobile)
+    position: relative;
+    transform: none;
+    top: auto;
+    right: auto;
+    margin-left: 0.5rem;
+
+    // Support both hover and focus-within for touch devices (iPad Pro, touchscreen laptops)
+    &:hover,
+    &:focus-within {
+      .header__profile-menu {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+      }
+
+      .header__profile-trigger::before {
+        border-color: $link-color;
+      }
+    }
+  }
+
+  .header__profile-trigger {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    padding: 0 0.5rem;
+
+    // Override ::before to have fixed circular dimensions on desktop
+    &::before {
+      width: 50px;  // 44px trigger + 6px for the ring (3px each side)
+      height: 50px;
+      inset: auto;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+  }
+
+  .header__profile-menu {
+    display: block;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    left: auto;
+    min-width: 280px;
+    max-height: none;
+    overflow: visible;
+    border: 1px solid $dark-border;
+    border-top: none;
+    border-radius: 0 0 8px 8px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: opacity 0.2s ease-in-out, transform 0.2s ease-in-out, visibility 0.2s ease-in-out;
+  }
+
+  // Hide accordion state on desktop
+  .header__profile.is-open {
+    .header__profile-menu {
+      display: block;
+      opacity: 0;
+      visibility: hidden;
+    }
+  }
+
+  .header__profile-header {
+    padding: 1rem;
+  }
+
+  .header__profile-avatar-wrapper {
+    width: 48px;
+    height: 48px;
+    min-width: 48px;
+    min-height: 48px;
+  }
+
+  .header__profile-avatar,
+  .header__profile-avatar-fallback {
+    width: 48px;
+    height: 48px;
+  }
+
+  .header__profile-avatar-fallback {
+    font-size: 1.125rem;
+  }
+
+  .header__profile-name {
+    font-size: 1rem;
+  }
+
+  .header__profile-tagline {
+    font-size: 0.8125rem;
+  }
+
+  .header__profile-link {
+    padding: 0.75rem 1rem;
+
+    &:hover {
+      background: rgba($link-color, 0.08);
+    }
+  }
+
+  .header__profile-socials {
+    padding: 0.875rem 1rem;
+    gap: 0.625rem;
+  }
+
+  .header__profile-social {
+    width: 40px;
+    height: 40px;
+
+    svg {
+      width: 18px;
+      height: 18px;
+    }
+  }
+
+  .header__profile-cta {
+    padding: 0.875rem 1rem 1rem;
+  }
+
+  .header__profile-cta-btn {
+    padding: 0.75rem 1.25rem;
+    font-size: 0.875rem;
   }
 }
