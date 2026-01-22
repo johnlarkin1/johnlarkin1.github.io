@@ -41,6 +41,7 @@ $(document).keyup(function (e) {
     closeSearch();
     closeShortcuts();
     closeGitHubReposDrawer();
+    closeProfileDropdown();
   }
 });
 
@@ -105,6 +106,53 @@ function initMobileAccordion() {
       $(this).attr("aria-expanded", !isOpen);
     }
   });
+
+  // Initialize profile dropdown
+  initProfileDropdown();
+}
+
+/*-------------------------------------------------------------------------*/
+/* PROFILE DROPDOWN (Desktop only - mobile uses hamburger menu) */
+/* -----------------------------------------------------------------------*/
+
+function initProfileDropdown() {
+  var $profile = $(".header__profile");
+
+  if ($profile.length === 0) return;
+
+  // Initialize profile image fallback (for desktop)
+  initProfileImageFallback();
+
+  // Close profile dropdown when clicking contact trigger inside it (desktop)
+  $profile.find(".js-contact-trigger").on("click", function () {
+    closeProfileDropdown();
+  });
+
+  // Close profile dropdown when clicking any link inside it (desktop)
+  $profile.find(".header__profile-link").on("click", function () {
+    closeProfileDropdown();
+  });
+}
+
+function initProfileImageFallback() {
+  // Handle trigger image
+  var $triggerImg = $(".header__profile-trigger .header__profile-img");
+  $triggerImg.on("error", function () {
+    $(this).closest(".header__profile-trigger").addClass("has-fallback");
+  });
+
+  // Handle avatar image in dropdown
+  var $avatarImg = $(".header__profile-avatar-wrapper .header__profile-avatar");
+  $avatarImg.on("error", function () {
+    $(this).closest(".header__profile-avatar-wrapper").addClass("has-fallback");
+  });
+}
+
+function closeProfileDropdown() {
+  var $profile = $(".header__profile");
+  var $trigger = $(".js-profile-trigger");
+  $profile.removeClass("is-open");
+  $trigger.attr("aria-expanded", "false");
 }
 
 function resetMobileAccordion() {

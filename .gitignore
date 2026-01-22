@@ -12,3 +12,4 @@ images/advent-of-code/2024/day24_gate_network_pure.png
 images/advent-of-code/2024/day24_gate_network_*.png
 .playwright-mcp
 **.DS_Store
+*.map
