@@ -111,6 +111,11 @@ function resetMobileAccordion() {
   // Reset accordion state when closing menu or resizing
   $(".header__dropdown").removeClass("is-open");
   $(".header__dropdown-trigger").attr("aria-expanded", "false");
+  // Also reset profile dropdown modal
+  $(".profile-dropdown__menu").removeClass("--open");
+  $(".profile-dropdown__backdrop").removeClass("--visible");
+  $(".profile-dropdown__trigger").attr("aria-expanded", "false");
+  $("body").css("overflow", "");
 }
 
 function openMobileNav() {
@@ -2132,7 +2137,78 @@ $(document).ready(function () {
   initKeyboardNav();
   initShortcuts();
   initGitHubReposDrawer();
+  initProfileDropdown();
 });
+
+/*-------------------------------------------------------------------------*/
+/* PROFILE DROPDOWN                                                         */
+/* -----------------------------------------------------------------------*/
+
+function initProfileDropdown() {
+  var $dropdown = $(".profile-dropdown");
+  var $trigger = $(".profile-dropdown__trigger");
+  var $menu = $(".profile-dropdown__menu");
+  var lgBreakpoint = 992; // Matches $lg SCSS variable
+
+  if ($trigger.length === 0 || $menu.length === 0) return;
+
+  // Create backdrop for mobile modal
+  var $backdrop = $('<div class="profile-dropdown__backdrop"></div>');
+  $dropdown.append($backdrop);
+
+  function openMenu() {
+    $menu.addClass("--open");
+    $trigger.attr("aria-expanded", "true");
+    // Show backdrop on mobile
+    if ($(window).width() < lgBreakpoint) {
+      $backdrop.addClass("--visible");
+      $("body").css("overflow", "hidden");
+    }
+  }
+
+  function closeMenu() {
+    $menu.removeClass("--open");
+    $trigger.attr("aria-expanded", "false");
+    $backdrop.removeClass("--visible");
+    $("body").css("overflow", "");
+  }
+
+  // Click handler for trigger
+  $trigger.on("click", function (e) {
+    e.stopPropagation();
+    var isOpen = $menu.hasClass("--open");
+    if (isOpen) {
+      closeMenu();
+    } else {
+      openMenu();
+    }
+  });
+
+  // Close on backdrop click (mobile)
+  $backdrop.on("click", function () {
+    closeMenu();
+  });
+
+  // Close on outside click
+  $(document).on("click", function (e) {
+    if (!$(e.target).closest(".profile-dropdown").length) {
+      closeMenu();
+    }
+  });
+
+  // Close on Escape key
+  $(document).on("keydown", function (e) {
+    if (e.key === "Escape" && $menu.hasClass("--open")) {
+      closeMenu();
+      $trigger.focus();
+    }
+  });
+
+  // Reset state on window resize
+  $(window).on("resize", function () {
+    closeMenu();
+  });
+}
 
 /*-------------------------------------------------------------------------*/
 /* GITHUB REPOS DRAWER                                                      */
