@@ -15,7 +15,7 @@ const __dirname = dirname(__filename);
 const noServe = process.argv.includes('--no-serve');
 
 const src = {
-  js: '_js/scripts.js',
+  js: '_js/main.js',
 };
 const dist = {
   js: 'assets/js',
