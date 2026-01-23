@@ -617,6 +617,11 @@ mark.pagefind-ui__result-highlight {
   border-radius: 8px;
   margin: 0 1rem;
 
+  // Mobile: Hide toggle (keyword-only mode to avoid loading ~23MB semantic model)
+  @media (max-width: $sm) {
+    display: none;
+  }
+
   &__btn {
     display: flex;
     align-items: center;
