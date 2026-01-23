@@ -1464,7 +1464,9 @@ function trapFocus(element) {
 /* SEARCH MODAL (Enhanced with Vector Search)                              */
 /*-------------------------------------------------------------------------*/
 
-var searchMode = "hybrid"; // 'keyword', 'semantic', or 'hybrid'
+// Mobile: Default to keyword-only search (avoids loading ~23MB semantic model)
+var isMobileSearch = window.matchMedia("(max-width: 576px)").matches;
+var searchMode = isMobileSearch ? "keyword" : "hybrid"; // 'keyword', 'semantic', or 'hybrid'
 var vectorSearchDebounceTimer = null;
 var hybridSearchDebounceTimer = null;
 
@@ -1549,8 +1551,8 @@ function initSearch() {
   });
 }
 
-function switchSearchMode(mode) {
-  if (mode === searchMode) return;
+function switchSearchMode(mode, forceInit) {
+  if (mode === searchMode && !forceInit) return;
 
   searchMode = mode;
 
@@ -2004,17 +2006,9 @@ function openSearch() {
     window.pagefindInitialized = true;
   }
 
-  // Initialize and focus appropriate input based on mode
-  setTimeout(function () {
-    if (searchMode === "keyword") {
-      var input = $modal.find(".pagefind-ui__search-input")[0];
-      if (input) input.focus();
-    } else if (searchMode === "semantic") {
-      initVectorSearch();
-    } else if (searchMode === "hybrid") {
-      initHybridSearch();
-    }
-  }, 150);
+  // Ensure correct search mode is active (handles mobile default to keyword)
+  // Force init on first open to ensure correct container is shown
+  switchSearchMode(searchMode, true);
 
   // Trap focus within modal
   trapFocus($modal[0]);
