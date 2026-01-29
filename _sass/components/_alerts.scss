@@ -169,4 +169,26 @@
     position: absolute;
     top: .7rem;
   }
+}
+
+// Claude Code alert
+.markdown-alert-claude {
+  border-left-color: $alert-claude;
+
+  &::before {
+    content: "Claude Code:";
+    font-weight: bold;
+    color: $alert-claude;
+    position: absolute;
+    left: 3rem;
+    top: .6rem;
+    display: block;
+    margin-bottom: .5rem;
+  }
+
+  &::after {
+    content: url($alert-icon-claude);
+    position: absolute;
+    top: .7rem;
+  }
 } 

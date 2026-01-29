@@ -8,27 +8,43 @@ categories: [Development, A.I]
 summary: Exploring a super interesting problem that comes up in probability and reinforcement learning.
 ---
 
+<!-- 
+<div class="markdown-alert markdown-alert-caution">
+<p>This was meant to be for a take-home... I submitted some version of the first draft, but then couldn't stop and here we are. If parts trail off, it's because I shouldn't have even gone this deep into other more pressing matter
+</p>
+</div>
+
+<br> -->
+
+<div class="project-registry">
+  <a href="https://github.com/johnlarkin1/multi-armed-bandit" target="_blank" rel="noopener" class="registry-card github">
+    <span class="lang-icon">🐙</span>
+    <span class="lang-badge">Source</span>
+    <span class="registry-name">GitHub</span>
+  </a>
+</div>
+
 # Context
 
 Recently, I responded to some recruiters and fielded a couple of interviews. 
 
 I generally abhor interviewing. There are parts I absolutely love - meeting new people, learning about new technical challenges, studying up on businesses or industries - but there are also parts I *abhor*. Getting grilled on usage of the Web Speech API (man oh man was I in the wrong interview) or how to [decode a string][fuck-leetcode] in 2026 does feel... a bit perplexing. I'll rant about it on Substack at some point in time. 
 
-However! I do genuinely enjoy take homes (as exemplified by [Book Brain][book-brain]. Despite often it being a bigger time constraint, and more of a commitment. 
+However! I do genuinely enjoy take homes (as exemplified by [Book Brain][book-brain]). Despite often it being a bigger time constraint, and more of a commitment. 
 
-This blog post is going to go over a concept and problem that (embarrassingly enough), I hadn't yet seen before the take home. For more context, I ultimately didn't carve enough time to do this takehome the way I wanted... As a result, I accepted another offer in the same timeframe, and withdrew from the process. It's unfortunate too because I do genuinely believe the company will be a $10BN company in no time, and the engineering seems absolutely fascinating.
+This blog post is going to go over a concept and problem that (embarrassingly enough), I hadn't yet seen before the take home. For more context, I had accepted another offer in the same timeframe, and withdrew from this specific takehome process. It's unfortunate too because I do genuinely believe the company will be a $10BN company in no time, and the engineering seems fascinating.
 
 While I ultimately withdrew from this interviewing cycle, and sent them only my thoughts on the problem, this blog post is going to talk about a take home question I received from that company. I'm anonymizing the company to keep the sanctity of their interview process. 
 
 The company restricted Ai usage during the take, so I did a ton of research / youtube videos. However, for this blog post, some details of implementation will be left to Claude. The repo has documentation and detail included various transcripts between Claude and I. So let's begin with the problem.
 
-# Problem Setup
+# Setup
 
-The problem focuses around the [multi-armed bandit][mab] problem, which I'll commonly abbreviate as MAB.
+This blog post is going to focus on the [multi-armed bandit][mab] problem, which is commonly abbreviated as MAB. There is a lot here, so I won't be able to cover everything, but I'll cover the parts that the corresponding Github repo covers. 
 
-## Traditional (Stochastic) Multi-Armed Bandit Problem (MAB)
+# Multi-Armed Bandit Problem (MAB)
 
-The [traditional multi-armed bandit][trad-mab] is pretty well encapsulated by a hypothetical situation. I'll give you the long / fun version, and then I'll give you an abbreviated Wikipedia version.
+The [traditional multi-armed bandit][mab] is pretty well encapsulated by a hypothetical situation. I'll give you the long / fun version, and then I'll give you an abbreviated Wikipedia version.
 
 ---
 
@@ -60,8 +76,54 @@ Wikipedia more blandly (but also more succinctly) puts this as:
 
 > More generally, it is a problem in which a decision maker iteratively selects one of multiple fixed choices (i.e., arms or actions) when the properties of each choice are only partially known at the time of allocation, and may become better understood as time passes. A fundamental aspect of bandit problems is that choosing an arm does not affect the properties of the arm or other arms.[4]
 
+## Stochastic MAB Approaches
 
-## Multi-Armed Bandit Variants
+Before we go any further, let's fully dissect this problem. 
+
+There are really two main focuses that I covered in code and fully studied up on. I will not be talking about $\epsilon$-greedy approaches, but here are [some][eps-1] [other][eps-2] [resources][eps-3]. We're actually going to focus on UCB vs Thompson Sampling, which are two methods that work very well. I'll discuss further below in the implementation about my thoughts about how I modified them to handle the take-home explicitly. 
+
+### [Upper Confidence Bound][ucb1]
+
+The theory behind UCB is that we are trying to optimistically explore. UCB1 is meant to balance the level of exploration vs exploitation. 
+
+I am not going to go into the full derivation, but it references something called [Hoeffding's Inequality][hoeffding] to build up a framework. 
+
+It eventually lets us get to:
+
+$$UCB_i(t) = \bar{x}_i + \underbrace{c \cdot \sqrt{\frac{\ln(t)}{n_i}}}_{\text{exploration bonus}}$$
+
+Where:
+- $\bar{x}_i$ = empirical success rate of server $i$
+- $t$ = total number of requests across all servers
+- $n_i$ = number of times server $i$ has been tried
+- $c$ = exploration constant (default: $\sqrt{2}$)
+
+Normally, you'll see this kind of folded up with $c$ being part of the square root, but that exploration bonus was key in my modified UCB approach.
+
+### [Thompson Sampling][thompson]
+
+With this approach, the derivation can actually make a bit more sense (in my opinion). It's also (probably relatedly) the approach I like the most. 
+
+We model the process for the specific outcome of the arm $a$ as a [Bernoulli distribution][bernoulli]. Basically, it means we have a $p$ probability of getting a 1 (in this case, a reward, in our specific case further down - a successful downstream server request). The value 0 has a probably $q = 1 - p$ of occurring.
+
+We can then model this uncertainty about the Bernoulli parameter $p$ as a [beta distribution][beta]. We're trying to figure out the probability $p$ for each arm $a$ (or further on as we'll see, the downstream server). 
+
+Think of using our beta distribution as a heuristic for what we actually think about each arm. With Thompson sampling, we're basically maintaining a best guess distribution for each of the arms and updating it as we go and learn more information. I believe the technical term for this is that we're using a beta distribution as a prior _and_ our posterior given we are assuming a beta distribution in both cases. 
+
+Formally, the beta distribution has a $\alpha$ and a $\beta$ that control the shape of the distribution. They are exponents of the variable and the variable's complement respectively. So again, this can be written as:
+
+$$
+f(x; \alpha, \beta) = \text{constant} \cdot x^{\alpha - 1} \, (1 - x)^{\beta - 1}
+$$
+
+Then our logic is pretty straight forward given how we're modeling this. For every success of the arm, we can update our $\alpha$ with a simple $\alpha' = \alpha + 1$ and for every failure, we can update our $\beta$ (given it's modelling the complement) as $\beta' = \beta + 1$.
+
+Here is a quick Claude artifact to better visualize how the beta distributions develop over time and more tries.
+
+TODO(@claude):
+
+
+# Multi-Armed Bandit Variants
 
 The situation I described above is really the stochastic MAB. There's a finite set of arms, and the reward distribution is unknown. As I learned throughout this process, there are many variants and generalizations of this problem. Specifically, these are _generalizations_ where the MAB is extended by adding some information or structure to the problem. Namely:
 
@@ -73,28 +135,256 @@ The situation I described above is really the stochastic MAB. There's a finite s
 * [dueling bandits][dueling-bandits]
   * an interesting variant where instead of being exposed to the reward, your information is limited to just picking two bandits and only knowing which one is better comparatively... but again it's stochastic. So you can inquire about the same two arms and it's very feasible that you'll get different results for the comparison. The whole notion is that you're building up this preference matrix. Seems like an incredibly difficult problem.
 
-## Take-home Twist Multi-Armed Bandit 
+# Bandit with Knapsack (BwK) Variant
 
+I'm going to preempt the reader and discuss another variant, where I'll spend a bit more time. That model is the Bandit with Knapsack problem.
+
+The original paper is from [Ashwinkumar Badanidiyuru][ash], [Robert Kleinberg][klein], and [Aleksandrs Slivkins][sliv]. People who I'd love to be an iota as smart as. You can see the paper [here][bwk]. It's a 55 page paper, and I'd be lying if I said I read past the **Preliminaries** section. Section 3+ have some heavy math that is over my head.
+
+The problem statement is relatively simple though. Your arms now have resources associated with them that they consume. I honestly think it's easier to draw it out mathematically and reference the actual paper (also shoutout to [alphaxiv], it's got most of the normal [arvix] features, just with some ai native question answering and highlighting which has been nice). 
+
+## Formal Declaration
+
+I'd like to state that the paper starts out with the generalized form of *many* resources being managed and consumed. It makes sense given it's a professional paper and the general case is more interesting. However, you can imagine $d$ being 1 and that we have a single resource that we're managing.
+
+So again, we have $X$ finite arms from 1 to $m$. An individual arm can be declared as $x$. Formally, we can say
+
+$$
+X = \{ 1,\, 2,\, \ldots,\, x, \, \ldots, \,m-1,\, m \}
+$$
+
+There are $T$ rounds (which interestingly enough is known before time in this variant). So $t$ is the round at time $t$ (and one round per time increment). 
+
+$$ 
+t = \{1,\,2,\, \ldots,\, T-1,\, T \}
+$$
+
+There are $d$ resources where $d \geq 1$ and the $d$ resources are indexed from $i$ from $1,\, \ldots,\, d$. (the $d$ in our specific example is going to be the number of servers still, because each server is its own rate limit).
+
+So the problem now changes because at round $t$ when arm $x$ is pulled we now don't just get a reward, but we instead get a reward and a consumption vector indicating how much of the resources were consumed. In other words, 
+
+$$ 
+\left( r_t, c_{t,1}, \ldots , c_{t,d} \right) 
+$$
+
+The paper declares this as $\pi_x$ where $\pi_x$ is an **unknown latent distribution** over $[0,1]^{d+1}$.
+
+Now "latent spaces" have gotten a ton of usage since LLMs blew up, but basically this just means there is some distribution, and it is fixed, but it's unknown to the learner. 
+
+Just to also break down the syntax because $[0,1]^{d+1}$ can be a bit misleading, but this just means
+
+$$ [0,1]^{d+1} = \underbrace{[0,1] \times [0,1] \times \cdots \times [0,1]}_{d+1\ \text{times}} $$
+
+So it's really just a vector of length $d+1$ (the +1 is because we have $d$ resources, but then one reward $r$, so it's kind of a shorthand).
+
+$\pi_x$ is a **joint probability distribution** over $(r, c_1, ..., c_d)$, or 
+$$ (r, c_1, ..., c_d) \sim \pi_x $$
+
+meaning when you pull an arm, you draw one vector from this distribution.
+
+This of course leads us to budgeting. Each resource $i$ has a budget where $B_i \geq 0$
+
+The overall process stops as soon as we have exhausted **ANY** resource budget. 
+
+## Algorithms Presented
+
+The paper presents two algorithms - `BalancedExploration` and `PrimalDualWithBK`. 
+
+### `BalancedExploration`
+At a high level, `BalancedExploration` tries to explore as much as possible while avoiding suboptimal strategies. It tries to converge to a LP-perfect distribution. LP-perfect here is a LP-relaxation called LP-primal (also LP = linear programming). So basically if they can reduce some of the constraints in this LP-primal approach then they can have an optimal algorithm. This LP-primal not only reduces the constraints, but the LP assumes that we know the average reward for each arm and removes the uncertainty, and it lets us perform fractional tasks rather than full tasks (this gets into the integer programming formulation which is helpful for the second part). 
+
+The algorithm is "simple" as the authors put it, but somewhat abstracted. On each phase, it eliminates any mix of tasks that are obviously not LP-perfect. It creates a confidence interval of potentially perfect LP distributions.
+
+Then for each task, it tries to explore that task as much as possible, and gathers the information. It then repeats until it runs out of time or resources.
+
+Transparently, I get it at this level, but I don't understand the underlying math pinning it. That confidence interval calculation is... unclear to me. And given I don't even have an implementation for it in my repo (which is the point of this post).
+
+Ah actually! Giving Claude enough context and framing for this, and it does make sense for my repo. It's still using UCB / LCB for reward and cost respectively, and then forming that as the score. i.e.:
+
+<details>
+  <summary style="padding: 10px; border-radius: 5px; cursor: pointer; color: #D77656; font-weight: bold; border: 1px solid rgba(215, 118, 86, 0.4);">
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="17" viewBox="12 22 96 70" style="vertical-align: middle; margin-right: 8px;">
+      <path d="M0 0 C23.76 0 47.52 0 72 0 C72 9.24 72 18.48 72 28 C75.96 28 79.92 28 84 28 C84 32.62 84 37.24 84 42 C80.04 42 76.08 42 72 42 C72 46.62 72 51.24 72 56 C70.02 56 68.04 56 66 56 C66 60.62 66 65.24 66 70 C64.02 70 62.04 70 60 70 C60 65.38 60 60.76 60 56 C58.02 56 56.04 56 54 56 C54 60.62 54 65.24 54 70 C52.02 70 50.04 70 48 70 C48 65.38 48 60.76 48 56 C40.08 56 32.16 56 24 56 C24 60.62 24 65.24 24 70 C22.02 70 20.04 70 18 70 C18 65.38 18 60.76 18 56 C16.02 56 14.04 56 12 56 C12 60.62 12 65.24 12 70 C10.02 70 8.04 70 6 70 C6 65.38 6 60.76 6 56 C4.02 56 2.04 56 0 56 C0 51.38 0 46.76 0 42 C-3.96 42 -7.92 42 -12 42 C-12 37.38 -12 32.76 -12 28 C-8.04 28 -4.08 28 0 28 C0 18.76 0 9.52 0 0 Z" fill="#D77656" transform="translate(24,22)"/>
+      <path d="M0 0 C1.98 0 3.96 0 6 0 C6 4.62 6 9.24 6 14 C4.02 14 2.04 14 0 14 C0 9.38 0 4.76 0 0 Z" fill="#000000" transform="translate(78,36)"/>
+      <path d="M0 0 C1.98 0 3.96 0 6 0 C6 4.62 6 9.24 6 14 C4.02 14 2.04 14 0 14 C0 9.38 0 4.76 0 0 Z" fill="#000000" transform="translate(36,36)"/>
+    </svg>
+    Claude Code: BalancedExploration Explanation
+  </summary>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+
+ ▐▛███▜▌   Claude Code v2.1.17
+▝▜█████▛▘  Opus 4.5 · Claude Max
+  ▘▘ ▝▝    ~/Documents/coding/multi-armed-bandit
+
+❯ /clear
+  ⎿  (no content)
+
+❯ Can you explain how the `BalancedExploration` BwK algorithm could be applied here?
+
+⏺ The Balanced Exploration algorithm from the Bandits with Knapsacks (BwK) literature is a natural fit for your load balancer because you
+  have a resource constraint built into the problem: the retry penalty system.
+
+  BwK Problem Mapping
+  ┌──────────────────────┬─────────────────────────────────────────────────────────────┐
+  │     BwK Concept      │                     Your Load Balancer                      │
+  ├──────────────────────┼─────────────────────────────────────────────────────────────┤
+  │ Arms                 │ Downstream servers (T1/T2/T3 tiers)                         │
+  ├──────────────────────┼─────────────────────────────────────────────────────────────┤
+  │ Reward               │ Successful request (+1)                                     │
+  ├──────────────────────┼─────────────────────────────────────────────────────────────┤
+  │ Resource consumption │ Retries needed (penalty after 3 attempts)                   │
+  ├──────────────────────┼─────────────────────────────────────────────────────────────┤
+  │ Budget               │ Implicit via score formula: success - 0.5 * penalty_retries │
+  └──────────────────────┴─────────────────────────────────────────────────────────────┘
+  How Balanced Exploration Works
+
+  Standard MAB algorithms (like your Thompson/UCB strategies) only track reward (success rate). BwK algorithms track both:
+
+  1. Reward distribution: P(success | server)
+  2. Cost distribution: E[retries needed | server]
+
+  The key insight: a server with 80% success rate that usually fails on first attempt but succeeds on retry might be worse than a 70%
+  success server that either works immediately or fails completely.
+
+  Algorithm Sketch
+
+  class BalancedExplorationStrategy(BaseStrategy):
+      def __init__(self):
+          # Track both success AND retry cost per server
+          self.reward_estimates = {}  # E[success]
+          self.cost_estimates = {}    # E[attempts needed]
+          self.confidence_bounds = {}
+
+      def select_server(self, servers, attempt_number):
+          # Compute "bang per buck" with confidence bounds
+          for server in servers:
+              reward_ucb = self.reward_estimates[server] + confidence_bonus
+              cost_lcb = max(self.cost_estimates[server] - confidence_bonus, epsilon)
+
+              # Key BwK idea: optimize reward/cost ratio
+              server.score = reward_ucb / cost_lcb
+
+          # Balanced exploration: mix greedy + uniform exploration
+          if should_explore():  # Based on remaining budget
+              return uniform_random(servers)
+          return argmax(server.score for server in servers)
+
+</code></pre></div></div>
+</details>
+
+### PrimalDualWithBK
+
+The difference here is that we basically have a shadow parameter per resource that is the _dual vector_ portion of this. It represents unit costs for resources and then helps balance resource consumption. 
+
+This $\lambda$ is our internal or shadow price that indicates how much we're willing to pay for a given resource.
+
+Primal-dual is different because it's adaptive to our remaining budget. If we're burning through resources too quickly, $\lambda$ rises and we do our best to avoid costly servers. 
+
+<details>
+  <summary style="padding: 10px; border-radius: 5px; cursor: pointer; color: #D77656; font-weight: bold; border: 1px solid rgba(215, 118, 86, 0.4);">
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="17" viewBox="12 22 96 70" style="vertical-align: middle; margin-right: 8px;">
+      <path d="M0 0 C23.76 0 47.52 0 72 0 C72 9.24 72 18.48 72 28 C75.96 28 79.92 28 84 28 C84 32.62 84 37.24 84 42 C80.04 42 76.08 42 72 42 C72 46.62 72 51.24 72 56 C70.02 56 68.04 56 66 56 C66 60.62 66 65.24 66 70 C64.02 70 62.04 70 60 70 C60 65.38 60 60.76 60 56 C58.02 56 56.04 56 54 56 C54 60.62 54 65.24 54 70 C52.02 70 50.04 70 48 70 C48 65.38 48 60.76 48 56 C40.08 56 32.16 56 24 56 C24 60.62 24 65.24 24 70 C22.02 70 20.04 70 18 70 C18 65.38 18 60.76 18 56 C16.02 56 14.04 56 12 56 C12 60.62 12 65.24 12 70 C10.02 70 8.04 70 6 70 C6 65.38 6 60.76 6 56 C4.02 56 2.04 56 0 56 C0 51.38 0 46.76 0 42 C-3.96 42 -7.92 42 -12 42 C-12 37.38 -12 32.76 -12 28 C-8.04 28 -4.08 28 0 28 C0 18.76 0 9.52 0 0 Z" fill="#D77656" transform="translate(24,22)"/>
+      <path d="M0 0 C1.98 0 3.96 0 6 0 C6 4.62 6 9.24 6 14 C4.02 14 2.04 14 0 14 C0 9.38 0 4.76 0 0 Z" fill="#000000" transform="translate(78,36)"/>
+      <path d="M0 0 C1.98 0 3.96 0 6 0 C6 4.62 6 9.24 6 14 C4.02 14 2.04 14 0 14 C0 9.38 0 4.76 0 0 Z" fill="#000000" transform="translate(36,36)"/>
+    </svg>
+    Claude Code: PrimalDual Explanation
+  </summary>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+⏺ Great question—these are two fundamentally different algorithmic paradigms for BwK.
+
+  Core Philosophical Difference
+  ┌────────────────────────────────────────────┬───────────────────────────────────────────────────┐
+  │            Balanced Exploration            │                  Primal-Dual BwK                  │
+  ├────────────────────────────────────────────┼───────────────────────────────────────────────────┤
+  │ Ratio-based: Optimize reward/cost directly │ Price-based: Learn a "shadow price" for resources │
+  ├────────────────────────────────────────────┼───────────────────────────────────────────────────┤
+  │ Explore to reduce uncertainty              │ Adapt prices based on consumption rate            │
+  ├────────────────────────────────────────────┼───────────────────────────────────────────────────┤
+  │ UCB-style confidence bounds                │ Lagrangian relaxation of constraints              │
+  └────────────────────────────────────────────┴───────────────────────────────────────────────────┘
+  Primal-Dual Intuition
+
+  Instead of optimizing a ratio, Primal-Dual converts the constrained problem into an unconstrained one:
+
+  Original: maximize E[reward] subject to E[cost] ≤ budget
+
+  Primal-Dual: maximize E[reward] - λ * E[cost]
+               where λ (dual variable) is learned online
+
+  The dual variable λ is the shadow price—how much you're willing to "pay" to consume one unit of resource.
+
+  Algorithm Sketch
+
+  class PrimalDualBwKStrategy(BaseStrategy):
+      def __init__(self):
+          self.lambda_price = 0.0  # Shadow price for retries
+          self.total_penalty_retries = 0
+          self.total_requests = 0
+
+      def select_server(self, servers, attempt_number):
+          # Pick server maximizing: E[reward] - λ * E[cost]
+          for server in servers:
+              reward = self.success_estimate[server]
+              cost = self.retry_cost_estimate[server]
+              server.score = reward - self.lambda_price * cost
+
+          return argmax(server.score)
+
+      def update(self, server_url, success, attempts_used):
+          # Update reward/cost estimates (standard)
+          self._update_estimates(server_url, success, attempts_used)
+
+          # KEY DIFFERENCE: Update the shadow price
+          self.total_penalty_retries += max(0, attempts_used - 3)
+          self.total_requests += 1
+
+          # If consuming resources too fast, increase price
+          target_rate = 0.5  # Expected penalty retries per request
+          actual_rate = self.total_penalty_retries / self.total_requests
+
+          # Multiplicative weights update
+          self.lambda_price *= (1 + eta * (actual_rate - target_rate))
+
+</code></pre></div></div>
+</details>
+
+# Take Home Multi-Arm Bandit Variant
 The takehome I received had an interesting twist on this. The change is that: **you are only penalized for a failing server request after $k$ tries.** So you are still trying to maximize your "score" (i.e. reward) but you're also given some leeway.
 
-After further deep research with Claude / ChatGPT, I believe the problem is best framed as a **Bandit with Knapsack** situation.
+It was not until deep research with Claude / ChatGPT that I learned the problem could (I think) best be framed as a [**BwK**](#bandit-with-knapsack-bwk-variant) problem.
 
-### Bandit with Knapsack (BwK) Variant
+# Flaky Server - BwK Framing
 
-The original paper is from [Ashwinkumar Badanidiyuru][ash], [Robert Kleinberg][klein], and [Aleksandrs Slivkins][sliv]. People who I'd love to be an iota as smart as. You can see the paper [here][bwk]. It's a 55 page paper, and I'd be lying if I said I read past the 
+For more context with the takehome, the MAB portion was framed as you're building a load balancer where the downstream servers are flaky and you're trying to minimize penalties (which are signed after your failing load balancer request). They simply sent a binary (which I actually dislike and think is very sketch to send a binary with no details, certs or signatures, notarization etc). The binary opened up the following:
+* 10 ports with Config 1 (constant error rate)
+* 10 ports with Config 2 (constant error rate + constant rate limit)
+* 10 ports with Config 3 (constant error rate + complex rate limit)
 
-The idea is relatively simple though. Your arms now have resources associated with them that they consume. I honestly think it's easier to draw it out mathematically and reference the actual paper (also shoutout to [alphaxiv], it's got most of the normal [arvix] features, just with some ai native question answering and highlighting which has been nice). 
+## Approach
 
-### BwK Formal Declaration
+### Aggressively Inspecting the Binary
+No fucking way am I blankly running a binary on my personal computer. 
+
+I am familiar with some basic CLI tools for inspecting binaries (`otool`, `strings`, `xattr` from the Dropbox days). However, this was something that I freely threw at Claude with explicit instructions not to run the binary and not to tell me anything about the underlying implementations of the load balancer config implementations (I'll get to the de-compilation step in a bit). 
+
+I also knew that for all commands actually starting the load balancer binary that we would be running them in a restricted mode using [sandbox-exec] which I hadn't stumbled upon until this project. The blog i just linked does a fantastic job, so you should feel comfortable giving it some site traffic and peeking into that one. TLDR is it's a way to run a binary in a sandboxed environment so that it only has permissions to various resources that you permit.
+
+All of this looked good, so I was onto the actual implementation. 
+
+### Load Balancer
+
+This was obviously the meat of the problem and the most fun to reason and think about. Probably because it was the most math / stats intensive. I wrote a couple of versions myself, tried and saw the failures (Claude found bugs with how I was calculating the beta distributions variance for example) and kept iterating. It's the part of the code I know the best and I can walk through the various implementations. 
+
+The later versions where we get into the BwK approaches (`v6` - `v8`) are implementations by Claude, but still interesting to see how they perform relative. 
+
+### Simulation Harness
 
 
 
-# Theory
+### Dashboard
 
-
-# Things to Talk About
-
-* Hoeffding's Inequality...
 
 
 [comment]: <> (Bibliography)
@@ -114,3 +404,12 @@ The idea is relatively simple though. Your arms now have resources associated wi
 [bwk]: https://www.alphaxiv.org/abs/1305.2545
 [alphaxiv]: https://www.alphaxiv.org/
 [arxiv]: https://arxiv.org/
+[sandbox-exec]: https://igorstechnoclub.com/sandbox-exec/
+[eps-1]: https://www.geeksforgeeks.org/machine-learning/epsilon-greedy-algorithm-in-reinforcement-learning/
+[eps-2]: https://www.geeksforgeeks.org/machine-learning/epsilon-greedy-algorithm-in-reinforcement-learning/
+[eps-3]: https://www.geeksforgeeks.org/machine-learning/epsilon-greedy-algorithm-in-reinforcement-learning/
+[hoeffding]: https://en.wikipedia.org/wiki/Hoeffding%27s_inequality
+[bernoulli]: https://en.wikipedia.org/wiki/Bernoulli_distribution
+[beta]: https://en.wikipedia.org/wiki/Beta_distribution
+[thompson]: https://en.wikipedia.org/wiki/Thompson_sampling
+[ucb1]: https://en.wikipedia.org/wiki/Upper_Confidence_Bound
