@@ -4,6 +4,7 @@ layout: post
 featured-img: multi-armed-bandit
 mathjax: true
 python-interactive: false
+chartjs: true
 categories: [Development, A.I]
 summary: Exploring a super interesting problem that comes up in probability and reinforcement learning.
 ---
@@ -23,6 +24,24 @@ summary: Exploring a super interesting problem that comes up in probability and 
     <span class="registry-name">GitHub</span>
   </a>
 </div>
+
+# Motivation
+
+Here is a motivating visual to build up some momentum to read on. This is our dashboard tool to compare various multi-armed bandit strategies. We'll understand this more thoroughly at the end of this blog post.
+
+<div class="video-container">
+  <div class="video-wrapper-dark">
+    <video 
+      src="/videos/multi-armed-bandit/multi-armed-bandit.mp4" type="video/mp4"
+      muted
+      autoplay
+      loop
+      controls
+      style="width: 100%; height: auto;">
+    </video>
+  </div>
+</div>
+
 
 # Context
 
@@ -118,10 +137,9 @@ $$
 
 Then our logic is pretty straight forward given how we're modeling this. For every success of the arm, we can update our $\alpha$ with a simple $\alpha' = \alpha + 1$ and for every failure, we can update our $\beta$ (given it's modelling the complement) as $\beta' = \beta + 1$.
 
-Here is a quick Claude artifact to better visualize how the beta distributions develop over time and more tries.
+A picture is worth a thousand words, so an interactive visualization must be worth at least a million right? This is a Claude generated vanilla JS + Chart.js artifact. I'd recommend autoplaying or doing the `Run Thompson Round`, but you can also see results by adding success and failures to the various arms. The main point is that you'll see how our beta distributions should steadily converge to the real $p$ with increasing accuracy.
 
-TODO(@claude):
-
+<div class="interactive-beta-viz" data-arms="3" data-true-probs="0.7,0.4,0.55"></div>
 
 # Multi-Armed Bandit Variants
 
@@ -377,15 +395,70 @@ All of this looked good, so I was onto the actual implementation.
 
 This was obviously the meat of the problem and the most fun to reason and think about. Probably because it was the most math / stats intensive. I wrote a couple of versions myself, tried and saw the failures (Claude found bugs with how I was calculating the beta distributions variance for example) and kept iterating. It's the part of the code I know the best and I can walk through the various implementations. 
 
-The later versions where we get into the BwK approaches (`v6` - `v8`) are implementations by Claude, but still interesting to see how they perform relative. 
+The later versions where we get into the BwK approaches (`v6` - `v8`) are implementations by Claude, but still interesting to see how they perform relative to the original ideas. 
+
+At this point, I'm pretty burnt on this project and I'm technically on vacation, so I am going to summarize and leave it as an exercise to the reader to investigate the code and understand the underlying logic
+
+**These versions are all basic MAB approaches, not BwK specific.**
+
+| Code Version | Method | Description | 
+|:------------:|:------:|:-----------:|
+| V1| Larkin Intuition | We still model things as a Beta distribution.<br/> We have a `DISCOVER_LIMIT`. While we're in `DISCOVER_MODE`, we select the arm / server with highest beta variance, and fire off attempts to that server. If that fails, we re-evaluate. We continue until we fail. After the discover limit, then we statically pick the best server to send requests to. |
+| V2 | Vanilla UCB | This is the UCB method described above. We first prioritize any untried servers (since technically they have an infinite UCB score). Then for each server, we calculate the UCB score using the formula:<br/> $$ UCB = \text{success_rate} + \sqrt{\frac{2 \ln(\text{total_requests})}{\text{num_attempts}}} $$ |
+| V3 | Adjusted UCB | Very similar to the above however this type we play games with our exploration constant. It's no longer $\sqrt{2}$, it's 3 (chosen arbitrarily, just bigger than $\sqrt{2}$) for the first three attempts and then 1 after that when we're starting to get penalized. |
+| V4 | Vanilla Thompson Sampling | What we described above, we pick the server with the highest $p$ and then we go from there. Either way if it's a success or a failure, we update our $\alpha$ and $\beta$. |
+| V5 | Modified Thompson Sampling | In a somewhat similar game to the modified UCB, we scale alpha and beta based on the number of requests to encourage exploration. We use an exponential decay and if we're at 3 attempts or more, we do not scale at all and just revert back to normal TS. Our `scale_factor` then becomes `max(2, total/variance_scale) / total` where `total = alpha + beta`. We then multiply $\alpha$ and $\beta$ by those coefficients. |
+
+**These approaches in honesty were CC generated, but are rate limited aware and targeted at BwK approaches.**
+
+| Code Version | Method | Description | 
+|:------------:|:------:|:-----------:|
+| V6| Thompson Masked | A slight discrepancy from the original Thompson Sampling. Here `429`s which indicate that we have been rate limited. We exclude rate limited servers from the selection pool. Note, we also indicate a server as being rate-limited if we've gotten a 429 in the past second. The big notion is that 429s are treated as different than failures. We do not update $\beta$ when we get one, we instead just indicate it's been rate limited. If all of our servers are rate limited, we get the server that is most likely to expire soon. This is probably best for Config Type T2. |
+| V7| Sliding Window | Here given that we have the notion of temporal and dynamic rate limiting, we only remember a set amount of requests / history. I chose 30 basically arbitrarily. Again, perhaps ideally we could learn the rate limits and dynamically adapt this. Our $\alpha$ and $\beta$ params are only updated based on the set history. |
+| V8| Blocking Bandit | And here is the adaptive cooldown / blocking that `V7` was lacking. The difference is now if we hit a 429 we start to exponentially increase the wait time to block the incoming requests from going to a server that we know is rate-limited.|
 
 ### Simulation Harness
 
-
+The simulation harness is almost entirely vibe-coded but basically sends requests to our load balancer at the prescribed rate of 10 RPS. For more information, I would check the `flaky-load-balancer/flaky_load_balancer/harness.py` file out. It's on GH [here][harness].
 
 ### Dashboard
 
+The dashboard was a fun vibe coded application that is a NextJS app. There's a decent amount of functionality here, so I'll cover some of the highlights. This NextJS project is meant to summarize and compare the results from various strategies (`V1`-`V8`) against the various config types (`T1`-`T3`). It also has a comparison route that compares all of them for a given run. 
 
+It connects and listens to the FastAPI server (basically to our load balancer) so that we get SSE streams for things like the heartbeat, metrics, and connected state. So what I would suggest is running `make harness` and that will start your FastAPI load balancer, start the dashboard, start the downstream `flakyservers` binary, and then start firing off requests. 
+
+Here is a demo:
+
+<div class="video-container">
+  <div class="video-wrapper-dark">
+    <video 
+      src="/videos/multi-armed-bandit/multi-armed-bandit.mp4" type="video/mp4"
+      muted
+      autoplay
+      loop
+      controls
+      style="width: 100%; height: auto;">
+    </video>
+  </div>
+</div>
+
+And furthermore, here are some screenshots from the comparison page:
+
+![compare](/images/multi-armed-bandit/comparison.png){: .center .lightbox-image}
+
+![compare-viz](/images/multi-armed-bandit/compare-viz.png){: .center .lightbox-image}
+
+# Conclusion 
+
+So! What were the results?
+
+![results](/images/multi-armed-bandit/results.png){: .center .lightbox-image}
+
+Unsurprisingly, our Thompson Modified seemed to do the best on `T1`, the Sliding Window somewhat surprisingly did the best on `T2` (probably because the underlying binary is sinusoidal and there was some benefit about the cadence and the window being used). Finally, for `T3` the Blocking Bandit or Thompson Masked seemed to do the best.
+
+---
+
+There's a lot more I could talk about here, but this has already spilled over on the time budgeting so I will end here. If interested, feel free to reach out! 
 
 [comment]: <> (Bibliography)
 [fuck-leetcode]: https://leetcode.com/problems/decode-string/description/
@@ -397,10 +470,10 @@ The later versions where we get into the BwK approaches (`v6` - `v8`) are implem
 [dueling-bandits]: https://doogkong.github.io/2017/slides/Yue.pdf
 [oblivious-adversary]: https://www.cs.cornell.edu/~rdk/papers/anytime.pdf
 [adaptive-adversary]: https://ui.adsabs.harvard.edu/abs/2006cs........2053D/abstract
-[exp3]: https://en.wikipedia.org/wiki/Multi-armed_bandit#:~:text=%5Bedit%5D-,Exp3,-%5Bedit%5D
+[exp3]: https://en.wikipedia.org/wiki/Multi-armed_bandit#:~:text-%5Bedit%5D-,Exp3,-%5Bedit%5D
 [ash]: https://sites.google.com/site/ashwinkumarbv/home
 [klein]: https://www.cs.cornell.edu/~rdk/
-[sliv]: https://scholar.google.com/citations?user=f2x233wAAAAJ&hl=en
+[sliv]: https://scholar.google.com/citations?user-f2x233wAAAAJ&hl=en
 [bwk]: https://www.alphaxiv.org/abs/1305.2545
 [alphaxiv]: https://www.alphaxiv.org/
 [arxiv]: https://arxiv.org/
@@ -413,3 +486,4 @@ The later versions where we get into the BwK approaches (`v6` - `v8`) are implem
 [beta]: https://en.wikipedia.org/wiki/Beta_distribution
 [thompson]: https://en.wikipedia.org/wiki/Thompson_sampling
 [ucb1]: https://en.wikipedia.org/wiki/Upper_Confidence_Bound
+[harness]: https://github.com/johnlarkin1/multi-armed-bandit/blob/main/flaky-load-balancer/flaky_load_balancer/harness.py
