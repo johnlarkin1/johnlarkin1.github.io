@@ -161,4 +161,9 @@
   <!-- Pagefind search -->
   <link rel="stylesheet" href="{{ '/pagefind/pagefind-ui.css' | relative_url }}" />
   <script src="{{ '/pagefind/pagefind-ui.js' | relative_url }}" defer></script>
+
+  {% if page.chartjs %}
+  <!-- Chart.js for interactive visualizations -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  {% endif %}
 </head>

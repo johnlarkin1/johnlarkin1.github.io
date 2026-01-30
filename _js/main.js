@@ -43,6 +43,7 @@ var ScrollIndicator = require('./widgets/scroll-indicator');
 var PinnedCarousel = require('./widgets/pinned-carousel');
 var KnowledgeChecks = require('./widgets/knowledge-checks');
 var NewBadges = require('./widgets/new-badges');
+var BetaDistributionViz = require('./widgets/beta-distribution-viz');
 
 // Form modules
 var FormValidation = require('./forms/validation');
@@ -78,6 +79,7 @@ $(document).ready(function () {
   KnowledgeChecks.init();
   NewBadges.init();
   PinnedCarousel.init();
+  BetaDistributionViz.init();
 
   // Modals
   BaseModal.init();

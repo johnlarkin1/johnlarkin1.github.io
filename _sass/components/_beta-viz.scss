@@ -1,0 +1,333 @@
+/**
+ * Beta Distribution Visualization styles
+ * Interactive component for Thompson Sampling demonstration
+ */
+
+.beta-viz {
+  margin: 2rem 0;
+  padding: 1.5rem;
+  background: $dark-card-bg;
+  border-radius: 12px;
+  border: 1px solid $dark-border;
+
+  // Chart container
+  &__chart-container {
+    position: relative;
+    width: 100%;
+    height: 300px;
+    margin-bottom: 1.5rem;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    padding: 1rem;
+  }
+
+  // Controls section
+  &__controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid $dark-border;
+  }
+
+  // Button styles
+  &__btn {
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: $font-stack;
+
+    &:hover:not(:disabled) {
+      transform: translateY(-1px);
+    }
+
+    &:active:not(:disabled) {
+      transform: translateY(0);
+    }
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    &--primary {
+      background: linear-gradient(135deg, $alert-claude 0%, darken($alert-claude, 10%) 100%);
+      color: white;
+
+      &:hover:not(:disabled) {
+        box-shadow: 0 4px 12px rgba($alert-claude, 0.4);
+      }
+    }
+
+    &--secondary {
+      background: $dark-bg;
+      color: $dark-text;
+      border: 1px solid $dark-border;
+
+      &:hover:not(:disabled) {
+        background: lighten($dark-bg, 5%);
+        border-color: lighten($dark-border, 10%);
+      }
+
+      &--active,
+      &.beta-viz__btn--active {
+        background: $alert-claude;
+        color: white;
+        border-color: $alert-claude;
+      }
+    }
+
+    &--success {
+      background: rgba($success, 0.15);
+      color: $success;
+      border: 1px solid rgba($success, 0.3);
+      padding: 0.375rem 0.75rem;
+      font-size: 0.8rem;
+
+      &:hover:not(:disabled) {
+        background: rgba($success, 0.25);
+        border-color: $success;
+      }
+    }
+
+    &--failure {
+      background: rgba($error, 0.15);
+      color: $error;
+      border: 1px solid rgba($error, 0.3);
+      padding: 0.375rem 0.75rem;
+      font-size: 0.8rem;
+
+      &:hover:not(:disabled) {
+        background: rgba($error, 0.25);
+        border-color: $error;
+      }
+    }
+
+    &--add {
+      width: 100%;
+      background: transparent;
+      color: $grey;
+      border: 2px dashed $dark-border;
+      margin-top: 0.5rem;
+
+      &:hover:not(:disabled) {
+        color: $dark-text;
+        border-color: lighten($dark-border, 15%);
+        background: rgba(255, 255, 255, 0.02);
+      }
+    }
+  }
+
+  // Arms grid
+  &__arms {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  // Individual arm card
+  &__arm {
+    background: $dark-bg;
+    border-radius: 8px;
+    padding: 1rem;
+    border: 1px solid $dark-border;
+  }
+
+  &__arm-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 0.75rem;
+    margin-bottom: 0.75rem;
+    border-bottom: 2px solid;
+  }
+
+  &__arm-label {
+    font-weight: 600;
+    font-size: 0.95rem;
+  }
+
+  &__arm-true-prob {
+    font-size: 0.8rem;
+    color: $grey;
+    font-family: $code-font;
+  }
+
+  &__arm-stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+    font-family: $code-font;
+    font-size: 0.85rem;
+    color: $dark-text;
+
+    span {
+      background: rgba(255, 255, 255, 0.05);
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+    }
+  }
+
+  &__arm-counts {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 0.75rem;
+    font-size: 0.8rem;
+    color: $grey;
+  }
+
+  &__arm-buttons {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  // Log section
+  &__log-section {
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid $dark-border;
+  }
+
+  &__log-title {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: $dark-text;
+    margin: 0 0 0.75rem 0;
+  }
+
+  &__log {
+    max-height: 200px;
+    overflow-y: auto;
+    background: $dark-bg;
+    border-radius: 6px;
+    padding: 0.75rem;
+    font-family: $code-font;
+    font-size: 0.8rem;
+
+    // Custom scrollbar
+    &::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: $dark-border;
+      border-radius: 3px;
+    }
+  }
+
+  &__log-entry {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.375rem 0;
+    border-bottom: 1px solid rgba($dark-border, 0.5);
+
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+
+  &__log-arm {
+    font-weight: 600;
+    min-width: 50px;
+  }
+
+  &__log-success {
+    color: $success;
+    font-weight: bold;
+  }
+
+  &__log-failure {
+    color: $error;
+    font-weight: bold;
+  }
+
+  &__log-samples {
+    color: $grey;
+    font-size: 0.75rem;
+    flex: 1;
+    text-align: right;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &__log-empty {
+    color: $grey;
+    font-style: italic;
+  }
+}
+
+// Responsive adjustments
+@media (max-width: $md) {
+  .beta-viz {
+    padding: 1rem;
+
+    &__chart-container {
+      height: 250px;
+      padding: 0.5rem;
+    }
+
+    &__controls {
+      flex-direction: column;
+
+      .beta-viz__btn {
+        width: 100%;
+      }
+    }
+
+    &__arms {
+      grid-template-columns: 1fr;
+    }
+
+    &__arm-stats {
+      font-size: 0.8rem;
+    }
+
+    &__log-samples {
+      display: none;
+    }
+  }
+}
+
+// Light mode support (if ever needed)
+@media (prefers-color-scheme: light) {
+  .no-dark-mode .beta-viz {
+    background: $bg-color;
+    border-color: $border;
+
+    &__chart-container {
+      background: rgba(0, 0, 0, 0.03);
+    }
+
+    &__arm {
+      background: $bg-color;
+      border-color: $border;
+    }
+
+    &__log {
+      background: $code-bg-color;
+    }
+
+    &__btn--secondary {
+      background: $bg-color;
+      color: $text-color;
+      border-color: $border;
+
+      &:hover:not(:disabled) {
+        background: darken($bg-color, 3%);
+      }
+    }
+  }
+}
