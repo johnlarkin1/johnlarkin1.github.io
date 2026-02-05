@@ -38,6 +38,15 @@ var Lightbox = (function () {
       openFromElement(this);
     });
 
+    // Click handler for contribution chart lightbox
+    $(document).on('click', '.js-contrib-lightbox', function (e) {
+      e.preventDefault();
+      var $img = $(this).find('img');
+      var src = $img.attr('src');
+      var caption = $(this).data('lightbox-caption') || 'GitHub Contribution Activity';
+      openContrib(src, caption);
+    });
+
     // Click handler for hero images
     $(document).on('click', '.hero--clickable', function (e) {
       // Don't trigger if clicking on a link inside the hero
@@ -97,6 +106,14 @@ var Lightbox = (function () {
     $('.lightbox-overlay').css('display', 'flex').hide().fadeIn(300);
   }
 
+  function openContrib(src, caption) {
+    $('#lightbox-image').attr('src', src).attr('alt', caption);
+    $('#lightbox-caption').text(caption);
+
+    $('body').css('overflow', 'hidden');
+    $('.lightbox-overlay').css('display', 'flex').hide().fadeIn(300);
+  }
+
   function close() {
     $('.lightbox-overlay').fadeOut(300, function () {
       $('body').css('overflow', 'visible');
@@ -109,6 +126,7 @@ var Lightbox = (function () {
     init: init,
     open: openFromElement,
     openHero: openHero,
+    openContrib: openContrib,
     close: close
   };
 })();
