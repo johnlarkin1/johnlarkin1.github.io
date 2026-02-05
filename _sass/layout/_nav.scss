@@ -726,6 +726,16 @@
 /* PROFILE DROPDOWN */
 /* -----------------------------------------------------------------------*/
 
+// Wave animation for profile picture border
+@keyframes profileWave {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
 // Profile dropdown - Mobile styles (default)
 // Hidden on mobile - profile content is in hamburger menu instead
 .header__profile {
@@ -751,20 +761,57 @@
   &::before {
     content: "";
     position: absolute;
-    inset: -3px;
+    inset: -5px; // Increased from -3px for larger ring
     border-radius: 50%;
-    border: 2px solid transparent;
-    transition: border-color 0.2s ease-in-out;
+    // Animated wave gradient
+    background: conic-gradient(
+      from 0deg,
+      transparent 0deg,
+      $link-color 60deg,
+      transparent 120deg,
+      transparent 360deg
+    );
+    animation: profileWave 4s linear infinite;
+    // Mask to create ring effect
+    mask: radial-gradient(
+      farthest-side,
+      transparent calc(100% - 3px),
+      #000 calc(100% - 3px)
+    );
+    -webkit-mask: radial-gradient(
+      farthest-side,
+      transparent calc(100% - 3px),
+      #000 calc(100% - 3px)
+    );
+    opacity: 0.7;
+    transition: opacity 0.3s ease;
   }
 
   &:hover::before,
   &:focus::before,
   &:active::before {
-    border-color: $link-color;
+    opacity: 1;
   }
 
   &:focus {
     outline: none;
+  }
+
+  // Respect reduced motion preference
+  @media (prefers-reduced-motion: reduce) {
+    &::before {
+      animation: none;
+      background: transparent;
+      border: 3px solid rgba($link-color, 0.5);
+      mask: none;
+      -webkit-mask: none;
+    }
+
+    &:hover::before,
+    &:focus::before,
+    &:active::before {
+      border-color: $link-color;
+    }
   }
 }
 
@@ -1186,7 +1233,7 @@
       }
 
       .header__profile-trigger::before {
-        border-color: $link-color;
+        opacity: 1;
       }
     }
   }
@@ -1198,13 +1245,25 @@
     padding: 0 0.5rem;
 
     // Override ::before to have fixed circular dimensions on desktop
+    // Use a wrapper approach to allow rotation animation while keeping centered
     &::before {
-      width: 50px;  // 44px trigger + 6px for the ring (3px each side)
-      height: 50px;
+      width: 54px;  // 44px trigger + 10px for the ring (5px each side)
+      height: 54px;
       inset: auto;
       top: 50%;
       left: 50%;
-      transform: translate(-50%, -50%);
+      // Use margin for centering to allow transform for rotation
+      margin-top: -27px;
+      margin-left: -27px;
+      transform: none; // Reset so animation can use transform
+      animation: profileWave 4s linear infinite;
+    }
+
+    // Reduced motion for desktop
+    @media (prefers-reduced-motion: reduce) {
+      &::before {
+        animation: none;
+      }
     }
   }
 
