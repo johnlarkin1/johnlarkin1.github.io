@@ -72,6 +72,55 @@
               </div>
             </div>
 
+            <!-- GitHub 3D Contribution Chart (Mobile) -->
+            <div class="header__mobile-profile-contrib">
+              <div class="header__mobile-profile-contrib-controls">
+                <select class="header__mobile-profile-contrib-theme js-contrib-theme-mobile" aria-label="Select contribution chart theme">
+                  <option value="default">Default</option>
+                  <option value="burnt-copper">Burnt Copper</option>
+                  <option value="midnight-bloom">Midnight Bloom</option>
+                  <option value="moss-stone">Moss Stone</option>
+                  <option value="neon-sunset">Neon Sunset</option>
+                  <option value="obsidian-aurora">Obsidian Aurora</option>
+                  <option value="polar-dawn">Polar Dawn</option>
+                </select>
+                <button class="header__mobile-profile-contrib-mode js-contrib-mode-mobile" type="button" aria-label="Toggle day/night mode" data-mode="day">
+                  <svg class="header__mobile-profile-contrib-mode-icon header__mobile-profile-contrib-mode-icon--day" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="5"></circle>
+                    <line x1="12" y1="1" x2="12" y2="3"></line>
+                    <line x1="12" y1="21" x2="12" y2="23"></line>
+                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                    <line x1="1" y1="12" x2="3" y2="12"></line>
+                    <line x1="21" y1="12" x2="23" y2="12"></line>
+                    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                  </svg>
+                  <svg class="header__mobile-profile-contrib-mode-icon header__mobile-profile-contrib-mode-icon--night" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                  </svg>
+                </button>
+              </div>
+              <button
+                class="header__mobile-profile-contrib-trigger js-contrib-lightbox"
+                type="button"
+                aria-label="View GitHub contribution chart in full size"
+                data-lightbox-caption="GitHub Contribution Activity"
+              >
+                <img class="header__mobile-profile-contrib-img js-contrib-img-mobile"
+                  src="https://raw.githubusercontent.com/johnlarkin1/johnlarkin1/main/profile-3d-contrib/day.svg"
+                  alt="GitHub 3D contribution chart" loading="lazy" />
+                <span class="header__mobile-profile-contrib-expand" aria-hidden="true">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="15 3 21 3 21 9"></polyline>
+                    <polyline points="9 21 3 21 3 15"></polyline>
+                    <line x1="21" y1="3" x2="14" y2="10"></line>
+                    <line x1="3" y1="21" x2="10" y2="14"></line>
+                  </svg>
+                </span>
+              </button>
+            </div>
+
             <div class="header__mobile-profile-links">
               {% for about_item in site.about_links %}
               <a class="header__mobile-profile-link" href="{{ about_item.link | relative_url }}">
@@ -153,6 +202,55 @@
               <h3 class="header__profile-name">John Larkin</h3>
               <p class="header__profile-tagline">Software Engineer</p>
             </div>
+          </div>
+
+          <!-- GitHub 3D Contribution Chart -->
+          <div class="header__profile-contrib">
+            <div class="header__profile-contrib-controls">
+              <select class="header__profile-contrib-theme js-contrib-theme" aria-label="Select contribution chart theme">
+                <option value="default">Default</option>
+                <option value="burnt-copper">Burnt Copper</option>
+                <option value="midnight-bloom">Midnight Bloom</option>
+                <option value="moss-stone">Moss Stone</option>
+                <option value="neon-sunset">Neon Sunset</option>
+                <option value="obsidian-aurora">Obsidian Aurora</option>
+                <option value="polar-dawn">Polar Dawn</option>
+              </select>
+              <button class="header__profile-contrib-mode js-contrib-mode" type="button" aria-label="Toggle day/night mode" data-mode="day">
+                <svg class="header__profile-contrib-mode-icon header__profile-contrib-mode-icon--day" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="5"></circle>
+                  <line x1="12" y1="1" x2="12" y2="3"></line>
+                  <line x1="12" y1="21" x2="12" y2="23"></line>
+                  <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                  <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                  <line x1="1" y1="12" x2="3" y2="12"></line>
+                  <line x1="21" y1="12" x2="23" y2="12"></line>
+                  <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                  <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                </svg>
+                <svg class="header__profile-contrib-mode-icon header__profile-contrib-mode-icon--night" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                </svg>
+              </button>
+            </div>
+            <button
+              class="header__profile-contrib-trigger js-contrib-lightbox"
+              type="button"
+              aria-label="View GitHub contribution chart in full size"
+              data-lightbox-caption="GitHub Contribution Activity"
+            >
+              <img class="header__profile-contrib-img js-contrib-img"
+                src="https://raw.githubusercontent.com/johnlarkin1/johnlarkin1/main/profile-3d-contrib/day.svg"
+                alt="GitHub 3D contribution chart" loading="lazy" />
+              <span class="header__profile-contrib-expand" aria-hidden="true">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="15 3 21 3 21 9"></polyline>
+                  <polyline points="9 21 3 21 3 15"></polyline>
+                  <line x1="21" y1="3" x2="14" y2="10"></line>
+                  <line x1="3" y1="21" x2="10" y2="14"></line>
+                </svg>
+              </span>
+            </button>
           </div>
 
           <!-- About links -->
