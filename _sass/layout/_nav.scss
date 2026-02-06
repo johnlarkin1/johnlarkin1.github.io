@@ -761,7 +761,7 @@
   &::before {
     content: "";
     position: absolute;
-    inset: -5px; // Increased from -3px for larger ring
+    inset: -3px; // Slightly out from image
     border-radius: 50%;
     // Animated wave gradient
     background: conic-gradient(
@@ -772,24 +772,51 @@
       transparent 360deg
     );
     animation: profileWave 4s linear infinite;
-    // Mask to create ring effect
+    // Mask to create ring effect - 3.5px thick
     mask: radial-gradient(
       farthest-side,
-      transparent calc(100% - 3px),
-      #000 calc(100% - 3px)
+      transparent calc(100% - 3.5px),
+      #000 calc(100% - 3.5px)
     );
     -webkit-mask: radial-gradient(
       farthest-side,
-      transparent calc(100% - 3px),
-      #000 calc(100% - 3px)
+      transparent calc(100% - 3.5px),
+      #000 calc(100% - 3.5px)
     );
     opacity: 0.7;
     transition: opacity 0.3s ease;
   }
 
+  // Solid ring overlay for hover state - fades in smoothly
+  &::after {
+    content: "";
+    position: absolute;
+    inset: -3px;
+    border-radius: 50%;
+    background: lighten($link-color, 10%);
+    mask: radial-gradient(
+      farthest-side,
+      transparent calc(100% - 3.5px),
+      #000 calc(100% - 3.5px)
+    );
+    -webkit-mask: radial-gradient(
+      farthest-side,
+      transparent calc(100% - 3.5px),
+      #000 calc(100% - 3.5px)
+    );
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+
   &:hover::before,
   &:focus::before,
   &:active::before {
+    opacity: 1;
+  }
+
+  &:hover::after,
+  &:focus::after,
+  &:active::after {
     opacity: 1;
   }
 
@@ -802,15 +829,19 @@
     &::before {
       animation: none;
       background: transparent;
-      border: 3px solid rgba($link-color, 0.5);
+      border: 3.5px solid rgba($link-color, 0.5);
       mask: none;
       -webkit-mask: none;
+    }
+
+    &::after {
+      display: none;
     }
 
     &:hover::before,
     &:focus::before,
     &:active::before {
-      border-color: $link-color;
+      border-color: lighten($link-color, 10%);
     }
   }
 }
@@ -1235,6 +1266,10 @@
       .header__profile-trigger::before {
         opacity: 1;
       }
+
+      .header__profile-trigger::after {
+        opacity: 1;
+      }
     }
   }
 
@@ -1247,16 +1282,27 @@
     // Override ::before to have fixed circular dimensions on desktop
     // Use a wrapper approach to allow rotation animation while keeping centered
     &::before {
-      width: 54px;  // 44px trigger + 10px for the ring (5px each side)
-      height: 54px;
+      width: 50px;  // 44px trigger + 6px for the ring (3px each side)
+      height: 50px;
       inset: auto;
       top: 50%;
       left: 50%;
       // Use margin for centering to allow transform for rotation
-      margin-top: -27px;
-      margin-left: -27px;
+      margin-top: -25px;
+      margin-left: -25px;
       transform: none; // Reset so animation can use transform
       animation: profileWave 4s linear infinite;
+    }
+
+    // Override ::after for desktop positioning
+    &::after {
+      width: 50px;
+      height: 50px;
+      inset: auto;
+      top: 50%;
+      left: 50%;
+      margin-top: -25px;
+      margin-left: -25px;
     }
 
     // Reduced motion for desktop
