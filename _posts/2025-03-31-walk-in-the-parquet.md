@@ -3,7 +3,7 @@ title: "Walk in the Parquet"
 layout: post
 featured-gif: walk-in-the-parquet
 pinned: 3
-categories: [⭐️ Favorites, Dev]
+categories: [⭐️ Favorites, Development]
 summary: "Visualize, query, and analyze your Parquet files through a lightweight Tauri desktop app"
 favorite: true
 ---

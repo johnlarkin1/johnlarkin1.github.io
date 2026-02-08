@@ -2,7 +2,7 @@
 title: Porvata and Ryder Integration
 layout: post
 featured-img: porvata
-categories: [Development, Friends, Favorites]
+categories: [Development, Friends, ⭐️ Favorites]
 ---
 
 # Background

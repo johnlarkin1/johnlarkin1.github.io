@@ -4,7 +4,7 @@ layout: post
 featured-img: imessage-data-foundry
 mathjax: false
 python-interactive: false
-categories: [Development, A.I]
+categories: [Development, AI]
 summary: Synthetic data generation in the exact sqlite3 schema needed for MacOS for iMessage / AddressBook compatibility
 ---
 

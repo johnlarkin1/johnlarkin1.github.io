@@ -3,7 +3,7 @@ title: Chrome Extension, Betting Analysis, and Kelly Criterion
 layout: post
 featured-img: miami-2023-sinner
 mathjax: true
-categories: [⭐️ Favorites, Dev, Betting]
+categories: [⭐️ Favorites, Development, Betting]
 summary: Want to tighten up your sports betting?
 favorite: true
 ---

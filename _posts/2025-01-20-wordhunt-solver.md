@@ -2,7 +2,7 @@
 title: "Finally Winning WordHunt"
 layout: post
 featured-gif: word-hunt-solver-iphone
-categories: [⭐️ Favorites, Dev, Friends]
+categories: [⭐️ Favorites, Development, Friends]
 summary: "My girlfriend constantly smokes me in WordHunt. It had to stop."
 mathjax: true
 favorite: true

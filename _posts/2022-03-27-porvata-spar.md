@@ -2,7 +2,7 @@
 title: Porvata and SPAR Integration
 layout: post
 featured-img: porvata
-categories: [⭐️ Favorites, Dev, Friends]
+categories: [⭐️ Favorites, Development, Friends]
 summary: I got to work with my best friend Will on a fun technical project!
 favorite: true
 ---

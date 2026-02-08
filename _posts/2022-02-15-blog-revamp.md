@@ -2,7 +2,7 @@
 title: The Blog Reborn
 layout: post
 featured-img: phoenix
-categories: [Dev]
+categories: [Development]
 ---
 
 You get it? Like the phoenix rising from the ashes but also a callback to Swarthmore's Phineas the Phoenix.

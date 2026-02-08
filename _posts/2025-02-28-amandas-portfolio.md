@@ -2,7 +2,7 @@
 title: "Consider this a 302"
 layout: post
 featured-img: amandas-website-screenshot
-categories: [Dev, Friends]
+categories: [Development, Friends]
 summary: "If you're looking for an all-star PM, feel free to check out this website."
 ---
 

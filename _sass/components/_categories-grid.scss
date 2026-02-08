@@ -1,0 +1,206 @@
+// ==========================================================================
+// Categories Grid — full-width row layout
+// ==========================================================================
+
+.categories-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1rem 0 2rem;
+
+  // --------------------------------------------------------------------------
+  // Row (each category is a full-width row)
+  // --------------------------------------------------------------------------
+  &__row {
+    background-color: $dark-card-bg;
+    border-radius: 4px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2),
+                0 0 0 1px rgba(255, 255, 255, 0.05);
+    transition: box-shadow 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+    outline: none;
+
+    &:hover,
+    &:focus-visible {
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35),
+                  0 0 20px rgba(88, 55, 245, 0.2),
+                  0 0 0 1px rgba(255, 255, 255, 0.08);
+    }
+
+    // Expanded state
+    &.is-expanded {
+      .categories-grid__chevron {
+        transform: rotate(180deg);
+      }
+
+      .categories-grid__posts {
+        max-height: 3000px;
+        opacity: 1;
+      }
+    }
+
+    // -- Favorites modifier --------------------------------------------------
+    &--favorites {
+      border: 1px solid rgba(255, 215, 0, 0.3);
+
+      &:hover,
+      &:focus-visible {
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35),
+                    0 0 20px rgba(255, 215, 0, 0.2),
+                    0 0 0 1px rgba(255, 255, 255, 0.08);
+      }
+
+      .categories-grid__row-name {
+        color: rgb(202, 172, 0);
+      }
+    }
+
+    // -- Year-in-Review modifier ---------------------------------------------
+    &--year-in-review {
+      border: 1px solid rgba(255, 100, 100, 0.25);
+
+      &:hover,
+      &:focus-visible {
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35),
+                    0 0 20px rgba(255, 100, 100, 0.15),
+                    0 0 0 1px rgba(255, 255, 255, 0.08);
+      }
+    }
+  }
+
+  // --------------------------------------------------------------------------
+  // Row Header (always visible)
+  // --------------------------------------------------------------------------
+  &__row-header {
+    display: flex;
+    align-items: center;
+    padding: 1rem 1.25rem;
+    gap: 0.75rem;
+    cursor: pointer;
+
+    @include breakpoint($sm) {
+      padding: 1rem 1.5rem;
+    }
+  }
+
+  &__row-icon {
+    font-size: 1.35rem;
+    line-height: 1;
+    flex-shrink: 0;
+  }
+
+  &__row-name {
+    font-size: 1.0625rem;
+    font-weight: 600;
+    color: $dark-heading;
+    margin: 0;
+    line-height: 1.3;
+    white-space: nowrap;
+  }
+
+  &__row-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-left: auto;
+    flex-shrink: 0;
+  }
+
+  &__row-stat {
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.4);
+    white-space: nowrap;
+
+    // Hide date stats on small screens
+    &--first,
+    &--latest {
+      display: none;
+
+      @include breakpoint($sm) {
+        display: inline;
+      }
+    }
+  }
+
+  &__row-separator {
+    color: rgba(255, 255, 255, 0.15);
+    font-size: 0.75rem;
+
+    // Hide separators on small screens
+    display: none;
+    @include breakpoint($sm) {
+      display: inline;
+    }
+  }
+
+  &__chevron {
+    flex-shrink: 0;
+    width: 18px;
+    height: 18px;
+    color: rgba(255, 255, 255, 0.3);
+    transition: transform 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+    margin-left: 0.5rem;
+  }
+
+  // --------------------------------------------------------------------------
+  // Posts panel (hidden until expanded)
+  // --------------------------------------------------------------------------
+  &__posts {
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    transition: max-height 0.4s cubic-bezier(0.165, 0.84, 0.44, 1),
+                opacity 0.3s ease;
+    padding: 0 1.25rem;
+
+    @include breakpoint($sm) {
+      padding: 0 1.5rem;
+    }
+  }
+
+  &__post-list {
+    list-style: none;
+    margin: 0;
+    padding: 0 0 1rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  &__post-item {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+
+  &__post-link {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 0.5rem 0;
+    color: $dark-link;
+    border-bottom: none;
+    text-decoration: none;
+    transition: color 0.2s ease;
+    gap: 1rem;
+
+    &:hover,
+    &:focus {
+      color: lighten($dark-link, 12%);
+      border-bottom: none;
+    }
+  }
+
+  &__post-title {
+    font-size: 0.9375rem;
+    line-height: 1.4;
+    flex: 1;
+    min-width: 0;
+  }
+
+  &__post-date {
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.35);
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+}

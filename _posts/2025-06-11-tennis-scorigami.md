@@ -5,7 +5,7 @@ featured-video: tennis-scorigami
 featured-poster: tennis-scorigami
 featured-gif: tennis-scorigami
 pinned: 2
-categories: [⭐️ Favorites, Dev, Friends]
+categories: [⭐️ Favorites, Development, Friends]
 summary: "Exploring unscored tennis scores with my friends (and hopefully you)"
 favorite: true
 mermaid: true

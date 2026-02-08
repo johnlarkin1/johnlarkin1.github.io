@@ -7,7 +7,7 @@ featured-gif: https://www.dropbox.com/scl/fi/o6vcqhrddhpgen2ydlz6t/muon-overview
 mathjax: true
 pinned: 5
 python-interactive: true
-categories: [Algorithms, A.I., M.L.]
+categories: [Algorithms, AI, M.L.]
 summary: Deep diving into one element of Karpathy's nanochat - a trending optimizer
 ---
 

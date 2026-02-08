@@ -2,7 +2,7 @@
 title: CryptoCraze - Google Sheets Price Update
 layout: post
 featured-img: cryptocurrency-meta
-categories: [Crypto, Dev]
+categories: [Crypto, Development]
 ---
 
 Text messages are fun... but an excel / Google Sheets spreadsheet is also great for organization.

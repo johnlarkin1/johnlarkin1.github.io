@@ -2,7 +2,7 @@
 title: GMMs, MDNs, LSTMs, and Generative Handwriting
 layout: post
 featured-img: network
-categories: [Dev]
+categories: [Development]
 ---
 
 Coming soon... this one has taken me forever to iron out a bug and formalize... for reasons I'll explain in the actual blog post. I'll post it soon.
