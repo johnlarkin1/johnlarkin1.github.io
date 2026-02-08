@@ -2,7 +2,7 @@
 title: "Exploring Quantum: A Trapped Ion Approach"
 layout: post
 featured-gif: paul-trap-viz-small
-categories: [⭐️ Favorites, Physics, Quantum, Dev]
+categories: [⭐️ Favorites, Physics, Quantum, Development]
 summary: '"God does not play dice" - Einstein 1926'
 mathjax: true
 favorite: true

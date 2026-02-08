@@ -5,7 +5,7 @@ featured-img: multi-armed-bandit
 mathjax: true
 python-interactive: false
 chartjs: true
-categories: [Development, A.I]
+categories: [Development, AI]
 summary: Exploring a super interesting problem that comes up in probability and reinforcement learning.
 ---
 

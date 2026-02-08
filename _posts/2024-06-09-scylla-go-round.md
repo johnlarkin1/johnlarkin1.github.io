@@ -2,7 +2,7 @@
 title: Scylla-Go-Round
 layout: post
 featured-img: scylla-go-round
-categories: [Dev, Go, ScyllaDB]
+categories: [Development, Go, ScyllaDB]
 summary: Automatically convert your Cassandra/Scylla DB types to static Go types. Download on Pypi now!
 ---
 

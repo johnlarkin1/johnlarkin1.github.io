@@ -4,7 +4,7 @@ layout: post
 featured-img: larkin-mcp
 mathjax: true
 python-interactive: true
-categories: [Development, A.I]
+categories: [Development, AI]
 summary: Setting up a personalized MCP server. Feel free to install and interact with.
 ---
 

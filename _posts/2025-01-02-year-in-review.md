@@ -2,7 +2,7 @@
 title: 2024 - A Year in Review
 layout: post
 featured-img: 2024-year
-categories: [Year in Review]
+categories: [🎉 Year in Review]
 summary: Another year in NYC
 ---
 

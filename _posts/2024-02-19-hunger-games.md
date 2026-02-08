@@ -2,7 +2,7 @@
 title: "The Hunger Games: NYC Edition"
 layout: post
 featured-img: jules-ari-tv-dinner
-categories: [Dev]
+categories: [Development]
 summary: It's an absolute battle to get to get a reservation in NYC. Maybe automation can help?
 ---
 

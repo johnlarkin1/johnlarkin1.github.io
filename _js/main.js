@@ -45,6 +45,7 @@ var KnowledgeChecks = require('./widgets/knowledge-checks');
 var NewBadges = require('./widgets/new-badges');
 var BetaDistributionViz = require('./widgets/beta-distribution-viz');
 var ContribChart = require('./widgets/contrib-chart');
+var CategoriesGrid = require('./widgets/categories-grid');
 
 // Form modules
 var FormValidation = require('./forms/validation');
@@ -82,6 +83,7 @@ $(document).ready(function () {
   PinnedCarousel.init();
   BetaDistributionViz.init();
   ContribChart.init();
+  CategoriesGrid.init();
 
   // Modals
   BaseModal.init();

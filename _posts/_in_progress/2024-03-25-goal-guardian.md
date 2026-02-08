@@ -2,7 +2,7 @@
 title: Goal Guardian
 layout: post
 featured-img: TODO
-categories: [Development, Year in Review]
+categories: [Development, 🎉 Year in Review]
 summary: Don't you dare upset Pinnacle Puma.
 ---
 

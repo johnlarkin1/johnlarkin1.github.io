@@ -2,7 +2,7 @@
 title: CryptoCraze - Text Notifications
 layout: post
 featured-img: cryptocurrency
-categories: [Crypto, Dev]
+categories: [Crypto, Development]
 ---
 
 Have you heard of cryptocurrencies? So has the rest of the world. Why not make your updates a little easier?

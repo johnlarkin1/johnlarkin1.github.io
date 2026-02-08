@@ -2,7 +2,7 @@
 title: Localization with a Particle Filter
 layout: post
 featured-img: particle-light
-categories: [Algorithms, Dev]
+categories: [Algorithms, Development]
 ---
 
 A visualization of how a particle filter can help you locate your robot in a maze... Or just what a particle filter is.
