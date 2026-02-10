@@ -540,6 +540,15 @@
         background: rgba($brand-youtube, 0.25);
       }
     }
+
+    &.header__mobile-profile-social--substack {
+      color: $brand-substack;
+      background: rgba($brand-substack, 0.12);
+
+      &:hover {
+        background: rgba($brand-substack, 0.25);
+      }
+    }
   }
 }
 
@@ -1287,6 +1296,15 @@
 
     &:hover {
       background: rgba($brand-youtube, 0.25);
+    }
+  }
+
+  &--substack {
+    color: $brand-substack;
+    background: rgba($brand-substack, 0.12);
+
+    &:hover {
+      background: rgba($brand-substack, 0.25);
     }
   }
 }

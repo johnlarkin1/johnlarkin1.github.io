@@ -32,6 +32,20 @@
         </svg>
       </a>
     {% endif %}
+    {% if site.substack_username %}
+      <a class="social__link social__link--substack" target="_blank" rel="noopener noreferrer" href="https://substack.com/@{{ site.substack_username }}">
+        <svg class="social__icon" viewBox="0 0 24 24" width="20px" height="20px" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+          <path d="M22.539 8.242H1.46V5.406h21.08v2.836zM1.46 10.812V24L12 18.11 22.54 24V10.812H1.46zM22.54 0H1.46v2.836h21.08V0z"/>
+        </svg>
+      </a>
+    {% endif %}
+    {% if site.email %}
+      <a class="social__link social__link--email" href="mailto:{{ site.email }}">
+        <svg class="social__icon" viewBox="0 0 24 24" width="24px" height="24px" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+          <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+        </svg>
+      </a>
+    {% endif %}
     </nav>
     <span>&copy; {{ site.time | date: '%Y' }} {{ site.title | escape }}. All rights reserved.</span>
   </div>

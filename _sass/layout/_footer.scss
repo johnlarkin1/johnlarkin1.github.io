@@ -21,13 +21,15 @@ footer {
   display: flex;
   justify-content: center;
   align-items: center;
-  max-width: 200px;
+  max-width: 280px;
   margin: 0 auto 25px;
 }
 
 .social__link {
   color: $brand-github;
   transition: color 0.2s ease, transform 0.2s ease;
+  display: flex;
+  align-items: center;
 
   &:not(:last-child) {
     margin-right: 1.5rem;
@@ -51,6 +53,18 @@ footer {
 
   &--instagram {
     color: $brand-instagram;
+  }
+
+  &--substack {
+    color: $brand-substack;
+
+    .social__icon {
+      transform: scale(0.75);
+    }
+  }
+
+  &--email {
+    color: $brand-email;
   }
 
   &:hover {
