@@ -23,7 +23,7 @@ navigation: # Navigation links
 
 projects: # Projects dropdown links (external)
   - {
-      name: "TS",
+      name: "Tennis Scorigami",
       link: "https://www.tennis-scorigami.com/",
       description: "Exploring scorigamis for tennis",
     }
