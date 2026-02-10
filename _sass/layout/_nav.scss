@@ -492,8 +492,53 @@
     }
 
     &:hover {
-      background: rgba($link-color, 0.15);
-      color: $link-color;
+      transform: translateY(-2px);
+    }
+
+    // Brand colors always visible
+    &.header__mobile-profile-social--github {
+      color: $brand-github;
+      background: rgba($brand-github, 0.08);
+
+      &:hover {
+        background: rgba($brand-github, 0.18);
+      }
+    }
+
+    &.header__mobile-profile-social--linkedin {
+      color: $brand-linkedin;
+      background: rgba($brand-linkedin, 0.12);
+
+      &:hover {
+        background: rgba($brand-linkedin, 0.25);
+      }
+    }
+
+    &.header__mobile-profile-social--email {
+      color: $brand-email;
+      background: rgba($brand-email, 0.12);
+
+      &:hover {
+        background: rgba($brand-email, 0.25);
+      }
+    }
+
+    &.header__mobile-profile-social--twitter {
+      color: $brand-twitter;
+      background: rgba($brand-twitter, 0.12);
+
+      &:hover {
+        background: rgba($brand-twitter, 0.25);
+      }
+    }
+
+    &.header__mobile-profile-social--youtube {
+      color: $brand-youtube;
+      background: rgba($brand-youtube, 0.12);
+
+      &:hover {
+        background: rgba($brand-youtube, 0.25);
+      }
     }
   }
 }
@@ -1196,35 +1241,53 @@
   }
 
   &:hover {
-    background: rgba($link-color, 0.15);
-    color: $link-color;
     transform: translateY(-2px);
   }
 
-  // Specific colors for social icons
-  &--github:hover {
-    background: rgba(#fff, 0.1);
-    color: #fff;
+  // Brand colors always visible
+  &--github {
+    color: $brand-github;
+    background: rgba($brand-github, 0.08);
+
+    &:hover {
+      background: rgba($brand-github, 0.18);
+    }
   }
 
-  &--linkedin:hover {
-    background: rgba(#0A66C2, 0.15);
-    color: #0A66C2;
+  &--linkedin {
+    color: $brand-linkedin;
+    background: rgba($brand-linkedin, 0.12);
+
+    &:hover {
+      background: rgba($brand-linkedin, 0.25);
+    }
   }
 
-  &--email:hover {
-    background: rgba($link-color, 0.15);
-    color: $link-color;
+  &--email {
+    color: $brand-email;
+    background: rgba($brand-email, 0.12);
+
+    &:hover {
+      background: rgba($brand-email, 0.25);
+    }
   }
 
-  &--twitter:hover {
-    background: rgba(#1DA1F2, 0.15);
-    color: #1DA1F2;
+  &--twitter {
+    color: $brand-twitter;
+    background: rgba($brand-twitter, 0.12);
+
+    &:hover {
+      background: rgba($brand-twitter, 0.25);
+    }
   }
 
-  &--youtube:hover {
-    background: rgba(#FF0000, 0.15);
-    color: #FF0000;
+  &--youtube {
+    color: $brand-youtube;
+    background: rgba($brand-youtube, 0.12);
+
+    &:hover {
+      background: rgba($brand-youtube, 0.25);
+    }
   }
 }
 

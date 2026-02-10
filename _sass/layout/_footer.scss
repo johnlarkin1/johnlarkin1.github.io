@@ -5,7 +5,7 @@ footer {
   font-size: 0.875rem;
   color: $dark-text;
 
-  a {
+  a:not(.social__link) {
     color: $dark-text;
     border-bottom: 0;
 
@@ -25,26 +25,43 @@ footer {
   margin: 0 auto 25px;
 }
 
-.social__link:not(:last-child) {
-  margin-right: 1.5rem;
-}
+.social__link {
+  color: $brand-github;
+  transition: color 0.2s ease, transform 0.2s ease;
 
+  &:not(:last-child) {
+    margin-right: 1.5rem;
+  }
+
+  &--github {
+    color: $brand-github;
+  }
+
+  &--linkedin {
+    color: $brand-linkedin;
+  }
+
+  &--twitter {
+    color: $brand-twitter;
+  }
+
+  &--youtube {
+    color: $brand-youtube;
+  }
+
+  &--instagram {
+    color: $brand-instagram;
+  }
+
+  &:hover {
+    transform: scale(1.15) translateY(-2px);
+  }
+}
 
 .social__icon {
   fill: currentColor;
   width: 32px;
   height: 32px;
   display: inline-block;
-  color: var(--icon-color, #000);
   transition: transform 0.2s ease;
-}
-
-@media (prefers-color-scheme: dark) {
-  .social__icon {
-    color: var(--icon-color-dark, #fff);
-  }
-}
-
-.social__link:hover .social__icon {
-  transform: scale(1.1); /* Optional: hover effect */
 }
