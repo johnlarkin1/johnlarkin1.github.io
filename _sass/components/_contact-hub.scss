@@ -7,6 +7,7 @@ $contact-x-color: #000000;
 $contact-linkedin-color: #0A66C2;
 $contact-github-color: #6e5494;
 $contact-youtube-color: #FF0000;
+$contact-substack-color: #FF6719;
 $contact-accent: #5837F5;
 
 // Animation timing
@@ -387,6 +388,7 @@ $contact-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
     &:nth-child(3) { .contact-hub.is-active & { animation-delay: 0.55s; } }
     &:nth-child(4) { .contact-hub.is-active & { animation-delay: 0.65s; } }
     &:nth-child(5) { .contact-hub.is-active & { animation-delay: 0.75s; } }
+    &:nth-child(6) { .contact-hub.is-active & { animation-delay: 0.85s; } }
 
     &:hover {
       transform: translateY(-4px) scale(1.02);
@@ -447,6 +449,17 @@ $contact-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
 
       .contact-hub__social-icon {
         color: $contact-youtube-color;
+      }
+    }
+
+    &--substack:hover {
+      border-color: rgba($contact-substack-color, 0.5);
+      box-shadow:
+        0 8px 30px rgba($contact-substack-color, 0.2),
+        0 0 0 1px rgba($contact-substack-color, 0.3);
+
+      .contact-hub__social-icon {
+        color: $contact-substack-color;
       }
     }
   }
