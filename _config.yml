@@ -40,7 +40,7 @@ projects: # Projects dropdown links (external)
   - {
       name: "Larkin Vanity Mirror",
       link: "https://larkin-vanity-mirror.vercel.app/",
-      description: "I'm (sadly) vain and like to keep stats on my projects",
+      description: "I'm (sadly) vain and like to keep stats on my projects. Should be PWA compatible.",
     }
 
 about_links: # About dropdown links

@@ -538,3 +538,72 @@
     transform: scale(0.28);
   }
 }
+
+/* Vanity mirror dashboard embed */
+/* iframe is 1440x900, scaled 0.6 = 864x540 visible */
+.vanity-mirror-iframe-wrapper {
+  display: block;
+  width: 864px; /* 1440 * 0.6 */
+  max-width: 100%;
+  aspect-ratio: 1440 / 900;
+  margin: 1.5rem auto;
+  overflow: hidden;
+  position: relative;
+}
+.vanity-mirror-iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1440px;
+  height: 900px;
+  border: none;
+  transform: scale(0.6);
+  transform-origin: 0 0;
+  overflow: hidden;
+  box-shadow: 0 2px 16px 0 rgba(20,32,60,0.07);
+  border-radius: 10px;
+}
+
+@media (max-width: 900px) {
+  .vanity-mirror-iframe-wrapper {
+    /* scale(0.45): 1440*0.45=648, 900*0.45=405 */
+    width: 648px;
+    height: 405px;
+  }
+  .vanity-mirror-iframe {
+    transform: scale(0.45);
+  }
+}
+
+@media (max-width: 650px) {
+  .vanity-mirror-iframe-wrapper {
+    /* scale(0.33): 1440*0.33=475, 900*0.33=297 */
+    width: 475px;
+    height: 297px;
+  }
+  .vanity-mirror-iframe {
+    transform: scale(0.33);
+  }
+}
+
+@media (max-width: 500px) {
+  .vanity-mirror-iframe-wrapper {
+    /* scale(0.25): 1440*0.25=360, 900*0.25=225 */
+    width: 360px;
+    height: 225px;
+  }
+  .vanity-mirror-iframe {
+    transform: scale(0.25);
+  }
+}
+
+@media (max-width: 380px) {
+  .vanity-mirror-iframe-wrapper {
+    /* scale(0.21): 1440*0.21=302, 900*0.21=189 */
+    width: 302px;
+    height: 189px;
+  }
+  .vanity-mirror-iframe {
+    transform: scale(0.21);
+  }
+}
