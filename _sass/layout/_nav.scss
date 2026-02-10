@@ -141,6 +141,26 @@
   }
 }
 
+.header__dropdown-item-content {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+}
+
+.header__dropdown-item-name {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.header__dropdown-item-desc {
+  font-size: 0.75rem;
+  opacity: 0.55;
+  margin-top: 0.2rem;
+  line-height: 1.3;
+}
+
 .header__external-icon {
   opacity: 0.6;
   flex-shrink: 0;
@@ -665,7 +685,8 @@
     position: absolute;
     top: 100%;
     left: 0;
-    min-width: 200px;
+    min-width: 260px;
+    max-width: 320px;
     background: $dark-bg;
     border: 1px solid $dark-border;
     border-top: none;
@@ -681,12 +702,19 @@
   .header__dropdown-item {
     padding: 0.75rem 1rem;
     border: 0;
-    white-space: nowrap;
 
     &:hover {
       background: rgba($link-color, 0.1);
       color: $link-color;
     }
+  }
+
+  .header__dropdown-item-name {
+    white-space: nowrap;
+  }
+
+  .header__dropdown-item-desc {
+    white-space: normal;
   }
 
   // Desktop dropdown divider

@@ -16,19 +16,39 @@ social:
 
 # THEME SETTINGS
 navigation: # Navigation links
-  - {name: 'Home', link: '/'}
-  - {name: 'Categories', link: '/categories'}
-  - {name: 'About', link: '/about'}
-  - {name: 'Contact', link: '/contact'}
+  - { name: "Home", link: "/" }
+  - { name: "Categories", link: "/categories" }
+  - { name: "About", link: "/about" }
+  - { name: "Contact", link: "/contact" }
 
 projects: # Projects dropdown links (external)
-  - {name: 'Tennis Scorigami', link: 'https://www.tennis-scorigami.com/'}
-  - {name: 'Scrollz', link: 'https://www.scrollz.co/'}
-  - {name: 'Walk in the Parquet', link: 'https://www.walkintheparquet.com/'}
+  - {
+      name: "TS",
+      link: "https://www.tennis-scorigami.com/",
+      description: "Exploring scorigamis for tennis",
+    }
+  - {
+      name: "Scrollz",
+      link: "https://www.scrollz.co/",
+      description: "Keeping track of newsletters through email is dumb",
+    }
+  - {
+      name: "Walk in the Parquet",
+      link: "https://www.walkintheparquet.com/",
+      description: "Native MacOS viewer built with Rust (Tauri) for Parquet files",
+    }
+  - {
+      name: "Larkin Vanity Mirror",
+      link: "https://larkin-vanity-mirror.vercel.app/",
+      description: "I'm (sadly) vain and like to keep stats on my projects. Should be PWA compatible.",
+    }
 
 about_links: # About dropdown links
-  - {name: 'General', link: '/about/'}
-  - {name: 'Timeline', link: '/assets/html/larkin-mcp/john-larkin-timeline.html'}
+  - { name: "General", link: "/about/" }
+  - {
+      name: "Timeline",
+      link: "/assets/html/larkin-mcp/john-larkin-timeline.html",
+    }
 
 tagline: >
   My personal coding blog and thought journal.
@@ -38,13 +58,13 @@ hero_img: posts/everest-edit_lg.jpg # Main background image: use the path from /
 email: john@johnjlarkin.com # email for form submission
 
 twitter_username: jlarks32 # replace with your_twitter_username or comment to remove link from footer
-github_username:  johnlarkin1 # replace with your_github_username or comment to remove link from footer
+github_username: johnlarkin1 # replace with your_github_username or comment to remove link from footer
 # instagram_username: johnlarkin # replace with your_instagram_username or comment to remove link from footer
 linkedin_username: johnlarkin1 # replace with your_linkedin_username or comment to remove link from footer
 youtube_username: johnlarkin1 # replace with your_youtube_username or comment to remove link from footer
 
 # disqus:
-  # shortname: jlarks32 
+# shortname: jlarks32
 
 google_tag_manager: GTM-KDHGNV6
 
@@ -71,7 +91,7 @@ exclude:
   - gulpfile.js
   - sleek.jpg
 
-include: ['_pages']
+include: ["_pages"]
 permalink: /:year/:title/
 
 compress_html:

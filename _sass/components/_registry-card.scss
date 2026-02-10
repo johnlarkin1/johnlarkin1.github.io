@@ -6,6 +6,7 @@
   --typescript-color: #00d4ff;
   --rust-color: #f79359;
   --github-color: #8b5cf6;
+  --web-color: #38bdf8;
 
   display: flex;
   justify-content: center;
@@ -76,6 +77,12 @@
     --accent-color: var(--github-color);
     --glow-color: rgba(139, 92, 246, 0.25);
     background: rgba(139, 92, 246, 0.08);
+  }
+
+  &.web {
+    --accent-color: var(--web-color);
+    --glow-color: rgba(56, 189, 248, 0.25);
+    background: rgba(56, 189, 248, 0.08);
   }
 
   .lang-icon {

@@ -40,10 +40,17 @@
               <div class="header__dropdown-menu" id="projects-menu">
                 {% for project in site.projects %}
                 <a class="header__dropdown-item" href="{{ project.link }}" target="_blank" rel="noopener noreferrer">
-                  {{ project.name }}
-                  <svg class="header__external-icon" width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M10.5 1.5L5.5 6.5M10.5 1.5H7M10.5 1.5V5M10.5 7V10C10.5 10.2761 10.2761 10.5 10 10.5H2C1.72386 10.5 1.5 10.2761 1.5 10V2C1.5 1.72386 1.72386 1.5 2 1.5H5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
-                  </svg>
+                  <span class="header__dropdown-item-content">
+                    <span class="header__dropdown-item-name">
+                      {{ project.name }}
+                      <svg class="header__external-icon" width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M10.5 1.5L5.5 6.5M10.5 1.5H7M10.5 1.5V5M10.5 7V10C10.5 10.2761 10.2761 10.5 10 10.5H2C1.72386 10.5 1.5 10.2761 1.5 10V2C1.5 1.72386 1.72386 1.5 2 1.5H5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                    </span>
+                    {% if project.description %}
+                    <span class="header__dropdown-item-desc">{{ project.description }}</span>
+                    {% endif %}
+                  </span>
                 </a>
                 {% endfor %}
                 <!-- Divider -->
