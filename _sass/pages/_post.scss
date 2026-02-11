@@ -137,6 +137,19 @@
   border-radius: 4px;
 }
 
+.video-container-mobile {
+  text-align: center;
+  margin: 20px auto;
+  max-width: 400px;
+
+  video {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 4px;
+  }
+}
+
 .video-caption {
   margin: 8px 0 0;
   color: #666;

@@ -47,18 +47,25 @@ I was too lazy / too broke to buy an official domain (although I'm sure the mark
 
 Regardless, my favorite part about this is that I took the shortcut of making this a [PWA] so now it's very easily hooked up into my mobile experience. 
 
-<div class="video-container">
+<div class="video-container-mobile">
   <div class="video-wrapper-dark">
-    <video 
+    <video
       src="https://www.dropbox.com/scl/fi/f6jbjd325w1irgknjw4l5/vanity-mirror-screen-recording.mp4?rlkey=swt2k91wtift2epfeqtf2z3oh&st=gl332k68&raw=1"
       muted
       autoplay
       loop
-      controls
-      style="width: 100%; height: 600px;">
+      controls>
     </video>
   </div>
 </div>
+
+To download, just follow these steps:
+
+1. Go to [**larkin-vanity-mirror.vercep.app**][vanity-mirror] on your mobile device
+2. Click context menu three dots in bottom right (on newer iOS)
+3. Click `Share`
+4. Scroll down and go to `Add to Home Screen` 
+5. Voila 🎉
 
 Feel free to email / let me know if enough interest and I can try to generalize it. Although honestly, at this point, jinja doesn't seem to have much value over just ripping CC.
 
