@@ -3,7 +3,7 @@ title: Where will you go next? # your site title
 author: johnlarkin1 # You :P
 email: john@johnjlarkin.com
 description: > # Meta description of Homepage
-  John Larkin's personal coding blog and thought journal
+  John Larkin's personal coding blog and thought journal. Exploring various ideas in software engineering, math, data, and more in my (limited) free time.
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "https://johnlarkin1.github.io" # the base hostname & protocol for your site, e.g. http://example.com
 
