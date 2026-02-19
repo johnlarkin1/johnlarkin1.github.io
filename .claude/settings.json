@@ -25,7 +25,10 @@
       "mcp__plugin_playwright_playwright__browser_hover",
       "mcp__plugin_playwright_playwright__browser_take_screenshot",
       "mcp__plugin_playwright_playwright__browser_snapshot",
-      "Bash(python3:*)"
+      "Bash(python3:*)",
+      "Bash(sips:*)",
+      "Bash(bundle info:*)",
+      "Bash(identify:*)"
     ],
     "deny": []
   }

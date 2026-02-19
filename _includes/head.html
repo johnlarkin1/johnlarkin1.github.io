@@ -14,7 +14,19 @@
   {% else %}
     {% assign poster_url = site.url | append: site.baseurl | append: "/assets/img/posts/" | append: page.featured-poster | append: "_main.jpg" %}
   {% endif %}
-  <meta property="og:type" content="video.other" />
+
+  {% comment %} Choose GIF for og:image when featured-gif is also present {% endcomment %}
+  {% if page.featured-gif %}
+    {% if page.featured-gif contains "http" %}
+      {% assign og_image_url = page.featured-gif %}
+    {% else %}
+      {% assign og_image_url = site.url | append: site.baseurl | append: "/assets/gif/" | append: page.featured-gif | append: ".gif" %}
+    {% endif %}
+  {% else %}
+    {% assign og_image_url = poster_url %}
+  {% endif %}
+
+  <!-- Video tags preserved for iMessage etc. -->
   <meta
     property="og:video"
     content="{{ video_url }}"
@@ -26,37 +38,34 @@
   <meta property="og:video:type" content="video/mp4" />
   <meta property="og:video:width" content="1200" />
   <meta property="og:video:height" content="630" />
-  <!-- poster used by iMessage and most unfurlers -->
+  <!-- Image: GIF when available, poster otherwise -->
   <meta
     property="og:image"
-    content="{{ poster_url }}"
+    content="{{ og_image_url }}"
   />
+  {% if page.featured-gif %}
+  <meta property="og:image:type" content="image/gif" />
+  {% endif %}
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
-  <!-- keep exactly one card type sitewide -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta
     name="twitter:image"
-    content="{{ poster_url }}"
+    content="{{ og_image_url }}"
   />
+  {% if page.featured-gif %}
+  <!-- LinkedIn-specific hints -->
+  <meta name="linkedin:image" content="{{ og_image_url }}" />
+  <meta name="linkedin:image:type" content="image/gif" />
+  <meta name="linkedin:image:width" content="1200" />
+  <meta name="linkedin:image:height" content="630" />
+  {% endif %}
   {% elsif page.featured-gif %}
   {% if page.featured-gif contains "http" %}
     {% assign gif_url = page.featured-gif %}
   {% else %}
     {% assign gif_url = site.url | append: site.baseurl | append: "/assets/gif/" | append: page.featured-gif | append: ".gif" %}
   {% endif %}
-  <meta property="og:type" content="video.other" />
-  <meta
-    property="og:video"
-    content="{{ gif_url }}"
-  />
-  <meta
-    property="og:video:secure_url"
-    content="{{ gif_url }}"
-  />
-  <meta property="og:video:type" content="image/gif" />
-  <meta property="og:video:width" content="1200" />
-  <meta property="og:video:height" content="630" />
   <meta
     property="og:image"
     content="{{ gif_url }}"
@@ -69,6 +78,11 @@
     name="twitter:image"
     content="{{ gif_url }}"
   />
+  <!-- LinkedIn-specific hints -->
+  <meta name="linkedin:image" content="{{ gif_url }}" />
+  <meta name="linkedin:image:type" content="image/gif" />
+  <meta name="linkedin:image:width" content="1200" />
+  <meta name="linkedin:image:height" content="630" />
   {% elsif page.featured-img %}
   <meta
     property="og:image"
