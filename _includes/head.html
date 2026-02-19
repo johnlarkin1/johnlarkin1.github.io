@@ -26,7 +26,8 @@
     {% assign og_image_url = poster_url %}
   {% endif %}
 
-  <!-- Video tags preserved for iMessage etc. -->
+  <!-- iMessage needs video.other to play the MP4 inline -->
+  <meta property="og:type" content="video.other" />
   <meta
     property="og:video"
     content="{{ video_url }}"
