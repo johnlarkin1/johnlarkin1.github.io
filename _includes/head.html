@@ -15,15 +15,13 @@
     {% assign poster_url = site.url | append: site.baseurl | append: "/assets/img/posts/" | append: page.featured-poster | append: "_main.jpg" %}
   {% endif %}
 
-  {% comment %} Choose GIF for og:image when featured-gif is also present {% endcomment %}
+  {% comment %} Resolve GIF URL for linkedin:image hint {% endcomment %}
   {% if page.featured-gif %}
     {% if page.featured-gif contains "http" %}
-      {% assign og_image_url = page.featured-gif %}
+      {% assign gif_url = page.featured-gif %}
     {% else %}
-      {% assign og_image_url = site.url | append: site.baseurl | append: "/assets/gif/" | append: page.featured-gif | append: ".gif" %}
+      {% assign gif_url = site.url | append: site.baseurl | append: "/assets/gif/" | append: page.featured-gif | append: ".gif" %}
     {% endif %}
-  {% else %}
-    {% assign og_image_url = poster_url %}
   {% endif %}
 
   <!-- iMessage needs video.other to play the MP4 inline -->
@@ -39,24 +37,21 @@
   <meta property="og:video:type" content="video/mp4" />
   <meta property="og:video:width" content="1200" />
   <meta property="og:video:height" content="630" />
-  <!-- Image: GIF when available, poster otherwise -->
+  <!-- Static poster for og:image — iMessage uses this as video poster -->
   <meta
     property="og:image"
-    content="{{ og_image_url }}"
+    content="{{ poster_url }}"
   />
-  {% if page.featured-gif %}
-  <meta property="og:image:type" content="image/gif" />
-  {% endif %}
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta
     name="twitter:image"
-    content="{{ og_image_url }}"
+    content="{{ poster_url }}"
   />
   {% if page.featured-gif %}
-  <!-- LinkedIn-specific hints -->
-  <meta name="linkedin:image" content="{{ og_image_url }}" />
+  <!-- LinkedIn-specific hints pointing to the animated GIF -->
+  <meta name="linkedin:image" content="{{ gif_url }}" />
   <meta name="linkedin:image:type" content="image/gif" />
   <meta name="linkedin:image:width" content="1200" />
   <meta name="linkedin:image:height" content="630" />
