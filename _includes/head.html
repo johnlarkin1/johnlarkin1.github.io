@@ -3,7 +3,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  {% seo %} {% if page.featured-video %}
+  {% seo %} {% feed_meta %} {% if page.featured-video %}
   {% if page.featured-video contains "http" %}
     {% assign video_url = page.featured-video %}
   {% else %}
