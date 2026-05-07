@@ -42,6 +42,11 @@ projects: # Projects dropdown links (external)
       link: "https://larkin-vanity-mirror.vercel.app/",
       description: "I'm (sadly) vain and like to keep stats on my projects. Should be PWA compatible.",
     }
+  - {
+      name: "Odozi",
+      link: "https://odozi.app/",
+      description: "Private iOS journaling app for mood, habits, and reflection",
+    }
 
 about_links: # About dropdown links
   - { name: "General", link: "/about/" }
