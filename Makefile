@@ -1,4 +1,4 @@
-.PHONY: build-css build-img build-js build serve serve-static clean jekyll pagefind embeddings search
+.PHONY: build-css build-img build-js build serve serve-static clean jekyll pagefind embeddings search build-resume
 
 # i need to update this
 build-css:
@@ -44,6 +44,11 @@ serve:
 serve-static:
 	@echo "Serving _site/ at http://localhost:4000 (Ctrl+C to stop)"
 	@cd _site && python3 -m http.server 4000
+
+# build resume PDF with xelatex
+build-resume:
+	cd resume/Larkin_Resume__2_page && xelatex cv_12.tex && xelatex cv_12.tex
+	@echo "Resume built: resume/Larkin_Resume__2_page/cv_12.pdf"
 
 # clean
 clean:
