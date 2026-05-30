@@ -167,6 +167,24 @@
   margin-left: 0.5rem;
 }
 
+// Leading Lucide icon for each project / dropdown item
+.header__project-icon {
+  flex-shrink: 0;
+  width: 17px;
+  height: 17px;
+  margin-right: 0.7rem;
+  margin-top: 0.1rem; // nudge to align with the item title
+  align-self: flex-start;
+  color: $link-color;
+  opacity: 0.75;
+  transition: opacity 0.15s ease-in-out, transform 0.15s ease-in-out;
+}
+
+.header__dropdown-item:hover .header__project-icon {
+  opacity: 1;
+  transform: scale(1.08);
+}
+
 // Dropdown divider
 .header__dropdown-divider {
   height: 1px;
