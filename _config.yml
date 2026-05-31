@@ -26,26 +26,31 @@ projects: # Projects dropdown links (external)
       name: "Tennis Scorigami",
       link: "https://www.tennis-scorigami.com/",
       description: "Exploring scorigamis for tennis",
+      icon: "tennis-ball",
     }
   - {
       name: "Scrollz",
       link: "https://www.scrollz.co/",
       description: "Keeping track of newsletters through email is dumb",
+      icon: "newspaper",
     }
   - {
       name: "Walk in the Parquet",
       link: "https://www.walkintheparquet.com/",
       description: "Native MacOS viewer built with Rust (Tauri) for Parquet files",
+      icon: "trees",
     }
   - {
       name: "Larkin Vanity Mirror",
       link: "https://larkin-vanity-mirror.vercel.app/",
       description: "I'm (sadly) vain and like to keep stats on my projects. Should be PWA compatible.",
+      icon: "hand-mirror",
     }
   - {
       name: "Odozi",
       link: "https://odozi.app/",
       description: "Private iOS journaling app for mood, habits, and reflection",
+      icon: "book-heart",
     }
 
 about_links: # About dropdown links
