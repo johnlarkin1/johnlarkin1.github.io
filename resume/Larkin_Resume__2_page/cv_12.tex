@@ -1,0 +1,713 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Deedy - One Page Two Column Resume
+% LaTeX Template
+% Version 1.1 (30/4/2014)
+%
+% Original author:
+% Debarghya Das (http://debarghyadas.com)
+%
+% Original repository:
+% https://github.com/deedydas/Deedy-Resume
+%
+% IMPORTANT: THIS TEMPLATE NEEDS TO BE COMPILED WITH XeLaTeX
+%
+% This template uses several fonts not included with Windows/Linux by
+% default. If you get compilation errors saying a font is missing, find the line
+% on which the font is used and either change it to a font included with your
+% operating system or comment the line out to use the default font.
+% 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% 
+% TODO:
+% 1. Integrate biber/bibtex for article citation under publications.
+% 2. Figure out a smoother way for the document to flow onto the next page.
+% 3. Add styling information for a "Projects/Hacks" section.
+% 4. Add location/address information
+% 5. Merge OpenFont and MacFonts as a single sty with options.
+% 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% CHANGELOG:
+% v1.1:
+% 1. Fixed several compilation bugs with \renewcommand
+% 2. Got Open-source fonts (Windows/Linux support)
+% 3. Added Last Updated
+% 4. Move Title styling into .sty
+% 5. Commented .sty file.
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Known Issues:
+% 1. Overflows onto second page if any column's contents are more than the
+% vertical limit
+% 2. Hacky space on the first bullet point on the second column.
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[]{deedy-resume}
+\usepackage{multicol}
+
+\begin{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%     LAST UPDATED DATE
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\lastupdated
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%     TITLE NAME
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\namesection{John}{Larkin}{ 
+% \textsc{3648 North Racine, Apt \#1, Chicago, IL 60613} \\
+% \textsc{4201 Victory Parkway, Apt \#902, Cincinnati, OH 45229} \\
+% \textsc{1513 Pershing Drive, Apt \#E, San Francisco, CA 94129} \\
+% \textsc{364 W 18th St, Apt \#4A, New York, NY 10011} \\
+\textsc{333 Schermerhorn St, Brooklyn, NY 11217} \\
+\href{mailto:john@johnjlarkin.com}{john@johnjlarkin.com} | \url{https://johnlarkin1.github.io} | 513.600.5594
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%     COLUMN ONE
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{minipage}[t]{0.33\textwidth} 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%     EDUCATION
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Education} 
+
+\subsection{Swarthmore College}
+\descript{B.S. in Engineering, focus in Computer Engineering}
+\location{May 2017 | Swarthmore, PA \\ Cum. GPA: 3.82 \\ Major GPA: 3.88}
+\sectionspace
+
+
+\descript{Minor in Chemistry}
+\location{May 2017 | Swarthmore, PA}
+%\location{ Minor GPA: 3.53 / 4.0}
+\sectionspace
+
+%**********************************
+% Took out high school
+%**********************************
+%\subsection{Seven Hills High School}
+%\location{Grad. May 2013|  Cincinnati, Ohio}
+%Miami Valley Conference Scholar Athlete Award (2010-2012)\\
+%AP Scholar with Honors
+%\location{GPA: 3.79 / 4.00}
+%\sectionspace
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%     LINKS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%\section{Links} 
+%Github:// \href{https://github.com/deedydas}{\custombold{deedydas}} \\
+%LinkedIn://  \href{https://www.linkedin.com/in/debarghyadas}{\custombold{debarghyadas}} \\
+%YouTube://  \href{https://www.youtube.com/user/DeedyDash007}{\custombold{DeedyDash007}} \\
+%Twitter://  \href{https://twitter.com/debarghya_das}{\custombold{@debarghya\_das}} \\
+%Quora://  \href{https://www.quora.com/Debarghya-Das}{\custombold{Debarghya-Das}}
+%\sectionspace
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%     COURSEWORK
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Coursework}
+\subsection{Swarthmore College}
+Linear Physical Systems Analysis \\
+Linear Algebra \\
+Data Structures and Algorithms \\
+Differential Equations \\
+% Numerical Methods for Engr Applications \\
+% Mobile Robotics \\
+% Biomedical Signals \\
+Algorithms \\ 
+Computer Vision
+
+\sectionspace
+
+%\subsection{Undergraduate}
+%Information Retrieval \\
+%Operating Systems \\
+%Artificial Intelligence + Practicum \\
+%Functional Programming \\
+%Computer Graphics + Practicum \\
+%{\footnotesize \textit{\textbf{(Research Asst. \& Teaching Asst) }}} \\
+%Unix Tools and Scripting \\
+%\sectionspace
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%     SKILLS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Skills}
+\subsection{Languages}
+\vspace{5pt}
+\location{Experienced:}
+\begin{multicols}{3}
+\textbullet{} Python (fastapi, np, pd, pytest, openai) \\
+\textbullet{} Go \\
+\textbullet{} Typescript\\
+\textbullet{} C\# \\
+\textbullet{} tSQL  \\
+\textbullet{} Swift \\
+\textbullet{} Rust \\
+\textbullet{} AbInitio DML \\
+\end{multicols}
+\vspace{5pt}
+\location{Familiar:} 
+\begin{multicols}{2}
+\textbullet{} C++ (xgboost, armadillo) \\
+\textbullet{} CSS / HTML \\
+\textbullet{} \LaTeX \\ 
+\textbullet{} R \\
+% \textbullet{} Italian 
+\end{multicols}
+\vspace{5pt}
+\sectionspace
+\subsection{Software}
+\location{Experienced:}
+\begin{multicols}{3}
+\textbullet{} Postgres \\
+\textbullet{} ScyllaDB \\
+\textbullet{} Python Libs \\
+\textbullet{} terraform \\
+\textbullet{} k6 \\
+\textbullet{} Git \\
+\textbullet{} Docker \\
+\textbullet{} k8s \\
+% \textbullet{} VisualStudio \\
+\textbullet{} SSMS \\
+\textbullet{} Ab Initio \\
+\textbullet{} Splunk \\
+\textbullet{} Grafana \\
+\end{multicols}
+\vspace{5pt}
+\location{Familiar:}
+\begin{multicols}{3}
+\textbullet{} Miro / Figma \\
+\textbullet{} Python Libs (tf, nicegui) \\
+\textbullet{} MATLAB \\
+\textbullet{} SSIS \\
+\textbullet{} OpenShift \\
+\textbullet{} HDFS
+\end{multicols}
+
+
+\sectionspace
+\section{Published}
+% \subsection{Coding}
+\textbullet{} \href{https://pypi.org/project/scylla-go-round/}{(PyPi) Scylla-Go-Round} \\
+\textbullet{} \href{https://chromewebstore.google.com/detail/github-pr-title-formatter/pdjmmincfaficadbaemdifkbaioiihob}{(Chrome) Github PR Formatter} \\
+\textbullet{}  \href{https://nuclearengineering.asmedigitalcollection.asme.org/ES/proceedings-abstract/ES2016/50220/V001T13A001/231202}{(ASME Paper) A Process Simulation of Guayule Biorefining, Including an Exergy Analysis}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%     COLUMN TWO
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\end{minipage} 
+\hfill
+\begin{minipage}[t]{0.66\textwidth} 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%     Work
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Work Experience}
+
+\runsubsection{\href{https://www.mojo.com/}{Mojo}}
+\descript{| Staff Software Engineer}
+\location{August 2025 - present | Remote (NYC)}
+\location{Tech Stack: Python, C++, Golang, Terraform}
+\vspace{\topsep}
+\begin{tightitemize}
+    \item \textbf{Team Lead}: Oversaw team of 4eng for B2B initiatives for AWS -> GCP
+    \item \textbf{Parlays} (Py):  Lead for repricing solution for executed parlays for top client (8fig deal)
+    \item \textbf{Parlays} (Py): Reduced pod memory usage 5x, enabling migration from \texttt{m}-class to \texttt{c}-class instances; increased FastAPI worker density -> delivered higher RPS/\$
+\end{tightitemize}
+\sectionspace
+
+
+\runsubsection{\href{https://www.mojo.com/}{Mojo}}
+\descript{| Senior Software Engineer}
+\location{April 2024 - August 2025 | Remote (NYC)}
+\location{Tech Stack: Python, C++, Golang, Terraform}
+\begin{tightitemize}
+    \item \textbf{Parlay Pricing} (Py): Designed \href{https://fastapi.tiangolo.com/}{FastAPI} service for same-game and x-game parlay:
+    \vspace{3pt}
+    \begin{tightitemize}
+        \item Leveraged \href{https://parquet.apache.org/}{Parquet} files to reduce S3 data transfer and accelerate computation.
+        \item Worked with algo engineers to implement copula-based correlation pricing.
+        \item Optimized data operations to construct efficient correlation matrices.
+    \end{tightitemize}
+    \vspace{3pt}
+    \item \textbf{Simulations \& Aggregation} (C++): Developed optimized \textbf{simulation aggregator} for NFL/NBA models, handling player/team/game distributions, writing to \href{https://www.scylladb.com/}{Scylla}, issuing Kafka messages, refreshing parlays, and processing live game updates.
+    \item \textbf{Heartbeat Infra} (Go): End to end owner for EKS heartbeat sidecar service for top client
+    \item \textbf{Market Finalization} (Py): Built lambda w/ SportRadar API for MLB/NFL markets
+    \item \textbf{Tooling \& Automation}:
+    \vspace{5pt}
+    \begin{tightitemize}
+        \item Championed migration to \href{https://python-poetry.org/}{\texttt{poetry}} over \texttt{pipenv}, adoption of \href{https://beta.ruff.rs/docs/}{ruff}, \href{https://mypy.readthedocs.io/en/stable/}{\texttt{mypy}}, etc.
+        \item Implemented GHA for streamlined CI/CD workflows across Python repos
+    \end{tightitemize}
+    % \vspace{3pt}
+    % \item \textbf{Data Analysis Service} (Go): Built EKS-based service w/ Kafka trigger to parse MLB play-by-play JSON data
+\end{tightitemize}
+\sectionspace
+
+% \runsubsection{\href{https://www.mojo.com/}{Mojo}}
+% \descript{| Senior Software Engineer}
+% \location{April 2024 - present | Remote (NYC)}
+% \location{Tech Stack: Python, C++, Golang, Terraform}
+% \vspace{\topsep}
+% \begin{tightitemize}
+% \item (C++) Developed optimized simulation aggregator for NFL and NBA models, handling player/team/game distributions, \href{https://www.scylladb.com/}{Scylla} writes, Kafka messages, parlay refreshes, and live updates.
+% \item (Py) Built `finalize` lambda for MLB/NFL market settlement by integrating SportRadar API with internal systems.
+% \item (Py) Designed \href{https://fastapi.tiangolo.com/}{FastAPI} parlay-pricing service for SGP and cross-game requests:
+% \vspace{5pt}
+% \begin{tightitemize}
+%     \item Leveraged \href{https://parquet.apache.org/}{Parquet} files to reduce S3 transfer and speed up computation.
+%     \item Partnered with market-making to integrate copula-based event correlation.
+%     \item Performance-tested dataframe operations for optimized correlation matrix construction.
+% \end{tightitemize}
+% \item (Go) Created EKS service for MLB play-by-play analysis triggered by Kafka messages.
+% \item Led migration to \href{https://python-poetry.org/}{poetry}, introduced \href{https://beta.ruff.rs/docs/}{ruff} and \href{https://mypy.readthedocs.io/en/stable/}{mypy}, and automated via GHA for Python repo standardization.
+% \end{tightitemize}
+% \sectionspace
+
+\runsubsection{\href{https://www.dropbox.com/}{Dropbox}}
+\descript{| Software Engineer}
+\location{October 2021 - April 2024 | Remote (Cincy, SF, NYC)}
+\location{Tech Stack: \href{https://www.python.org/}{Python}, \href{https://www.typescriptlang.org/}{TypeScript}/\href{https://react.dev/}{React}, \href{https://www.rust-lang.org/}{Rust}}
+\vspace{3pt}
+\begin{tightitemize}
+    \item \textbf{Dropbox Replay} - Media review tool for video, audio, and images
+    \vspace{5pt}
+    \begin{tightitemize}
+        \item Built Version Comparison and the TLDW feature using \href{https://platform.openai.com/docs/guides/completion}{OpenAI} for transcriptions
+        % \item Led migration of server endpoints to Python \href{https://docs.python.org/3/library/asyncio.html}{asyncio}.
+        \item Lead engineer on FSS Group Sharing, overseeing design, impl, and x-team collab.
+        \item Lead engineer on Replay quota counting project
+    \end{tightitemize}
+    % \vspace{5pt}
+    % \item \textbf{FenixAPI} - Cross-team \href{https://www.typescriptlang.org/}{TypeScript} API for Electron desktop components
+    % \vspace{5pt}
+    % \begin{tightitemize}
+    %     \item Integrated \href{https://grpc.io/}{gRPC} for inter-service comms b/n Rust and Python.
+        % \item Developed a service for client subscriptions and event handling.
+    % \end{tightitemize}
+    \vspace{5pt}
+    \item \textbf{Dropbox Backup} - Full-stack lead for local and external drive backup
+    \vspace{5pt}
+    \begin{tightitemize}
+        \item Lead for migration of 5M users to new sync engine (Python, Rust, TypeScript)
+        \item Created AutoSelSyncer to optimize memory usage for multiple EDBs.
+        % \item Enhanced Screenshot and Camera Uploads via modern async APIs.
+    \end{tightitemize}
+    \vspace{5pt}
+    \item \textbf{Mentoring and Recruiting} - presented technical workshop to 55 incoming interns
+\end{tightitemize}
+\sectionspace
+
+
+% \runsubsection{\href{https://www.dropbox.com/}{Dropbox}}
+% \descript{| Software Engineer}
+% \location{October 2021 - April 2024 | Remote (Cincy, SF, NYC) }
+% \location{Tech stack: Python, Typescript/React, Rust}
+% \vspace{3pt}
+% \begin{tightitemize}
+%     \item Dropbox Replay - a video, audio, and image review tool
+%     \vspace{5pt}
+%     \begin{tightitemize}
+%         \item Implemented Version Comparison view for videos and images
+%         \item Built TLDW feature using OpenAI completion endpoint to highlight key points in transcripts, toggle view, and more
+%         \item Led migration efforts to move server endpoints to Python's \texttt{asyncio} servlet 
+%         \item Lead engineer for FSS Group sharing - design, impl, cross team collab
+%     \end{tightitemize}
+%     \vspace{5pt}
+%     \item FenixAPI - cross team Typescript API for Electron desktop app components
+%     \vspace{5pt}
+%     \begin{tightitemize}
+%         \item Utilized gRPC to communicate between various Rust / Python services
+%         \item Built out a service listening for client subscriptions and events
+%     \end{tightitemize}
+%     \vspace{5pt}
+%     \item Dropbox Backup - full stack owner of local hard drives + external drives
+%     \vspace{5pt}
+%     \begin{tightitemize}
+%         \item Led full stack impl of project (Python, Rust, Typescript) to migrate 5M users to newer sync engine
+%         \item Built AutoSelSyncer to reduce memory locally for users with multiple EDBs
+%         \item Revamped Screenshot + Camera Uploads utilizing async with modern APIs
+%     \end{tightitemize}
+%     \vspace{5pt}
+%     \item Mentoring and recruiting
+%     \vspace{5pt}
+%     \begin{tightitemize}
+%         \item Elected to give technical presentation to incoming 55 summer intern class
+%     \end{tightitemize}
+%     % \vspace{5pt}
+%     % \item Interviewing and recruiting
+%     % \vspace{5pt}
+%     % \begin{tightitemize}
+%     %     \item Within 4 months, fully onboarded as an interviewer
+%     %     \item Redesigned multiple interview questions to make them more testable
+%     %     \item Reimplemented an interview question in C\# which was adopted in Poland office
+%     % \end{tightitemize}
+% \end{tightitemize}
+% \sectionspace
+
+% \runsubsection{\href{https://www.dropbox.com/}{Dropbox}}
+% \descript{| Software Engineer}
+% \location{October 2021 - April 2024 | Remote (Cincinnati, SF, NYC)}
+% \location{Tech stack: Python, Typescript/React, Rust}
+% \vspace{\topsep}
+% \begin{tightitemize}
+%     \item Contributed to Dropbox Replay, a video, audio, and image review tool:
+%     \vspace{5pt}
+%     \begin{tightitemize}
+%         \item Implemented Version Comparison view for videos/images.
+%         \item Built TLDW feature using OpenAI to highlight key points in transcripts.
+%         \item Led migration to move server endpoints to Python's asyncio servlet to improve perf
+%         \item Designed and developed FSS Group sharing, leading full-stack implementation (design + CX communication + team comms)
+%     \end{tightitemize}
+%     \item Developed cross-team Typescript API for Dropbox's Electron desktop app:
+%     \vspace{5pt}
+%     \begin{tightitemize}
+%         \item Integrated gRPC communication between Rust and Python services.
+%         \item Created service to handle client subscriptions and events.
+%     \end{tightitemize}
+%     \item Worked on Dropbox Backup, focusing on comprehensive computer and external drive backups:
+%     \vspace{5pt}
+%     \begin{tightitemize}
+%         \item Led migration of 5M users to a new sync engine using Python, Rust, and Typescript.
+%         \item Developed auto-selsyncer to optimize memory usage for users with multiple backups.
+%         \item Enhanced Screenshot and Camera Uploads with async processing via modern APIs.
+%     \end{tightitemize}
+%     \item Mentoring and recruiting:
+%     \vspace{5pt}
+%     \begin{tightitemize}
+%         \item Delivered technical presentations to 55 incoming summer interns.
+%     \end{tightitemize}
+% \end{tightitemize}
+% \sectionspace
+
+
+\runsubsection{\href{https://www.abinitio.com/en/}{Ab Initio}}
+\descript{| Field Engineer}
+\location{May 2019 - October 2021 | Chicago, IL}
+\location{Tech stack: Python, C\#, DML, AWS, SQL}
+\begin{tightitemize}
+    \item Customer facing engineer building high vol and latency focused data processing systems
+    \item Won contract with healthcare client after optimizing .NET ETL pipeline
+    \item Led successful cloud migration POC at multinational bank to Tanzu k8s grid
+    % \item Developed custom UI for data quality business demands for global bank
+    \item F500 bank, built data ingestion for multiple teams w/ quality + cleansing to Hadoop
+    % \vspace{5pt}
+    % \begin{tightitemize}
+        
+    %     % \item Migrated apps to be cloud compatible with various cloud architects and providers (OpenShift, Tanzu on GCP, AWS)
+    % \end{tightitemize}
+    % \vspace{5pt}
+    % \item Member of the recruiting and interviewing team
+\end{tightitemize}
+\sectionspace
+
+\runsubsection{\href{http://www.belvederetrading.com/}{Belvedere Trading}}
+\descript{| Software Engineer}
+\location{August 2017 - April 2019 | Chicago, IL}
+\location{Tech stack: C\#, C++, Python, React}
+\begin{tightitemize}
+\item Reconciliation system b/n clearing \& and internal trading platform involving heavy MSSQL work
+\item Implemented new front end Greek visualizations, specifically focused around AP
+\item Helped build the execution gateway to process FIX messages for OSE 
+%Osaka Securities Exchange
+% \item Built out regression tests to fully automate end-to-end testing for Pnl program
+\item Member of the BT Recruiting Team as well as Hackathon Committee
+\end{tightitemize}
+\sectionspace
+
+% \runsubsection{EY}
+% \descript{| FSO  - Tech Advisor Intern }
+% \location{May 2016 – Aug 2016 | New York City, NY}
+% \begin{tightitemize}
+% \item Researched and analyzed data in order to develop an internal centralized reporting system.
+% \item Presented to leaders of EY concerning Social Media sentiment analysis utilizing RShiny.
+% \end{tightitemize}
+% \sectionspace
+
+% \runsubsection{USDA Research}
+% \descript{| Research Assistant}
+% \location{May 2015 – Aug 2015 | Eastern Regional Research Center - Glenside, PA}
+% \begin{tightemize}
+% \item Modeled pyrolysis process for guayule and performed exergy analysis. \item Published in \it{Energy 2016}; presented at Power \& Energy Conference 2016.\end{tightemize}
+
+% \runsubsection{Data Scientist Intern}
+% \descript{| Brigham \& Women's Hospital}
+% \location{January 2015 | Boston, MA}
+% \begin{tightemize}
+% \item Utilized R to analyze text notes in EMR and EHR data to highlight key symptoms \item Developed RShiny app to bridge gap between technical analysis \& physician use \end{tightemize}
+% \sectionspace
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%     Personal Projects
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \subsection{Personal Projects}
+% \runsubsection{}
+\end{minipage}
+
+\begin{minipage}[t]{0.33\textwidth} % The left column takes up 33% of the text width of the page
+
+\section{Interests}
+\subsection{Tennis}
+\vspace{5pt}
+\textbullet{} Accredited Interscholastic Coach - NFHS \\
+\textbullet{} Tennis on the Lake Coach (Chicago) \\
+\textbullet{} 4 year Varsity HS and College
+\sectionspace
+\subsection{Extracurricular:}
+\vspace{5pt}
+\location{Hiking \& Climbing:}
+\textbullet{} Mt. Kilimanjaro (2013) \\
+\textbullet{} Mt. Rainier (2011) \\
+\vspace{5pt}
+\location{Athletics:}
+\textbullet{} St. George 70.3 (2024) \\
+\textbullet{} Steelhead 70.3 (2023) \\
+\textbullet{} Half Moon Bay Triathlon (2022) \\
+\textbullet{} Indian Wells 70.3 (2021) \\
+\textbullet{} Chicago Triathlon (2018, 2019) \\
+\textbullet{} Chicago Marathon (2017) \\
+\vspace{5pt}
+\location{Miscellaneous:}
+\textbullet{} Reading \textbullet{} Blood donations
+
+\sectionspace
+\section{Organizations}
+% \textbullet{} Accredited Interscholastic Coach
+\textbullet{} Sigma Xi
+\textbullet{} Tau Beta Pi
+
+\section{Awards} 
+{\small
+\begin{tabular}{p{1cm}p{4cm}}
+%2015 \& 2016         & Player of the Week (3x)\\
+%        & Athletics   & Player of the Week (2x)\\
+2016         & CoSIDA Academic All-District At-Large Team \\
+2016         & Philadelphia Inquirer Academic All-Area \\
+2015 \& 2016         & All-Centennial Conference First Team (Singles) \\
+2015 \& 2016         & Centennial Conference Spring Academic Honor Roll \\
+2015         & Centennial Conference All-Sportsmanship Team \\
+\end{tabular}
+}
+
+\sectionspace
+\section{Volunteer Exp.}
+\runsubsection{\href{https://www.cityhopesf.org/}{City Hope}}
+\descript{| Volunteer}
+\location{March 2022 - December 2022 | San Francisco, CA}
+Volunteered at City Hope, an organization aiming to offer a safe place and home for those who don't have enough living space in the Tenderloin.
+\sectionspace
+
+\runsubsection{\href{https://bgcc.org/}{Chicago Boys and Girls Club}}
+\descript{| Volunteer}
+\location{Aug 2018 - Jun 2019 | Chicago, IL}
+Volunteered at the Pederesen-McCormick Club teaching an introduction to programming class twice a week to spur interest in kids between 9 and 14.
+\sectionspace
+
+\section{Open Source}
+\runsubsection{\href{https://github.com/gnachman/iTerm2}{iTerm2}}
+\descript{| Contributor}
+Bug fix exposing the native macOS color picker for tab color customization.
+\sectionspace
+\sectionspace
+
+\end{minipage} % The end of the left column
+\hfill
+\begin{minipage}[t]{0.66\textwidth}
+
+\section{Personal Projects and Freelancing}
+% \runsubsection{{\scriptsize \textit{See blog for more details: \href{https://johnlarkin1.github.io/}{https://johnlarkin1.github.io/}\newline}}}
+
+\runsubsection{\href{https://tennis-scorigami.com/}{Tennis Scorigami}}
+\descript{\href{https://tennis-scorigami.com/}{(see tennis-scorigami.com)} | Founding Engineer}
+\location{November 2024 - present | Remote}
+\location{Tech stack: NextJS, Typescript/React, Tailwind, Neon, Python, etc)}
+\vspace{\topsep} % Hacky fix for awkward extra vertical space
+\begin{tightitemize}
+   \item Built interactive data viz platform tracking unique tennis score permutations inspired by Jon Bois's Football Scorigami across 57 years of professional tennis
+   \item Implemented 2D/3D graph visualizations (\href{https://www.sigmajs.org/}{SigmaJS} \& \href{https://github.com/vasturiano/3d-force-graph}{force-graph} for progression trees, with matviews queries across 735 Bo3 and 108k+ Bo5 possible score perms
+   % \item Architected Python ETL pipeline with SQLAlchemy datasets and SR API data, migrated from Supabase to Neon PostgreSQL (5GB) with Drizzle ORM for type-safe database operations
+   \item Designed real-time filtering system \{tourn/player/surface/time\} with Jotai
+\end{tightitemize}
+\sectionspace
+
+\runsubsection{\href{https://scrollz.co/}{Scrollz}}
+\descript{\href{https://scrollz.co/}{(see scrollz.co)} | Founding Engineer}
+\location{September 2023 - present | Remote}
+\location{Tech stack: NextJS, Typescript/React, Tailwind, Supabase, Python, OpenAI, AWS (SES, Lambda, Amplify, etc), \href{https://www.serverless.com/}{serverless}}
+\begin{tightitemize}
+    \item First engineer to build out ingestion system for newsletter aggregation platform
+    \item Custom domain + configured DNS settings for Amazon SES to automatically ingest and utilize \texttt{response\_format} OpenAI endpoints for customized ingestion summarization
+    \item Impl + design semantic search across content, topics, authors using full text search Postgres computed cols + \texttt{to\_tsvector} util
+    % \vspace{5pt}
+    % \begin{tightitemize}
+    %     \item More info to go here
+    % \end{tightitemize}
+\end{tightitemize}
+\sectionspace
+
+\runsubsection{\href{https://www.walkintheparquet.com/}{Walk in the Parquet}}
+\descript{\href{https://www.walkintheparquet.com//}{(see walkintheparquet.com)} | Founder}
+\location{September 2023 - present | Remote}
+\location{Tech stack: Rust (w. Tauri), NextJS, Python, Tailwind}
+\begin{tightitemize}
+    \item Built a lightweight desktop client that locally analyzes and loads Parquet files, to get around MacOS not supporting them naturally. Check website for more info
+    % \vspace{5pt}
+    % \begin{tightitemize}
+    %     \item More info to go here
+    % \end{tightitemize}
+\end{tightitemize}
+\sectionspace
+
+\runsubsection{\href{https://johnlarkin1.github.io/}{Personal Blog}}
+\descript{| Author }
+\location{October 2016 - Present}
+\begin{tightitemize}
+    \item Personal coding blog and research site. Some highlights:
+    \vspace{4pt}
+    \begin{tightitemize}
+        \item \textbf{\href{https://johnlarkin1.github.io/2025/tennis-scorigami/}{(2025) Tennis Scorigami}}
+        \item \textbf{\href{https://johnlarkin1.github.io/2025/wordhunt-solver/}{(2025) Winning Wordhunt}}
+        \item \textbf{\href{https://johnlarkin1.github.io/2024/into-the-arena/}{(2024) Hierarchical Agglomerative Clustering}}
+        % \item \textbf{\href{https://johnlarkin1.github.io/2023/chrome-betting-kelly/}{(2023) Chrome Extension, Betting Analysis, and Kelly Criterion}}
+        % \item \textbf{\href{https://johnlarkin1.github.io/2022/message-parser/}{(2022) iMessage Parsing and Analysis}}
+        % \item \textbf{\href{https://johnlarkin1.github.io/2022/porvata-spar/}{(2022) Porvata and SPAR Integration}}
+        % \item \textbf{\href{https://johnlarkin1.github.io/2022/dual-numbers/}{(2022) Dual Numbers and Automatic Differentiation}}
+    \end{tightitemize}
+\end{tightitemize}
+\sectionspace
+
+\runsubsection{\href{https://www.usenourish.com/}{Nourish}}
+\descript{| Software Engineer (3rd engineer)}
+\location{October 2022 - December 2022 | Remote}
+\location{Tech stack: Node.js, React, GraphQL, Express, AWS, RDS}
+\begin{tightitemize}
+    % \item Third engineer working to build better personal nutrition counseling and care
+    % \item Built initial PatientPortal to give patients view into upcoming / past appointments (GraphQL endpoints)
+    \item Refactored onboarding flow (appointment availability over provider first) -> higher ToFu
+    % \item Redefined priority sorting for providers in terms of how they were presented to the customer
+    \item Designed AWS lambdas, one to automate faxing of chart notes to patient providers
+    \item Configured logical WAL replication; Postgres $\rightarrow$ RO DWH for product / biz analysts
+    \item Offered a role after the 3 months... probably should have taken it
+    % \item Built out testing suite for both server and client submodules, including Github actions for running tests as part of PR review
+\end{tightitemize}
+\sectionspace
+
+\runsubsection{\href{https://www.porvata.com/}{Porvata} / \href{https://sparinc.com/services/assembly-installation/}{SPAR} Integration}
+\descript{| Principal Engineer }
+\location{November 2021 – December 2022 | Cincinnati, OH}
+\location{Tech stack: Python, Flask, AWS EC2, Gmail/Gsheets integration}
+% \vspace{\topsep} % Hacky fix for awkward extra vertical space
+\begin{tightitemize}
+\item Integrated Porvata with SPAR assembly helping earn Porvata over \$1k MRR
+% \item AWS hosted Flask service to authenticate application for client
+\item Shopify Google Pub/Sub webhook traffic for different order states
+\item Shopify GraphQL queries to pull order management details
+% \item Fulfillment and cancellation alerts automatically uploaded to SPAR
+\end{tightitemize}
+\sectionspace
+
+\section{Leadership Experience}
+% \runsubsection{\href{https://www.cityhopesf.org/}{City Hope}}
+% \descript{| Volunteer}
+% \location{March 2022 - Present | San Francisco, CA}
+% Volunteered at City Hope, an organization aiming to offer a safe place and home for those who don't have enough living space in the Tenderloin.
+% \sectionspace
+
+% \runsubsection{Roger Bacon High School}
+% \descript{| Assistant Tennis Coach}
+% \location{August 2021 - October 2021 | Cincinnati, OH}
+% Organized practices for the team and provided coaching.
+% \sectionspace
+
+% \runsubsection{\href{https://36education.com/}{36 Education Tutoring}}
+% \descript{| Tutor}
+% \location{April 2021 - October 2021 | New York, NY}
+% ACT prep with high school students. Balanced multiple students up to 4 students at one time, on top of a full time job. 10-15 hour/wk commitment.
+% \sectionspace
+
+% \runsubsection{{Huntington Learning Center}}
+% \descript{| Tutor}
+% \location{May 2020 - December 2020 | Cincinnati, OH}
+% Focused primarily on Math and Science ACT Tutoring prep for highschool students.
+% \sectionspace
+
+% \runsubsection{\href{https://bgcc.org/}{Chicago Boys and Girls Club}}
+% \descript{| Volunteer}
+% \location{Aug 2018 - Jun 2019 | Chicago, IL}
+% Volunteered at the Pederesen-McCormick Club teaching an introduction to programming class twice a week to spur interest in kids between 9 and 14.
+% \sectionspace
+
+\runsubsection{\href{https://overlandsummers.com/trips/sierra-adventure/\#itinerary}{Overland Summers}}
+\descript{| Sierra Adventure Leader}
+\location{June 2017 - August 2017 | Chicago, IL}
+Led three groups of 10-12 5\textsuperscript{th} and 6\textsuperscript{th} graders in a two-week hiking, kayaking, and rafting trip in California's High Sierras and the Lake Tahoe area with co-leader.
+\sectionspace
+
+\runsubsection{Resident Assistant}
+\descript{| Senior R.A.}
+\location{Aug 2016 - May 2017 | Swarthmore, PA}
+Supervisor and leadership role in a residence hall. 
+%Leadership and mentor role Served as a mentor and resource for residents hall at Swarthmore. Organized dorm and hall events.
+\sectionspace
+
+\runsubsection{Tennis Team}
+\descript{| Member \& Captain}
+\location{Aug 2013 - May 2017 | Swarthmore, PA}
+%\begin{tightemize}
+%\item Swarthmore Men’s Tennis Team; 
+Captain Soph - Senior yr of top 30 national team. \#1 singles, \#2 singles and \#3 doubles. Racket stringing business; children’s tennis program instructor
+\sectionspace
+
+% \runsubsection{Office of Student Engagement}
+% \descript{| Codirector \& Member}
+% \location{Aug 2014 – May 2016 | Swarthmore, PA}
+% Worked under Dean Michael Elias  as a liaison for club heads and all campus events. Elected Co-Director; managed \$1,200 a week for budgeting to student groups.
+% \sectionspace
+
+% \runsubsection{Swarthmore Orientation}
+% \descript{| Co-Director \& Member}
+% \location{Aug 2014 \& Aug 2015 | Swarthmore, PA}
+% Selected members for the Orientation Committee. Allocated near \$20,000 in funds. Planned and facilitated the Orientation for over 400 incoming freshmen. 
+% \sectionspace
+
+% \runsubsection{Swarthmore Mentor and T.A.}
+% \descript{| Chemistry, Math, and Economics Tutor}
+% \location{Aug 2015 - May 2018 | Swarthmore, PA}
+% Hosted a 2-hr weekly student session for students to solidify class skills. 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%     Tennis
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%     AWARDS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+\end{minipage} % The end of the right column
+\end{document}  \documentclass[]{article}
